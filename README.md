@@ -1,2 +1,2 @@
 # IA_computing
-Completed IA michaelmas jupyter notebooks and examples papers
+All LaTeX, Python Jypter Notebooks from labs and coursework
