@@ -4,18 +4,20 @@ import matplotlib.pyplot as plt
 import scipy as sp
 
 
-l1,l2,l3 = 1e2,1e2,1e2 # tuned mass damper damping
-k1,k2,k3 = 1,1,1 # tuned mass damper stiffnesses
+l1,l2,l3 = 1,1,1 # tuned mass damper damping
+k1,k2,k3 = 0.1,0.1,0.1 # tuned mass damper stiffnesses
 m1,m2,m3 = 1,1,1 # tuned mass damper masses
 
 K1, K2, K3 = 1,1,1 # strucutre stiffnesses
 L1, L2, L3 = 1,1,1 # structure damping
-M1,M2,M3 = 1,1,1 # structure masses
+M1,M2,M3 = 10,10,10 # structure masses
 
-dt = 0.001 # time step
-T = np.arange(0, 20, dt) # time array
+dt = 0.01 # time step
+T = np.arange(0, 100, dt) # time array
 
-xinput = np.sin(2*np.pi*T) # input signal
+wn = np.sqrt(K1/M1) * 5
+
+xinput = np.sin(wn*T) # input signal
 dxinput = np.diff(xinput)/dt # input signal derivative
 M = np.diag([M1, M2, M3, m1, m2, m3])
 MI = np.linalg.inv(M)
@@ -65,7 +67,7 @@ for i,t in enumerate(T):
     x2s.append(x2)
     x3s.append(x3)
 
-#plt.plot(T, xinput, label='input')
+plt.plot(T, xinput, label='input')
 plt.plot(T, x1s, label='x1')
 plt.plot(T, x2s, label='x2')
 plt.plot(T, x3s, label='x3')
