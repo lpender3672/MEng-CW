@@ -2,7 +2,8 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import scipy as sp
-
+import multiprocessing as mp
+from numba import jit, njit
 
 l1,l2,l3 = 0.1,0.1,0.1 # tuned mass damper damping
 k1,k2,k3 = 1,1,1 # tuned mass damper stiffnesses
@@ -12,19 +13,11 @@ K1, K2, K3 = 1,1,1 # strucutre stiffnesses
 L1, L2, L3 = 1,1,1 # structure damping
 M1,M2,M3 = 10,10,10 # structure masses
 
-dt = 0.005 # time step
-T = np.arange(0, 100, dt) # time array
+@jit(nopython=True)
+def get_maxs(w, dt):
 
-#wn = np.sqrt(K1/M1) * 5
+    T = np.arange(0, 1000, dt) # time array
 
-ws = np.linspace(0.01, 1, 100)
-
-x1maxs = []
-x2maxs = []
-x3maxs = []
-
-for w in ws:
-        
     xinput = np.sin(w*T) # input signal
     dxinput = np.diff(xinput)/dt # input signal derivative
 
@@ -36,9 +29,9 @@ for w in ws:
     dy1, dy2, dy3 = 0,0,0 # initial conditions
     ddy1, ddy2, ddy3 = 0,0,0 # initial conditions
 
-    x1s = []
-    x2s = []
-    x3s = []
+    x1s = np.zeros(len(T))
+    x2s = np.zeros(len(T))
+    x3s = np.zeros(len(T))
 
     for i,t in enumerate(T):
 
@@ -69,20 +62,51 @@ for w in ws:
         dy2 = dy2 + ddy2*dt
         dy3 = dy3 + ddy3*dt
 
-        x1s.append(x1)
-        x2s.append(x2)
-        x3s.append(x3)
+        x1s[i] = x1
+        x2s[i] = x2
+        x3s[i] = x3
 
     # get max values after initial transient period
-    x1maxs.append(np.max(np.abs(x1s[1000:])))
-    x2maxs.append(np.max(np.abs(x2s[1000:])))
-    x3maxs.append(np.max(np.abs(x3s[1000:])))
+    x1max = np.max(x1s[1000:])
+    x2max = np.max(x2s[1000:])
+    x3max = np.max(x3s[1000:])
+
+    return x1max, x2max, x3max
+
+#@njit(parallel=True)
+def get_maxs_parallel(ws, dt):
+
+    x1maxs = np.zeros(len(ws))
+    x2maxs = np.zeros(len(ws))
+    x3maxs = np.zeros(len(ws))
+
+    # use multiprocessing to speed up the calculation
+    pool = mp.Pool(mp.cpu_count())
+    results = [pool.apply_async(get_maxs, args=(w, dt)) for w in ws]
+    
+    for i, result in enumerate(results):
+        x1max, x2max, x3max = result.get()
+        x1maxs[i] = x1max
+        x2maxs[i] = x2max
+        x3maxs[i] = x3max
+    
+    return x1maxs, x2maxs, x3maxs
 
 
-#plt.plot(T, xinput, label='input')
-plt.plot(ws, x1maxs, label='x1 max')
-plt.plot(ws, x2maxs, label='x2 max')
-plt.plot(ws, x3maxs, label='x3 max')
+if __name__ == '__main__':
 
-plt.legend()
-plt.show()
+    wn = np.sqrt(K1/M1)
+
+    ws = np.linspace(wn*1e-2, wn*1e1, 100)
+
+    dt = 0.01
+    
+    x1maxs, x2maxs, x3maxs = get_maxs_parallel(ws, dt=dt)
+
+    #plt.plot(T, xinput, label='input')
+    plt.plot(ws, x1maxs, label='x1 max')
+    plt.plot(ws, x2maxs, label='x2 max')
+    plt.plot(ws, x3maxs, label='x3 max')
+
+    plt.legend()
+    plt.show()
