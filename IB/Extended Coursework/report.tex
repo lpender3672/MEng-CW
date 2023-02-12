@@ -1,5 +1,5 @@
 
-\documentclass[9pt]{article}
+\documentclass[8pt]{article}
 
 \usepackage[utf8]{inputenc}
 
@@ -35,13 +35,13 @@
 % context
 
 Modern structures are designed to withstand a range of distributed static loads however they are vulnerable to harmonic excitations such as earthquakes.
-The response of a structure to a harmonic excitation is determined by the resonant frequencies and mode shapes of the structure.
+
 
 \subsection{Aims}
 
 \begin{itemize}
 \item To determine the resonant frequencies of a 3 degree of freedom structure
-\item To determine the properties of three seperate tuned mass dampers to reduce the three resonant responses of the structure
+\item To determine the properties of three seperate tuned mass dampers to reduce the three resonant response of the structure
 \item To investigate the combined effect of the tuned mass dampers on the resonant response of the structure
 \end{itemize}
 
@@ -71,10 +71,11 @@ of a cantilever assumes small deflections and the deflection of the tuned mass d
 The method used for tuning was to incrementally change the stiffness of the spring by changing its length until the response 
 at the resonant frequency was at a minimum. 
 
-A single mass of 50g was added to the cantilever spring and the structures response was tested with the mass at the top and slightly below.
-In the 1st mode the response was worse with the mass further down and so two more 50g masses were added until the resonant response decreased.
+A single mass of 50g was added to the end of the cantilever spring and the structures response was tested with the mass at the top and 1cm below the top.
+In the 1st mode the response was worse when the mass was positioned 1cm from the top and so two more 50g masses were added until the resonant response decreased.
 This was done such that the optimal length lies on the cantilever for fine tuning. It can also be seen in equation (3) that increasing $m$
 decreases the optimal length of the cantilever such that the tuned mass dampers resonant frequency matches that of the building.
+The other modes did not require this as a single 50g mass was sufficient to 
 
 The damping coefficient was effectively unchanged as this is caused by the viscous friction of the air on the mass.
 
@@ -96,9 +97,31 @@ The damping coefficient was effectively unchanged as this is caused by the visco
 %interpret results and comment on anomalies
 
 Figure \ref{fig:modes} shows the resonant response of each mode before and after the addition of a tuned mass damper.
-In all cases the 
+In all cases the response at the resonant frequency is reduced by the addition of the tuned mass damper. It can also be seen that the
+response slightly above and below the resonant frequency increases. This is the expected behaviour from adding a tuned mass damper.
+However, in modes 1 and 2 the new resonant response is greater than the original response.
 
+This is likely due to a variety of reasons:
+\begin{itemize}
+    \item The tuned mass dampers were not accurately tuned to the resonant frequency of the structure. Our tuning method was not optimal as the length of the cantilever was only tuned to the nearest 5mm.
+            This was done to reduce the time taken to tune the dampers as the tuning method was already very time consuming.
+    \item The damping of the masses is very small as the air friction is negligible. This means that the two residual resonant responses are much higher than they would be if the absorbers had damping.
+\end{itemize}
+
+Figure \ref{fig:combined_full_sweep} shows the resonant response of the structure before and after the addition of the 3 individually tuned mass dampers.
+Second order effects are seen in the response of the damped structure.
+
+\section{Improvements}
+
+The tuning method could be improved by 
+\begin{itemize}
+    \item Tune the length of the cantilever to a higher precision using callipers.
+    \item Using a more accurate model of the tuned mass damper
+\end{itemize}
 
 \section{Conclusion}
+
+From the experimental data gathered it can be concluded that tuned mass dampers can be used to reduce the amplitude of resonant responses of a structure.
+However, tuning such dampers to the resonant frequency of the structure is not trivial and requires a lot of experimentation.
 
 \end{document}
