@@ -6,19 +6,19 @@ import multiprocessing as mp
 from numba import jit, njit
 
 l1,l2,l3 = 0.1,0.1,0.1 # tuned mass damper damping
-k1,k2,k3 = 1,1,1 # tuned mass damper stiffnesses
-m1,m2,m3 = 1,1,1 # tuned mass damper masses
+k1,k2,k3 = 1000,1000,1000 # tuned mass damper stiffnesses
+m1,m2,m3 = 0.05,0.05,0.05 # tuned mass damper masses
 
-K1, K2, K3 = 1,1,1 # strucutre stiffnesses
+K1, K2, K3 = 1000,1000,1000 # strucutre stiffnesses
 L1, L2, L3 = 1,1,1 # structure damping
-M1,M2,M3 = 10,10,10 # structure masses
+M1,M2,M3 = 1.46,1.46,1.46 # structure masses
 
 @jit(nopython=True)
 def get_maxs(w, dt):
 
-    T = np.arange(0, 1000, dt) # time array
+    T = np.arange(0, 100, dt) # time array
 
-    xinput = np.sin(w*T) # input signal
+    xinput = np.cos(w*T) # input signal
     dxinput = np.diff(xinput)/dt # input signal derivative
 
     x1, x2, x3 = 0,0,0 # initial conditions

@@ -1,5 +1,5 @@
 
-\documentclass{article}
+\documentclass[9pt]{article}
 
 \usepackage[utf8]{inputenc}
 
@@ -7,6 +7,8 @@
 \usepackage{graphicx}
 \usepackage{amssymb}
 \usepackage{float}
+% set font size to 11pt
+
 
 \setlength{\parskip}{\baselineskip}%
 \setlength{\parindent}{0pt}%
@@ -38,31 +40,64 @@ The response of a structure to a harmonic excitation is determined by the resona
 \subsection{Aims}
 
 \begin{itemize}
-\item To numerically model a 3 degree of freedom structure with 3 seperate absorbers to reduce the amplitude of the structure's resonant response to harmonic excitations represting earthquakes.
-\item To
+\item To determine the resonant frequencies of a 3 degree of freedom structure
+\item To determine the properties of three seperate tuned mass dampers to reduce the three resonant responses of the structure
+\item To investigate the combined effect of the tuned mass dampers on the resonant response of the structure
 \end{itemize}
 
-\section{Methodology}
-
+\section{Methodology and theory}
 % Summary of theory and information to reproduce
+
+The structure experimented on in this report has 3 floors stacked on top of each other connected by springs.
+Resonant frequencies were determined by performing a sweep of harmonic excitations on the structure and recording the responses at each frequency.
+These undamped responses were then saved and used for comparison with the responses of the structure after the addition of tuned mass dampers.
+
+The tune mass damper model used is a simple spring-mass-damper system with a spring stiffness $k$ and damping coefficient $\lambda$.
+The position of the damper is also important as it must be ideally placed at an anti node of the resonant mode shape.
+For each mass spring damper the stiffness, $k$, must be tuned to match the resonant frequency of the structure.
+\begin{equation}
+    k = m\omega_n^2
+\end{equation}
+The spring used is effectively a cantilever which has a stiffness
+\begin{equation}
+    k = \frac{W}{\delta} = \frac{3EI}{L^3}
+\end{equation}
+Equating these gives the length of the cantilever as
+\begin{equation}
+    L = \sqrt[3]{\frac{3EI}{m\omega_n^2}}
+\end{equation}
+This did not however give optimal results for a variety of reasons, the main one being that the equation for deflection
+of a cantilever assumes small deflections and the deflection of the tuned mass damper is significant.
+The method used for tuning was to incrementally change the stiffness of the spring by changing its length until the response 
+at the resonant frequency was at a minimum. 
+
+A single mass of 50g was added to the cantilever spring and the structures response was tested with the mass at the top and slightly below.
+In the 1st mode the response was worse with the mass further down and so two more 50g masses were added until the resonant response decreased.
+This was done such that the optimal length lies on the cantilever for fine tuning. It can also be seen in equation (3) that increasing $m$
+decreases the optimal length of the cantilever such that the tuned mass dampers resonant frequency matches that of the building.
+
+The damping coefficient was effectively unchanged as this is caused by the viscous friction of the air on the mass.
+
+\newpage
 
 \section{Results}
 
 \begin{figure}[H]
+    
     \centering
     \includegraphics[width=1\textwidth]{modes.png}
     \caption{\label{fig:modes} Harmonic responses of each node before and after the addition of a single tuned damper to that node}
-\end{figure}
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=1\textwidth]{combined_full_sweep.png}
+    \includegraphics[width=0.8\textwidth]{combined_full_sweep.png}
     \caption{\label{fig:combined_full_sweep} Harmonic response of structure before and after the addition of 3 tuned dampers}
 \end{figure}
 
+\newpage
 \section{Discussion}
-
 %interpret results and comment on anomalies
+
+Figure \ref{fig:modes} shows the resonant response of each mode before and after the addition of a tuned mass damper.
+In all cases the 
+
 
 \section{Conclusion}
 
