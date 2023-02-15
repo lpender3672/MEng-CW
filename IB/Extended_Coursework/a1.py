@@ -3,6 +3,8 @@ import numpy as np
 import scipy.integrate
 import matplotlib.pyplot as plt
 
+plt.rcParams["text.usetex"] = True
+plt.rcParams["font.family"] = "serif"
 
 def MLKF_1dof(m1, l1, k1, f1):
 

@@ -4,18 +4,19 @@ import scipy as sp
 import multiprocessing as mp
 from numba import jit, njit
 
-l1 = 1 # tuned mass damper damping
-k1 = 34.25 # tuned mass damper stiffness
-m1 = 0.05 # tuned mass damper mass
 
 K1 = 1000 # strucutre stiffness
 L1 = 1 # structure damping
 M1 = 1.46
 
+l1 = 0.1 # tuned mass damper damping
+m1 = 0.05 # tuned mass damper mass
+k1 = m1 * K1 / M1 # tuned mass damper stiffness
+
 @jit(nopython=True)
 def get_maxs(w, dt, damped = False, damping = 1, stiffness = 100):
-
-    T = np.arange(0, 100, dt) # time array
+    
+    T = np.arange(0, 10 * 2 * np.pi / w, dt) # time array
 
     xinput = np.cos(w*T) # input signal
     dxinput = np.diff(xinput)/dt # input signal derivative
@@ -80,14 +81,14 @@ if __name__ == '__main__':
     wn = np.sqrt(K1/M1)
     stiffness = m1 * wn**2
 
-    ws = np.linspace(wn*1e-2, wn*2e0, 100)
+    ws = np.linspace(wn*0.1, wn*2, 100)
 
     dt = 0.0001
     
     x1maxs_undamped = get_maxs_parallel(ws, dt=dt, damped=False)
-    x1maxs_damped_01 = get_maxs_parallel(ws, dt=dt, damped=True, damping=0.1, stiffness=stiffness)
-    x1maxs_damped_1 = get_maxs_parallel(ws, dt=dt, damped=True, damping=1, stiffness=stiffness)
-    x1maxs_damped_10 = get_maxs_parallel(ws, dt=dt, damped=True, damping=10, stiffness=100)
+    x1maxs_damped_01 = get_maxs_parallel(ws, dt=dt, damped=True, damping=1e-3, stiffness=stiffness)
+    x1maxs_damped_1 = get_maxs_parallel(ws, dt=dt, damped=True, damping=1e-2, stiffness=stiffness)
+    x1maxs_damped_10 = get_maxs_parallel(ws, dt=dt, damped=True, damping=1e-1, stiffness=stiffness)
 
     #plt.plot(T, xinput, label='input')
     plt.plot(ws, x1maxs_undamped, label='undamped')

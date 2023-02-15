@@ -16,12 +16,11 @@
 
 \begin{document}
 
-\title{Method Sheet}
+\title{Extended Coursework: Method Sheet}
 \author{lwp26}
 \date{Feburary 2023}
 \maketitle
 
-\newpage
 
 \section{Method and theory}
 % Summary of theory and information to reproduce
@@ -32,15 +31,13 @@ These undamped responses were then saved and used for comparison with the respon
 
 The tune mass damper model used is a simple spring-mass-damper system with a spring stiffness $k$ and damping coefficient $\lambda$.
 The position of the damper is also important as it must be ideally placed at an anti node of the resonant mode shape.
-For each mass spring damper the stiffness, $k$, must be tuned to match the resonant frequency of the structure.
+The tuned mass damper for mode 1 was on the 3rd floor as this floor had the largest amplitude at the resonant frequency.
+The tuned mass dampers for modes 2 and 3 were placed on the 1st and 2nd floor respectively as both modes excited floor 2, only mode 2 excited floor 1.
+For each mass damper the cantilever spring stiffness, $k$, must be tuned to match the resonant frequency of the structure.
 \begin{equation}
-    k = m\omega_n^2
+    k = m\omega_n^2 = \frac{W}{\delta} = \frac{3EI}{L^3}
 \end{equation}
-The spring used is effectively a cantilever which has a stiffness
-\begin{equation}
-    k = \frac{W}{\delta} = \frac{3EI}{L^3}
-\end{equation}
-Equating these gives the length of the cantilever as
+Where $\delta$ is the deflection of the cantilever spring
 \begin{equation}
     L = \sqrt[3]{\frac{3EI}{m\omega_n^2}}
 \end{equation}
@@ -49,11 +46,9 @@ of a cantilever assumes small deflections and the deflection of the tuned mass d
 The method used for tuning was to incrementally change the stiffness of the spring by changing its length until the response 
 at the resonant frequency was at a minimum. 
 
-A single mass of 50g was added to the end of the cantilever spring and the structures response was tested with the mass at the top and 1cm below the top.
-In the 1st mode the response was worse when the mass was positioned 1cm from the top and so two more 50g masses were added until the resonant response decreased.
-This was done such that the optimal length lies on the cantilever for fine tuning. It can also be seen in equation (3) that increasing $m$
-decreases the optimal length of the cantilever such that the tuned mass dampers resonant frequency matches that of the building.
-The other modes did not require this as a single 50g mass was sufficient to 
+The mass on the cantilever was chosen such that the optimal length lied on the cantilever for fine tuning.
+This was done using equation (3) where it can be seen by increasing $m$ it decreases the optimal length of the cantilever such 
+that the tuned mass dampers resonant frequency matches that of the building.
 
 The damping coefficient was effectively unchanged as this is caused by the viscous friction of the air on the mass.
 
