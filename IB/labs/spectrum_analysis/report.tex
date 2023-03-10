@@ -1,0 +1,139 @@
+\documentclass[12pt]{article}
+
+\usepackage[utf8]{inputenc}
+
+
+\usepackage{caption}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{amssymb}
+\usepackage{float}
+\usepackage{multirow}
+\usepackage{setspace} \setstretch{0.9}
+% set font size to 11pt
+
+
+\setlength{\parskip}{\baselineskip}%
+\setlength{\parindent}{0pt}%
+
+
+\begin{document}
+
+\title{Spectrum Analysis}
+\author{lwp26}
+\date{Feburary 2023}
+\maketitle
+
+\begin{abstract}
+    \centering
+    This report will discuss the use of spectrum analysis in the study of signals by looking at the spectrum of various waveforms and the spectrum of amplitude modulated signals. The report will also discuss the use of a simple demodulator to recover the original signal from the amplitude modulated signal.
+\end{abstract}
+
+
+\section{Introduction}
+
+\subsection{Background}
+Spectral analysis is important in signal processing because it allows the frequency content of a signal to be analyzed, which is useful for identifying the physical properties of the signal source. Spectral analysis is used in many areas of science and engineering, such as acoustics, communications, medical imaging, and astronomy, for tasks such as noise reduction, signal filtering, feature extraction, pattern recognition, and data compression.
+
+Amplitude modulation (AM) is a technique used in telecommunications and broadcasting to transmit information by varying the amplitude of a carrier wave. AM is widely used in radio broadcasting, where it allows multiple stations to share the same frequency band and transmit information to a large audience.
+
+\subsection{Aims}
+
+\begin{itemize}
+    \item To introduce the concept of spectrum analysis
+    \item To become aquainted with the use of simple computer based spectrum analyser software.
+    \item To measure the spectra of various simple waveforms.
+    \item To study the spectra of amplitude modulated signals and characteristics of a simple demodulator.
+\end{itemize}
+
+\section{Method}
+
+\begin{equation}
+    x(t) = a_0 + \sum_{n=1}^{\infty} a_n \sin(2\pi n f_0 t) + b_n \cos(2\pi n f_0 t)
+    \label{eq:1}
+\end{equation}
+
+From equation \ref{eq:1} it can see that the Fourier series of a signal is the sum of a constant term, a series of sine terms and a series of cosine terms. 
+The terms $a_n$ and $b_n$ are the Fourier coefficients of the signal and signal power at the $n^{th}$ harmonic is given by $P_n = a_n^2 + b_n^2$.
+
+Square wave fourier series
+\begin{equation}
+    f(t) = \frac{4}{\pi} \sum_{\text{odd n}}^{\infty} \frac{1}{n} \sin\left(n \omega_0 t\right)
+    \label{eq:2}
+\end{equation}
+
+Triangle wave fourier series
+\begin{equation}
+    f(t) = \frac{8}{\pi^2} \sum_{\text{odd n}}^{\infty} \pm \frac{1}{n^2} \sin\left(n\omega_0 t\right)
+    \label{eq:3}
+\end{equation}
+where signs alternate, $+$ for $n = 1$
+
+From this it can be seen that the frequency components of the signal decay as $1/n^2$ for the triangle wave and $1/n$ for the square wave. This means that the higher harmonics of the signal have a much smaller amplitude than the lower harmonics.
+
+
+\subsection{Apparatus and Setup}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.8\textwidth]{setup_diagram.png}
+    \caption{Graph showing block diagram setup}
+    \label{fig:setup}
+\end{figure}
+
+
+For the modulated signal, the carrier frequency was set to $7969$ Hz (8KHz) 
+
+\section{Results}
+
+\begin{table}[h]
+    \centering
+    \caption{Frequency composition for Triangle Wave}
+    \begin{tabular}{|c|c|}
+    \hline
+    Frequency (kHz) & Voltage (mV) \\ \hline
+    0.998           & 546.4        \\
+    2.992           & 62.9         \\
+    4.986           & 22.28        \\
+    6.98            & 10.88        \\
+    8.987           & 4.895        \\ \hline
+    \end{tabular}
+\end{table}
+
+\begin{table}[h]
+    \centering
+    \caption{Frequency composition for Square Wave}
+    \begin{tabular}{|c|c|}
+    \hline
+    Frequency (kHz) & Voltage (mV) \\ \hline
+    0.998           & 846.1        \\
+    2.998           & 258          \\
+    4.995           & 159.6        \\
+    6.992           & 98.89        \\
+    8.991           & 73.18        \\ \hline
+    \end{tabular}
+\end{table}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{square_triangle.png}
+    \caption{Graph showing measured square and triangle frequency components and predicted fit}
+    \label{fig:square_triangle}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.8\textwidth]{AmpMod_f.jpg}
+    \caption{Graph showing spectrum of amplitude modulated signal}
+    \label{fig:freq_responses}
+\end{figure}
+
+\section{Analysis of results}
+
+
+
+
+\section{Conclusion}
+
+
+\end{document}
