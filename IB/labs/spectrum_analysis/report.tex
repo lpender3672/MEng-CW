@@ -8,7 +8,7 @@
 \usepackage{graphicx}
 \usepackage{amssymb}
 \usepackage{float}
-\usepackage{multirow}
+\usepackage{subcaption}\usepackage{multirow}
 \usepackage{setspace} \setstretch{0.9}
 % set font size to 11pt
 
@@ -21,12 +21,15 @@
 
 \title{Spectrum Analysis}
 \author{lwp26}
-\date{Feburary 2023}
+\date{March 2023}
 \maketitle
 
 \begin{abstract}
     \centering
-    This report will discuss the use of spectrum analysis in the study of signals by looking at the spectrum of various waveforms and the spectrum of amplitude modulated signals. The report will also discuss the use of a simple demodulator to recover the original signal from the amplitude modulated signal.
+    This report analyzed experimental results involving square and triangle waveforms, and an amplitude-modulated sine wave.
+    The Fourier coefficients measurements agreed with theory, and the spectrum of the square wave without an anti-aliasing filter was less smooth
+    The demodulator circuit parameters were calculated, and test points analysed before and after envelope detection.
+    These results confirmed theoretical predictions and demonstrated the circuit's functionality. This study provides insights into circuit implementation and validates theoretical predictions.
 \end{abstract}
 
 
@@ -46,7 +49,7 @@ Amplitude modulation (AM) is a technique used in telecommunications and broadcas
     \item To study the spectra of amplitude modulated signals and characteristics of a simple demodulator.
 \end{itemize}
 
-\section{Method and Theory}
+\section{Theory}
 
 \subsection{Measuring the Spectrum of Signals}
 
@@ -74,6 +77,7 @@ Triangle wave fourier series
 where signs alternate, $+$ for $n = 1$
 
 From this it can be seen that the frequency components of the signal decay as $1/n^2$ for the triangle wave and $1/n$ for the square wave. This means that the higher harmonics of the signal have a much smaller amplitude than the lower harmonics.
+This should however be expected as a triangle wave can be formed from the convolution of a square pulse and a square wave, which both contain fourier coefficients $1/n$, to give a fourier coefficient containing a $1/n^2$ term.
 
 \subsection{Amplitude Modulation}
 
@@ -108,7 +112,8 @@ The modulation index can also be measured by finding the ratio of maximum and mi
     \label{fig:demod_circuit}
 \end{figure}
 
-In this circuit the step down response from $v_0$ is derived and given as
+The circuit above shows a simple demodulator circuit and low pass filter.
+In the demodulator circuit the step down response from $v_0$ is derived and given as
 
 \begin{equation}
     v(t) = v_0 e^{-\frac{t}{RC}}
@@ -146,23 +151,28 @@ The signal generator used a chip made by Analog Devices to make precise waveform
 
 % add about how the low pass filter or anti aliasing filter was set up, 2khz low pass filter
 % add about how the picoscope was set up linear 
-
+\section{Method}
+Details on the method and PicoScope settings for each of the data sampled can be found on the lab handout.
 
 \section{Results}
 
-\begin{table}[h]
+\begin{figure}[H]
+    \makebox[\linewidth][c]{%
+    \begin{subfigure}[b]{.6\textwidth}
     \centering
-    \caption{Frequency composition for Triangle Wave}
-    \begin{tabular}{|c|c|}
-    \hline
-    Frequency (kHz) & Voltage (mV) \\ \hline
-    0.998           & 546.4        \\
-    2.992           & 62.9         \\
-    4.986           & 22.28        \\
-    6.98            & 10.88        \\
-    8.987           & 4.895        \\ \hline
-    \end{tabular}
-\end{table}
+    \includegraphics[width=.95\textwidth]{Sine/5kHzSine_t.jpg}
+    \caption{Time domain}
+    \end{subfigure}%
+    \begin{subfigure}[b]{.6\textwidth}
+    \centering
+    \includegraphics[width=.95\textwidth]{Sine/5kHzSine_f.jpg}
+    \caption{Frequency Spectrum}
+    \end{subfigure}
+    }\\
+    \vspace{-14pt}
+    \caption{Sine wave with 2kHz anti aliasing filter}
+    \label{fig:sine_1khz_filtered}
+\end{figure}
 
 \begin{table}[h]
     \centering
@@ -178,30 +188,217 @@ The signal generator used a chip made by Analog Devices to make precise waveform
     \end{tabular}
 \end{table}
 
+\begin{table}[h]
+    \centering
+    \caption{Frequency composition for Triangle Wave}
+    \begin{tabular}{|c|c|}
+    \hline
+    Frequency (kHz) & Voltage (mV) \\ \hline
+    0.998           & 546.4        \\
+    2.992           & 62.9         \\
+    4.986           & 22.28        \\
+    6.98            & 10.88        \\
+    8.987           & 4.895        \\ \hline
+    \end{tabular}
+\end{table}
+
+
 \begin{figure}[h]
     \centering
-    \includegraphics[width=1\textwidth]{square_triangle.png}
-    \caption{Graph showing measured square and triangle frequency components and predicted fit}
+    \includegraphics[width=0.8\textwidth]{square_triangle.png}
+    \caption{Graph showing measured square and triangle relative fourier coefficients}
     \label{fig:square_triangle}
 \end{figure}
 
+\begin{figure}[H]
+    \makebox[\linewidth][c]{%
+    \begin{subfigure}[b]{.6\textwidth}
+    \centering
+    \includegraphics[width=.95\textwidth]{Square/1khzsquare_t.jpg}
+    \caption{Time domain}
+    \end{subfigure}%
+    \begin{subfigure}[b]{.6\textwidth}
+    \centering
+    \includegraphics[width=.95\textwidth]{Square/kHzsquare_f.jpg}
+    \caption{Frequency Spectrum}
+    \end{subfigure}
+    }\\
+    \vspace{-14pt}
+    \caption{Square wave with 2kHz anti aliasing filter}
+    \label{fig:square_1khz_filtered}
+\end{figure}
+
+\begin{figure}[H]
+    \makebox[\linewidth][c]{%
+    \begin{subfigure}[b]{.6\textwidth}
+    \centering
+    \includegraphics[width=.95\textwidth]{Triangle/1khztriangle_t.jpg}
+    \caption{Time domain}
+    \end{subfigure}%
+    \begin{subfigure}[b]{.6\textwidth}
+    \centering
+    \includegraphics[width=.95\textwidth]{Triangle/1khztriangle_f.jpg}
+    \caption{Frequency Spectrum}
+    \end{subfigure}
+    }\\
+    \vspace{-14pt}
+    \caption{Triangle wave with 2kHz anti aliasing filter}
+    \label{fig:triangle_1khz_filtered}
+\end{figure}
+
+\begin{figure}[H]
+    \makebox[\linewidth][c]{%
+    \begin{subfigure}[b]{.6\textwidth}
+    \centering
+    \includegraphics[width=.95\textwidth]{Square/1khzsquare_t_unfiltered.jpg}
+    \caption{Time domain}
+    \end{subfigure}%
+    \begin{subfigure}[b]{.6\textwidth}
+    \centering
+    \includegraphics[width=.95\textwidth]{Square/kHzsquare_f_unfiltered.jpg}
+    \caption{Frequency Spectrum}
+    \end{subfigure}
+    }\\
+    \vspace{-14pt}
+    \caption{Square without anti aliasing filter}
+    \label{fig:square_1khz_unfiltered}
+\end{figure}
+
+\begin{figure}[H]
+    \makebox[\linewidth][c]{%
+    \begin{subfigure}[b]{.6\textwidth}
+    \centering
+    \includegraphics[width=.95\textwidth]{ampmod_t.jpg}
+    \caption{Time domain}
+    \end{subfigure}%
+    \begin{subfigure}[b]{.6\textwidth}
+    \centering
+    \includegraphics[width=.95\textwidth]{ampMod_f.jpg}
+    \caption{Frequency Spectrum}
+    \end{subfigure}
+    }\\
+    \vspace{-14pt}
+    \caption{1kHz sine wave modulated with 8kHz carrier with with $m<1$}
+    \label{fig:Amplitude_Modulated_Signal}
+\end{figure}
+
+\begin{figure}[H]
+    \makebox[\linewidth][c]{%
+    \begin{subfigure}[b]{.6\textwidth}
+    \centering
+    \includegraphics[width=.95\textwidth]{ampModm1_t.jpg}
+    \caption{Time domain}
+    \end{subfigure}%
+    \begin{subfigure}[b]{.6\textwidth}
+    \centering
+    \includegraphics[width=.95\textwidth]{ampModm1_f.jpg}
+    \caption{Frequency Spectrum}
+    \end{subfigure}
+    }\\
+    \vspace{-14pt}
+    \caption{1kHz sine wave modulated with 8kHz carrier with $m=1$}
+    \label{fig:Amplitude_Modulated_Signal_M_1}
+\end{figure}
+
+\begin{center}
+    \captionof{table}{Amplitudes and modulation index for amplitude modulated signal}
+    \begin{tabular}{|c|c|c|c|c|}
+    \hline
+    $V_{e,max}$ & $V_{e,min}$ & $\frac{1+m}{1-m}$ & $m$ \\
+    mV & mV & - & - \\
+    \hline 
+    $2.611$& $423.5$ & $6.165$ & $0.7212$ \\
+    \hline
+    \end{tabular}
+    \label{tab:3}
+\end{center}
+
+The modulation index was also calculated using adjacent frequency components of the spectrum.
+By this method the modulation index was found to be $m=0.658$.
+
 \begin{figure}[h]
     \centering
-    \includegraphics[width=0.8\textwidth]{AmpMod_f.jpg}
-    \caption{Graph showing spectrum of amplitude modulated signal}
+    \includegraphics[width=0.8\textwidth]{ampMod_carriermin_f.jpg}
+    \caption{Graph showing modulated signal with carrier frequency at minimum}
     \label{fig:freq_responses}
 \end{figure}
 
-For the modulated signal, the carrier frequency was set to $7969$ Hz (8KHz) 
+\begin{figure}[H]
+    \makebox[\linewidth][c]{%
+    \begin{subfigure}[b]{.6\textwidth}
+    \centering
+    \includegraphics[width=.95\textwidth]{demod_t_TP1.jpg}
+    \caption{Time domain}
+    \end{subfigure}%
+    \begin{subfigure}[b]{.6\textwidth}
+    \centering
+    \includegraphics[width=.95\textwidth]{demod_f_TP1.jpg}
+    \caption{Frequency Spectrum}
+    \end{subfigure}
+    }\\
+    \vspace{-14pt}
+    \caption{Amplitude demodulated signal and Test Point 1 (TP1)}
+    \label{fig:Amplitude_Demodulated_Signal_TP1}
+\end{figure}
 
+\begin{figure}[H]
+    \makebox[\linewidth][c]{%
+    \begin{subfigure}[b]{.6\textwidth}
+    \centering
+    \includegraphics[width=.95\textwidth]{demod_t_TP2.jpg}
+    \caption{Time domain}
+    \end{subfigure}%
+    \begin{subfigure}[b]{.6\textwidth}
+    \centering
+    \includegraphics[width=.95\textwidth]{demod_f_TP2.jpg}
+    \caption{Frequency Spectrum}
+    \end{subfigure}
+    }\\
+    \vspace{-14pt}
+    \caption{Amplitude demodulated signal and Test Point 2 (TP2)}
+    \label{fig:Amplitude_Demodulated_Signal_TP2}
+\end{figure}
 
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{LTSpice_circuit/demod_sim.jpg}
+    \caption{Demodulator Circuit and Test Points}
+    \label{fig:demod_sim}
+\end{figure}
 
 \section{Analysis of results}
 
+Square and triangle waveforms
+Do your measurements
+agree with the theory? If you repeat this exercise without the low-pass/anti-aliasing filter in
+the circuit, do you see any differences in the spectrum?
 
+The measurements of fourier coefficients for square and triangle waves agree with the theory.
+This is shown by the respective curves fit in Figure \ref{fig:square_triangle} with very tiny adjustments likely due to measurement uncertainty and noise.
+The spectrum of the square wave without the anti aliasing filter is shown in Figure \ref{fig:square_1khz_unfiltered}.
+On close inspection it can be seen that the spectrum is not as smooth as the spectrum of the square wave with the anti aliasing filter.
 
+The sine wave modulated with a 8kHz carrier seen in Figure \ref{fig:Amplitude_Modulated_Signal} agrees with the theory of shifted frequency components either side of the carrier frequency.
+Multiple methods were used to calculate the modulation index of the signal with a difference of 10\% between the two methods.
+This difference is significant but likely comes down to the difficulty of measuring the upper and lower envelope amplitudes.
+The value is in a valid range $m < 1$ such that $\text{min}_t\{E_c(1+m cos(\omega t))\} > 0$ as when $m=1$ the envelope is no longer bounded.
+It can be seen in the envelope of the signal in Figure \ref{fig:Amplitude_Modulated_Signal_M_1} that some of the information signal is cut off and so is lost as expected.
+
+From experimental data circuit parameters can be calculated for the circuit shown in \ref{fig:demod_circuit}.
+For the demodulator circuit to work the time constant $RC$ must obey the condition $1/f_c < RC < 1/f_s$ where $f_c$ is the carrier frequency and $f_s$ is the largest fundamental information signal frequency.
+The frequency cut off of the low pass filter is the largest fundamental information signal frequency and so the time constant of the low pass can be found by $f_s = \frac{1}{2\pi RC}$.
+Using a resistance of $100k\Omega$ for the modulator circuit and $100$ for the demodulator circuit the capacitance of the low pass filter is found to be $C_f=1.06nF$.
+The time constant of the demodulator is chosen to be $4/f_c$ which gives a capacitance of $C_m=5nF$.
+Test point 1 (TP1) is after the rectifier but before the envelope detection, and TP2 is after the envelope detection.
+These can be seen in Figure \ref{fig:Amplitude_Demodulated_Signal_TP1} and \ref{fig:Amplitude_Demodulated_Signal_TP2} respectively.
+The simulation agrees with the theoretical predictions, however the experimental results appear to be far smoother.
+This is likely due to the demodulator used having a full bridge rectifier and a more sensible choice of time constants for the component values.
 
 \section{Conclusion}
-
+In conclusion, the measurements of Fourier coefficients for square and triangle waveforms agreed with the theory, with only minor adjustments likely due to measurement uncertainty and noise.
+The spectrum of the square wave without the anti-aliasing filter showed a less smooth spectrum compared to the square wave with the anti-aliasing filter.
+The sine wave modulated with an 8kHz carrier frequency agreed with the theory of shifted frequency components on either side of the carrier frequency, with a modulation index in a valid range.
+The demodulator circuit parameters were also calculated, with the time constant of the low pass filter and demodulator chosen to satisfy the condition for the circuit to work.
+Overall, the experimental results confirmed the theoretical predictions and demonstrated the functionality of the demodulator circuit.
 
 \end{document}

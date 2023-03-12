@@ -1,0 +1,14 @@
+* C:\Git\MEng-CW\IB\labs\spectrum_analysis\LTSpice_circuit\demodulator.asc
+V1 N003 0 SINE(0 0.32 9000)
+V2 N002 N003 SINE(0 1 8000)
+V3 N001 N002 SINE(0 0.32 7000)
+C1 TP1 0 5n
+R1 TP1 0 100k
+D1 N001 TP1 D
+R2 out TP1 150k
+C2 out 0 1n
+.model D D
+.lib C:\Users\louis\Documents\LTspiceXVII\lib\cmp\standard.dio
+.tran 0.003
+.backanno
+.end
