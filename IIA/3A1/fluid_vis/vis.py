@@ -95,11 +95,12 @@ class stream_function_visualiser_2D():
 
 Vis = stream_function_visualiser_2D([5, 0])
 
-Vis.add_source(-0.2, 0, 5)
+#Vis.add_source(-0.2, 0, 5)
 
 #Vis.plot()
 #Vis.fill_stagnant_boundary()
+Vis.add_doublet(0.5, 0, 10)
 Vis.plot()
-Vis.solve_stagnant_boundary()
 
+plt.savefig('doublet.png')
 plt.show()
