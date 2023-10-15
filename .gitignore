@@ -10,6 +10,9 @@ __pycache__/
 
 # C extensions
 *.so
+*.hex
+*.cod
+*.lst
 
 # Distribution / packaging
 .Python
@@ -127,3 +130,4 @@ report.out
 *.synctex.gz
 *.pdf
 *.dvi
+*.docx
