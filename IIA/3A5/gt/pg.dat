@@ -1,0 +1,18 @@
+Basic GT circuit with perfect gas EOS                                           
+Intercooler                                           =               n
+Reheater                                              =               n
+Exhaust gas heat exchanger                            =               n
+Real gas properties                                   =               n
+Cp for compressor calcs. (J/kgK)                      =          1005.0
+Gamma for compressor calcs.                           =           1.400
+Cp for combustion products (J/kgK)                    =          1005.0
+Gamma for combustion products.                        =           1.400
+Atmospheric pressure (bar)                            =           1.013
+Atmospheric temperature (Celsius)                     =          15.000
+Compressor pressure ratio (Pout/Pin)                  =          16.000
+Compressor polytropic efficiency (0 - 1)              =           0.900
+Fractional pressure loss in combustion chamber        =           0.050
+Combustion chamber exit temperature (Celsius)         =        1150.000
+Turbine polytropic efficiency (0 - 1)                 =           0.920
+Turbine cooling flowrate                              =           0.000
+Mixing pressure ratio (Pin/Pmix)                      =           1.000
