@@ -27,6 +27,7 @@ class stream_function_visualiser_2D():
         self.psi = u0[0] * Y - u0[1] * X + psi0
 
         self.fig, self.ax = plt.subplots()
+        self.ax.set_aspect('equal')
 
         self.sources = []
         self.vortices = []
@@ -83,7 +84,7 @@ class stream_function_visualiser_2D():
         U,V = psi_grad[0], - psi_grad[1]
 
         C = U**2 + V**2
-        self.ax.streamplot(self.X, self.Y, U, V, color = C, density = 1, broken_streamlines=False)
+        self.ax.streamplot(self.X, self.Y, U, V, color = C, density = 1)
 
 
     def plot_pressure_contours(self):
@@ -93,14 +94,15 @@ class stream_function_visualiser_2D():
         C = np.exp( U**2 + V**2 ) 
         self.ax.contour(self.X, self.Y, C, 5, cmap = 'autumn')
 
-Vis = stream_function_visualiser_2D([5, 0])
+Vis = stream_function_visualiser_2D([0, -10])
 
 #Vis.add_source(-0.2, 0, 5)
 
 #Vis.plot()
 #Vis.fill_stagnant_boundary()
-Vis.add_doublet(0.5, 0, 10)
+Vis.add_vortex(-0.2, 0, 5)
+Vis.add_vortex(0.2, 0, -5)
 Vis.plot()
 
-plt.savefig('doublet.png')
+#plt.savefig('doublet.png')
 plt.show()
