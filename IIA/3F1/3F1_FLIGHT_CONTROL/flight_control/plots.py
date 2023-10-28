@@ -98,3 +98,45 @@ def annotate_point(ax, x, y, color='red'):
     else:
         text_y - y
     ax.text(x, text_y, f"({x},{y})", color=color, horizontalalignment='left', verticalalignment='bottom')
+
+def plot_nyquist_diagram(plant, gain, delay):
+
+    W = np.logspace(-5, 5, num=500)
+    W, magnitude, phase = bode(plant, W)
+
+    # gain is a constant vertical translation
+    gain_in_dbs = 20 * np.log10(gain)
+    magnitude_with_gain = magnitude + gain_in_dbs
+
+    # phase is a translation vetically as a function of frequency
+    phase_from_delays = np.array(
+        [np.angle(np.exp(-1.0j*w*delay), deg=True) for w in W])
+
+    # make phase continuous:
+    # i.e. if the phase jumps from -175 to +175, the phase
+    # should actually be -185
+    last_p = 0
+    offsets = np.zeros_like(phase_from_delays)
+    for i, p in enumerate(phase_from_delays):
+        difference = p - last_p
+        if difference > 180:
+            offsets[i:] += 1
+        last_p = p
+    phase_from_delays = phase_from_delays - 360 * offsets
+    phase_with_delays = phase + phase_from_delays
+
+    # Render the plot
+    # create polar plot
+    fig, ax = plt.subplots(subplot_kw={'projection': 'polar'})
+
+    Z = magnitude_with_gain * np.exp(1.0j * phase_with_delays * np.pi / 180)
+    ax.plot(Z.real, Z.imag, color='black')
+    
+    ax.grid(which='both')
+    ax.set_xlim(np.min(W), np.max(W))
+
+    
+    # Make phase ticks come in increments of a multiple of 90
+    fig.suptitle(f"Plant in series with gain {gain} and delay {delay}")
+
+    return plt, ax
