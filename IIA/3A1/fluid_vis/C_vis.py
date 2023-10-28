@@ -52,17 +52,17 @@ class stream_function_visualiser_2D():
         V = psi_grad[0].real
 
         C = U**2 + V**2
-        self.ax.streamplot(self.X, self.Y, U, V, color = C, density = 1, broken_streamlines=False)
+        self.ax.streamplot(self.X, self.Y, U, V, color = C, density = 1.5, cmap = 'autumn')
         #self.ax.contour(self.X, self.Y, np.imag(self.F), 50)
         self.ax.set_aspect('equal')
         
-r = 0.5
-a0 = np.pi/12
+r = 0.3
+a0 = np.pi/12 * 0
 c = np.exp(-1j * a0)
 map = lambda z: (c*z) + r**2 / (c*z)
 
-Vis = stream_function_visualiser_2D([5, 0], map)
-Vis.add_source(0, 0, 2)
+Vis = stream_function_visualiser_2D([10, 0], map)
+Vis.add_source(0, 0, 5)
 Vis.add_vortex(0, 0, 5)
 
 Vis.plot()
