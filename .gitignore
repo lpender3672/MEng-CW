@@ -2,7 +2,6 @@
 
 boundary_layers.zip
 
-
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -131,3 +130,6 @@ report.out
 *.pdf
 *.dvi
 *.docx
+
+# Require coversheets
+!coversheet.pdf
