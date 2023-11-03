@@ -1,0 +1,86 @@
+ **************************************************************************************************************
+
+ Basic GT circuit with perfect gas EOS                                           
+
+ General layout of gas turbine circuit :
+
+          Compressor
+          Combustion chamber
+          Turbine
+
+ **************************************************************************************************************
+
+ MAIN OVERALL RESULTS :
+
+ Net efficiency of plant (LHV)         =     44.00 %
+ Net work output from plant            =    322.10 kJ per kg of exhaust gas.
+
+ Compressor inlet pressure             =      1.01 bar
+ Compressor inlet temperature          =      15.0 Celsius
+
+ Turbine inlet pressure                =     15.40 bar
+ Turbine inlet temperature             =    1150.0 Celsius
+
+ Turbine exit temperature              =     422.8 Celsius
+
+ **************************************************************************************************************
+
+ PERFECT GAS PROPERTIES :
+
+ Cp for compressor calculations        =    1005.0 J/kgK
+ Gamma for compressor calculations     =     1.400
+
+ Cp for combustion products            =    1005.0 J/kgK
+ Gamma for combustion products         =     1.400
+
+ **************************************************************************************************************
+
+ ENERGY ANALYSIS (per kg of exhaust gas) :
+
+                                           -------------           --------
+ Heat input Combustion chamber         =    731.96 kJ/kg     =     100.00 %
+                                           -------------           --------
+
+ Work output from Compressor           =   -408.71 kJ/kg     =     -55.84 %
+ Work output from Turbine              =    730.81 kJ/kg     =      99.84 %
+ Enthalpy (below 25 C) of Inlet air    =     10.05 kJ/kg     =       1.37 %
+ Enthalpy (above 25 C) of Exhaust gas  =    399.82 kJ/kg     =      54.62 %
+                                           -------------           --------
+ Total energy output                   =    731.96 kJ/kg     =     100.00 %
+                                           -------------           --------
+
+ **************************************************************************************************************
+
+ DETAILED ANALYSIS OF GAS TURBINE CIRCUIT :
+
+ N.B. - "Flow" is the flowrate entering or leaving the device per unit mass flow of exhaust gas.
+
+
+ COMPRESSOR :
+
+ Polytropic efficiency                 =     0.900
+
+              P(bar)   T(Deg.C)   RO(kg/m3)   H(kJ/kg)   S(kJ/kgK)   R(J/kgK)   Cp(J/kgK)    Gamma     Flow
+ Inlet        1.013      15.00       1.224     -10.05      6.8501      287.1      1005.0     1.400   1.0000
+ Outlet      16.208     421.68       8.124     398.66      6.9386      287.1      1005.0     1.400   1.0000
+
+
+ COMBUSTION CHAMBER :
+
+ Pressure loss                         =     0.810 bar
+
+              P(bar)   T(Deg.C)   RO(kg/m3)   H(kJ/kg)   S(kJ/kgK)   R(J/kgK)   Cp(J/kgK)    Gamma     Flow
+ Inlet       16.208     421.68       8.124     398.66      6.9386      287.1      1005.0     1.400   1.0000
+ Outlet      15.398    1150.00       3.768    1130.63      7.6739      287.1      1005.0     1.400   1.0000
+
+
+ TURBINE :
+
+ Polytropic efficiency                 =     0.920
+
+              P(bar)   T(Deg.C)   RO(kg/m3)   H(kJ/kg)   S(kJ/kgK)   R(J/kgK)   Cp(J/kgK)    Gamma     Flow
+ Inlet       15.398    1150.00       3.768    1130.63      7.6739      287.1      1005.0     1.400   1.0000
+ Outlet       1.013     422.83       0.507     399.82      7.7364      287.1      1005.0     1.400   1.0000
+
+
+ **************************************************************************************************************

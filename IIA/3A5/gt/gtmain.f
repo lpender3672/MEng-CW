@@ -98,14 +98,14 @@ C     Read input data for gas turbine circuit.
 C     SPECIFY NO. OF PLOTS PER GRAPH AND NO. OF CYCLE CALCS PER PLOT :
 C     ==============================================================
  
-      nplot = 1
-      ncalc = 1
+CC      nplot = 1
+CC      ncalc = 1
  
 C     NOTE (1): Uncomment the following two lines to loop 
 C     over design parameters (which are set further below).
 
-cc      nplot = 8
-cc      ncalc = 25
+      nplot = 8
+      ncalc = 25
 
       DO iplot = 1, nplot
 
@@ -117,7 +117,7 @@ C       =====================================
 C     NOTE (2): Uncomment the following line to reset 
 C     the combustor temperature at each value of iplot.
 
-cc         TCOMB = 900.0 + (iplot-1)*100.0
+         TCOMB = 900.0 + (iplot-1)*100.0
 
          DO icalc = 1, ncalc
  
@@ -127,7 +127,7 @@ C         ==================================================
 C     NOTE (3): Uncomment the following line to reset 
 C     the compressor pressure ratio at each value of icalc.
  
-cc          CMPRAT(1) = 5.0 + (icalc-1)*2.5 
+          CMPRAT(1) = 5.0 + (icalc-1)*2.5 
  
 C         Calculate gas turbine circuit.
  
@@ -147,7 +147,7 @@ C     NOTE (4): ONLY Uncomment the following line when you want to
 C     plot the specific work on the Y-axis. Make sure you also change 
 C     the variable YLABL which is set a few lines below.    
 
-C          Y(iplot,icalc) = WGTNET / 1000.
+          Y(iplot,icalc) = WGTNET / 1000.
  
 C     If an error occurs (e.g., an exhaust gas HX cannot be fitted)
 C     then fill in the rest of the arrays X() & Y() and exit the loop
@@ -203,7 +203,8 @@ C       POINTS = 'Y' - points and line plotted.
 C              = 'N' - just a line plotted.
  
         XLABL  = '            Compressor Pressure Ratio             '
-        YLABL  = '             Overall Efficiency (%)               '
+C       YLABL  = '             Overall Efficiency (%)               '
+        YLABL =  '		Specific Work kW/kg                 '
         LABL1  = 'Curves of constant Turbine Inlet Temperature      '
         LABL2  = '900 - 1600 Celsius.                               '
         LABL3  = '                                                  '

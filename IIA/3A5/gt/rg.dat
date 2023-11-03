@@ -1,0 +1,20 @@
+Basic GT circuit with real gas Methane                                          
+Intercooler                                           =               n
+Reheater                                              =               n
+Exhaust gas heat exchanger                            =               n
+Real gas properties                                   =               y
+MFUEL(4) - C                                          =         0.75000
+MFUEL(3) - H                                          =         0.25000
+MFUEL(2) - O                                          =         0.00000
+MFUEL(1) - N                                          =         0.00000
+MFUEL(5) - N/C                                        =         0.00000
+LCV (MJ/kg)                                           =           48.00
+Atmospheric pressure (bar)                            =           1.013
+Atmospheric temperature (Celsius)                     =          15.000
+Compressor pressure ratio (Pout/Pin)                  =          16.000
+Compressor polytropic efficiency (0 - 1)              =           0.900
+Fractional pressure loss in combustion chamber        =           0.050
+Combustion chamber exit temperature (Celsius)         =        1150.000
+Turbine polytropic efficiency (0 - 1)                 =           0.920
+Turbine cooling flowrate                              =           0.000
+Mixing pressure ratio (Pin/Pmix)                      =           1.000

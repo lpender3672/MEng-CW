@@ -1,0 +1,168 @@
+ **************************************************************************************************************
+
+ Real Gas Combined                                                               
+
+ General layout of gas turbine circuit :
+
+          LP Compressor
+          Intercooler
+          HP Compressor
+          Heat Exchanger (cold side)
+          Combustion chamber
+          Turbine
+          Heat Exchanger (hot side)
+
+ **************************************************************************************************************
+
+ MAIN OVERALL RESULTS :
+
+ Net efficiency of plant (LHV)         =     52.80 %
+ Net work output from plant            =    404.76 kJ per kg of exhaust gas.
+ Specific fuel consumption             =     0.142 kg per kWh of plant output.
+
+ Compressor inlet pressure             =      1.01 bar
+ Compressor inlet temperature          =      15.0 Celsius
+
+ Turbine inlet pressure                =     13.16 bar
+ Turbine inlet temperature             =    1150.0 Celsius
+
+ Turbine exit temperature              =     540.4 Celsius
+ Heat exchanger exhaust temperature    =     240.6 Celsius
+
+ Carbon dioxide emission               =     0.390 kg per kWh of plant output.
+ Exhaust gas volumetric comp. (%)      =     76.77 (N2),  14.74 (O2),   5.64 (H2O),   2.84 (CO2).
+
+ **************************************************************************************************************
+
+ FUEL DETAILS :
+
+ Gravimetric composition (%)           =     75.00 (C),  25.00 (H),   0.00 (O),   0.00 (N),   0.00 (Ash).
+ Lower Calorific Value                 =     48.00 MJ/kg
+
+ **************************************************************************************************************
+
+ ENERGY ANALYSIS (per kg of exhaust gas) :
+
+                                           -------------           --------
+ [Mfuel*LCV] Combustion chamber        =    766.64 kJ/kg     =     100.00 %
+                                           -------------           --------
+
+ Work output from LP Compressor        =   -157.67 kJ/kg     =     -20.57 %
+ Work output from HP Compressor        =   -176.59 kJ/kg     =     -23.03 %
+ Heat output from Intercooler          =    122.65 kJ/kg     =      16.00 %
+ Work output from Turbine              =    739.02 kJ/kg     =      96.40 %
+ Enthalpy (below 25 C) of Inlet air    =      9.99 kJ/kg     =       1.30 %
+ Enthalpy (above 25 C) of Exhaust gas  =    229.25 kJ/kg     =      29.90 %
+                                           -------------           --------
+ Total energy output                   =    766.65 kJ/kg     =     100.00 %
+                                           -------------           --------
+
+ **************************************************************************************************************
+
+ EXERGY ANALYSIS (per kg of exhaust gas) :
+
+                                           -------------           --------
+ [-Mfuel*DG(0)] Combustion chamber     =    766.64 kJ/kg     =     100.00 %
+                                           -------------           --------
+
+ Net work output                       =    404.76 kJ/kg     =      52.80 %
+ Lost work, LP Compressor              =     13.02 kJ/kg     =       1.70 %
+ Lost work, HP Compressor              =     13.02 kJ/kg     =       1.70 %
+ Lost work, Intercooler                =     35.51 kJ/kg     =       4.63 %
+ Lost work, Heat exchanger             =     11.13 kJ/kg     =       1.45 %
+ Lost work, Combustion chamber         =    214.81 kJ/kg     =      28.02 %
+ Lost work, Turbine                    =     17.49 kJ/kg     =       2.28 %
+ Lost work, Exhaust gas                =     58.15 kJ/kg     =       7.58 %
+ Lost work, Inlet air                  =     -1.26 kJ/kg     =      -0.16 %
+                                           -------------           --------
+ Net work output + Total lost work     =    766.65 kJ/kg     =     100.00 %
+                                           -------------           --------
+
+ **************************************************************************************************************
+
+ DETAILED ANALYSIS OF GAS TURBINE CIRCUIT :
+
+ N.B. - "Flow" is the flowrate entering or leaving the device per unit mass flow of exhaust gas.
+
+
+ INLET STANDARD STATE :
+
+              P(bar)   T(Deg.C)   RO(kg/m3)   H(kJ/kg)   S(kJ/kgK)   R(J/kgK)   Cp(J/kgK)    Gamma
+ Inlet        1.000      25.00       1.164       0.00      6.8881      288.2      1015.9     1.396
+
+
+ LP COMPRESSOR :
+
+ Polytropic efficiency                 =     0.900
+ Volumetric composition of gas (%)     =     79.00 (N2),  21.00 (O2),   0.00 (H2O)   0.00 (CO2).
+
+              P(bar)   T(Deg.C)   RO(kg/m3)   H(kJ/kg)   S(kJ/kgK)   R(J/kgK)   Cp(J/kgK)    Gamma     Flow
+ Inlet        1.013      15.00       1.220     -10.15      6.8498      288.2      1014.6     1.397   0.9840
+ Outlet       4.052     171.27       3.164     150.08      6.8942      288.2      1037.0     1.385   0.9840
+
+
+ HP COMPRESSOR :
+
+ Intercooler pressure loss             =     0.405 bar
+ Polytropic efficiency                 =     0.900
+ Volumetric composition of gas (%)     =     79.00 (N2),  21.00 (O2),   0.00 (H2O)   0.00 (CO2).
+
+              P(bar)   T(Deg.C)   RO(kg/m3)   H(kJ/kg)   S(kJ/kgK)   R(J/kgK)   Cp(J/kgK)    Gamma     Flow
+ Inlet        3.647      50.00       3.916      25.44      6.5972      288.2      1019.1     1.394   0.9840
+ Outlet      14.587     223.92      10.183     204.89      6.6416      288.2      1045.7     1.380   0.9840
+
+
+ EXHAUST GAS HEAT EXCHANGER (Cold side) :
+
+ Effectiveness                         =     1.000
+ Pressure loss                         =     0.729 bar
+ Heat transfer                         =    334.66 kJ per kg exhaust.
+ Volumetric composition of gas (%)     =     79.00 (N2),  21.00 (O2),   0.00 (H2O)   0.00 (CO2).
+
+              P(bar)   T(Deg.C)   RO(kg/m3)   H(kJ/kg)   S(kJ/kgK)   R(J/kgK)   Cp(J/kgK)    Gamma     Flow
+ Inlet       14.587     223.92      10.183     204.89      6.6416      288.2      1045.7     1.380   0.9840
+ Outlet      13.858     540.41       5.910     544.98      7.1846      288.2      1104.7     1.353   0.9840
+
+
+ COMBUSTION CHAMBER :
+
+ Pressure loss                         =     0.693 bar
+ Air-Fuel Ratio by mass                =    61.611
+ Actual/Stoichiometric oxygen          =     3.604
+ Volumetric composition at inlet  (%)  =     79.00 (N2),  21.00 (O2),   0.00 (H2O)   0.00 (CO2).
+ Volumetric composition at outlet (%)  =     76.77 (N2),  14.74 (O2),   5.64 (H2O)   2.84 (CO2).
+
+              P(bar)   T(Deg.C)   RO(kg/m3)   H(kJ/kg)   S(kJ/kgK)   R(J/kgK)   Cp(J/kgK)    Gamma     Flow
+ Inlet       13.858     540.41       5.910     544.98      7.1846      288.2      1104.7     1.353   0.9840
+ Outlet      13.165    1150.00       3.170     431.46      8.0425      291.8      1269.0     1.299   1.0000
+
+
+ TURBINE :
+
+ Polytropic efficiency                 =     0.920
+ Volumetric composition of gas (%)     =     76.77 (N2),  14.74 (O2),   5.64 (H2O)   2.84 (CO2).
+
+              P(bar)   T(Deg.C)   RO(kg/m3)   H(kJ/kg)   S(kJ/kgK)   R(J/kgK)   Cp(J/kgK)    Gamma     Flow
+ Inlet       13.165    1150.00       3.170     431.46      8.0425      291.8      1269.0     1.299   1.0000
+ Outlet       1.066     540.41       0.449    -307.56      8.1012      291.8      1148.9     1.340   1.0000
+
+
+ EXHAUST GAS HEAT EXCHANGER (Hot side) :
+
+ Effectiveness                         =     1.000
+ Pressure loss                         =     0.053 bar
+ Heat transfer                         =    334.66 kJ per kg exhaust.
+ Volumetric composition of gas (%)     =     76.77 (N2),  14.74 (O2),   5.64 (H2O)   2.84 (CO2).
+
+              P(bar)   T(Deg.C)   RO(kg/m3)   H(kJ/kg)   S(kJ/kgK)   R(J/kgK)   Cp(J/kgK)    Gamma     Flow
+ Inlet        1.066     540.41       0.449    -307.56      8.1012      291.8      1148.9     1.340   1.0000
+ Outlet       1.013     240.56       0.676    -642.21      7.6042      291.8      1084.1     1.368   1.0000
+
+
+ EXHAUST GAS STANDARD STATE :
+
+              P(bar)   T(Deg.C)   RO(kg/m3)   H(kJ/kg)   S(kJ/kgK)   R(J/kgK)   Cp(J/kgK)    Gamma
+ Outlet       1.000      25.00       1.149    -871.46      7.0303      291.8      1044.5     1.388
+
+
+ **************************************************************************************************************

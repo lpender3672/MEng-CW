@@ -1,0 +1,123 @@
+ **************************************************************************************************************
+
+ Basic GT circuit with real gas Methane                                          
+
+ General layout of gas turbine circuit :
+
+          Compressor
+          Combustion chamber
+          Turbine
+
+ **************************************************************************************************************
+
+ MAIN OVERALL RESULTS :
+
+ Net efficiency of plant (LHV)         =     42.01 %
+ Net work output from plant            =    388.75 kJ per kg of exhaust gas.
+ Specific fuel consumption             =     0.179 kg per kWh of plant output.
+
+ Compressor inlet pressure             =      1.01 bar
+ Compressor inlet temperature          =      15.0 Celsius
+
+ Turbine inlet pressure                =     15.40 bar
+ Turbine inlet temperature             =    1150.0 Celsius
+
+ Turbine exit temperature              =     504.7 Celsius
+
+ Carbon dioxide emission               =     0.491 kg per kWh of plant output.
+ Exhaust gas volumetric comp. (%)      =     76.32 (N2),  13.47 (O2),   6.79 (H2O),   3.42 (CO2).
+
+ **************************************************************************************************************
+
+ FUEL DETAILS :
+
+ Gravimetric composition (%)           =     75.00 (C),  25.00 (H),   0.00 (O),   0.00 (N),   0.00 (Ash).
+ Lower Calorific Value                 =     48.00 MJ/kg
+
+ **************************************************************************************************************
+
+ ENERGY ANALYSIS (per kg of exhaust gas) :
+
+                                           -------------           --------
+ [Mfuel*LCV] Combustion chamber        =    925.28 kJ/kg     =     100.00 %
+                                           -------------           --------
+
+ Work output from Compressor           =   -397.99 kJ/kg     =     -43.01 %
+ Work output from Turbine              =    786.75 kJ/kg     =      85.03 %
+ Enthalpy (below 25 C) of Inlet air    =      9.96 kJ/kg     =       1.08 %
+ Enthalpy (above 25 C) of Exhaust gas  =    526.57 kJ/kg     =      56.91 %
+                                           -------------           --------
+ Total energy output                   =    925.28 kJ/kg     =     100.00 %
+                                           -------------           --------
+
+ **************************************************************************************************************
+
+ EXERGY ANALYSIS (per kg of exhaust gas) :
+
+                                           -------------           --------
+ [-Mfuel*DG(0)] Combustion chamber     =    925.28 kJ/kg     =     100.00 %
+                                           -------------           --------
+
+ Net work output                       =    388.75 kJ/kg     =      42.01 %
+ Lost work, Compressor                 =     25.96 kJ/kg     =       2.81 %
+ Lost work, Combustion chamber         =    276.74 kJ/kg     =      29.91 %
+ Lost work, Turbine                    =     18.99 kJ/kg     =       2.05 %
+ Lost work, Exhaust gas                =    216.09 kJ/kg     =      23.35 %
+ Lost work, Inlet air                  =     -1.26 kJ/kg     =      -0.14 %
+                                           -------------           --------
+ Net work output + Total lost work     =    925.28 kJ/kg     =     100.00 %
+                                           -------------           --------
+
+ **************************************************************************************************************
+
+ DETAILED ANALYSIS OF GAS TURBINE CIRCUIT :
+
+ N.B. - "Flow" is the flowrate entering or leaving the device per unit mass flow of exhaust gas.
+
+
+ INLET STANDARD STATE :
+
+              P(bar)   T(Deg.C)   RO(kg/m3)   H(kJ/kg)   S(kJ/kgK)   R(J/kgK)   Cp(J/kgK)    Gamma
+ Inlet        1.000      25.00       1.164       0.00      6.8881      288.2      1015.9     1.396
+
+
+ COMPRESSOR :
+
+ Polytropic efficiency                 =     0.900
+ Volumetric composition of gas (%)     =     79.00 (N2),  21.00 (O2),   0.00 (H2O)   0.00 (CO2).
+
+              P(bar)   T(Deg.C)   RO(kg/m3)   H(kJ/kg)   S(kJ/kgK)   R(J/kgK)   Cp(J/kgK)    Gamma     Flow
+ Inlet        1.013      15.00       1.220     -10.15      6.8498      288.2      1014.6     1.397   0.9807
+ Outlet      16.208     403.61       8.310     395.66      6.9386      288.2      1078.3     1.365   0.9807
+
+
+ COMBUSTION CHAMBER :
+
+ Pressure loss                         =     0.810 bar
+ Air-Fuel Ratio by mass                =    50.876
+ Actual/Stoichiometric oxygen          =     2.976
+ Volumetric composition at inlet  (%)  =     79.00 (N2),  21.00 (O2),   0.00 (H2O)   0.00 (CO2).
+ Volumetric composition at outlet (%)  =     76.32 (N2),  13.47 (O2),   6.79 (H2O)   3.42 (CO2).
+
+              P(bar)   T(Deg.C)   RO(kg/m3)   H(kJ/kg)   S(kJ/kgK)   R(J/kgK)   Cp(J/kgK)    Gamma     Flow
+ Inlet       16.208     403.61       8.310     395.66      6.9386      288.2      1078.3     1.365   0.9807
+ Outlet      15.398    1150.00       3.698     261.53      8.0310      292.6      1281.0     1.296   1.0000
+
+
+ TURBINE :
+
+ Polytropic efficiency                 =     0.920
+ Volumetric composition of gas (%)     =     76.32 (N2),  13.47 (O2),   6.79 (H2O)   3.42 (CO2).
+
+              P(bar)   T(Deg.C)   RO(kg/m3)   H(kJ/kg)   S(kJ/kgK)   R(J/kgK)   Cp(J/kgK)    Gamma     Flow
+ Inlet       15.398    1150.00       3.698     261.53      8.0310      292.6      1281.0     1.296   1.0000
+ Outlet       1.013     504.67       0.445    -525.22      8.0947      292.6      1149.9     1.341   1.0000
+
+
+ EXHAUST GAS STANDARD STATE :
+
+              P(bar)   T(Deg.C)   RO(kg/m3)   H(kJ/kg)   S(kJ/kgK)   R(J/kgK)   Cp(J/kgK)    Gamma
+ Outlet       1.000      25.00       1.146   -1051.78      7.0533      292.6      1050.4     1.386
+
+
+ **************************************************************************************************************
