@@ -8,8 +8,8 @@ import matplotlib.pyplot as plt
 
 W = np.logspace(-10,10, 10000)
 
-k = 0.989
-D = 0.317
+k = 1.238
+D = 0.250
 
 M = 10
 N = 10
@@ -27,7 +27,8 @@ ax.plot(np.real(G), np.imag(G), color='blue', linewidth=1.0, label='G(s)')
 G = Gjw(-W)
 ax.plot(np.real(G), np.imag(G), color='blue', linewidth=1.0, label='G(s)', linestyle='dashed')
 
-asymtope_line = np.linspace(-1, 1, 100) * 1j - k * N * (D + 1/M) / M
+asymtope_value = - k * N * (D + 1/M) / M
+asymtope_line = np.linspace(-1, 1, 100) * 1j + asymtope_value
 ax.plot(np.real(asymtope_line), np.imag(asymtope_line), color='red', linewidth=1.0, label='Asymptote', linestyle='dashdot')
 
 ax.set_xlim(-0.7, 0.2)
@@ -35,9 +36,18 @@ ax.set_ylim(-0.5, 0.5)
 ax.set_aspect('equal')
 ax.grid(which='both')
 
+ax.text(asymtope_value-0.08, 
+        ax.get_ylim()[1]-0.01, 
+        f" {asymtope_value:.3f}", 
+            horizontalalignment='center', 
+            verticalalignment='top', 
+            color='red')
+
 ax.set_xlabel('Real')
 ax.set_ylabel('Imaginary')
 ax.set_title(f'Nyquist plot of plant, $G_1(s)$ in series with gain {k} and delay {D}')
+
+plt.tight_layout()
 
 path = "IIA/3F1/3F1_FLIGHT_CONTROL"
 
