@@ -21,8 +21,8 @@ def plot_flight(results):
     ax.set_xlim(time[0], time[-1])
     return plt, ax
 
+def get_magnitude_and_phase(plant, gain, delay, f_min=0.1, f_max=10):
 
-def plot_bode_diagram(plant, gain, delay, f_min=0.1, f_max=10):
     W = np.logspace(np.log10(f_min), np.log10(f_max), num=500)
     W, magnitude, phase = bode(plant, W)
 
@@ -46,6 +46,12 @@ def plot_bode_diagram(plant, gain, delay, f_min=0.1, f_max=10):
         last_p = p
     phase_from_delays = phase_from_delays - 360 * offsets
     phase_with_delays = phase + phase_from_delays
+
+    return W, magnitude_with_gain, phase_with_delays
+
+def plot_bode_diagram(plant, gain, delay, f_min=0.1, f_max=10):
+
+    W, magnitude_with_gain, phase_with_delays = get_magnitude_and_phase(plant, gain, delay, f_min, f_max)
 
     # Render the plot
     fig, axs = plt.subplots(2, 1, sharex=True, sharey=False)
@@ -101,8 +107,7 @@ def annotate_point(ax, x, y, color='red'):
 
 def plot_nyquist_diagram(plant, gain, delay):
 
-    W = np.logspace(-5, 5, num=500)
-    W, magnitude, phase = bode(plant, W)
+    W, magnitude, phase = get_magnitude_and_phase(plant, gain, delay, f_min=1e-5, f_max=1e5)
 
     # gain is a constant vertical translation
     gain_in_dbs = 20 * np.log10(gain)
