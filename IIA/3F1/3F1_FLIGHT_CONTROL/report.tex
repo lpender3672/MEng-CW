@@ -14,11 +14,6 @@
 % set margin
 \usepackage[margin=0.5in]{geometry}
 
-\setlength{\parskip}{\baselineskip}%
-\setlength{\parindent}{0pt}%
-\setlength{\voffset}{-0.75in}
-\setlength{\headsep}{5pt}
-
 \begin{document}
 
 % insert pdf cover page here
@@ -35,9 +30,11 @@
 
 \newpage
 
-\section{Introduction}
+\section{Overview}
 
-Modern control systems
+
+
+Modern control systems..
 
 \section{Manual Aircraft Control}
 
@@ -64,8 +61,6 @@ The model for manual control by a pilot is taken as a pure time delay $D$ and a 
     K(s) = ke^{-sD}
 \end{equation}
 
-\newpage
-
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.6\textwidth]{figures/FIGURE_1.png}
@@ -73,7 +68,8 @@ The model for manual control by a pilot is taken as a pure time delay $D$ and a 
     \label{fig:figure1}
 \end{figure}
 
-From Figure \ref{fig:figure1}, the gain is determined by the ratio of peak output to peak input and the time delay is determined by the time difference between the peaks of the input and output.
+From Figure \ref{fig:figure1}, the gain is determined by the ratio of control siganl to error signal peaks input and the time delay is determined by the time difference between the rise of the input and output.
+These were found to be $1.238$ and $0.250$ s respectively.
 
 \begin{figure}[H]
     \centering
@@ -82,10 +78,10 @@ From Figure \ref{fig:figure1}, the gain is determined by the ratio of peak outpu
     \label{fig:figure2}
 \end{figure}
 
-From Figure \ref{fig:figure2}, the gain margin is found using the gain on at the blue line at at -180 degrees phase. This was found to be $4.10$.
-The phase margin is found using the phase difference with -180 on the red line where the gain is 0dB. This was found to be $66.6$ degrees. Both of these points correspond to where the nyquist plot encircles the $-1$ point.
+From Figure \ref{fig:figure2}, the gain margin is found using the gain on at the blue line at at -180 degrees phase. This was found to be $4.03$.
+The phase margin is found using the phase difference with -180 on the red line where the gain is 0dB. This was found to be $65.4$ degrees. Both of these points correspond to where the nyquist plot encircles the $-1$ point.
 
-If the gain of 0.989 were to remain unchanged, from the frequency of $\omega = 0.980$ rad/s at the phase margin of $66.6$ degrees, or $1.16$ rad, the additional time delay before unstability be found to be $1.19$ s.
+If the gain of $1.238$ were to remain unchanged, from the frequency of $\omega = 1.228$ rad/s at the phase margin of $65.4$ degrees the additional time delay before unstability be found to be $0.929$ s.
 
 \begin{figure}[H]
     \centering
@@ -95,12 +91,12 @@ If the gain of 0.989 were to remain unchanged, from the frequency of $\omega = 0
 \end{figure}
 % could do additional nyquist plots at cases of gain and phase margins.
 
-\subsection{Manual response to step input distrubance}
+\subsection{Manual response to step input disturbance}
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.8\textwidth]{figures/FIGURE_3.png}
-    \caption{}
+    \caption{Manual control response to step disturbance}
     \label{fig:figure3}
 \end{figure}
 
@@ -121,28 +117,27 @@ Considering an aircraft of poorly designed control system with the transfer func
     G_1(s) = \frac{c}{(Ts+1)^3}
 \end{equation}
 
-Where parameters are chosen as functions of pilot controller model: $T=4D/\pi$ and $c=\sqrt{8}/k$
+Where parameters are chosen as: $T=4D/\pi$ and $c=\sqrt{8}/k$
 An impulse response of $5kD$ is shown below in Figure \ref{fig:figure4}.
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.8\textwidth]{figures/FIGURE_4.png}
-    \caption{Manual control response to impulse of weight $5kD$}
+    \caption{Manual control response to impulse disturbance of weight $5kD$}
     \label{fig:figure4}
 \end{figure}
 
 3. Explain the oscillation of the feedback loop. How does your observed period of oscillation compare to the theoretical prediction of the feedback loop?
 
-This shows a highly oscillatory response triggered by an impulse disturbance.
-The average period of which is $1.672$ s, as calculated from where the error signal intersects the x axis shown by the red points.
-This gives an angular frequency of $3.758$ rad/s.
+This shows a highly oscillatory response triggered by the impulse disturbance.
+The average period of which is $1.654$ s, as calculated from where the error signal intersects the x axis shown by the red points.
 
 The response for the modelled pilot controller, with same gain and delay as before is shown below in Figure \ref{fig:figure5}.
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.8\textwidth]{figures/FIGURE_5.png}
-    \caption{No controller response to impulse of weight $5kD$ }
+    \caption{No controller response to impulse disturbance of weight $5kD$ }
     \label{fig:figure5}
 \end{figure}
 
@@ -155,9 +150,9 @@ In Figure \ref{fig:figure5} without a controller, shows no oscillatory response,
     \label{fig:figure6}
 \end{figure}
 
-Figure \ref{fig:figure6} shows the bode plot of the plant, $G_2(j\omega)$, with the model pilot controller.
-The gain and phase margins are found the same way as before and are found to be, 0.997 and 0.212 degrees respectively.
-This shows, as the gain margin is less than 1, that the system is unstable. However, as its very close to 1, it can be considered marginally stable.
+Figure \ref{fig:figure6} shows the bode plot of the plant, $G_2(j\omega)$ in series with the model pilot controller.
+The gain and phase margins are found the same way as \ref{fig:figure2} and are found to be, 0.997 and 0.212 degrees respectively.
+This is on the edge of stability, and so for a real pilot the system behaves as unstable, producing an occilatory response.
 
 At this point of unstability, the frequency is found to be $\omega = 2.473$ rad/s, which corresponds to a theortical period of $2.540$ s.
 This period of oscillation, is much larger than the period of oscillation of the real manual controller, which was $1.672$ s.
@@ -196,13 +191,13 @@ Only operating point 4 is analysed in this report.
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.8\textwidth]{figures/FIGURE_9.png}
-    \caption{Bode plot for F4E fighter jet with controller of gain $1.0$ and time delay $0.317$ s}
+    \caption{Bode plot for F4E fighter jet with controller of gain $1.0$ and time delay $0.250$ s}
     \label{fig:figure9}
 \end{figure}
 
 The bode plot shown in Figure \ref{fig:figure9} shows a point of resonance at $\omega = 4.147$ rad/s or $0.66$ Hz.
 
-The gain margin for this system is 0.3527, which is the maximum gain for which the system is stable.
+The gain margin for this system is 0.360, which is the maximum gain for which the system is stable.
 This shows that stability could be achieved at small ampltidues
 
 \newpage

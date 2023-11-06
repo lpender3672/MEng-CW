@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 
 W = np.logspace(-10,10, 10000)
 
-D = 0.317
+D = 0.250
 T = 0.5
 
 def Gjw(w):
