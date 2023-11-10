@@ -27,6 +27,7 @@ def Gjw(w):
 
 #polar plot
 G = Gjw(W)
+print(G[0])
 fig, ax = plt.subplots()
 ax.plot(np.real(G), np.imag(G), color='blue', linewidth=1.0, label='G(s)')
 
@@ -34,7 +35,7 @@ ax.plot(np.real(G), np.imag(G), color='blue', linewidth=1.0, label='G(s)')
 idx = np.where(np.isclose(G.imag, -0.2, atol=0.001))[0][0]
 x,y = G[idx].real, G[idx].imag
 dx,dy = x - G[idx+1].real, y - G[idx+1].imag
-ax.arrow(x, y, dx, dy, width=0.005, color = 'blue')
+ax.arrow(x, y, -dx, -dy, width=0.005, color = 'blue')
 
 G = Gjw(-W)
 ax.plot(np.real(G), np.imag(G), color='blue', linewidth=1.0, label='G(s)', linestyle='dashed')
@@ -43,7 +44,7 @@ ax.plot(np.real(G), np.imag(G), color='blue', linewidth=1.0, label='G(s)', lines
 idx = np.where(np.isclose(G.imag, 0.2, atol=0.001))[0][0]
 x,y = G[idx].real, G[idx].imag
 dx,dy = x - G[idx-1].real, y - G[idx-1].imag
-ax.arrow(x, y, dx, dy, width=0.005, color = 'blue')
+ax.arrow(x, y, -dx, -dy, width=0.005, color = 'blue')
 
 asymtope_value = - k * N * (D + 1/M) / M
 asymtope_line = np.linspace(-1, 1, 100) * 1j + asymtope_value
