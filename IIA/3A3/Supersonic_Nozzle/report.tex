@@ -14,10 +14,6 @@
 % set margin
 \usepackage[margin=0.5in]{geometry}
 
-\setlength{\parskip}{\baselineskip}%
-\setlength{\parindent}{0pt}%
-\setlength{\voffset}{-0.75in}
-\setlength{\headsep}{5pt}
 
 \begin{document}
 
@@ -42,6 +38,8 @@ Orifice calibration: the diameter of the orifice is 17.47 mm. To a first approxi
     \item The flow into the orifice is inviscid,
     \item the flow is slow enough to be treated as incompressible with density equal to that in the atmosphere upstream of the orifice (where the velocity is negligible),
     \item the velocity is uniform across the plane of the orifice,
+    \item the pressure difference between the orifice plane and the upstream atmosphere is that measured on the
+    water manometer
 \end{itemize} 
 
 The first assumption is valid, due to the thin section of the orifice. This means that up to and including the small oriface surface, the flow can be treated as inviscid, and Bernoulli's equation can be applied.
@@ -61,15 +59,15 @@ At this area ratio of $0.5$, the density ratio $\rho/\rho_0$ is greater than $0.
 The third assumption that the velocity is uniform across the plane of the oriface is valid, as the oriface is thin and the flow is inviscid.
 
 With these assumptions, the theoretical flow rate through the orifice can be calculated using the pressure difference between the orifice plane and the upstream atmosphere is that measured on the
-water manometer. From the Bernoulli equation,
+water manometer. From applying the Bernoulli equation from the upstream atmosphere (1) to the oriface plane (2),
 
 \begin{equation}
-    p_1 + \frac{1}{2} \rho v_1^2 = p_2 + 0
+    p_1 = p_2 + \frac{1}{2} \rho_a v_2^2
 \end{equation}
 
-where $A$ is the cross-sectional areas of the oriface. The theoretical flow rate through the orifice is then given by
+Where $A$ and $v_2$ are the cross-sectional area, and velocity at the oriface. The theoretical mass flow rate through the oriface is then given by the following equation.
 \begin{equation}
-    \dot{m} = \rho_a A v_2 = \rho_a \left( \frac{\pi D^2}{4}\right) \sqrt{\frac{2(p_2-p_1)}{\rho_a}} \;\;\;\;\;\; \text{where} \;\;\;\;\;\ p_2 - p_1 = \rho_w g \Delta h
+    \dot{m} = \rho_a A v_2 = \rho_a \left( \frac{\pi D^2}{4}\right) \sqrt{\frac{2(p_1-p_2)}{\rho_a}} \;\;\;\;\;\; \text{where} \;\;\;\;\;\ p_2 - p_1 = \rho_w g \Delta h
 \end{equation}
 Where $\rho_a$ is the density of air and $\rho_w$ is the density of water used for the manometer.
 However, the actual flow rate through the orifice differs from the theoretical value as our assumptions are not entirely valid.
@@ -94,28 +92,44 @@ The discharge coefficient of the oriface is effectively constant over the range 
     \label{fig:figure5}
 \end{figure}
 
+
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.8\textwidth]{starting_shock.jpg}
-    \caption{Figure 1}
-    \label{fig:figure6}
+    \begin{subfigure}[t]{0.48\textwidth}
+        \centering
+        \includegraphics[width=1\textwidth]{starting_shock.jpg}
+        \caption{Shock wave in working section before sensors}
+        \label{fig:figure6}
+    \end{subfigure}
+    ~
+    \begin{subfigure}[t]{0.48\textwidth}
+        \centering
+        \includegraphics[width=1\textwidth]{working_state.jpg}
+        \caption{Working state and bow shock of pitot probe}
+        \label{fig:figure7}
+    \end{subfigure}
+    \caption{Shadowgraph images of the supersonic wind tunnel}
 \end{figure}
 
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.8\textwidth]{working_state.jpg}
-    \caption{Figure 2}
-    \label{fig:figure7}
-\end{figure}
+Figure \ref{fig:figure6} shows the shock wave in the working section of the supersonic wind tunnel before the pressure sensors.
+Shock waves of high density gradient are visible in the image from dark regions of the shadowgraph, where darker regions indicate stronger shock waves.
+At the boundary layers at the top and bottom of the tunnel, the flow appears to travel through two shockwaves.
+After the first shockwave the flow near the boundary layer is subsonic, but then must be accelerated again to supersonic speeds before the second, weaker shock.
 
-\newpage
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.8\textwidth]{tunnel_pressures.png}
-    \caption{Figure 3}
+    \includegraphics[width=1\textwidth]{tunnel_pressures_annotated.png}
+    \caption{Annotated readings of the pressure sensors over time during the experiment. Top graph shows the stagnation pressure ratio, and the bottom graph shows the static pressure ratio.}
     \label{fig:figure8}
 \end{figure}
+
+Figure \ref{fig:figure8} shows the annotated readings of the pressure sensors over time during the experiment.
+It can be observed that before the first vertical red line, the static pressure decreases which corresponds to the subsonic flow accelerating.
+At the red line the normal shock wave is formed upstream of the sensors, by the supersonic flow downstream of the throat.
+The stagnation pressure readings then becomes very noisy as the shock wave moves further downstream (WHY?) Shock trains?.
+The static pressure ratio slowly decreases indicating an acceleration in the flow, and then suddenly increases again as the flow decelerates.
+
 
 \newpage
 
