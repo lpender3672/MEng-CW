@@ -10,7 +10,6 @@
 \usepackage{caption}
 \usepackage{subcaption}
 % set font size to 11pt
-
 % set margin
 \usepackage[margin=0.5in]{geometry}
 
@@ -46,11 +45,9 @@ To analyse the validity of the second assumption, consider the case of maximum f
 \begin{equation}
     \frac{\dot{m}\sqrt{c_pT_0}}{p_0A^*} = 1.281
 \end{equation}
-From this, the non dimensional mass flow rate at the oriface can be calculated using the area ratio of the oriface to the nozzle throat.
-The area of the throat was not known, however for demonstation purposes, the area of the oriface is taken to be twice that of the throat, and so the non-dimensional mass flow rate at the oriface is halved to $0.6405$.
-At this point, the corresponding density ratio $\rho/\rho_0 = 0.9535 \approx 1$.
-In reality the area of the oriface is much larger, and so this density ratio is a lower bound and so the assumption that the flow is incompressible is crude but sufficient for the purposes of this experiment.
-
+From this, the non-dimensional mass flow rate at the oriface can be calculated using the area ratio of the oriface to the nozzle throat.
+The area of the throat is approximately $24\text{mm}^2$, and so the non-dimensional mass flow rate at the oriface is $0.1282$.
+At this point, the corresponding density ratio $\rho/\rho_0 = 0.9997 \approx 1$. This means that the density change is negligible and can be ignored.
 The first and third assumptions are not valid as the flow is viscous and the velocity is not uniform across the plane of the oriface. However, they are accounted for by a discharge coefficient $C_d$, which is defined as the ratio of actual discharge to the ideal discharge.
 The value of $C_d$ is constant at the high Reynolds numbers considered in this report.
 
@@ -103,14 +100,15 @@ The plot of Mach number against position along the nozzle is shown below in figu
 
 \begin{center}
     \captionof{table}{Exit and throat Mach numbers for each case.}
-    \begin{tabular}{|c|c|c|}
+    \begin{tabular}{|c|c|c|c|}
     \hline 
-    Case & Throat Mach No.  & Exit Mach No.\\
-     & (-) & (-) \\
+    Case & Throat Mach No.  & Exit Mach No. & Mass flow rate\\
+     & (-) & (-) & kg/s \\
     \hline 
-    1 & $0.602$ & $0.491$ \\
-    2 & $1.063$ & $0.715$ \\
-    4 & $1.068$ & $1.420$ \\
+    1 & $0.602$ & $0.491$ & $ 4.25 \times 10^{-3} $ \\
+    2 & $1.063$ & $0.715$ & $ 4.96 \times 10^{-3} $ \\
+    3 & $1.063$ & - & $ 4.96 \times 10^{-3} $ \\
+    4 & $1.068$ & $1.420$ & $ 4.96 \times 10^{-3} $ \\
     \hline
     \end{tabular}
     \label{tab:1}
@@ -144,6 +142,7 @@ Figure \ref{fig:figure5} uses the corrected pressure ratios to calculate the Mac
         \centering
         \includegraphics[width=1\textwidth]{starting_shock.jpg}
         \caption{Shock wave in working section before sensors}
+
         \label{fig:figure6}
     \end{subfigure}
     ~
@@ -172,12 +171,19 @@ After the first shockwave the flow near the boundary layer is subsonic, but then
 Figure \ref{fig:figure8} shows the annotated readings of the pressure sensors over time during the experiment.
 It can be observed that before the first vertical red line, the static pressure decreases which corresponds to the subsonic flow accelerating.
 At the red line the normal shock wave is formed upstream of the sensors, by the supersonic flow downstream of the throat.
-The stagnation pressure readings then becomes very noisy as the shock wave moves further downstream (WHY?) Shock trains?.
+The stagnation pressure readings then becomes very noisy as the shock wave moves further downstream due to complex shock boundary layer interactions.
 The static pressure ratio slowly decreases indicating an acceleration in the flow, and then suddenly increases again indicating deceleration.
-This may be due to the boundary layer growing and then shrinking rapidly as the shock wave moves closer to the sensors.
+This may be due to the boundary layer growing and then shrinking rapidly, acting as a convergent divergent nozzle, as the shock wave moves closer to the sensors.
+The second vertical red line indicates the shock wave passing the sensors,
 
-After the shock has passed, the green line shows a static pressure ratio of around 0.275. This corresponds to a Mach number of 1.49, which is very close to the set operating point of Mach 1.5.
-The top green line shows the static pressure ratio of the flow before the shock at 0.59.
+After the shock has passed, the bottom green line shows a static pressure ratio of around $p/p_0 = 0.275$. This corresponds to a Mach number of 1.49, which is very close to the set operating point of Mach 1.5.
+From the databook, at Mach 1.5 the pressure ratio accross the shock should be $p_s/p = 2.4583$.
+Multiplying this by the measured static pressure ratio after the shock passes, gives us the theoetical static pressure ratio before the shock passed, which is $p_s/p_0 = 0.275 \times 2.4583 = 0.676$, and is shown by the orange horizontal line.
+The actual pressure ratio behind the shock, given by the pressure at the time before the shock passes the sensors, is shown by the top green line at $p_s/p_0 = 0.59$.
+This shows that the actual pressure drop accross the shock is less than the theoretical value for Mach 1.5.
+It is likely that the strength of the shock wave is reduced, and the flow is at a lower Mach number than expected due to the boundary layer effects. (CHECK)
 
+The pitot probe should also show a drop in stagnation pressure accross the shock wave, however it can be observed that this remains nearly unchanged.
+However, it can be observed from figure \ref{fig:figure7} that a bow shock forms in front of the pitot probe and so the shock effectively never passes the probe.
 
 \end{document}
