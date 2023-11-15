@@ -35,8 +35,9 @@ In this short report, the flow through a convergent - divergent nozzle is analys
 \end{itemize}
 
 The downstream static pressue is controlled by a valve to set the operating point of the nozzle.
+The point of choking was found during a preliminary survey by increasing flow rate until the pressure drop across the orifice was constant.
 
-Nozzle layout for part 1 experiment shown in figure \ref{fig:figure1} below.
+Nozzle layout for Part 1 experiment shown in figure \ref{fig:figure1} below.
 
 \begin{figure}[H]
     \centering
@@ -54,26 +55,29 @@ Orifice calibration: the diameter of the orifice is 17.47 mm. To a first approxi
     water manometer
 \end{itemize} 
 
-To analyse the validity of the second assumption, consider the case of maximum flow, when the nozzle is choked upstream of the oriface, then its non-dimensional mass flow rate is given by the following equation.
+The first assumption is not valid as there is significant viscous dissipation before the orifice. However, these losses are accounted for by a discharge coefficient $C_d$, which is defined as the ratio of actual discharge to the ideal discharge.
+The value of $C_d$ is constant at the high Reynolds numbers considered in this report.
+
+To analyse the validity of the second assumption, consider the case of maximum flow, when the nozzle is choked upstream of the orifice, then its non-dimensional mass flow rate is given by the following equation.
 \begin{equation}
     \frac{\dot{m}\sqrt{c_pT_0}}{p_0A^*} = 1.281
 \end{equation}
-The first assumption is not valid as there is viscous dissipation before the oriface. However, these losses are accounted for by a discharge coefficient $C_d$, which is defined as the ratio of actual discharge to the ideal discharge.
-The value of $C_d$ is constant at the high Reynolds numbers considered in this report.
-From this, the non-dimensional mass flow rate at the oriface can be calculated using the area ratio of the oriface to the nozzle throat.
-The area of the throat is approximately $24\text{mm}^2$, and so the non-dimensional mass flow rate at the oriface is $0.1282$.
+From this, the non-dimensional mass flow rate at the orifice can be calculated using the area ratio of the orifice to the nozzle throat.
+The area of the throat is approximately $24\text{mm}^2$, and so the non-dimensional mass flow rate at the orifice is $0.1282$.
 At this point, the corresponding density ratio $\rho/\rho_0 = 0.9997 \approx 1$. This means that the density change is negligible and can be ignored.
 
-The third assumption may be valid or not i dont know.
+The third assumption that the velocity is uniform is also poor, and is accounted for by the discharge coefficient $C_d$.
+
+\hfill
 
 With both the invicid and incompressible assumptions, the ideal flow rate through the orifice can be calculated using the pressure difference between the orifice plane and the upstream atmosphere is that measured on the
-water manometer. By applying the Bernoulli equation from the upstream atmosphere (1) to the oriface plane (2),
+water manometer. By applying the Bernoulli equation from the upstream atmosphere (1) to the orifice plane (2),
 
 \begin{equation}
     p_1 = p_2 + \frac{1}{2} \rho_a v_2^2
 \end{equation}
 
-Where $A$ and $v_2$ are the cross-sectional area, and velocity at the oriface. The theoretical mass flow rate through the oriface is then given by the following equation.
+Where $A$ and $v_2$ are the cross-sectional area, and velocity at the orifice. The theoretical mass flow rate through the orifice is then given by the following equation.
 \begin{equation}
     \dot{m}_{ideal} = \rho_a A v_2 = \rho_a \left( \frac{\pi D^2}{4}\right) \sqrt{\frac{2(p_1-p_2)}{\rho_a}} \;\;\;\;\;\; \text{where} \;\;\;\;\;\ p_2 - p_1 = \rho_w g \Delta h
 \end{equation}
@@ -84,7 +88,7 @@ This difference is characterised by the discharge coefficient $C_d$ which is def
     \dot{m}_{actual} = C_d \dot{m}_{ideal}
 \end{equation}
 % https://arc.aiaa.org/doi/pdf/10.2514/6.2019-3651 ?
-The discharge coefficient of the oriface is effectively constant over the range of high reynolds numbers considered in this experiment. 
+The discharge coefficient of the orifice is effectively constant over the range of high reynolds numbers considered in this experiment. 
 
 The static pressure at a specific pressure tapping along the nozzle is given by the following equation.
 \begin{equation}
@@ -116,7 +120,7 @@ This is plotted in figure \ref{fig:figure5} below.
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.8\textwidth]{mach_number_distribution_corrected.png}
-    \caption{Figure 1}
+    \caption{Mach Number distribution along the nozzle from equation 6.}
     \label{fig:figure5}
 \end{figure}
 The plot of Mach number against position along the nozzle is shown below in figure \ref{fig:figure5}.
@@ -150,12 +154,13 @@ The Mach number after the shock can be calculated from the Mach number before th
 \end{equation}
 
 Then the ratio of stagnant pressure ratios before and after the shock as a function of the Mach number before the shock is given by the following equation:
+% (((g + 1) / 2 * M**2) / (1 + (g - 1) / 2 * M **2)) ** (g / (g - 1)) * (2 * g / (g + 1) * M**2 - (g - 1) / (g + 1)) ** - (1 / (g - 1))
 \begin{equation}
-    \frac{p_{0s}}{p} = \left( \frac{\gamma + 1}{2} M^2 \right) ^ \frac{\gamma}{\gamma - 1} \left( \frac{2\gamma}{\gamma+1}M^2 - \frac{\gamma-1}{\gamma+1}\right) ^ \frac{1}{1 - \gamma}
+    \frac{p_{0s}}{p_0} = \left( \frac{\frac{\gamma+1}{2}M^2}{1 + \frac{\gamma-1}{2}M^2}\right) ^ \frac{\gamma}{\gamma-1} \left( \frac{2\gamma}{\gamma+1} M^2 - \frac{\gamma-1}{\gamma+1}\right) ^ \frac{1}{1 - \gamma}
 \end{equation}
-And so at position 16, before the shock $M = 1.365$ the stagnant pressure ratio is $p_{0s}/p = 0.9665$.
+And so from case 4, pressure tapping 16, before the shock $M = 1.365$ the stagnant pressure ratio is $p_{0s}/p = 0.9665$.
 In figure \ref{fig:figure4} the static to stagnation pressure ratio of case 3, after the shock is divided by this value to give the correct static pressure ratio after the shock.
-Figure \ref{fig:figure5} uses the corrected pressure ratios to calculate the Mach number after the shock using the same equation 5.
+Figure \ref{fig:figure5} uses the corrected pressure ratios to calculate the Mach number for Case 3 after the shock using the same equation 5.
 
 
 \begin{figure}[H]
@@ -204,9 +209,10 @@ From the databook, at Mach 1.5 the pressure ratio accross the shock should be $p
 Multiplying this by the measured static pressure ratio after the shock passes, gives us the theoetical static pressure ratio before the shock passed, which is $p_s/p_0 = 0.275 \times 2.4583 = 0.676$, and is shown by the orange horizontal line.
 The actual pressure ratio behind the shock, given by the pressure at the time before the shock passes the sensors, is shown by the top green line at $p_s/p_0 = 0.59$.
 This shows that the actual pressure drop accross the shock is less than the theoretical value for Mach 1.5.
-It seems that the strength of the shock wave is reduced, and the flow after the shock is at a higher Mach number than expected due to the boundary layer effects.
+It seems that the flow after the shock is at a higher Mach number than expected due to the boundary layer effects.
 
 The pitot probe should show an increase in stagnation pressure after the shock wave passes, however it can be observed that this remains nearly unchanged.
-However, it can be observed from figure \ref{fig:figure7} that a bow shock forms in front of the pitot probe and so the shock effectively never passes the probe.
+The expected stagnation pressure ratio downstream of the shock can be calculated from Equation 8 for Mach 1.5 and is found to be 0.9298. This very close to the value seen, however after the shock passes the stagnation pressure ratio should increase back to 1.0.
+It can be observed from figure \ref{fig:figure7} that a bow shock forms in front of the pitot probe and so the shock effectively never passes the probe, which explains why the stagnant pressure ratio does not increase back up to 1.0.
 
 \end{document}
