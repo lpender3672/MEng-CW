@@ -1,0 +1,3 @@
+
+# Remove video files as they cant go in report and are too big
+*.MOV
