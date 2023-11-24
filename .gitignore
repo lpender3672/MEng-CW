@@ -130,6 +130,8 @@ report.out
 *.pdf
 *.dvi
 *.docx
+*.bbl
+*.blg
 
 # Require coversheets
 !coversheet.pdf
