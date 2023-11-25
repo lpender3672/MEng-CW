@@ -6,6 +6,12 @@ Holger Babinsky and Jean Délery.
   87--136.
 \newblock Cambridge Aerospace Series. Cambridge University Press, 2011.
 
+\bibitem{Ciddor:96}
+Philip~E. Ciddor.
+\newblock Refractive index of air: new equations for the visible and near
+  infrared.
+\newblock {\em Appl. Opt.}, 35(9):1566--1573, Mar 1996.
+
 \bibitem{data_book}
 Cambridge University~Engineering Department.
 \newblock Compressible flow data book.
@@ -19,6 +25,11 @@ Amrita Mazumdar.
 \newblock Principles and techniques of schlieren imaging systems.
 \newblock {\em Columbia University Computer Science Technical Reports,
   CUCS-016-13}, 2013.
+
+\bibitem{refractiveindex.info}
+Mikhail Polyanskiy.
+\newblock Refractive index database, 2020.
+\newblock Accessed: 2020-10-01.
 
 \bibitem{Graham_K_Webster:2019}
 Graham~K. Webster, Gregory~T. Coll, Max Kandula, Brian~M. Nufer, and Thomas~J.

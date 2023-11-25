@@ -5,44 +5,47 @@ Reallocating 'name_of_file' (item size: 1) to 6 items.
 The style file: plain.bst
 Reallocating 'name_of_file' (item size: 1) to 5 items.
 Database file #1: refs.bib
-You've used 5 entries,
+Warning--entry type for "refractiveindex.info" isn't style-file defined
+--line 129 of file refs.bib
+You've used 7 entries,
             2118 wiz_defined-function locations,
-            524 strings with 4831 characters,
-and the built_in function-call counts, 1317 in all, are:
-= -- 124
-> -- 62
+            540 strings with 5077 characters,
+and the built_in function-call counts, 1840 in all, are:
+= -- 177
+> -- 76
 < -- 1
-+ -- 25
-- -- 20
-* -- 67
-:= -- 236
-add.period$ -- 14
-call.type$ -- 5
-change.case$ -- 24
++ -- 31
+- -- 24
+* -- 99
+:= -- 321
+add.period$ -- 20
+call.type$ -- 7
+change.case$ -- 32
 chr.to.int$ -- 0
-cite$ -- 5
-duplicate$ -- 56
-empty$ -- 101
-format.name$ -- 20
-if$ -- 272
+cite$ -- 7
+duplicate$ -- 74
+empty$ -- 152
+format.name$ -- 24
+if$ -- 382
 int.to.chr$ -- 0
-int.to.str$ -- 5
-missing$ -- 4
-newline$ -- 26
-num.names$ -- 10
-pop$ -- 32
+int.to.str$ -- 7
+missing$ -- 5
+newline$ -- 36
+num.names$ -- 14
+pop$ -- 43
 preamble$ -- 1
-purify$ -- 20
+purify$ -- 26
 quote$ -- 0
-skip$ -- 42
+skip$ -- 56
 stack$ -- 0
-substring$ -- 48
-swap$ -- 12
+substring$ -- 89
+swap$ -- 14
 text.length$ -- 1
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 18
+type$ -- 26
 warning$ -- 0
-while$ -- 12
-width$ -- 6
-write$ -- 48
+while$ -- 18
+width$ -- 8
+write$ -- 69
+(There was 1 warning)

@@ -21,7 +21,7 @@
 
 \title{Lab report: 3A3 Supersonic Nozzle}
 \author{lwp26}
-\date{October 2023}
+\date{December 2023}
 \maketitle
 
 \begin{abstract}
@@ -48,7 +48,7 @@ This is also done at a smaller scale through dimensional analysis which signific
 \begin{itemize}
     \item To study the static pressure distribution in a converging-diverging nozzle for 4 different pressure ratios across the nozzle.
     \item To appreciate the validity and limitations of one-dimensional, adiabatic, inviscid theory for calculating mass flow rate from the pressure drop across an oriface plate.
-    \item 
+    \item To obtain 10 marks for the full technical report.
 \end{itemize}
 
 \section{Theory}
@@ -139,15 +139,11 @@ Mazumdar et al. \cite{Mazumdar_Amrita:2013} describes the Shlieren visualisation
     \begin{subfigure}[t]{0.48\textwidth}
         \centering
         \includegraphics[width=1\textwidth]{Mazumdar_Amrita_shlierien_refraction.png}
-        \caption{Top down view of light ray deflection in mediums of different refractive indices \cite{Mazumdar_Amrita:2013}.}
+        \caption{Top down view of light ray deflection by refractive index gradient $dn/dy$ \cite{Mazumdar_Amrita:2013}.}
         \label{fig:refraction_diagram}
     \end{subfigure}
     \caption{Shlieren visualisation technique \cite{Mazumdar_Amrita:2013}.}
 \end{figure}
-
-\begin{equation}
-    \frac{d\theta}{dx} = \frac{1}{n} \frac{dn}{dx}
-\end{equation}
 
 Equation 1 indicates it is not the refractive index n causing ray deflection, but the gradient of
 this refractive index. Additionally, Eqns. 1 and 2 show light ray deflections bend towards regions of higher
@@ -183,11 +179,49 @@ The pressure difference accross the oriface is a smaller pressure drop and so is
 
 \subsubsection{Procedure}
 
+Values for temperature and atmospheric pressure were taken from a gauge and mercury manometer in the lab.
 A preliminary experiment was conducted to determine the pressure ratio at which the nozzle is choked.
-This was done by increasing the pressure ratio across the nozzle until there was no change in the oriface plate manometer readings.
+This was done by closing the valve and increasing the pressure ratio across the nozzle until there was no change in the oriface plate manometer readings.
 This approximate height difference of the manometer at the choking point was then recorded.
 
-Then we started the main experiment by setting the height difference of the manometer to $70\%$ of that of the choking point.
+Then the first operating point was reached by setting the height difference of the manometer to $70\%$ of that of the choking point.
+This took a few iterations of adjusting the control valve, waiting for the water manometer to settle and reading both manometers to find the height difference.
+After a stable setpoint is reached, the measured oriface manometer height readings were recorded. 
+Then all 19 manometer wall tappings and the atmospheric were recorded.
+It was noted that tapping 8 had the lowest pressure and so was taken to be the throat of the nozzle.
+
+The second operating point was then reached by setting the height difference of the manometer that of the choking point.
+Recording of oriface manometer height readings and all 19 manometer wall tappings and the atmospheric were repeated.
+
+The third operating point is when a shock forms in the diverging part of the nozzle. The valve was closed until the manometer height at the throat, at tapping 8, was equal to the height at tapping 16.
+This was because the location of the shock wave was approximated to be where the flow dropped below Mach 1.
+This was found to be particularly difficult as the manometer height at tapping 16 was very sensitive to changes in the valve position.
+A sufficient setpoint was found and the oriface plate manometer height readings were recorded.
+Then again all 19 manometer wall tappings and the atmospheric were recorded.
+
+The fourth and final run was conducted by closing the valve entirely so there was maximum pressure ratio across the nozzle.
+Then the oriface plate manometer heights, all 19 manometer wall tappings and the atmospheric were recorded.
+
+\subsection{Uncertainty}
+
+Naturally, there are sources of uncertainty in all measurements taken and so it is important for all calculations to include an estimate of the uncertainty in the final result.
+The uncertainty equations are derived from the equation for the quantity being calculated.
+To simplify the analysis the uncertainty in the discharge coefficient and densities of water and mercury are assumed to be negligible.
+The uncertainty in pressure ratio is calculated using the following equation.
+\begin{equation}
+    u\left( \frac{p}{p_0} \right) = u(\rho_{Hg}) + u(\Delta h) + u(p_0)
+\end{equation}
+The uncertainty in mass flow rate is calculated using the following equation.
+\begin{equation}
+    u(\dot{m}) = u(C_d) + 2u(D) + \frac{1}{2}u(\rho_a) + \frac{1}{2}u(\Delta h)
+\end{equation}
+
+% dM2 = - 2 / g * rp ** (-((g-1)/g) - 1)
+The uncertainty in Mach number is calculated using the following equation.
+\begin{equation}
+    u(M) = u\left( \frac{p}{p_0} \right) \frac{d M ( p/p_0 ) }{d (p/p_0)} = u\left(\frac{p}{p_0}\right) \times - \frac{2}{\gamma}  \left( \frac{p}{p_0} \right) ^ {\frac{1}{\gamma}}
+\end{equation}
+Further uncertainty in the area ratio and stagnant pressure ratio accross the shock wave is covered in the appendix.
 
 \subsection{Part 2}
 \subsubsection{Procedure}
@@ -195,19 +229,41 @@ Then we started the main experiment by setting the height difference of the mano
 
 \section{Results}
 
+\begin{center}
+    \begin{tabular}{|c|c|c|c|}
+    \hline 
+    Case & Throat Mach No.  & Exit Mach No. & Mass flow rate\\
+     & (-) & (-) & $\times 10^{-3}$ kg/s\\
+    \hline 
+    1 & $0.602\pm 0.003$ & $0.491\pm 0.005$ & $ 4.25\pm 0.42  $ \\
+    2 & $1.063\pm 0.017$ & $0.715\pm 0.007$ & $ 4.96\pm 0.36  $ \\
+    3 & $1.063\pm 0.017$ & $0.001\pm 0.036$ & $ 4.96\pm 0.36 $ \\
+    4 & $1.068\pm 0.017$ & $1.420\pm 0.064$ & $ 4.96\pm 0.36 $ \\
+    \hline
+    \end{tabular}
+    \captionof{table}{Exit and throat Mach numbers for each case.}
+    \label{tab:1}
+\end{center}
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.7\textwidth]{../Supersonic_Nozzle/pressure_ratio_distribution_corrected.png}
+    \includegraphics[width=0.98\textwidth]{../Supersonic_Nozzle/pressure_ratio_distribution_corrected.png}
     \caption{Static pressure ratio distribution along the nozzle.}
     \label{fig:pressure_distribution}
 \end{figure}
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.7\textwidth]{../Supersonic_Nozzle/mach_number_distribution_corrected.png}
+    \includegraphics[width=0.98\textwidth]{../Supersonic_Nozzle/mach_number_distribution_corrected.png}
     \caption{Static pressure ratio distribution along the nozzle.}
     \label{fig:mach_distribution}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.98\textwidth]{../Supersonic_Nozzle/area_ratio_distribution.png}
+    \caption{Reconstructed graph of nozzle profile.}
+    \label{fig:area_distribution}
 \end{figure}
 
 \begin{figure}[H]
@@ -229,7 +285,46 @@ Then we started the main experiment by setting the height difference of the mano
     \caption{Shadowgraph images of the supersonic wind tunnel}
 \end{figure}
 
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{../Supersonic_Nozzle/tunnel_pressures_annotated.png}
+    \caption{Annotated readings of the pressure sensors over time during the experiment. Top graph shows the stagnation pressure ratio, and the bottom graph shows the static pressure ratio.}
+    \label{fig:figure8}
+\end{figure}
+
 \section{Discussion}
+
+\subsection{Part 1}
+
+
+
+
+\subsection{Part 2}
+
+Figure \ref{fig:figure6} shows the shock wave in the working section of the supersonic wind tunnel before the pressure sensors.
+Shock waves of high density gradient are visible in the image from dark regions of the shadowgraph, where darker regions indicate stronger shock waves.
+At the boundary layers at the top and bottom of the tunnel, the flow appears to travel through two shockwaves.
+After the first shockwave the flow near the boundary layer is subsonic, but then must be accelerated again to supersonic speeds before the second, weaker shock.
+
+Figure \ref{fig:figure8} shows the annotated readings of the pressure sensors over time during the experiment.
+The green and red dots indicates the time at which the tunnel was switched on and off respectively.
+It can be observed that before the first vertical red line, the static pressure decreases which corresponds to the subsonic flow accelerating.
+At the first red line the stagnation pressure falls as the normal shock wave is formed upstream of the sensors by the, now supersonic, flow downstream of the throat.
+The stagnation pressure readings then becomes very noisy as the shock wave moves further downstream due to complex shock boundary layer interactions.
+The static pressure ratio slowly decreases over the next several seconds, indicating an acceleration in the flow, before quickly increasing again.
+This may be due to the boundary layer growing and then shrinking rapidly, acting similarly to a convergent divergent nozzle, as the shock wave moves closer to the sensors.
+The second vertical red line shows where the shock wave passes the sensors and static pressure drops significantly.
+
+After the shock has passed, the bottom green line shows a static pressure ratio of around $p/p_0 = 0.275$. This corresponds to a Mach number of 1.49, which is very close to the set operating point of Mach 1.5.
+From the databook, at Mach 1.5 the pressure ratio accross the shock should be $p_s/p = 2.4583$.
+Multiplying this by the measured static pressure ratio after the shock passes, gives us the theoetical static pressure ratio before the shock passed, which is $p_s/p_0 = 0.275 \times 2.4583 = 0.676$, and is shown by the orange horizontal line.
+The actual pressure ratio behind the shock, given by the pressure at the time before the shock passes the sensors, is shown by the top green line at $p_s/p_0 = 0.59$.
+This shows that the actual pressure drop accross the shock is less than the theoretical value for Mach 1.5.
+It seems that the flow after the shock is at a higher Mach number than expected due to the boundary layer effects.
+
+The pitot probe should show an increase in stagnation pressure after the shock wave passes, however it can be observed that this remains nearly unchanged.
+The expected stagnation pressure ratio downstream of the shock can be calculated from Equation 8 for Mach 1.5 and is found to be 0.9298. This very close to the value seen, however after the shock passes the stagnation pressure ratio should increase back to 1.0.
+It can be observed from figure \ref{fig:figure7} that a bow shock forms in front of the pitot probe and so the shock effectively never passes the probe, which explains why the stagnant pressure ratio does not increase back up to 1.0.
 
 \section{Conclusion}
 % Comment on the validity of one-dimensional theory in nozzle flows. When can it be expected to provide what quality of predictions?
@@ -267,7 +362,15 @@ The following equations are used to correct for the drop in stagnation pressure 
     \end{aligned}
     \label{eqn:dp0sr_dm}
 \end{equation}
-\footnotetext{Derivative equations \ref{eqn:dp0sr_dm} and \ref{eqn:dA_dM} were generated using SymPy from databook \cite{data_book} equations}
+\footnotetext{Derivative equations \ref{eqn:dA_dM} and \ref{eqn:dp0sr_dm} were generated using SymPy from databook equations \cite{data_book}.}
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{dry_air_15_rho_vs_n.png}
+    \caption{Refractive index $n-1$ against density $\rho$ for dry air at 15 degrees Celsius. Modified code \cite{refractiveindex.info} based on Philip E. Ciddor et al \cite{Ciddor:96}.}
+    \label{fig:refractive_index_vs_density}
+\end{figure}
 
 \begin{figure}[H]
     \centering
