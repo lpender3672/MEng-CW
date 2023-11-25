@@ -107,7 +107,21 @@ The static pressure at a specific pressure tapping along the nozzle is given by 
     p = p_0 - \rho_{Hg} g \Delta h
 \end{equation}
 Where $\rho_{Hg}$ is the density of mercury and $\Delta h$ is the height difference of mercury between the specific pressure tapping and atmospheric tapping.
-The ratio of this with the stagnation pressure (atmospheric pressure) is the static to stagnation pressure ratio which is plotted below in figure \ref{fig:figure4}.
+
+The static pressure ratio across the nozzle is given by the following equation.
+\begin{equation}
+    \frac{p}{p_0} = 1 - \frac{\rho_{Hg} g \Delta h}{p_0}
+\end{equation}
+
+\subsection{Mach number}
+For isentropic flow and a given static pressure ratio across the nozzle, the Mach number can be found by rearanging the following equation.
+\begin{equation}
+    \frac{p}{p_0} = \left( 1 + \frac{\gamma - 1}{2}M^2\right) ^ {-\frac{\gamma}{\gamma-1}} \implies M = \sqrt{\frac{2}{\gamma-1} \left( \left( \frac{p}{p_0}\right) ^ {-\frac{\gamma-1}{\gamma}} - 1\right)}
+\end{equation}
+And then the nozzil area ratio can be found using the following equation from the Mach number found above.
+\begin{equation}
+    \frac{A}{A^*} = \frac{1}{M} \left( \frac{2}{\gamma+1} \left( 1 + \frac{\gamma-1}{2}M^2\right) \right) ^ {\frac{\gamma+1}{2(\gamma-1)}}
+\end{equation}
 
 \subsection{Shlieren visualisation technique}
 
@@ -141,9 +155,7 @@ refractive index
 
 
 \section{Method}
-
 \subsection{Part 1}
-
 \subsubsection{Apparatus}
 
 \begin{figure}[H]
@@ -178,9 +190,7 @@ This approximate height difference of the manometer at the choking point was the
 Then we started the main experiment by setting the height difference of the manometer to $70\%$ of that of the choking point.
 
 \subsection{Part 2}
-
 \subsubsection{Procedure}
-
 \subsubsection{Apparatus}
 
 \section{Results}
@@ -188,9 +198,16 @@ Then we started the main experiment by setting the height difference of the mano
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.8\textwidth]{../Supersonic_Nozzle/pressure_ratio_distribution_corrected.png}
+    \includegraphics[width=0.7\textwidth]{../Supersonic_Nozzle/pressure_ratio_distribution_corrected.png}
     \caption{Static pressure ratio distribution along the nozzle.}
-    \label{fig:figure4}
+    \label{fig:pressure_distribution}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{../Supersonic_Nozzle/mach_number_distribution_corrected.png}
+    \caption{Static pressure ratio distribution along the nozzle.}
+    \label{fig:mach_distribution}
 \end{figure}
 
 \begin{figure}[H]
@@ -222,6 +239,16 @@ Then we started the main experiment by setting the height difference of the mano
 
 \section{Appendix}
 
+The following equations are used to calculate uncertainty in area ratio.
+
+\begin{equation}
+    u(A) = u(A^*) + u\left( \frac{A}{A^*} \right) = u(A^*) + u(M) \frac{d}{dM}\left( \frac{A}{A^*} \right)
+\end{equation}
+
+\begin{equation}
+    \frac{d}{dM}\left( \frac{A}{A^*} \right) = \frac{2 \left(\frac{2 \left(M^{2} \left(\frac{\gamma}{2} - \frac{1}{2}\right) + 1\right)}{\gamma + 1}\right)^{\frac{\gamma + 1}{2 \gamma - 2}} \left(\frac{\gamma}{2} - \frac{1}{2}\right) \left(\gamma + 1\right)}{\left(2 \gamma - 2\right) \left(M^{2} \left(\frac{\gamma}{2} - \frac{1}{2}\right) + 1\right)} - \frac{\left(\frac{2 \left(M^{2} \left(\frac{\gamma}{2} - \frac{1}{2}\right) + 1\right)}{\gamma + 1}\right)^{\frac{\gamma + 1}{2 \gamma - 2}}}{M^{2}}
+    \label{eqn:dA_dM}
+\end{equation}
 
 The following equations are used to correct for the drop in stagnation pressure accross the shock wave in Case 3.
 
@@ -240,7 +267,7 @@ The following equations are used to correct for the drop in stagnation pressure 
     \end{aligned}
     \label{eqn:dp0sr_dm}
 \end{equation}
-\footnotetext{Equation \ref{eqn:dp0sr_dm} was generated using SymPy}
+\footnotetext{Derivative equations \ref{eqn:dp0sr_dm} and \ref{eqn:dA_dM} were generated using SymPy from databook \cite{data_book} equations}
 
 \begin{figure}[H]
     \centering
@@ -256,7 +283,7 @@ The following equations are used to correct for the drop in stagnation pressure 
     \label{fig:const_Cd_Re}
 \end{figure}
 
-\bibliographystyle{plain} % We choose the "plain" reference style
-\bibliography{refs} % Entries are in the refs.bib file
+\bibliographystyle{plain}
+\bibliography{refs}
 
 \end{document}
