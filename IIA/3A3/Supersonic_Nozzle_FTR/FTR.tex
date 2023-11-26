@@ -122,6 +122,17 @@ And then the nozzil area ratio can be found using the following equation from th
 \begin{equation}
     \frac{A}{A^*} = \frac{1}{M} \left( \frac{2}{\gamma+1} \left( 1 + \frac{\gamma-1}{2}M^2\right) \right) ^ {\frac{\gamma+1}{2(\gamma-1)}}
 \end{equation}
+For case 3 there is a drop in stagnation pressure accross the shock wave and so after the shock, the stagnation pressure is no longer the atmospheric pressure.
+For the region behind the shock, this is accounted for by dividing the original static pressure ratio by the ratio of stagnation pressures accross the shock wave.
+\begin{equation}
+    \frac{p}{p_{0s}} = \frac{p/p_0}{p_{0s}/p_0}
+\end{equation}
+The stagnant pressure before and after the shock is given by $p_0$ and $p_{0s}$ respectively.
+The stagnation pressure ratio accross the shock wave is given in the databook \cite{data_book}.
+\begin{equation}
+    \frac{p_{0s}}{p_0} = \left( \frac{\frac{\gamma+1}{2}M^2}{1 + \frac{\gamma-1}{2}M^2}\right) ^ \frac{\gamma}{\gamma-1} \left( \frac{2\gamma}{\gamma+1} M^2 - \frac{\gamma-1}{\gamma+1}\right) ^ \frac{1}{1 - \gamma}
+\end{equation}
+Where $M$ is the Mach number before the shock wave.
 
 \subsection{Shlieren visualisation technique}
 
@@ -221,7 +232,8 @@ The uncertainty in Mach number is calculated using the following equation.
 \begin{equation}
     u(M) = u\left( \frac{p}{p_0} \right) \frac{d M ( p/p_0 ) }{d (p/p_0)} = u\left(\frac{p}{p_0}\right) \times - \frac{2}{\gamma}  \left( \frac{p}{p_0} \right) ^ {\frac{1}{\gamma}}
 \end{equation}
-Further uncertainty in the area ratio and stagnant pressure ratio accross the shock wave is covered in the appendix.
+Further uncertainty analysis in the area ratio and stagnant pressure ratio accross the shock wave is covered in the appendix.
+Uncertainty analysis is not conducted for the location of the shock wave as this is already a very rough approximation due to boundary layer effects.
 
 \subsection{Part 2}
 \subsubsection{Procedure}
@@ -237,7 +249,7 @@ Further uncertainty in the area ratio and stagnant pressure ratio accross the sh
     \hline 
     1 & $0.602\pm 0.003$ & $0.491\pm 0.005$ & $ 4.25\pm 0.42  $ \\
     2 & $1.063\pm 0.017$ & $0.715\pm 0.007$ & $ 4.96\pm 0.36  $ \\
-    3 & $1.063\pm 0.017$ & $0.001\pm 0.036$ & $ 4.96\pm 0.36 $ \\
+    3 & $1.063\pm 0.017$ & $0.800\pm 0.036$ & $ 4.96\pm 0.36 $ \\
     4 & $1.068\pm 0.017$ & $1.420\pm 0.064$ & $ 4.96\pm 0.36 $ \\
     \hline
     \end{tabular}
@@ -262,7 +274,7 @@ Further uncertainty in the area ratio and stagnant pressure ratio accross the sh
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.98\textwidth]{../Supersonic_Nozzle/area_ratio_distribution.png}
-    \caption{Reconstructed graph of nozzle profile.}
+    \caption{Reconstructed nozzle profile from throat area ratio.}
     \label{fig:area_distribution}
 \end{figure}
 
@@ -296,8 +308,14 @@ Further uncertainty in the area ratio and stagnant pressure ratio accross the sh
 
 \subsection{Part 1}
 
+For run 3 of Part 1, determine the strength of the shock in the nozzle from its assumed location.
+Indicate the expected (inviscid) pressure jump across the shock on your graph.
 
-
+Using your measurement of mass flow in Part 1, calculate the cross-sectional areas of the throat and at
+the nozzle exit for each run. In the case of Run 3 you need to first determine the expected stagnation
+pressure drop through the shock wave before calculating the nozzle exit area. You should then attempt
+to explain any differences you may find between the results of the different runs (note that the actual
+cross-sectional area at the throat of the nozzle is approximately 24 mm2).
 
 \subsection{Part 2}
 
@@ -326,9 +344,17 @@ The pitot probe should show an increase in stagnation pressure after the shock w
 The expected stagnation pressure ratio downstream of the shock can be calculated from Equation 8 for Mach 1.5 and is found to be 0.9298. This very close to the value seen, however after the shock passes the stagnation pressure ratio should increase back to 1.0.
 It can be observed from figure \ref{fig:figure7} that a bow shock forms in front of the pitot probe and so the shock effectively never passes the probe, which explains why the stagnant pressure ratio does not increase back up to 1.0.
 
+Compare the two experiments. Are there any findings that can be related from one experiment to the other?
+What have you learned about the interaction of a shock wave with a boundary layer?
+
 \section{Conclusion}
 % Comment on the validity of one-dimensional theory in nozzle flows. When can it be expected to provide what quality of predictions?
 % What are the effects of viscosity in both experiments? Which experiment is more severely affected and why?
+
+Comment on the validity of one-dimensional theory in nozzle flows. When can it be expected to
+provide what quality of predictions?
+What are the effects of viscosity in both experiments? Which experiment is more severely affected
+and why?
 
 \newpage
 
@@ -368,7 +394,7 @@ The following equations are used to correct for the drop in stagnation pressure 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.6\textwidth]{dry_air_15_rho_vs_n.png}
-    \caption{Refractive index $n-1$ against density $\rho$ for dry air at 15 degrees Celsius. Modified code \cite{refractiveindex.info} based on Philip E. Ciddor et al \cite{Ciddor:96}.}
+    \caption{Refractive index $n-1$ against density ratio $\rho/\rho_0$ for relative humidity $\phi = 50\%$, 450 ppm $ \text{CO}_2 $, wavelength $\lambda = 632.8$ nm. Figure produced from modified code \cite{refractiveindex_info} using equations by Ciddor, 1996 \cite{Ciddor:96}.}
     \label{fig:refractive_index_vs_density}
 \end{figure}
 

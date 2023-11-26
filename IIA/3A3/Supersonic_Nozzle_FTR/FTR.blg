@@ -5,8 +5,8 @@ Reallocating 'name_of_file' (item size: 1) to 6 items.
 The style file: plain.bst
 Reallocating 'name_of_file' (item size: 1) to 5 items.
 Database file #1: refs.bib
-Warning--entry type for "refractiveindex.info" isn't style-file defined
---line 129 of file refs.bib
+Warning--entry type for "refractiveindex_info" isn't style-file defined
+--line 65 of file refs.bib
 You've used 7 entries,
             2118 wiz_defined-function locations,
             540 strings with 5077 characters,
