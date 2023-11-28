@@ -134,7 +134,7 @@ plt.legend()
 #plt.show()
 
 P0 = 101325 #Pa
-p = np.arange(0.4*P0, 1.2*P0, 250)
+p = np.arange(80e3, 120e3, 250)
 n6 = n(0.6328,15,p,0.5,450) #dry air, 15 °, 450 ppm @ HeNe wavelength
 n7 = n(0.6328,25,p,0.5,450) #dry air, 25 °, 450 ppm @ HeNe wavelength
 

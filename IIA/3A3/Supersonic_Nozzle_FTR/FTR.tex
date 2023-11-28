@@ -134,20 +134,23 @@ The stagnation pressure ratio accross the shock wave is given in the databook \c
 \end{equation}
 Where $M$ is the Mach number before the shock wave.
 
-\subsection{Shlieren visualisation technique}
+\subsection{Schlieren visualisation technique}
 
-Mazumdar et al. \cite{Mazumdar_Amrita:2013} describes the Shlieren visualisation technique as a method of visualising the density gradient of a fluid.
+WRITE THIS SECTION CORRECTLY
+Mazumdar et al. \cite{Mazumdar_Amrita:2013} described the Schlieren visualisation technique as a method of visualising the density gradient of a fluid.
 
+
+\iffalse
 \begin{figure}[H]
     \centering
-    \begin{subfigure}[t]{0.48\textwidth}
+    \begin{subfigure}[t]{0.7\textwidth}
         \centering
-        \includegraphics[width=1\textwidth]{Mazumdar_Amrita_shlierien_refraction.png}
+        \includegraphics[width=1\textwidth]{Double_mirror_schlieren_layout.png}
         \caption{heading}
         \label{fig:mirror_setup}
     \end{subfigure}
     ~
-    \begin{subfigure}[t]{0.48\textwidth}
+    \begin{subfigure}[t]{0.28\textwidth}
         \centering
         \includegraphics[width=1\textwidth]{Mazumdar_Amrita_shlierien_refraction.png}
         \caption{Top down view of light ray deflection by refractive index gradient $dn/dy$ \cite{Mazumdar_Amrita:2013}.}
@@ -155,10 +158,44 @@ Mazumdar et al. \cite{Mazumdar_Amrita:2013} describes the Shlieren visualisation
     \end{subfigure}
     \caption{Shlieren visualisation technique \cite{Mazumdar_Amrita:2013}.}
 \end{figure}
+\fi
 
-Equation 1 indicates it is not the refractive index n causing ray deflection, but the gradient of
-this refractive index. Additionally, Eqns. 1 and 2 show light ray deflections bend towards regions of higher
-refractive index
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[t]{0.8\textwidth}
+        \centering
+        \includegraphics[width=1\textwidth]{xz_shlierian.jpg}
+        \caption{Sketch of light rays passing through refractive index gradient in xz plane.}
+        \label{fig:xz_shlierian}
+    \end{subfigure}
+    ~
+    \begin{subfigure}[t]{0.8\textwidth}
+        \centering
+        \includegraphics[width=1\textwidth]{yz_shlierian.jpg}
+        \caption{Sketch of light rays passing through refractive index gradient in yz plane.}
+        \label{fig:yz_shlierian}
+    \end{subfigure}
+    \caption{Shlieren visualisation technique \cite{Mazumdar_Amrita:2013}.}
+\end{figure}
+
+\begin{equation}
+    \epsilon_y = \frac{1}{n}\int \frac{\partial n}{\partial y} dz
+    \label{eqn:refractive_index_gradient}
+\end{equation}
+For a small angle approximation 
+
+Equation 1 indicates it is not the refractive index n causing ray deflection, but the gradient $\partial n / \partial y$ of this refractive index.
+Additionally, Eqns. 1 and 2 show light ray deflections bend towards regions of higher refractive index.
+
+For this normal shock wave the density can be considered as a step function of y.
+This is because the thickness of the shock is on the order of a few molecular-mean-free paths \cite{babinsky_delery:2011}.
+Figure \ref{fig:refractive_index_vs_density} shows the relationship between the refractive index and density of air at specified conditions.
+The refractive index can be approximated as a linear function of the density and so the gradient of the refractive index step function is now a dirac delta function.
+
+When this is integrated over the thickness of the shock, it gives a angle of deflection of the light ray which is proportional to the density gradient.
+This means that regions of 
+
+
 
 
 \section{Method}
@@ -242,15 +279,15 @@ Uncertainty analysis is not conducted for the location of the shock wave as this
 \section{Results}
 
 \begin{center}
-    \begin{tabular}{|c|c|c|c|}
+    \begin{tabular}{|c|c|c|c|c|}
     \hline 
-    Case & Throat Mach No.  & Exit Mach No. & Mass flow rate\\
-     & (-) & (-) & $\times 10^{-3}$ kg/s\\
+    Case & Throat Mach No.  & Exit Mach No. & Mass flow rate & Calculated Throat Area\\
+     & (-) & (-) & $\times 10^{-3}$ kg/s & $mm^2$ \\
     \hline 
-    1 & $0.602\pm 0.003$ & $0.491\pm 0.005$ & $ 4.25\pm 0.42  $ \\
-    2 & $1.063\pm 0.017$ & $0.715\pm 0.007$ & $ 4.96\pm 0.36  $ \\
-    3 & $1.063\pm 0.017$ & $0.800\pm 0.036$ & $ 4.96\pm 0.36 $ \\
-    4 & $1.068\pm 0.017$ & $1.420\pm 0.064$ & $ 4.96\pm 0.36 $ \\
+    1 & $0.602\pm 0.003$ & $0.491\pm 0.005$ & $ 4.25\pm 0.42  $ & \\
+    2 & $1.063\pm 0.017$ & $0.715\pm 0.007$ & $ 4.96\pm 0.36  $ & \\
+    3 & $1.063\pm 0.017$ & $0.800\pm 0.036$ & $ 4.96\pm 0.36 $ & \\
+    4 & $1.068\pm 0.017$ & $1.420\pm 0.064$ & $ 4.96\pm 0.36 $ & \\
     \hline
     \end{tabular}
     \captionof{table}{Exit and throat Mach numbers for each case.}
@@ -294,7 +331,7 @@ Uncertainty analysis is not conducted for the location of the shock wave as this
         \caption{Working state and bow shock of pitot probe}
         \label{fig:figure7}
     \end{subfigure}
-    \caption{Shadowgraph images of the supersonic wind tunnel}
+    \caption{Schlieren images of the supersonic wind tunnel}
 \end{figure}
 
 \begin{figure}[H]
@@ -388,7 +425,7 @@ The following equations are used to correct for the drop in stagnation pressure 
     \end{aligned}
     \label{eqn:dp0sr_dm}
 \end{equation}
-\footnotetext{Derivative equations \ref{eqn:dA_dM} and \ref{eqn:dp0sr_dm} were generated using SymPy from databook equations \cite{data_book}.}
+\footnotetext{Equations for derivatives \ref{eqn:dA_dM} and \ref{eqn:dp0sr_dm} were generated using SymPy from databook equations \cite{data_book}.}
 
 
 \begin{figure}[H]
