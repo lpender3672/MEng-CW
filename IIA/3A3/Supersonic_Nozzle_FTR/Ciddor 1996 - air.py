@@ -139,13 +139,15 @@ n6 = n(0.6328,15,p,0.5,450) #dry air, 15 °, 450 ppm @ HeNe wavelength
 n7 = n(0.6328,25,p,0.5,450) #dry air, 25 °, 450 ppm @ HeNe wavelength
 
 R = 287.058 #J/(kg·K)
-T = 15 + 273.15 #K
-rho = p/(R*T)
-rho0 = P0/(R*T)
+T1 = 15 + 273.15 #K
+T2 = 25 + 273.15 #K
+rho1 = p/(R*T1)
+rho2 = p/(R*T2)
+rho0 = P0/(R*T1)
 
 plt.figure(3)
-plt.plot(rho / rho0, n6-1, label="15 °C, 450 ppm CO2, 632.8 nm")
-plt.plot(rho / rho0, n7-1, label="25 °C, 450 ppm CO2, 632.8 nm")
+plt.plot(rho1 / rho0, n6-1, label="15 °C, 450 ppm CO2, 632.8 nm")
+plt.plot(rho2 / rho0, n7-1, label="25 °C, 450 ppm CO2, 632.8 nm")
 
 plt.xlabel('Air Density ratio $\\rho/\\rho_0$')
 plt.ylabel('$n-1$')

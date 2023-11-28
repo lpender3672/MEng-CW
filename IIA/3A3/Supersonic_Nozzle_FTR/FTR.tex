@@ -97,7 +97,7 @@ This difference is characterised by the discharge coefficient $C_d$ which is def
     \dot{m}_{actual} = C_d \dot{m}_{ideal}
 \end{equation}
 
-The discharge coefficient of the orifice is effectively constant over the range of high reynolds numbers considered in this experiment.
+The discharge coefficient of the orifice is effectively constant over the range of high Reynolds numbers considered in this experiment.
 This was shown by Graham and Webster \cite{Graham_K_Webster:2019} in figure \ref{fig:const_Cd_Re}.
 
 \subsection{Pressure tappings}
@@ -114,7 +114,8 @@ The static pressure ratio across the nozzle is given by the following equation.
 \end{equation}
 
 \subsection{Mach number}
-For isentropic flow and a given static pressure ratio across the nozzle, the Mach number can be found by rearanging the following equation.
+The flow can be assumed to be adiabatic, and isentropic in cases 1, 2 and 4.
+For a given static pressure ratio across the nozzle, the Mach number can be found by rearanging the following equation.
 \begin{equation}
     \frac{p}{p_0} = \left( 1 + \frac{\gamma - 1}{2}M^2\right) ^ {-\frac{\gamma}{\gamma-1}} \implies M = \sqrt{\frac{2}{\gamma-1} \left( \left( \frac{p}{p_0}\right) ^ {-\frac{\gamma-1}{\gamma}} - 1\right)}
 \end{equation}
@@ -122,8 +123,8 @@ And then the nozzil area ratio can be found using the following equation from th
 \begin{equation}
     \frac{A}{A^*} = \frac{1}{M} \left( \frac{2}{\gamma+1} \left( 1 + \frac{\gamma-1}{2}M^2\right) \right) ^ {\frac{\gamma+1}{2(\gamma-1)}}
 \end{equation}
-For case 3 there is a drop in stagnation pressure accross the shock wave and so after the shock, the stagnation pressure is no longer the atmospheric pressure.
-For the region behind the shock, this is accounted for by dividing the original static pressure ratio by the ratio of stagnation pressures accross the shock wave.
+There is a normal shock wave in case 3 and so the flow is not isentropic, however the location can be estimated, and drop in stagnation pressure accross the shock wave can be accounted for.
+This is done by dividing the original static pressure ratio by the ratio of stagnation pressures accross the shock wave.
 \begin{equation}
     \frac{p}{p_{0s}} = \frac{p/p_0}{p_{0s}/p_0}
 \end{equation}
@@ -136,64 +137,38 @@ Where $M$ is the Mach number before the shock wave.
 
 \subsection{Schlieren visualisation technique}
 
-WRITE THIS SECTION CORRECTLY
-Mazumdar et al. \cite{Mazumdar_Amrita:2013} described the Schlieren visualisation technique as a method of visualising the density gradient of a fluid.
+The setup for the schlieren visualisation technique is shown in figure \ref{fig:xz_shlierian}.
+The light source is placed at the focal point of the first mirror, such to get collimated light through the tunnel.
+The second mirror focuses the light onto a knife edge, which blocks the light from reaching the camera.
+Density gradients in the direction normal to the knife edge cause light rays to be deflected, and so some light reaches the camera.
+Figure \ref{fig:xz_shlierian} shows rays deflected by horizontal density gradients are blocked by the knife edge.
+Figure \ref{fig:yz_shlierian} shows rays deflected by positive density gradients pass, but rays deflected by negative density gradients are blocked.
 
-
-\iffalse
-\begin{figure}[H]
-    \centering
-    \begin{subfigure}[t]{0.7\textwidth}
-        \centering
-        \includegraphics[width=1\textwidth]{Double_mirror_schlieren_layout.png}
-        \caption{heading}
-        \label{fig:mirror_setup}
-    \end{subfigure}
-    ~
-    \begin{subfigure}[t]{0.28\textwidth}
-        \centering
-        \includegraphics[width=1\textwidth]{Mazumdar_Amrita_shlierien_refraction.png}
-        \caption{Top down view of light ray deflection by refractive index gradient $dn/dy$ \cite{Mazumdar_Amrita:2013}.}
-        \label{fig:refraction_diagram}
-    \end{subfigure}
-    \caption{Shlieren visualisation technique \cite{Mazumdar_Amrita:2013}.}
-\end{figure}
-\fi
 
 \begin{figure}[H]
     \centering
-    \begin{subfigure}[t]{0.8\textwidth}
-        \centering
-        \includegraphics[width=1\textwidth]{xz_shlierian.jpg}
-        \caption{Sketch of light rays passing through refractive index gradient in xz plane.}
-        \label{fig:xz_shlierian}
-    \end{subfigure}
-    ~
-    \begin{subfigure}[t]{0.8\textwidth}
-        \centering
-        \includegraphics[width=1\textwidth]{yz_shlierian.jpg}
-        \caption{Sketch of light rays passing through refractive index gradient in yz plane.}
-        \label{fig:yz_shlierian}
-    \end{subfigure}
-    \caption{Shlieren visualisation technique \cite{Mazumdar_Amrita:2013}.}
+    \includegraphics[width=0.8\textwidth]{xz_shlierian.jpg}
+    \caption{Sketch of light rays passing through refractive index gradient in xz plane.}
+    \label{fig:xz_shlierian}
 \end{figure}
 
-\begin{equation}
-    \epsilon_y = \frac{1}{n}\int \frac{\partial n}{\partial y} dz
-    \label{eqn:refractive_index_gradient}
-\end{equation}
-For a small angle approximation 
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{yz_shlierian.jpg}
+    \caption{Sketch of light rays passing through refractive index gradient in yz plane.}
+    \label{fig:yz_shlierian}
+\end{figure}
 
-Equation 1 indicates it is not the refractive index n causing ray deflection, but the gradient $\partial n / \partial y$ of this refractive index.
-Additionally, Eqns. 1 and 2 show light ray deflections bend towards regions of higher refractive index.
+Equations \ref{eqn:refractive_index_gradient} derived by Mazumdar \cite{Mazumdar_Amrita:2013} indicate it is not the refractive index $n$ causing ray deflection, but the gradient $\partial n / \partial y$ of this refractive index, and that light ray deflections bend towards regions of higher refractive index.
+The relation between the refractive index and density of air is shown to be approximately linear in figure \ref{fig:refractive_index_vs_density} from literature \cite{refractiveindex_info} \cite{Ciddor:96}.
 
-For this normal shock wave the density can be considered as a step function of y.
+Considering a normal shock wave, the density can be considered as a step function of y.
 This is because the thickness of the shock is on the order of a few molecular-mean-free paths \cite{babinsky_delery:2011}.
-Figure \ref{fig:refractive_index_vs_density} shows the relationship between the refractive index and density of air at specified conditions.
-The refractive index can be approximated as a linear function of the density and so the gradient of the refractive index step function is now a dirac delta function.
+From the linear relation of refractive index and density, the derivative of the step in refractive index is now a dirac delta function.
+When integrated over the thickness of the shock, this gives a constant angle of deflection.
 
 When this is integrated over the thickness of the shock, it gives a angle of deflection of the light ray which is proportional to the density gradient.
-This means that regions of 
+This means that regions of
 
 
 
@@ -267,7 +242,7 @@ The uncertainty in mass flow rate is calculated using the following equation.
 % dM2 = - 2 / g * rp ** (-((g-1)/g) - 1)
 The uncertainty in Mach number is calculated using the following equation.
 \begin{equation}
-    u(M) = u\left( \frac{p}{p_0} \right) \frac{d M ( p/p_0 ) }{d (p/p_0)} = u\left(\frac{p}{p_0}\right) \times - \frac{2}{\gamma}  \left( \frac{p}{p_0} \right) ^ {\frac{1}{\gamma}}
+    u(M) = u\left( \frac{p}{p_0} \right) \frac{d M ( p/p_0 ) }{d (p/p_0)} = u\left(\frac{p}{p_0}\right) \times \frac{2}{\gamma}  \left( \frac{p}{p_0} \right) ^ {\frac{1}{\gamma}}
 \end{equation}
 Further uncertainty analysis in the area ratio and stagnant pressure ratio accross the shock wave is covered in the appendix.
 Uncertainty analysis is not conducted for the location of the shock wave as this is already a very rough approximation due to boundary layer effects.
@@ -345,6 +320,13 @@ Uncertainty analysis is not conducted for the location of the shock wave as this
 
 \subsection{Part 1}
 
+
+
+From looking at Case 3 where the shock wave is to be expected in the nozzle divergence, the Mach number increases from the throat to the exit of the nozzle then gradually decreases again.
+The lack of sharp jump in pressure is thought to be due to a smearing effect in the interaction between the boundary layer and the shock wave.
+This is shown in figure \ref{fig:SBLI_pressure_smearing} where the pressure distribution is shown to be smeared out by compression waves in the boundary layer.
+The shock position is estimated to be at the point of Mach 1 behind the throat which is found to be at position 16.
+
 For run 3 of Part 1, determine the strength of the shock in the nozzle from its assumed location.
 Indicate the expected (inviscid) pressure jump across the shock on your graph.
 
@@ -393,9 +375,32 @@ provide what quality of predictions?
 What are the effects of viscosity in both experiments? Which experiment is more severely affected
 and why?
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \newpage
-
 \section{Appendix}
+
+\subsection{Schlieren visualisation analysis}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{dry_air_15_rho_vs_n.png}
+    \caption{Refractive index $n-1$ against density ratio $\rho/\rho_0$ for relative humidity $\phi = 50\%$, 450 ppm $ \text{CO}_2 $, wavelength $\lambda = 632.8$ nm. Figure produced from modified code \cite{refractiveindex_info} using equations by Ciddor, 1996 \cite{Ciddor:96}.}
+    \label{fig:refractive_index_vs_density}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{Mazumdar_Amrita_shlierien_refraction.png}
+    \caption{Top down view of light ray deflection by refractive indicies $n_2 < n_1$ and so gradient $\partial n/ \partial y < 0$ \cite{Mazumdar_Amrita:2013}.}
+    \label{fig:refraction_diagram}
+\end{figure}
+
+\begin{equation}
+    \epsilon_y = \frac{1}{n}\int \frac{\partial n}{\partial y} dz \;\;\;\;\;\; \epsilon_x = \frac{1}{n}\int \frac{\partial n}{\partial x} dz
+    \label{eqn:refractive_index_gradient}
+\end{equation}
+
+\subsection{Further uncertainty analysis}
 
 The following equations are used to calculate uncertainty in area ratio.
 
@@ -427,14 +432,6 @@ The following equations are used to correct for the drop in stagnation pressure 
 \end{equation}
 \footnotetext{Equations for derivatives \ref{eqn:dA_dM} and \ref{eqn:dp0sr_dm} were generated using SymPy from databook equations \cite{data_book}.}
 
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.6\textwidth]{dry_air_15_rho_vs_n.png}
-    \caption{Refractive index $n-1$ against density ratio $\rho/\rho_0$ for relative humidity $\phi = 50\%$, 450 ppm $ \text{CO}_2 $, wavelength $\lambda = 632.8$ nm. Figure produced from modified code \cite{refractiveindex_info} using equations by Ciddor, 1996 \cite{Ciddor:96}.}
-    \label{fig:refractive_index_vs_density}
-\end{figure}
-
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.6\textwidth]{SBLI_pressure_smearing.png}
@@ -444,10 +441,12 @@ The following equations are used to correct for the drop in stagnation pressure 
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.6\textwidth]{Graham_K_Webster_const_Cd_Re.png}
+    \includegraphics[width=0.8\textwidth]{Graham_K_Webster_const_Cd_Re.png}
     \caption{Constant discharge coefficient for high Reynolds numbers \cite{Graham_K_Webster:2019}.}
     \label{fig:const_Cd_Re}
 \end{figure}
+
+\newpage
 
 \bibliographystyle{plain}
 \bibliography{refs}
