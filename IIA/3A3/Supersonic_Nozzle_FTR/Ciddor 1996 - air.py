@@ -147,7 +147,7 @@ rho0 = P0/(R*T1)
 
 plt.figure(3)
 plt.plot(rho1 / rho0, n6-1, label="15 °C, 450 ppm CO2, 632.8 nm")
-plt.plot(rho2 / rho0, n7-1, label="25 °C, 450 ppm CO2, 632.8 nm")
+#plt.plot(rho2 / rho0, n7-1, label="25 °C, 450 ppm CO2, 632.8 nm")
 
 plt.xlabel('Air Density ratio $\\rho/\\rho_0$')
 plt.ylabel('$n-1$')

@@ -113,8 +113,17 @@ The static pressure ratio across the nozzle is given by the following equation.
     \frac{p}{p_0} = 1 - \frac{\rho_{Hg} g \Delta h}{p_0}
 \end{equation}
 
-\subsection{Mach number}
+\subsection{Compressible flow theory}
+Theory of 1D compressible flow can be used to predict flow behaviour in converging and diverging nozzles.
 The flow can be assumed to be adiabatic, and isentropic in cases 1, 2 and 4.
+It can also be taken to be isentropic up to the shock wave in case 3.
+The following equation can be derived from ???????????????????????????.
+\begin{equation}
+    (M^2 - 1)\frac{dV}{V} = \frac{dA}{A}
+\end{equation}
+This shows for a converging nozzle, $dA < 0$, the flow is either subsonic and accelerating, or supersonic and decelerating.
+For a diverging nozzle, $dA > 0$, the flow is either subsonic and decelerating, or supersonic and accelerating.
+
 For a given static pressure ratio across the nozzle, the Mach number can be found by rearanging the following equation.
 \begin{equation}
     \frac{p}{p_0} = \left( 1 + \frac{\gamma - 1}{2}M^2\right) ^ {-\frac{\gamma}{\gamma-1}} \implies M = \sqrt{\frac{2}{\gamma-1} \left( \left( \frac{p}{p_0}\right) ^ {-\frac{\gamma-1}{\gamma}} - 1\right)}
@@ -137,41 +146,41 @@ Where $M$ is the Mach number before the shock wave.
 
 \subsection{Schlieren visualisation technique}
 
-The setup for the schlieren visualisation technique is shown in figure \ref{fig:xz_shlierian}.
+The setup for the Schlieren visualisation technique is shown in figure \ref{fig:xz_shlierian}.
 The light source is placed at the focal point of the first mirror, such to get collimated light through the tunnel.
-The second mirror focuses the light onto a knife edge, which blocks the light from reaching the camera.
-Density gradients in the direction normal to the knife edge cause light rays to be deflected, and so some light reaches the camera.
+The second mirror focuses the light onto a knife edge, where density gradients in the direction normal to the knife edge cause light rays to be deflected, and so some light reaches the camera.
 Figure \ref{fig:xz_shlierian} shows rays deflected by horizontal density gradients are blocked by the knife edge.
 Figure \ref{fig:yz_shlierian} shows rays deflected by positive density gradients pass, but rays deflected by negative density gradients are blocked.
-
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.8\textwidth]{xz_shlierian.jpg}
-    \caption{Sketch of light rays passing through refractive index gradient in xz plane.}
+    \caption{Sketch of light rays passing through refractive index gradient in XZ plane.}
     \label{fig:xz_shlierian}
 \end{figure}
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.7\textwidth]{yz_shlierian.jpg}
-    \caption{Sketch of light rays passing through refractive index gradient in yz plane.}
+    \includegraphics[width=0.8\textwidth]{yz_shlierian.jpg}
+    \caption{Sketch of light rays passing through refractive index gradient in YZ plane.}
     \label{fig:yz_shlierian}
 \end{figure}
 
-Equations \ref{eqn:refractive_index_gradient} derived by Mazumdar \cite{Mazumdar_Amrita:2013} indicate it is not the refractive index $n$ causing ray deflection, but the gradient $\partial n / \partial y$ of this refractive index, and that light ray deflections bend towards regions of higher refractive index.
+Equations \ref{eqn:refractive_index_gradient} derived by Mazumdar \cite{Mazumdar_Amrita:2013} shown in the appendix, indicate it is not the refractive index, $n$, causing ray deflection, but the gradient $\partial n / \partial y$ of this refractive index.
+It is also explained that light ray deflections bend towards regions of higher refractive index.
 The relation between the refractive index and density of air is shown to be approximately linear in figure \ref{fig:refractive_index_vs_density} from literature \cite{refractiveindex_info} \cite{Ciddor:96}.
 
 Considering a normal shock wave, the density can be considered as a step function of y.
 This is because the thickness of the shock is on the order of a few molecular-mean-free paths \cite{babinsky_delery:2011}.
-From the linear relation of refractive index and density, the derivative of the step in refractive index is now a dirac delta function.
-When integrated over the thickness of the shock, this gives a constant angle of deflection.
+From the linear relation of refractive index and density, the refractive index is also a step function, and so its derivative is a dirac delta function.
+When integrated over the thickness of the shock, as in equation \ref{eqn:refractive_index_gradient}, this gives an angle of deflection proportional to density gradient.
+This means that wider, darker bands with a larger angle of deflection correspond to regions of higher density gradient, and so stronger shock waves.
 
-When this is integrated over the thickness of the shock, it gives a angle of deflection of the light ray which is proportional to the density gradient.
-This means that regions of
+For regions of negetive density gradient, the light rays are deflected towards the knife edge and so are blocked, and so appear dark in the image.
+For regions of positive density gradient, the light rays are deflected away from the knife edge and so pass through, and so appear bright in the image.
 
-
-
+A normal shock down the tunnel has a positive density gradient in the $x$ direction, and little density gradient in the $y$ direction.
+This means the knife edge should be placed vertically in the image, and the shock wave should appear as a dark band, with a light band in the downstream direction of it.
 
 \section{Method}
 \subsection{Part 1}
@@ -248,8 +257,26 @@ Further uncertainty analysis in the area ratio and stagnant pressure ratio accro
 Uncertainty analysis is not conducted for the location of the shock wave as this is already a very rough approximation due to boundary layer effects.
 
 \subsection{Part 2}
-\subsubsection{Procedure}
+
 \subsubsection{Apparatus}
+
+Setup in the supersonic wind tunnel is shown in figure \ref{fig:supersonic_tunnel}.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{flow_layout.png}
+    \caption{Supersonic wind tunnel layout and location of static and pitot pressure sensors.}
+    \label{fig:supersonic_tunnel}
+\end{figure}
+
+Digital pressure sensors were used to measure the static and stagnation pressure in the working section.
+An additional sensor was used far upstream in the settling chamber to measure the stagnation pressure of the incoming flow.
+
+\subsubsection{Procedure}
+
+Started recording the pressure sensors and then turned on the tunnel.
+Schlieren images were taken of the normal shockwave on startup and working state of the tunnel.
+The tunnel was then turned off and after pressure returned to atmospheric, recording was stopped.
 
 \section{Results}
 
@@ -339,7 +366,9 @@ cross-sectional area at the throat of the nozzle is approximately 24 mm2).
 \subsection{Part 2}
 
 Figure \ref{fig:figure6} shows the shock wave in the working section of the supersonic wind tunnel before the pressure sensors.
-Shock waves of high density gradient are visible in the image from dark regions of the shadowgraph, where darker regions indicate stronger shock waves.
+It can be observed that behind there is a dark band with a light band on the right hand side.
+This confirms the expected positive density gradient in the x direction.
+It can also be observed that the bands of the normal shock are the widest and most distinct, indicating that this is the largest density gradient, and the strongest shock.
 At the boundary layers at the top and bottom of the tunnel, the flow appears to travel through two shockwaves.
 After the first shockwave the flow near the boundary layer is subsonic, but then must be accelerated again to supersonic speeds before the second, weaker shock.
 
