@@ -8,6 +8,7 @@
 \usepackage{float}
 \usepackage{caption}
 \usepackage{subcaption}
+\usepackage{hyperref}
 % set font size to 11pt
 % set margin
 \usepackage[margin=0.5in]{geometry}
@@ -29,6 +30,8 @@
     % write a brief summary of the experiment and the results
     Uhm this is the abstract which will be written at the end!
 \end{abstract}
+
+\newpage
 
 \section{Introduction}
 
@@ -128,10 +131,6 @@ For a given static pressure ratio across the nozzle, the Mach number can be foun
 \begin{equation}
     \frac{p}{p_0} = \left( 1 + \frac{\gamma - 1}{2}M^2\right) ^ {-\frac{\gamma}{\gamma-1}} \implies M = \sqrt{\frac{2}{\gamma-1} \left( \left( \frac{p}{p_0}\right) ^ {-\frac{\gamma-1}{\gamma}} - 1\right)}
 \end{equation}
-And then the nozzil area ratio can be found using the following equation from the Mach number found above.
-\begin{equation}
-    \frac{A}{A^*} = \frac{1}{M} \left( \frac{2}{\gamma+1} \left( 1 + \frac{\gamma-1}{2}M^2\right) \right) ^ {\frac{\gamma+1}{2(\gamma-1)}}
-\end{equation}
 There is a normal shock wave in case 3 and so the flow is not isentropic, however the location can be estimated, and drop in stagnation pressure accross the shock wave can be accounted for.
 This is done by dividing the original static pressure ratio by the ratio of stagnation pressures accross the shock wave.
 \begin{equation}
@@ -143,6 +142,20 @@ The stagnation pressure ratio accross the shock wave is given in the databook \c
     \frac{p_{0s}}{p_0} = \left( \frac{\frac{\gamma+1}{2}M^2}{1 + \frac{\gamma-1}{2}M^2}\right) ^ \frac{\gamma}{\gamma-1} \left( \frac{2\gamma}{\gamma+1} M^2 - \frac{\gamma-1}{\gamma+1}\right) ^ \frac{1}{1 - \gamma}
 \end{equation}
 Where $M$ is the Mach number before the shock wave.
+The nozzil area ratio can also be found using the following equation from the Mach number.
+\begin{equation}
+    \frac{A}{A^*} = \frac{1}{M} \left( \frac{2}{\gamma+1} \left( 1 + \frac{\gamma-1}{2}M^2\right) \right) ^ {\frac{\gamma+1}{2(\gamma-1)}}
+\end{equation}
+However, using the value of $\dot{m}$ calculated from the pressure drop across the oriface plate, the exact area at any point can be found using the dimensionless mass flow rate given below.
+\begin{equation}
+    A = \frac{\dot{m}\sqrt{C_pT_0}}{p_0} \left( \frac{\dot{m}\sqrt{c_pT_0}}{p_0A} \right)^{-1}
+    \label{eqn:area}
+\end{equation}
+As $C_p$, $T_0$ and $p_0$ are known, the area can be found from the Mach number.
+This is only a function of the Mach number, as seen below
+\begin{equation}
+    \frac{\dot{m}\sqrt{c_pT_0}}{p_0A} = \frac{\gamma}{\sqrt{\gamma-1}} M \left(1 + \frac{\gamma - 1}{2} M^2 \right) ^ {- \frac{1}{2}\frac{\gamma + 1}{\gamma - 1}} 
+\end{equation}
 
 \subsection{Schlieren visualisation technique}
 
@@ -251,9 +264,13 @@ The uncertainty in mass flow rate is calculated using the following equation.
 % dM2 = - 2 / g * rp ** (-((g-1)/g) - 1)
 The uncertainty in Mach number is calculated using the following equation.
 \begin{equation}
-    u(M) = u\left( \frac{p}{p_0} \right) \frac{d M ( p/p_0 ) }{d (p/p_0)} = u\left(\frac{p}{p_0}\right) \times \frac{2}{\gamma}  \left( \frac{p}{p_0} \right) ^ {\frac{1}{\gamma}}
+    u(M) = u\left( \frac{p}{p_0} \right) \frac{d M ( p/p_0 ) }{d (p/p_0)} = u\left(\frac{p}{p_0}\right) \frac{2}{\gamma}  \left( \frac{p}{p_0} \right) ^ {\frac{1}{\gamma}}
 \end{equation}
-Further uncertainty analysis in the area ratio and stagnant pressure ratio accross the shock wave is covered in the appendix.
+The uncertainty for area calculated from dimensionless mass flow rate in equation \ref{eqn:area} is calculated using the following equation.
+\begin{equation}
+    u(A) = u(\dot{m}) + u(\frac{\dot{m}\sqrt{c_pT_0}}{p_0A}) + u(T_0) + u(p_0)
+\end{equation}
+Further uncertainty analysis in dimensionless mass flow rate, area ratio and stagnant pressure ratio accross the shock wave is covered in the appendix.
 Uncertainty analysis is not conducted for the location of the shock wave as this is already a very rough approximation due to boundary layer effects.
 
 \subsection{Part 2}
@@ -281,18 +298,18 @@ The tunnel was then turned off and after pressure returned to atmospheric, recor
 \section{Results}
 
 \begin{center}
-    \begin{tabular}{|c|c|c|c|c|}
+    \begin{tabular}{|c|c|c|c|c|c|}
     \hline 
-    Case & Throat Mach No.  & Exit Mach No. & Mass flow rate & Calculated Throat Area\\
-     & (-) & (-) & $\times 10^{-3}$ kg/s & $mm^2$ \\
+    Case & Throat Mach No.  & Exit Mach No. & Mass flow rate & Throat Area & Exit Area\\
+     & (-) & (-) & $\times 10^{-3}$ kg/s & $mm^2$ & $mm^2$ \\
     \hline 
-    1 & $0.602\pm 0.003$ & $0.491\pm 0.005$ & $ 4.25\pm 0.42  $ & \\
-    2 & $1.063\pm 0.017$ & $0.715\pm 0.007$ & $ 4.96\pm 0.36  $ & \\
-    3 & $1.063\pm 0.017$ & $0.800\pm 0.036$ & $ 4.96\pm 0.36 $ & \\
-    4 & $1.068\pm 0.017$ & $1.420\pm 0.064$ & $ 4.96\pm 0.36 $ & \\
+    1 & $0.602\pm 0.003$ & $0.491\pm 0.005$ & $ 4.25\pm 0.42  $ & $21.86 \pm 2.30 $ & $25.02 \pm 2.65 $ \\
+    2 & $1.063\pm 0.017$ & $0.715\pm 0.007$ & $ 4.96\pm 0.36  $ & $21.57 \pm 1.63 $ & $23.30 \pm 1.82 $ \\
+    3 & $1.063\pm 0.017$ & $0.800\pm 0.036$ & $ 4.96\pm 0.36 $ & $21.57 \pm 1.63 $ & $22.32 \pm 2.03 $ \\
+    4 & $1.068\pm 0.017$ & $1.420\pm 0.064$ & $ 4.96\pm 0.36 $ & $21.58 \pm 1.63 $ & $24.21 \pm 2.68 $ \\
     \hline
     \end{tabular}
-    \captionof{table}{Exit and throat Mach numbers for each case.}
+    \captionof{table}{Mass flow rates, Mach numbers and nozzle areas for throat and exit for each case.}
     \label{tab:1}
 \end{center}
 
@@ -347,8 +364,6 @@ The tunnel was then turned off and after pressure returned to atmospheric, recor
 
 \subsection{Part 1}
 
-
-
 From looking at Case 3 where the shock wave is to be expected in the nozzle divergence, the Mach number increases from the throat to the exit of the nozzle then gradually decreases again.
 The lack of sharp jump in pressure is thought to be due to a smearing effect in the interaction between the boundary layer and the shock wave.
 This is shown in figure \ref{fig:SBLI_pressure_smearing} where the pressure distribution is shown to be smeared out by compression waves in the boundary layer.
@@ -357,11 +372,9 @@ The shock position is estimated to be at the point of Mach 1 behind the throat w
 For run 3 of Part 1, determine the strength of the shock in the nozzle from its assumed location.
 Indicate the expected (inviscid) pressure jump across the shock on your graph.
 
-Using your measurement of mass flow in Part 1, calculate the cross-sectional areas of the throat and at
-the nozzle exit for each run. In the case of Run 3 you need to first determine the expected stagnation
-pressure drop through the shock wave before calculating the nozzle exit area. You should then attempt
-to explain any differences you may find between the results of the different runs (note that the actual
-cross-sectional area at the throat of the nozzle is approximately 24 mm2).
+% Using your measurement of mass flow in Part 1, calculate the cross-sectional areas of the throat and at the nozzle exit for each run.
+% In the case of Run 3 you need to first determine the expected stagnation pressure drop through the shock wave before calculating the nozzle exit area. 
+% You should then attempt to explain any differences you may find between the results of the different runs (note that the actual cross-sectional area at the throat of the nozzle is approximately 24 mm2).
 
 \subsection{Part 2}
 
@@ -391,18 +404,19 @@ It seems that the flow after the shock is at a higher Mach number than expected 
 The pitot probe should show an increase in stagnation pressure after the shock wave passes, however it can be observed that this remains nearly unchanged.
 The expected stagnation pressure ratio downstream of the shock can be calculated from Equation 8 for Mach 1.5 and is found to be 0.9298. This very close to the value seen, however after the shock passes the stagnation pressure ratio should increase back to 1.0.
 It can be observed from figure \ref{fig:figure7} that a bow shock forms in front of the pitot probe and so the shock effectively never passes the probe, which explains why the stagnant pressure ratio does not increase back up to 1.0.
+This is why the ratio of Pitot pressure to inlet stagnation pressure is almost independent of shock position.
 
-Compare the two experiments. Are there any findings that can be related from one experiment to the other?
-What have you learned about the interaction of a shock wave with a boundary layer?
+\subsection{Comparison of Part 1 and Part 2}
+% Compare the two experiments. Are there any findings that can be related from one experiment to the other?
+% What have you learned about the interaction of a shock wave with a boundary layer?
+
 
 \section{Conclusion}
 % Comment on the validity of one-dimensional theory in nozzle flows. When can it be expected to provide what quality of predictions?
 % What are the effects of viscosity in both experiments? Which experiment is more severely affected and why?
 
-Comment on the validity of one-dimensional theory in nozzle flows. When can it be expected to
-provide what quality of predictions?
-What are the effects of viscosity in both experiments? Which experiment is more severely affected
-and why?
+% Comment on the validity of one-dimensional theory in nozzle flows. When can it be expected to provide what quality of predictions?
+% What are the effects of viscosity in both experiments? Which experiment is more severely affected and why?
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \newpage
@@ -431,15 +445,20 @@ and why?
 
 \subsection{Further uncertainty analysis}
 
-The following equations are used to calculate uncertainty in area ratio.
+The following equations are used to calculate uncertainty in nozzle area.
 
 \begin{equation}
-    u(A) = u(A^*) + u\left( \frac{A}{A^*} \right) = u(A^*) + u(M) \frac{d}{dM}\left( \frac{A}{A^*} \right)
+    u\left( \frac{A}{A^*} \right) = u(M) \frac{d}{dM}\left( \frac{A}{A^*} \right) \;\;\;\;\;\;\;\;\;\;\;\; u\left( \frac{\dot{m}\sqrt{c_pT_0}}{p_0A} \right) = u(M) \frac{d}{dM}\left( \frac{\dot{m}\sqrt{c_pT_0}}{p_0A} \right)
 \end{equation}
 
 \begin{equation}
     \frac{d}{dM}\left( \frac{A}{A^*} \right) = \frac{2 \left(\frac{2 \left(M^{2} \left(\frac{\gamma}{2} - \frac{1}{2}\right) + 1\right)}{\gamma + 1}\right)^{\frac{\gamma + 1}{2 \gamma - 2}} \left(\frac{\gamma}{2} - \frac{1}{2}\right) \left(\gamma + 1\right)}{\left(2 \gamma - 2\right) \left(M^{2} \left(\frac{\gamma}{2} - \frac{1}{2}\right) + 1\right)} - \frac{\left(\frac{2 \left(M^{2} \left(\frac{\gamma}{2} - \frac{1}{2}\right) + 1\right)}{\gamma + 1}\right)^{\frac{\gamma + 1}{2 \gamma - 2}}}{M^{2}}
     \label{eqn:dA_dM}
+\end{equation}
+
+\begin{equation}
+    \frac{d}{dM}\left( \frac{\dot{m}\sqrt{c_pT_0}}{p_0A} \right) = \frac{2 M^{2} \gamma \left(- \gamma - 1\right) \left(\frac{\gamma}{2} - \frac{1}{2}\right) \left(M^{2} \left(\frac{\gamma}{2} - \frac{1}{2}\right) + 1\right)^{\frac{- \gamma - 1}{2 \gamma - 2}}}{\sqrt{\gamma - 1} \cdot \left(2 \gamma - 2\right) \left(M^{2} \left(\frac{\gamma}{2} - \frac{1}{2}\right) + 1\right)} + \frac{\gamma \left(M^{2} \left(\frac{\gamma}{2} - \frac{1}{2}\right) + 1\right)^{\frac{- \gamma - 1}{2 \gamma - 2}}}{\sqrt{\gamma - 1}}
+    \label{eqn:dmdot_dM}
 \end{equation}
 
 The following equations are used to correct for the drop in stagnation pressure accross the shock wave in Case 3.
@@ -459,7 +478,8 @@ The following equations are used to correct for the drop in stagnation pressure 
     \end{aligned}
     \label{eqn:dp0sr_dm}
 \end{equation}
-\footnotetext{Equations for derivatives \ref{eqn:dA_dM} and \ref{eqn:dp0sr_dm} were generated using SymPy from databook equations \cite{data_book}.}
+
+\footnotetext{Equations for derivatives \ref{eqn:dA_dM}, \ref{eqn:dmdot_dM} and \ref{eqn:dp0sr_dm} were generated using SymPy from databook equations \cite{data_book}.}
 
 \begin{figure}[H]
     \centering
@@ -474,8 +494,6 @@ The following equations are used to correct for the drop in stagnation pressure 
     \caption{Constant discharge coefficient for high Reynolds numbers \cite{Graham_K_Webster:2019}.}
     \label{fig:const_Cd_Re}
 \end{figure}
-
-\newpage
 
 \bibliographystyle{plain}
 \bibliography{refs}
