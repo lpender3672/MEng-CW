@@ -28,7 +28,12 @@
 \begin{abstract}
     \centering
     % write a brief summary of the experiment and the results
-    Uhm this is the abstract which will be written at the end!
+    Theory of 1D compressible flow for convergent divergent nozzles was discussed and compared to experimental results.
+    The static pressure distribution along the nozzle was measured for four different flow cases, for which choking points and a normal shock were observed.
+    Theory of mass flow rate through an orifice plate and the discharge coefficient was discussed and used to calculate the mass flow rate through the nozzle.
+    Extensive uncertainty analysis was conducted for all measurements and results.
+    Optical theory of the Schlieren visualisation technique was discussed and used to visualise the normal shock wave in the supersonic wind tunnel.
+    Measurements of stagnation and static pressure of the free stream in the wind tunnel were taken and explained by compressible flow theory.
 \end{abstract}
 
 \newpage
@@ -50,7 +55,7 @@ This is also done at a smaller scale through dimensional analysis which signific
 
 \begin{itemize}
     \item To study the static pressure distribution in a converging-diverging nozzle for 4 different pressure ratios across the nozzle.
-    \item To appreciate the validity and limitations of one-dimensional, adiabatic, inviscid theory for calculating mass flow rate from the pressure drop across an oriface plate.
+    \item To appreciate the validity and limitations of one-dimensional, adiabatic, inviscid theory for calculating mass flow rate from the pressure drop across an orifice plate.
     \item To obtain 10 marks for the full technical report.
 \end{itemize}
 
@@ -59,7 +64,7 @@ This is also done at a smaller scale through dimensional analysis which signific
 % equations in the later sections. (You need not derive these relationships but you should explain in words why
 % they are needed and reference their source).
 
-\subsection{Mass flow rate though oriface plate}
+\subsection{Mass flow rate though orifice plate}
 
 The following assumptions are made to derive a relationship for the mass flow rate through an orifice plate.
 \begin{itemize}
@@ -76,7 +81,7 @@ water manometer. By applying the Bernoulli equation from the upstream atmosphere
     p_1 = p_2 + \frac{1}{2} \rho_a v_2^2
 \end{equation}
 
-Where $A$ and $v_2$ are the cross-sectional area, and velocity at the orifice. The pressure in the centre of the oriface is taken to be equal to the value measured at the wall, due to the assumption that the velocity is uniform across the oriface plane.
+Where $A$ and $v_2$ are the cross-sectional area, and velocity at the orifice. The pressure in the centre of the orifice is taken to be equal to the value measured at the wall, due to the assumption that the velocity is uniform across the orifice plane.
 The theoretical mass flow rate through the orifice is then given by the following equation.
 \begin{equation}
     \dot{m}_{ideal} = \rho_a A v_2 = \rho_a \left( \frac{\pi D^2}{4}\right) \sqrt{\frac{2(p_1-p_2)}{\rho_a}} \;\;\;\;\;\; \text{where} \;\;\;\;\;\ p_2 - p_1 = \rho_w g \Delta h
@@ -120,24 +125,26 @@ The static pressure ratio across the nozzle is given by the following equation.
 Theory of 1D compressible flow can be used to predict flow behaviour in converging and diverging nozzles.
 The flow can be assumed to be adiabatic, and isentropic in cases 1, 2 and 4.
 It can also be taken to be isentropic up to the shock wave in case 3.
-The following equation can be derived from ???????????????????????????.
+The following equation can be derived from considering the differential forms of continuity and ideal gas relations.
 \begin{equation}
     (M^2 - 1)\frac{dV}{V} = \frac{dA}{A}
+    \label{eqn:condiv_theory}
 \end{equation}
-This shows for a converging nozzle, $dA < 0$, the flow is either subsonic and accelerating, or supersonic and decelerating.
+This shows for a converging nozzle where $dA < 0$, the flow is either subsonic and accelerating, or supersonic and decelerating.
 For a diverging nozzle, $dA > 0$, the flow is either subsonic and decelerating, or supersonic and accelerating.
 
 For a given static pressure ratio across the nozzle, the Mach number can be found by rearanging the following equation.
 \begin{equation}
     \frac{p}{p_0} = \left( 1 + \frac{\gamma - 1}{2}M^2\right) ^ {-\frac{\gamma}{\gamma-1}} \implies M = \sqrt{\frac{2}{\gamma-1} \left( \left( \frac{p}{p_0}\right) ^ {-\frac{\gamma-1}{\gamma}} - 1\right)}
 \end{equation}
-There is a normal shock wave in case 3 and so the flow is not isentropic, however the location can be estimated, and drop in stagnation pressure accross the shock wave can be accounted for.
-This is done by dividing the original static pressure ratio by the ratio of stagnation pressures accross the shock wave.
+
+For case 3 there is thought to be a normal shock wave and so the flow is not isentropic, however the location can be estimated, and drop in stagnation pressure across the shock wave can be accounted for.
+This is done by dividing the original static pressure ratio by the ratio of stagnation pressures across the shock wave.
 \begin{equation}
     \frac{p}{p_{0s}} = \frac{p/p_0}{p_{0s}/p_0}
 \end{equation}
 The stagnant pressure before and after the shock is given by $p_0$ and $p_{0s}$ respectively.
-The stagnation pressure ratio accross the shock wave is given in the databook \cite{data_book}.
+The stagnation pressure ratio across the shock wave is given in the databook \cite{data_book}.
 \begin{equation}
     \frac{p_{0s}}{p_0} = \left( \frac{\frac{\gamma+1}{2}M^2}{1 + \frac{\gamma-1}{2}M^2}\right) ^ \frac{\gamma}{\gamma-1} \left( \frac{2\gamma}{\gamma+1} M^2 - \frac{\gamma-1}{\gamma+1}\right) ^ \frac{1}{1 - \gamma}
 \end{equation}
@@ -146,7 +153,7 @@ The nozzil area ratio can also be found using the following equation from the Ma
 \begin{equation}
     \frac{A}{A^*} = \frac{1}{M} \left( \frac{2}{\gamma+1} \left( 1 + \frac{\gamma-1}{2}M^2\right) \right) ^ {\frac{\gamma+1}{2(\gamma-1)}}
 \end{equation}
-However, using the value of $\dot{m}$ calculated from the pressure drop across the oriface plate, the exact area at any point can be found using the dimensionless mass flow rate given below.
+However, using the value of $\dot{m}$ calculated from the pressure drop across the Orifice plate, the exact area at any point can be found using the dimensionless mass flow rate given below.
 \begin{equation}
     A = \frac{\dot{m}\sqrt{C_pT_0}}{p_0} \left( \frac{\dot{m}\sqrt{c_pT_0}}{p_0A} \right)^{-1}
     \label{eqn:area}
@@ -189,7 +196,7 @@ From the linear relation of refractive index and density, the refractive index i
 When integrated over the thickness of the shock, as in equation \ref{eqn:refractive_index_gradient}, this gives an angle of deflection proportional to density gradient.
 This means that wider, darker bands with a larger angle of deflection correspond to regions of higher density gradient, and so stronger shock waves.
 
-For regions of negetive density gradient, the light rays are deflected towards the knife edge and so are blocked, and so appear dark in the image.
+For regions of negative density gradient, the light rays are deflected towards the knife edge and so are blocked, and so appear dark in the image.
 For regions of positive density gradient, the light rays are deflected away from the knife edge and so pass through, and so appear bright in the image.
 
 A normal shock down the tunnel has a positive density gradient in the $x$ direction, and little density gradient in the $y$ direction.
@@ -220,38 +227,38 @@ This means the knife edge should be placed vertically in the image, and the shoc
 The apparatus used in this experiment is shown in figure \ref{fig:flow_layout}.
 A control valve is used to control the pressure of the air downstream of the nozzle. By closing the valve, the pressure downstream of the nozzle decreases, and so pressure ratio across the nozzle increases.
 The pressure at each tapping along the nozzle is measured using a series of 19 vertical mercury manometers.
-The pressure difference accross the oriface is a smaller pressure drop and so is measured using a vertical water manometer.
+The pressure difference across the orifice is a smaller pressure drop and so is measured using a vertical water manometer.
 
 \subsubsection{Procedure}
 
 Values for temperature and atmospheric pressure were taken from a gauge and mercury manometer in the lab.
 A preliminary experiment was conducted to determine the pressure ratio at which the nozzle is choked.
-This was done by closing the valve and increasing the pressure ratio across the nozzle until there was no change in the oriface plate manometer readings.
+This was done by closing the valve and increasing the pressure ratio across the nozzle until there was no change in the orifice plate manometer readings.
 This approximate height difference of the manometer at the choking point was then recorded.
 
 Then the first operating point was reached by setting the height difference of the manometer to $70\%$ of that of the choking point.
 This took a few iterations of adjusting the control valve, waiting for the water manometer to settle and reading both manometers to find the height difference.
-After a stable setpoint is reached, the measured oriface manometer height readings were recorded. 
+After a stable setpoint is reached, the measured orifice manometer height readings were recorded. 
 Then all 19 manometer wall tappings and the atmospheric were recorded.
 It was noted that tapping 8 had the lowest pressure and so was taken to be the throat of the nozzle.
 
 The second operating point was then reached by setting the height difference of the manometer that of the choking point.
-Recording of oriface manometer height readings and all 19 manometer wall tappings and the atmospheric were repeated.
+Recording of orifice manometer height readings and all 19 manometer wall tappings and the atmospheric were repeated.
 
 The third operating point is when a shock forms in the diverging part of the nozzle. The valve was closed until the manometer height at the throat, at tapping 8, was equal to the height at tapping 16.
 This was because the location of the shock wave was approximated to be where the flow dropped below Mach 1.
 This was found to be particularly difficult as the manometer height at tapping 16 was very sensitive to changes in the valve position.
-A sufficient setpoint was found and the oriface plate manometer height readings were recorded.
+A sufficient setpoint was found and the orifice plate manometer height readings were recorded.
 Then again all 19 manometer wall tappings and the atmospheric were recorded.
 
 The fourth and final run was conducted by closing the valve entirely so there was maximum pressure ratio across the nozzle.
-Then the oriface plate manometer heights, all 19 manometer wall tappings and the atmospheric were recorded.
+Then the orifice plate manometer heights, all 19 manometer wall tappings and the atmospheric were recorded.
 
 \subsection{Uncertainty}
 
 Naturally, there are sources of uncertainty in all measurements taken and so it is important for all calculations to include an estimate of the uncertainty in the final result.
 The uncertainty equations are derived from the equation for the quantity being calculated.
-To simplify the analysis the uncertainty in the discharge coefficient and densities of water and mercury are assumed to be negligible.
+To simplify the analysis the densities of water and mercury are assumed to be negligible.
 The uncertainty in pressure ratio is calculated using the following equation.
 \begin{equation}
     u\left( \frac{p}{p_0} \right) = u(\rho_{Hg}) + u(\Delta h) + u(p_0)
@@ -270,18 +277,18 @@ The uncertainty for area calculated from dimensionless mass flow rate in equatio
 \begin{equation}
     u(A) = u(\dot{m}) + u(\frac{\dot{m}\sqrt{c_pT_0}}{p_0A}) + u(T_0) + u(p_0)
 \end{equation}
-Further uncertainty analysis in dimensionless mass flow rate, area ratio and stagnant pressure ratio accross the shock wave is covered in the appendix.
+Further uncertainty analysis in dimensionless mass flow rate, area ratio and stagnant pressure ratio across the shock wave is covered in the appendix.
 Uncertainty analysis is not conducted for the location of the shock wave as this is already a very rough approximation due to boundary layer effects.
 
 \subsection{Part 2}
 
 \subsubsection{Apparatus}
 
-Setup in the supersonic wind tunnel is shown in figure \ref{fig:supersonic_tunnel}.
+Layout of the supersonic wind tunnel is shown in figure \ref{fig:supersonic_tunnel}.
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.8\textwidth]{flow_layout.png}
+    \includegraphics[width=0.8\textwidth]{tunnel_layout_placeholder.png}
     \caption{Supersonic wind tunnel layout and location of static and pitot pressure sensors.}
     \label{fig:supersonic_tunnel}
 \end{figure}
@@ -303,10 +310,10 @@ The tunnel was then turned off and after pressure returned to atmospheric, recor
     Case & Throat Mach No.  & Exit Mach No. & Mass flow rate & Throat Area & Exit Area\\
      & (-) & (-) & $\times 10^{-3}$ kg/s & $mm^2$ & $mm^2$ \\
     \hline 
-    1 & $0.602\pm 0.003$ & $0.491\pm 0.005$ & $ 4.25\pm 0.42  $ & $21.86 \pm 2.30 $ & $25.02 \pm 2.65 $ \\
-    2 & $1.063\pm 0.017$ & $0.715\pm 0.007$ & $ 4.96\pm 0.36  $ & $21.57 \pm 1.63 $ & $23.30 \pm 1.82 $ \\
-    3 & $1.063\pm 0.017$ & $0.800\pm 0.036$ & $ 4.96\pm 0.36 $ & $21.57 \pm 1.63 $ & $22.32 \pm 2.03 $ \\
-    4 & $1.068\pm 0.017$ & $1.420\pm 0.064$ & $ 4.96\pm 0.36 $ & $21.58 \pm 1.63 $ & $24.21 \pm 2.68 $ \\
+    1 & $0.602\pm 0.003$ & $0.491\pm 0.005$ & $ 4.25\pm 0.42  $ & $21.86 \pm 2.48 $ & $25.02 \pm 2.85 $ \\
+    2 & $1.063\pm 0.017$ & $0.715\pm 0.007$ & $ 4.96\pm 0.36  $ & $21.57 \pm 1.80 $ & $23.30 \pm 2.01 $ \\
+    3 & $1.063\pm 0.017$ & $0.800\pm 0.036$ & $ 4.96\pm 0.36 $ & $21.57 \pm 1.80 $ & $22.32 \pm 2.21 $ \\
+    4 & $1.068\pm 0.017$ & $1.420\pm 0.064$ & $ 4.96\pm 0.36 $ & $21.58 \pm 1.81 $ & $24.21 \pm 2.87 $ \\
     \hline
     \end{tabular}
     \captionof{table}{Mass flow rates, Mach numbers and nozzle areas for throat and exit for each case.}
@@ -340,7 +347,6 @@ The tunnel was then turned off and after pressure returned to atmospheric, recor
         \centering
         \includegraphics[width=1\textwidth]{../Supersonic_Nozzle/shadowgraph_annotations/slide1.PNG}
         \caption{Shock wave in working section before sensors}
-
         \label{fig:figure6}
     \end{subfigure}
     ~
@@ -364,10 +370,15 @@ The tunnel was then turned off and after pressure returned to atmospheric, recor
 
 \subsection{Part 1}
 
-From looking at Case 3 where the shock wave is to be expected in the nozzle divergence, the Mach number increases from the throat to the exit of the nozzle then gradually decreases again.
-The lack of sharp jump in pressure is thought to be due to a smearing effect in the interaction between the boundary layer and the shock wave.
-This is shown in figure \ref{fig:SBLI_pressure_smearing} where the pressure distribution is shown to be smeared out by compression waves in the boundary layer.
-The shock position is estimated to be at the point of Mach 1 behind the throat which is found to be at position 16.
+Experimental results of flow behaviour for cases 1, 2 and 4 agree nicely with theory predicted for convergent and divergent sections of the nozzle.
+However, case 3 shows a deceleration of supersonic flow in the divergent section of the nozzle, which is thought to be due to the formation of a normal shock wave.
+This was also considered in the theoretical analysis and so drop in stagnation pressure ratio is corrected for in the results.
+
+From theory of 1D normal shocks, it would be expected to see a sudden drop, indicated by the black band on the pressure graph in figure \ref{fig:pressure_distribution}
+This lack of sharp jump in pressure is thought to be due to a smearing effect of the pressure at the wall, where the tappings are.
+In figure \ref{fig:SBLI_pressure_smearing} the pressure distribution at the wall is shown to be smeared out by compression waves in the boundary layer.
+The shock position is estimated to be at the point of Mach 1, which is an average of the Mach number before and after the shock.
+This taken to be at position 16 and is indicated by the black dotted line on figure \ref{fig:pressure_distribution}.
 
 For run 3 of Part 1, determine the strength of the shock in the nozzle from its assumed location.
 Indicate the expected (inviscid) pressure jump across the shock on your graph.
@@ -395,10 +406,10 @@ This may be due to the boundary layer growing and then shrinking rapidly, acting
 The second vertical red line shows where the shock wave passes the sensors and static pressure drops significantly.
 
 After the shock has passed, the bottom green line shows a static pressure ratio of around $p/p_0 = 0.275$. This corresponds to a Mach number of 1.49, which is very close to the set operating point of Mach 1.5.
-From the databook, at Mach 1.5 the pressure ratio accross the shock should be $p_s/p = 2.4583$.
+From the databook, at Mach 1.5 the pressure ratio across the shock should be $p_s/p = 2.4583$.
 Multiplying this by the measured static pressure ratio after the shock passes, gives us the theoetical static pressure ratio before the shock passed, which is $p_s/p_0 = 0.275 \times 2.4583 = 0.676$, and is shown by the orange horizontal line.
 The actual pressure ratio behind the shock, given by the pressure at the time before the shock passes the sensors, is shown by the top green line at $p_s/p_0 = 0.59$.
-This shows that the actual pressure drop accross the shock is less than the theoretical value for Mach 1.5.
+This shows that the actual pressure drop across the shock is less than the theoretical value for Mach 1.5.
 It seems that the flow after the shock is at a higher Mach number than expected due to the boundary layer effects.
 
 The pitot probe should show an increase in stagnation pressure after the shock wave passes, however it can be observed that this remains nearly unchanged.
@@ -417,6 +428,8 @@ This is why the ratio of Pitot pressure to inlet stagnation pressure is almost i
 
 % Comment on the validity of one-dimensional theory in nozzle flows. When can it be expected to provide what quality of predictions?
 % What are the effects of viscosity in both experiments? Which experiment is more severely affected and why?
+
+One dimensional flow theory shows good agreement experimental results for convergent divergent nozzle flows.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \newpage
@@ -461,7 +474,7 @@ The following equations are used to calculate uncertainty in nozzle area.
     \label{eqn:dmdot_dM}
 \end{equation}
 
-The following equations are used to correct for the drop in stagnation pressure accross the shock wave in Case 3.
+The following equations are used to correct for the drop in stagnation pressure across the shock wave in Case 3.
 
 \begin{equation}
     \frac{p_{0s}}{p_0} = \left( \frac{\frac{\gamma+1}{2}M^2}{1 + \frac{\gamma-1}{2}M^2}\right) ^ \frac{\gamma}{\gamma-1} \left( \frac{2\gamma}{\gamma+1} M^2 - \frac{\gamma-1}{\gamma+1}\right) ^ \frac{1}{1 - \gamma}
