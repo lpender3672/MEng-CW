@@ -46,7 +46,8 @@
 The converging-diverging nozzle is a device that can accelerate a fluid to supersonic speeds, and is used in many engineering applications, such as the design of supersonic wind tunnels, supersonic aircraft and rocket engines.
 Supersonic nozzles are essential components in wind tunnels designed to simulate high-speed conditions that objects experience in flight.
 By accelerating airflow to supersonic speeds, these nozzles enable researchers to recreate the aerodynamic forces and flow patterns that occur at high speeds.
-This is also done at a smaller scale through dimensional analysis which significantly reduces the cost of testing.
+This is also done at a smaller scale in wind tunnels through dimensional analysis which significantly reduces the cost of testing.
+The design of supersonic wind tunnels...
 
 % explain the purpose of the experiment
 
@@ -89,7 +90,8 @@ The theoretical mass flow rate through the orifice is then given by the followin
 Where $\rho_a$ is the density of air and $\rho_w$ is the density of water used for the manometer.
 
 However, the actual flow rate through the orifice differs from the theoretical value as our assumptions are not valid.
-The first assumption is not valid as there is significant viscous dissipation before the orifice. However, these losses are accounted for by a discharge coefficient $C_d$, which is defined as the ratio of actual discharge to the ideal discharge.
+The first assumption is not valid as there is significant viscous dissipation before the orifice.
+However, these losses are accounted for by a discharge coefficient $C_d$, which is defined as the ratio of actual discharge to the ideal discharge.
 The value of $C_d$ is constant at the high Reynolds numbers considered in this report.
 To analyse the validity of the second assumption, consider the case of maximum flow, when the nozzle is choked upstream of the orifice, then its non-dimensional mass flow rate is given by the following equation.
 \begin{equation}
@@ -164,7 +166,7 @@ This is only a function of the Mach number, as seen below
     \frac{\dot{m}\sqrt{c_pT_0}}{p_0A} = \frac{\gamma}{\sqrt{\gamma-1}} M \left(1 + \frac{\gamma - 1}{2} M^2 \right) ^ {- \frac{1}{2}\frac{\gamma + 1}{\gamma - 1}} 
 \end{equation}
 
-\subsection{Schlieren visualisation technique}
+\subsection{Schlieren Visualisation Technique}
 
 The setup for the Schlieren visualisation technique is shown in figure \ref{fig:xz_shlierian}.
 The light source is placed at the focal point of the first mirror, such to get collimated light through the tunnel.
@@ -190,11 +192,11 @@ Equations \ref{eqn:refractive_index_gradient} derived by Mazumdar \cite{Mazumdar
 It is also explained that light ray deflections bend towards regions of higher refractive index.
 The relation between the refractive index and density of air is shown to be approximately linear in figure \ref{fig:refractive_index_vs_density} from literature \cite{refractiveindex_info} \cite{Ciddor:96}.
 
-Considering a normal shock wave, the density can be considered as a step function of y.
+Considering a normal shock wave, the density can be considered as a Heaviside step function of y.
 This is because the thickness of the shock is on the order of a few molecular-mean-free paths \cite{babinsky_delery:2011}.
-From the linear relation of refractive index and density, the refractive index is also a step function, and so its derivative is a dirac delta function.
+From the linear relation of refractive index and density, the refractive index is also a step function, and so its derivative is a Dirac Delta function.
 When integrated over the thickness of the shock, as in equation \ref{eqn:refractive_index_gradient}, this gives an angle of deflection proportional to density gradient.
-This means that wider, darker bands with a larger angle of deflection correspond to regions of higher density gradient, and so stronger shock waves.
+This means that wider, darker bands with a larger angle of deflection correspond to regions of higher density gradient, and so are stronger shock waves.
 
 For regions of negative density gradient, the light rays are deflected towards the knife edge and so are blocked, and so appear dark in the image.
 For regions of positive density gradient, the light rays are deflected away from the knife edge and so pass through, and so appear bright in the image.
@@ -271,7 +273,7 @@ The uncertainty in mass flow rate is calculated using the following equation.
 % dM2 = - 2 / g * rp ** (-((g-1)/g) - 1)
 The uncertainty in Mach number is calculated using the following equation.
 \begin{equation}
-    u(M) = u\left( \frac{p}{p_0} \right) \frac{d M ( p/p_0 ) }{d (p/p_0)} = u\left(\frac{p}{p_0}\right) \frac{2}{\gamma}  \left( \frac{p}{p_0} \right) ^ {\frac{1}{\gamma}}
+    u(M) = u\left( \frac{p}{p_0} \right) \frac{d M ( p/p_0 ) }{d (p/p_0)} = u\left(\frac{p}{p_0}\right) \times \frac{2}{\gamma}  \left( \frac{p}{p_0} \right) ^ {\frac{1}{\gamma}}
 \end{equation}
 The uncertainty for area calculated from dimensionless mass flow rate in equation \ref{eqn:area} is calculated using the following equation.
 \begin{equation}
@@ -372,7 +374,7 @@ The tunnel was then turned off and after pressure returned to atmospheric, recor
 
 \subsection{Part 1}
 
-Experimental results of flow behaviour for cases 1, 2 and 4 agree nicely with theory predicted for convergent and divergent sections of the nozzle.
+Experimental results of flow behaviour for cases 1, 2 and 4 agree nicely with theory predicted for convergent and divergent sections of the nozzle discussed in theory section.
 However, case 3 shows a deceleration of supersonic flow in the divergent section of the nozzle, which is thought to be due to the formation of a normal shock wave.
 This was also considered in the theoretical analysis and so drop in stagnation pressure ratio is corrected for in the results.
 
@@ -390,6 +392,7 @@ The calculated pressure behind the shock closely aligns with the pressure for li
 
 % Using your measurement of mass flow in Part 1, calculate the cross-sectional areas of the throat and at the nozzle exit for each run.
 % In the case of Run 3 you need to first determine the expected stagnation pressure drop through the shock wave before calculating the nozzle exit area. 
+
 The actual cross-sectional area at the throat of the nozzle is approximately 24 mm2.
 However, all values calculated in table \ref{tab:1} for throat area are below this value.
 The Mach numbers at the tapping closest to the throat being slightly above 1.0 for cases 2,3 and 4.
