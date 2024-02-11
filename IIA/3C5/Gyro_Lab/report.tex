@@ -116,7 +116,7 @@ The angular velocity of the reference frame is given by $\bm{\Omega}$.
 In steady precession $Q_1 = Q_3 = 0$, and $\omega_3 >> \Omega_3$.
 Using Euler angles in the 
 \begin{equation}
-    C\omega_3 \Omega_1 = C\omega_3 \dot{\phi} sin \theta = Q \tag{A4}
+    C\omega_3 \Omega_1 = C\omega_3 \dot{\phi} sin \theta = Q \tag{A4} \label{eq:A4}
 \end{equation}
 
 For nutation neglecting the effects of gimbal inertia, the first and second gyroscope equations can be linearised to give:
@@ -127,7 +127,7 @@ Which both have a frequency of $ f = \frac{C\omega_3}{A} $.
 
 It can be shown that including the effects of gimbal inertia, the nutation frequency is given by
 \begin{equation}
-    f = \frac{C\omega_3}{A} \left( 1 + \frac{J}{A}cot^2\theta_0 + \frac{I_1}{A}cosec^2\theta_0 \right) \tag{A7}
+    f = \frac{C\omega_3}{I_G} \left( 1 + \frac{J}{I_G}cot^2\theta_0 + \frac{I_1}{I_G}cosec^2\theta_0 \right)^{-\frac{1}{2}} \tag{A7}
 \end{equation}
 where $I_1$ is the moment of inertia of the gimbal framework (the stand) about its vertical axis
 and $J_1$ is the moment of inertia of the rotor assembly about the rotor axis.
@@ -201,6 +201,13 @@ given by
     \caption{Rate of precession with varying $\theta$ at constant mass load $m = 2.0$ kg}
     \label{tab:precession_vs_theta}
 \end{table}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{precession_vs_theta.png}
+    \caption{Torque calculated from precession rate for varying $\theta$ for a constant mass load $m = 2.0$ kg}
+    \label{fig:precession_vs_theta}
+\end{figure}
 
 % nutation frequencies
 % trial angle meas_freq calc_freq_without_gimbal calc_freq_with_gimbal
@@ -313,26 +320,46 @@ given by
 
 % Q1: In what direction should gyroscopic precession occur? 
 % Hint: sketch a vector diagram based on Q = ˙h
+The direction of precession depends both on the direction of applied torque and the direction of the angular momentum of the rotor.
+The torque is equal the rate of change of angular momentum, which causes the angular momentum vector to precess.
+
 
 % Q2 What is holding the 1kg mass up? Draw a free-body diagram
+The 1kg mass applies a torque that is always perpendicular to the angular momentum of the rotor.
+This torque is the rate of change of angular momentum of the rotor, and so the angular momentum vector rotates in the direction of the torque but does not change in magnitude.
+This can be thought as being similar to circular motion, where a centripetal force is responsible for the change in direction but not the magnitude of the velocity.
+The vertical forces are simply balanced by reactions from the gimbal frame and rotor housing.
 
 % Q3: Using equation (A4) calculate what the precession rate 
 % should be and time it with a stopwatch.
+Table \ref{tab:precession_vs_mass} shows the rate of precession with varying mass load at constant $\theta = 90^o$.
+It can be seen that the calculated torques from measured precession rate (\ref{eq:A4}) are within 8\% of the torques applied by the masses.
+This discrepancy was observed to increase with precession rate, as the uncertainty in the period measurement becomes more significant.
+There is also some uncertainty in the rotor spin rate, tilt angle of the gyro and the moment of inertia of the rotor.
+
 
 % Q4: According to the equation how should the rate of precession change when to alter the
 % angle of tilt of the gyro? Confirm this result by measuring the precession rate at various tilt
 % angles
-
-% Q5: What should happen if you use a mass of 2kg? Check this experimentally
+Figure Table \ref{tab:precession_vs_theta} shows the rate of precession with varying $\theta$ at constant mass load $m = 2.0$ kg.
+The line for calculated torque from mass load with angle shows a $sin(\theta)$ relationship.
+The precession rate was found to be constant within the error of the period measurement.
+This was expected as the sin terms in equation \ref{eq:A4} cancels with the gravity term.
+There is larger error at higher values of torque as seen in figure \ref{fig:precession_vs_theta}.
+This is again likely due to the uncertainty in the period measurement and the rotor spin rate.
+Performing the experiment again with a smaller mass would increase the period of rotation and reduce the uncertainty in the period measurement.
 
 %%% Nutation
 
 % Q6: Use equations (A6) and (A7) with A = IG to calculate the nutation frequency, and
 % use the oscilloscope to measure the frequency (there is an accelerometer which you can use to
 % measure the nutation vibration, see Fig. 2)
-
 % Q7: Does the nutation rate depend on inclination? Use (A7) to check this out. Tabulate your
 % findings
+
+Figure \ref{fig:nutation} shows the calculated and measured nutation frequency for varying $\theta$.
+It can be seen that the measured nutation frequencies vary significantly for measurements at the same angle.
+??? Im not sure why this is.
 
 %%%% The Rate Gyro
 
@@ -343,10 +370,40 @@ given by
 % the rotor. What do you estimate is the force in
 % each of the springs? Does this make sense?
 
-%%% The gyroscopic pendulum
+Table \ref{tab:springs} shows the spring constants for both springs of the rate gyro.
+The extension at $\theta = 90^o$ was measured to be 4 cm and so the force in each spring is calculated and shown in the table.
 
 % Q9: How might this device be useful for navigation? 
 % Imagine you are at sea on a very foggy day.
+The rate gyro can be used to measure the rate of turn of a vehicle as the angle $\theta$ is proportional to the rate of turn.
+
+
+%%% The gyroscopic pendulum
+
+% Q10 What is holding the gyro up? Draw a free-body diagram. And what is the direction of
+% precession? Is it the same as you observed in Q1 ?
+
+For the gyroscopic pendulum case there is a torque acting due to the weight of the rotor and frame.
+
+
+
+% Q11 Use a stopwatch to measure the precession rate at various angles. Compare your measurements
+% with calculation - plot graphs or tabulate your findings. the battery will be
+% getting tired by now - keep an eye on the RPM
+
+% need data for this
+
+% Q12: Take a look at the nutation frequency at different angles. Note that the frequency is low
+% enough now to time it with a stopwatch. How do your measurements tie up with calculation
+% from formula (A7)
+
+
+
+% Q13: When released from horizontal, you get ”cuspidal nutation”. Estimate the angle that
+% the gyro drops from the horizontal and see if it tallies with equation (A8). And when the
+% oscillations have died out you will notice that the gyro is still tilted a bit downwards. Why?
+% Can you work out this angle by using conservation of angular momentum? Sketch a graph of
+% the tilt angle - don’t just copy Fig. 8 because there is dissipation in the real world.
 
 \section{Conclusion}
 
