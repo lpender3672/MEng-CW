@@ -30,6 +30,7 @@
 
 \section{Introduction}
 
+The following is the arangement of the gyroscope assembly used in the lab.
 
 \begin{figure}[H]
     \centering
@@ -40,19 +41,12 @@
 
 \section{Theory}
 
-Moment of inertia 
-
-Parallel axis theorem
+The mass and moment of inertia of each annulus section of the rotor is calculated by
 \begin{equation}
-    I_{xx} = I_G + md^2 
+    m = \frac{\pi}{2} \rho L(r_o^2 - r_i^2), \;\;\;\;\;\; I_{zz} = \frac{\pi}{2} \rho L(r_o^4 - r_i^4)
 \end{equation}
 
-Perpendicular axis theorem
-\begin{equation}
-    I_{zz} = I_{xx} + I_{yy}
-\end{equation}
-
-The dimensions of the rotor can be tabulated as follows:
+The dimensions of each annulus can be tabulated as follows:
 
 \begin{table}[H]
     \centering
@@ -75,14 +69,9 @@ The dimensions of the rotor can be tabulated as follows:
     \caption{Rotor dimensions}
 \end{table}
 
-The mass and moment of inertia of each annulus section is calculated by
-\begin{equation}
-    m = \frac{\pi}{2} \rho L(r_o^2 - r_i^2), \;\;\;\;\;\; I_{zz} = \frac{\pi}{2} \rho L(r_o^4 - r_i^4)
-\end{equation}
-
 These can be added together by parallel axis theorem to give the total moment of inertia of the rotor about the axis of rotation.
-Then $C = 2A$ for both the rotor and rotor housing so $I_G = (C + J_1)/2$.
-Then the moment of inertia about point 2 as seen in figure \ref{fig:setup} is given by parallel axis theorem as $I_2 = I_G + Mr^2$.
+The value of $I_G$ is provided which is the moment of inertia of rotor assembly about pin 1.
+From this, the moment of inertia about point 2 as seen in figure \ref{fig:setup} is given by parallel axis theorem as $I_2 = I_G + Mr^2$.
 
 \begin{alignat}{2}
     \text{Mass of rotor} \;\;\;\; & m \approx 4.173 \text{ kg} \nonumber\\
@@ -109,7 +98,7 @@ The Euler equations for an AAC gimble with angular velocity $\bm{\omega}$ in its
 The angular velocity of the reference frame is given by $\bm{\Omega}$.
 \begin{align}
     A\dot{\Omega}_1 - (A\Omega_3 - C \omega_3) \Omega_2 &= Q_1 \tag{A1}\\
-    A\dot{\Omega}_2 + (A\Omega_3 - C\omega_3) \Omega_1 &= Q_2 \tag{A2} \\
+    A\dot{\Omega}_2 + (A\Omega_3 - C\omega_3) \Omega_1 &= Q_2 \tag{A2} \label{eq:A2} \\
     C\dot{\omega}_3 &= Q_3 \tag{A3}
 \end{align}
 
@@ -127,7 +116,7 @@ Which both have a frequency of $ f = \frac{C\omega_3}{A} $.
 
 It can be shown that including the effects of gimbal inertia, the nutation frequency is given by
 \begin{equation}
-    f = \frac{C\omega_3}{I_G} \left( 1 + \frac{J}{I_G}cot^2\theta_0 + \frac{I_1}{I_G}cosec^2\theta_0 \right)^{-\frac{1}{2}} \tag{A7}
+    f = \frac{C\omega_3}{I_G} \left( 1 + \frac{J}{I_G}cot^2\theta_0 + \frac{I_1}{I_G}cosec^2\theta_0 \right)^{-\frac{1}{2}} \tag{A7} \label{eq:A7}
 \end{equation}
 where $I_1$ is the moment of inertia of the gimbal framework (the stand) about its vertical axis
 and $J_1$ is the moment of inertia of the rotor assembly about the rotor axis.
@@ -141,19 +130,21 @@ There exists an equilibrium position where the force in the springs are balanced
 \begin{figure}
     \centering
     \includegraphics[width=0.5\textwidth]{rate_gyro.jpg}
-    \caption{Rate Gyro}
+    \caption{Rate Gyro spring model for torque estimation}
     \label{fig:rate_gyro}
 \end{figure}
 
 The spring constants were calculated by simply measuring displacement under a load of $2g$.
 The torque due to the springs is given by
 \begin{align}
+    Q &= d \sin \theta (F_B - F_A) \\
     Q &= d \sin \theta \left[ k_B (e_0 - d \cos \theta) - k_A (e_0 + d \cos \theta) \right] \\
     Q &= d \sin \theta \left[ e_0 (k_B - k_A) - d \cos \theta (k_A + k_B) \right]
 \end{align}
 Where $d = 0.06$ m is the distance to the center of the rotor assembly and $e_0$ is the extension of the springs at $\theta = 90^o$ which is assumed to be the same for both springs as they have similar unloaded lengths.
 However, the springs have varying spring constants $k_A$ and $k_B$, which are determined later.
-The value of $e_0$ was not measured !!!?.
+The value of $e_0$ was not measured in the lab but is believed to be close to 3cm.
+This was used to approximate the torque due to the springs for the rate Gyro.
 
 \subsection{Cuspidal Nutation}
 
@@ -162,17 +153,19 @@ Cuspidal nutation can be observed when a gyroscopic pendulum is released from re
 The small angle $\alpha$ through which the rotor tilts during cuspidal nutation is
 given by
 \begin{equation}
-    \alpha \approx \frac{2mgr(I_1+I_2)}{(C\omega_3)^2} \tag{A8}
+    \alpha \approx \frac{2mgr(I_1+I_2)}{(C\omega_3)^2} \tag{A8} \label{eq:A8}
 \end{equation}
 
 
 \section{Results}
 
+\subsection{Steady Precession}
+
 \begin{table}[H]
     \centering
     \begin{tabular}{|c|c|c|c|c|}
         \hline
-        Mass (kg) & $Q_{mg}$ (Nm) & Period (s) & $\Omega$ (rad/s) & $Q_{\Omega} $ (Nm) \\
+        Mass (kg) & $Q_{mg}$ (Nm) & Period (s) & $\dot{\phi}$ (rad/s) & $Q_{A4} $ (Nm) \\
         \hline
         0.5 & 1.03 & 64.72 & 0.09708 & 0.988\\
         1.0 & 2.06 & 33.35 & 0.18840 & 1.918\\
@@ -189,7 +182,7 @@ given by
     \centering
     \begin{tabular}{|c|c|c|c|c|}
         \hline
-        $\theta$ ($^o$) & $Q_{mg}$ (Nm) & Period (s) & $\Omega$ (rad/s) & $Q_{\Omega} $ (Nm) \\
+        $\theta$ ($^o$) & $Q_{mg}$ (Nm) & Period (s) & $\dot{\phi}$ (rad/s) & $Q_{A4} $ (Nm) \\
         \hline
         90 & 4.12 & 16.62 & 0.37805 & 3.849\\
         105 & 3.98 & 16.25 & 0.38666 & 3.802\\
@@ -211,6 +204,7 @@ given by
 
 % nutation frequencies
 % trial angle meas_freq calc_freq_without_gimbal calc_freq_with_gimbal
+\subsection{Nutation}
 
 \begin{table}[H]
     \centering
@@ -247,6 +241,7 @@ given by
 \end{figure}
 
 % rate Gyro and spring constants
+\subsection{Rate Gyro}
 
 \begin{table}[H]
     \centering
@@ -264,16 +259,34 @@ given by
 
 \begin{table}[H]
     \centering
-    \begin{tabular}{|c|c|c|c|c|}
+    \begin{tabular}{|c|c|c|c|c|c|c|c|}
         \hline
-        $\theta$ ($^o$) & Period (s) & $\Omega_3$ (rad/s) &  $Q_{(A4)}$ (Nm)\\
+        $\theta$ ($^o$) & Period (s) & $\dot{\phi}$ (rad/s) &  $Q_{(A4)}$ (Nm) & $F_A$ (N) & $F_B$ (N) & $Q_est$ (Nm)\\
         \hline
-        105	& 20.91	& 0.3004871022  &	2.955 \\
-        75	& 19.13	& -0.3284466967	&   -3.230 \\
+        105	& 20.91	& 0.300  &	2.955 & 11.357	& 29.776	& 1.068 \\
+        75	& 19.13	& -0.328	&   -3.230 & 35.731	& 9.464	& -1.522 \\
         \hline
     \end{tabular}
     \caption{Rate Gyro}
     \label{tab:precession_vs_k}
+\end{table}
+
+% Gyroscopic pendulum
+\subsection{Gyroscopic Pendulum}
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|c|c|c|c|c|c|}
+        \hline
+        $\theta$ ($^o$) & Period (s) & Rotations & $\dot{\phi} $ (rad/s) & $Q_{A4}$ & $Q_{Mg} $ \\
+        \hline
+        ~15	& 10.9	& 5	& 2.882	& 7.594	& 5.758 \\
+        ~60	& 11.5	& 5	& 2.732	& 24.084	& 19.268 \\
+        ~105	& 12.5	& 5	& 2.513	& 24.713	& 21.491 \\
+        \hline
+    \end{tabular}
+    \caption{Precession rate with varying $\theta$ for gyroscopic pendulum}
+    \label{tab:gyroscopic_pendulum_precession}
 \end{table}
 
 % Cuspidal nutation,
@@ -285,15 +298,15 @@ given by
         \hline
         Trial & $\theta$ ($^o$) & Nutations  & Period (s) & Frequency (Hz)\\
         \hline
-        1   & 30	& 6	    &   3.16	& 1.899 \\
-        2   & 30    & 6	    &   2.9	    & 2.069 \\
-        3   & 30    & 7	    &   2.83	& 2.473 \\
-        4   & 60	& 8	    &   2.84	& 2.817 \\
-        5   & 60    & 7	    &   3.16	& 2.215 \\
-        6   & 60    & 8	    &   2.96	& 2.703 \\
-        7   & 90	& 10    &   4.00	& 2.500 \\
-        8   & 90    & 8	    &   2.96	& 2.703 \\
-        9   & 90    & 8	    &   3.09	& 2.589 \\
+        1   & ~30	& 6	    &   3.16	& 1.899 \\
+        2   & ~30    & 6	    &   2.9	    & 2.069 \\
+        3   & ~30    & 7	    &   2.83	& 2.473 \\
+        4   & ~60	& 8	    &   2.84	& 2.817 \\
+        5   & ~60    & 7	    &   3.16	& 2.215 \\
+        6   & ~60    & 8	    &   2.96	& 2.703 \\
+        7   & ~90	& 10    &   4.00	& 2.500 \\
+        8   & ~90    & 8	    &   2.96	& 2.703 \\
+        9   & ~90    & 8	    &   3.09	& 2.589 \\
         \hline
     \end{tabular}
     \caption{Measured cuspidal nutation frequency for varying $\theta$.}
@@ -358,8 +371,11 @@ Performing the experiment again with a smaller mass would increase the period of
 % findings
 
 Figure \ref{fig:nutation} shows the calculated and measured nutation frequency for varying $\theta$.
-It can be seen that the measured nutation frequencies vary significantly for measurements at the same angle.
-??? Im not sure why this is.
+There is some correlation that at larger values of $\theta$ the measured frequency is lower.
+Significant variation of measured frequencies at each angle was observed which may be due to other vibrations
+detected up by the accelerometer, or too small of an amplitude theshold on the oscilloscope. This may
+also be due to additional frequency modes of vibration of gyroscopic nutation, which have not been covered in 3C5 theory.
+Additional experiments could be performed to investigate this further.
 
 %%%% The Rate Gyro
 
@@ -371,11 +387,16 @@ It can be seen that the measured nutation frequencies vary significantly for mea
 % each of the springs? Does this make sense?
 
 Table \ref{tab:springs} shows the spring constants for both springs of the rate gyro.
-The extension at $\theta = 90^o$ was measured to be 4 cm and so the force in each spring is calculated and shown in the table.
+These are used alongside the estimated extension of the springs at $\theta = 90^o$ and the rotated angle to estimate the torque due to the springs.
+Table \ref{tab:precession_vs_k} shows the precession rate with varying angle for the rate gyro.
+The approximated forces and shown however, the torque calculated from the precession rate is significantly higher than the torque calculated from the spring constants.
+This is likely due to poor modelling of the springs, as there is also a significant horizontal displacement which is not account for in figure \ref{fig:rate_gyro}. 
 
 % Q9: How might this device be useful for navigation? 
 % Imagine you are at sea on a very foggy day.
 The rate gyro can be used to measure the rate of turn of a vehicle as the angle $\theta$ is proportional to the rate of turn.
+This gives it applications in navigation, such as in aircraft and ships.
+Rate gyros are also a key component of inertial measurement units (IMUs) which are used in aircraft and spacecraft to measure orientation and angular velocity.
 
 
 %%% The gyroscopic pendulum
@@ -384,6 +405,9 @@ The rate gyro can be used to measure the rate of turn of a vehicle as the angle 
 % precession? Is it the same as you observed in Q1 ?
 
 For the gyroscopic pendulum case there is a torque acting due to the weight of the rotor and frame.
+This should cause a torque given my $Mgd \sin \theta$ which is again perpendicular to the angular momentum of the rotor.
+This again causes the rotor to precess in the direction of applied torque. However, the applied torque is much larger than
+the previous setup and so the precession is much faster.
 
 
 
@@ -391,12 +415,24 @@ For the gyroscopic pendulum case there is a torque acting due to the weight of t
 % with calculation - plot graphs or tabulate your findings. the battery will be
 % getting tired by now - keep an eye on the RPM
 
+The precession rate at various angles was measured and is shown in table \ref{tab:gyroscopic_pendulum_precession}.
+The measurement of angle was by eye and so is not very accurate. However, it does show that again the precession rate is constant with angle.
+However, as before the calculated torque does vary with angle. There is a much larger discrepancy between calculated torque from precession rate
+and the torque applied by the mass due to the inaccurate angle measurements.
+
+
 % need data for this
 
 % Q12: Take a look at the nutation frequency at different angles. Note that the frequency is low
 % enough now to time it with a stopwatch. How do your measurements tie up with calculation
 % from formula (A7)
 
+Table \ref{tab:cuspidal_nutation} shows the measured cuspidal nutation frequency for varying $\theta$.
+The observed frequency was measured to be lower for smaller angles of $\theta$.
+There is a signficiant uncertainty component of this measurement as up to 10 cycles were counted in a short time period of 10s.
+The angle $\theta$ was also measured by eye and so is not very accurate.
+This does somewhat agree with the calculated frequency from equation \ref{eq:A7}, using the value of $I_2$ instead of $I_G$,
+which is also shown by the dotted line in figure \ref{fig:cuspidal_nutation}.
 
 
 % Q13: When released from horizontal, you get ”cuspidal nutation”. Estimate the angle that
@@ -405,8 +441,38 @@ For the gyroscopic pendulum case there is a torque acting due to the weight of t
 % Can you work out this angle by using conservation of angular momentum? Sketch a graph of
 % the tilt angle - don’t just copy Fig. 8 because there is dissipation in the real world.
 
-\section{Conclusion}
+The angle of cuspidal nutation was estimated to be 10 degrees.
+From equation \ref{eq:A8} the angle of cuspidal nutation is estimated to be 14.2 degrees.
 
+An attempt to derive equation \ref{eq:A8} was made. From conservation of energy from a point of rest to a point where $\theta = \frac{\pi}{2} + \alpha$ and $\dot{\theta} = 0$ for small $\alpha$, it can be shown that:
+\begin{equation}
+    Mga \alpha = A \dot{\phi}^2 - 2C\dot{\phi}\dot{\psi}\alpha
+\end{equation}
+This was then substituted into Euler's second equation \ref{eq:A2} which gave a different result to equation \ref{eq:A8} but is shown below.
+\begin{equation}
+    \alpha \approx \frac{MgaA}{3(C\dot{\psi})^2}
+\end{equation}
+The gyro was observed to still tilt downwards after the oscillations.
+This is because the gyroscope needs to tilt such that the component
+of the angular momentum of the rotor in the vertical direction is equal and
+opposite to the precession angular momentum.
+This angle, denoted $\beta$ is derived below.
+\begin{align}
+    \dot{\phi}(A+I_1) &= C \omega \sin \beta \\
+    \frac{Mga}{C\omega}(A + I_1) &\approx C\omega \beta \\
+    \beta &\approx \frac{Mga(A + I_1)}{C^2\omega^2} \\
+    \beta &= \frac{\alpha}{2}
+\end{align}
+
+Figure \ref{fig:tilt_angle} shows a drawn plot of the tilt angle $\theta$ against time for a gyroscopic pendulum with friction.
+
+\begin{figure}
+    \centering
+    % rotate the image
+    \includegraphics[width=0.6\textwidth]{cuspidal_decay.jpg}
+    \caption{The tilt angle $\theta$ against time for a gyroscopic pendulum with friction}
+    \label{fig:tilt_angle}
+\end{figure}
 
 
 \end{document}
