@@ -1,5 +1,5 @@
 clear;
-nx=201;
+nx=101;
 for i=1:nx
     x(i) = (i-1)*1./(nx-1);
     if i < nx/20.
@@ -12,13 +12,17 @@ end
 newplot;
 hold on;
 plot(x,u,'r','LineWidth',1);
-c = 1.005;
+c = 0.5;
+a = c^2/4;
+dt = 0.1;
+dx = 2/nx;
+tf = 1;
 offset = 0;
-nt = 100;
-nplot=10;
+nt = tf/dt;
+nplot=5;
 for n=1:nt
     for i=2:nx-1
-        un(i) = u(i)-c*(u(i)-u(i-1));
+        un(i) = u(i)-u(i)*(dt/dx)*(u(i)-u(i-1));
     end
     un(1) = 1;
     un(nx) = 0;
