@@ -26,6 +26,8 @@
 Two compressor setups were used in this experiment.
 One with pure water, where the speed could be varied, and another using glycerine, a more viscous solution of 60\%
 glycerine and 40\% water, where the compressor speed was fixed.
+For the water setup, the flow rates were varied by screw valves at the inlet and outlet which were measured by pressure difference of a venturi flume.
+The glycerine setup the flow rate was varied by a screw valve at outlet of the compressor, and was measured by timing a fixed volume of fluid.
 
 \section{Theory}
 % Describe the experimental setup, equipment used, and the steps followed during the experiment.
@@ -36,20 +38,102 @@ glycerine and 40\% water, where the compressor speed was fixed.
 
 % Sketch done on paper
 
+
+
+\subsection{Non Dimensional Groups}
+
+% Define a suitable non-dimensional cavitation number. Plot a graph of non-dimensional
+% cavitation number against non-dimensional flow coefficient.
+
+
+The reynolds number takes a standard form of:
+\begin{equation}
+    Re = \frac{\rho UD}{\mu} = O\left( \frac{\rho ND^2}{\mu} \right)
+\end{equation}
+The factor of a half the diameter for outer blade velocity is omitted to simplify the non dimensionalisation. 
+
+Two more non-dimensional groups are often used to characterise the flow in a compressor, the flow coefficient and the pressure rise coefficient.
+These are defined as follows:
+\begin{align}
+    \text{Flow Coefficient} &= \frac{\dot{Q}}{ND^3} \\
+    \text{Pressure Coefficient} &= \frac{\Delta p}{\rho N^2 D^2}
+\end{align}
+
+Cavitation is caused by local pressure drops below that of the vapour pressure of the fluid, causing the fluid to vaporise.
+The collapse of these bubbles can cause high pressure waves and damage to the impeller.
+It is therefore important to predict the conditions under which cavitation is likely to occur.
+
+It would also be expected that the further the local pressure drops below the vapour pressure, the more likely cavitation is to occur.
+A non-dimensional number that could be used to predict cavitation would be the difference between the local pressure and the vapour pressure, divided by the dynamic pressure, given below.
+\begin{equation}
+    C_t = \frac{p - p_v}{\frac{1}{2}\rho v^2}
+\end{equation}
+At the inlet, where the pressure is predicted to be the lowest, $v = N \frac{D_1}{2}$
+This gives a non-dimensional cavitation number of:
+\begin{equation}
+    C_t = 8\frac{p - p_v}{\rho (ND_1)^2}
+\end{equation}
+Cavitation was predicted to occur at the inlet of the compressor, where the velocity is highest and so pressure lowest.
+
+To obtain the cavitation number $C_t$ at the inlet of the compressor, the pressure at the inlet of the compressor is required.
+This was obtained by working backwards from the pressure at the discharge point being atmospheric.
+The height of the reservoir discharge and outlet of the compressor is given as 570mm. The pressure loss from the
+venturi flume is negligible and for the cases where the inlet valve was adjusted, there is no pressure drop through the fully open exit valve.
+The pressure at the inlet of the compressor is therefore given by:
+\begin{equation}
+    p_1 =  P_a + \rho g h - \Delta p
+\end{equation}
+
+
+\subsection{Flow measurements}
+
+For the water setup, the flow rate was measured using a venturi flume, which measures the pressure difference across a constriction in the flow.
+\begin{equation}
+    \dot{m} = C_f A_1 \sqrt{\frac{2\rho_w \Delta p}{1 - \left( \frac{A_1}{A_2} \right)^2}}
+\end{equation}
+The calibrated discharge coefficient, and geomtry of the venturi flume were given in the form of a constant $a=0.193$ such that $\dot{m}=a \sqrt{\Delta p}$
+
+For the glycerine setup, the flow rate was measured by timing a fixed volume of 15L of the solution.
+The flow rate was therefore given by:
+\begin{equation}
+    \dot{Q} = \frac{V}{T}
+\end{equation}
+Which can easily be converted to mass flow rate using the known density $\rho_g$ of the glycerine solution.
+
+% Velocity triangle on paper
+
 % Using the mass flow rate and the impeller measurements, determine the radial velocity at the
 % inlet to the blade at maximum flow condition, this is the starting value when valves are fully
 % open. Non-dimensionalise your value by the blade speed.
 
 % Draw a velocity triangle for this situation and determine the relative velocity at the inlet to the
-% rotor blade. Use this velocity, the inlet diameter of the impeller and the kinematic viscosity of
+% rotor blade. 
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{velocity_diagrams.jpg}
+    \caption{Compressor sketch and velocity diagrams. The suction surface is indicated by the blue line}
+    \label{fig:vel_diagrams}
+\end{figure}
+
+% Use this velocity, the inlet diameter of the impeller and the kinematic viscosity of
 % water to estimate the Reynolds number for the compressor. The magnitude of this Reynolds
 % number will be comparable to values that you are familiar with for pipe flow
 
-% Velocity triangle on paper
 
-% Define a suitable non-dimensional cavitation number. Plot a graph of non-dimensional
-% cavitation number against non-dimensional flow coefficient.
 
+\subsection{Viscosity measurements}
+% viscosity theory.
+
+The viscosity of water is well known at standard conditions, however the viscosity of the glycerine solution is not.
+However, using thin film theory, the time taken for a fluid to travel a specific distance can be used to determine the viscosity of the fluid.
+
+\begin{equation}
+    \mu \propto \frac{T\rho}{L}
+\end{equation}
+    
+Where $\mu$ is the dynamic viscosity, $T$ is the time taken for the fluid to travel a distance $L$, and $\rho$ is the density of the fluid.
+This can be used to determine the ratio of dynamic viscosities
 \section{Results}
 % Present the data obtained from the experiment, including tables, graphs, and figures.
 
@@ -72,7 +156,32 @@ And so angles of impeller blades to the radial direction are given by:
     \chi_2 &= 62 - 17 &= 45^\circ \notag
 \end{alignat}
 
+These values are shown in the table below, along with additional inlet and outlet diameter measurements with callipers.
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|c|c|}
+        \hline
+        \textbf{Quantity} & \textbf{Value} \\
+        \hline
+        Inlet Diameter $D_1$ & 25.2 mm \\
+        Outlet Diameter $D_2$ & 79.3 mm \\
+        Blade Span $h$ & 6.40 mm \\
+        Blade Width $b$ & 3.9 mm \\
+        Inlet Blade Angle $\chi_1$ & $51^\circ$ \\
+        Outlet Blade Angle $\chi_2$ & $45^\circ$ \\
+        \hline
+    \end{tabular}
+    \caption{Impeller geometry measurements.}
+    \label{tab:impeller_geometry}
+\end{table}
+
+The ambient pressure was measured as $754$ mmHg, corresponding to $100.56$ kPa.
+
 \subsection{Viscosiy measurements}
+
+At the ambient conditions the density of water is $998.2 kg/m^3$.
+The density of the glycerine solution was known to be $1170 kg/m^3$.
 
 \begin{table}[H]
     \centering
@@ -102,6 +211,9 @@ The ratio of dynamic viscosities of the fluids is given by the ratio of time to 
 \section{Discussion}
 % Analyze and interpret the results, discussing their significance and any observations or trends.
 
+For all compressor arrangements, the pressure coefficient decreases with increasing flow coefficient.
+
+
 % Explain why throttling the water compressor at inlet and exit produce different cavitation
 % results. Also explain why the pressure rise is similar when cavitation is not present.
 
@@ -119,6 +231,7 @@ The pressure coefficients for water at lower compressor speeds are higher than t
 %% Change in cavitation with rotor speed and throttle location? Sketch two velocity
 %% triangles, one at a nominal design condition and when the flow coefficient is much lower.
 
+Cavitation bubbles were observed to coalesce to form larger bubbles, which then collapsed.
 
 %$ Can you explain the differences? Note that the two compressors do not give exactly the same
 %% pressure rise-flow rate characteristics, and so care must be taken in comparing the effect of
