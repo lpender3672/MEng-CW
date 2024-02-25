@@ -105,6 +105,18 @@ Which can easily be converted to mass flow rate using the known density $\rho_g$
 % Using the mass flow rate and the impeller measurements, determine the radial velocity at the
 % inlet to the blade at maximum flow condition, this is the starting value when valves are fully
 % open. Non-dimensionalise your value by the blade speed.
+Assuming incompressibility, the inlet and outlet radial component of velocity can simply be calculated from continuity.
+\begin{equation}
+    \dot{Q} = 2\pi r_1 v_1 = 2\pi r_2 v_{2r}
+\end{equation}
+
+For the water setup at maximum flow condition, both inlet and outlet valves are fully open.
+Then, rearanging for the radial velocity at the inlet gives $V_1 = 1.74 m/s$.
+
+This can be non-dimensionalised by the inlet blade speed to give:
+\begin{equation}
+    \frac{V_1}{U_1} = \frac{2\dot{Q}}{\pi N D_1 D_2 h}
+\end{equation}
 
 % Draw a velocity triangle for this situation and determine the relative velocity at the inlet to the
 % rotor blade. 
@@ -112,7 +124,7 @@ Which can easily be converted to mass flow rate using the known density $\rho_g$
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.6\textwidth]{velocity_diagrams.jpg}
-    \caption{Compressor sketch and velocity diagrams. The suction surface is indicated by the blue line}
+    \caption{Compressor sketch and velocity diagrams. The high pressure surface is indicated by the blue line, with the suction surface on the opposite side of the channel.}
     \label{fig:vel_diagrams}
 \end{figure}
 
@@ -208,6 +220,8 @@ The ratio of dynamic viscosities of the fluids is given by the ratio of time to 
     \label{fig:compressor_non_dims}
 \end{figure}
 
+% Pressure Rise Coefficient against Tip Reynolds number.
+
 \section{Discussion}
 % Analyze and interpret the results, discussing their significance and any observations or trends.
 
@@ -240,6 +254,7 @@ Cavitation bubbles were observed to coalesce to form larger bubbles, which then 
 
 % Suggest a reason why the venturi might not be suitable for measuring the flow rate of the
 % glycerine solution.
+The venturi flume 
 
 \section{Conclusion}
 % Summarize the main findings of the experiment and draw conclusions based on the results.
