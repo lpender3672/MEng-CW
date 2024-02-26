@@ -55,8 +55,8 @@ The factor of a half the diameter for outer blade velocity is omitted to simplif
 Two more non-dimensional groups are often used to characterise the flow in a compressor, the flow coefficient and the pressure rise coefficient.
 These are defined as follows:
 \begin{align}
-    \text{Flow Coefficient} &= \frac{\dot{Q}}{ND^3} \\
-    \text{Pressure Coefficient} &= \frac{\Delta p}{\rho N^2 D^2}
+    \text{Flow Coefficient} &= \frac{\dot{Q}}{ND^3} \label{eq:flow_coeff}\\
+    \text{Pressure Coefficient} &= \frac{\Delta p}{\rho N^2 D^2} \label{eq:pressure_coeff}
 \end{align}
 
 Cavitation is caused by local pressure drops below that of the vapour pressure of the fluid, causing the fluid to vaporise.
@@ -84,6 +84,25 @@ The pressure at the inlet of the compressor is therefore given by:
     p_1 =  P_a + \rho g h - \Delta p
 \end{equation}
 
+\subsection{Compressor Theory}
+
+For an isentropic compressor $Tds = 0 = dh - vdp$ which relates the change specific enthalpy and static pressure as follows:
+\begin{equation}
+    w_s = \int_{p_1}^{p_2} vdp = \int_{p_1}^{p_2} \frac{dp}{\rho}
+\end{equation}
+Water can be taken as incompressible for the considered range of pressure, and so density is constant and can be taken out of the integral.
+For a work input, $\dot{W}$ and flow rate $\dot{Q}$ the work done by a compressor at isentropic efficiency $\eta$ can be found as:
+\begin{equation}
+    \dot{W} = \frac{\rho \dot{Q} w_s}{\eta} = \frac{\dot{Q} \Delta p}{\eta} 
+\end{equation}
+This gives an inverse relationship between pressure rise and flow rate.
+Rearanging shows that at constant compressor power, speed, and isentropic efficiency, the following relationship should hold:
+\begin{equation}
+    \text{Pressure Coefficient} \propto \frac{1}{\text{Flow Coefficient}} \label{eq:inverse_relationship}
+\end{equation}
+
+The dimensional constants shown in equations \ref{eq:flow_coeff} and \ref{eq:pressure_coeff} depend on the geometry and speed of the impeller.
+Therefor for a constant speed the inverse relationship between flow rate and pressure rise should hold for constant isentropic efficiency and power input.
 
 \subsection{Flow measurements}
 
@@ -224,19 +243,20 @@ The ratio of dynamic viscosities of the fluids is given by the ratio of time to 
 
 \section{Discussion}
 % Analyze and interpret the results, discussing their significance and any observations or trends.
-
-For all compressor arrangements, the pressure coefficient decreases with increasing flow coefficient.
-
-
-% Explain why throttling the water compressor at inlet and exit produce different cavitation
-% results. Also explain why the pressure rise is similar when cavitation is not present.
-
-why is pressure rise similar to when caviation is not present?
-
 % Do the results agree with what you expect for:
 %% Change of pressure rise with flow rate
 
-The pressure coefficients for water at lower compressor speeds are higher than those at higher speeds, as expected.
+Figure \ref{fig:compressor_non_dims} shows that for all compressor arrangements, the pressure coefficient decrease with increasing flow coefficient.
+This was expected for water from theory shown by the inverse relationship in equation \ref{eq:inverse_relationship}.
+However, the gradient of the curves appears to initially increase, and then remains constant.
+This was not expected, and is likely due to the compressor power increasing to maintain the same speed as the flow rate increases.
+The isentropic efficiency of the compressor will also decrease at higher flow rates.
+
+% Explain why throttling the water compressor at inlet and exit produce different cavitation
+% results. Also explain why the pressure rise is similar when cavitation is not present.
+%%
+
+Cavitation affect on pressure rise.
 
 
 %% Change of pressure rise with Reynolds number. Reference to figure 3 may be useful -
