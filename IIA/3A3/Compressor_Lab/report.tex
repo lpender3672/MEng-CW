@@ -9,6 +9,10 @@
 \usepackage{float}
 \usepackage{caption}
 \usepackage{subcaption}
+\usepackage{geometry}
+
+\newgeometry{vmargin={15mm}, hmargin={1in,1in}}
+
 
 \title{3A3 Compressor Lab Report}
 \author{[Louis Pender]}
@@ -64,7 +68,7 @@ The collapse of these bubbles can cause high pressure waves and damage to the im
 It is therefore important to predict the conditions under which cavitation is likely to occur.
 
 It would also be expected that the further the local pressure drops below the vapour pressure, the more likely cavitation is to occur.
-A non-dimensional number that could be used to predict cavitation would be the difference between the local pressure and the vapour pressure, divided by the dynamic pressure, given below.
+A non-dimensional number that could be used to predict cavitation would be the difference between the local pressure and the vapour pressure, divided by a dynamic pressure, given below.
 \begin{equation}
     C_t = \frac{p - p_v}{\frac{1}{2}\rho v^2}
 \end{equation}
@@ -96,13 +100,11 @@ For a work input, $\dot{W}$ and flow rate $\dot{Q}$ the work done by a compresso
     \dot{W} = \frac{\rho \dot{Q} w_s}{\eta} = \frac{\dot{Q} \Delta p}{\eta} 
 \end{equation}
 This gives an inverse relationship between pressure rise and flow rate.
-Rearanging shows that at constant compressor power, speed, and isentropic efficiency, the following relationship should hold:
+Rearanging and using definitions \ref{eq:flow_coeff} and \ref{eq:pressure_coeff} it can be shown that for constant compressor power, speed, and isentropic efficiency, the following relationship should hold:
 \begin{equation}
     \text{Pressure Coefficient} \propto \frac{1}{\text{Flow Coefficient}} \label{eq:inverse_relationship}
 \end{equation}
-
-The dimensional constants shown in equations \ref{eq:flow_coeff} and \ref{eq:pressure_coeff} depend on the geometry and speed of the impeller.
-Therefor for a constant speed the inverse relationship between flow rate and pressure rise should hold for constant isentropic efficiency and power input.
+It is important to note that these assumptions are not strictly true, and the relationship is only used to make predictions about the behaviour of the compressor.
 
 \subsection{Flow measurements}
 
@@ -234,9 +236,16 @@ The ratio of dynamic viscosities of the fluids is given by the ratio of time to 
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.99\textwidth]{compressor_non_dims.png}
+    \includegraphics[width=0.9\textwidth]{compressor_non_dims.png}
     \caption{Non-dimensional pressure rise coefficient against non-dimensional flow coefficient various compressors conditions and setups.}
     \label{fig:compressor_non_dims}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{compressor_reynolds.png}
+    \caption{Reynolds number at tip for various compressor conditions and setups.}
+    \label{fig:compressor_pressure_re}
 \end{figure}
 
 % Pressure Rise Coefficient against Tip Reynolds number.
