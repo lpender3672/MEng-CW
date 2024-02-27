@@ -11,7 +11,7 @@
 \usepackage{subcaption}
 \usepackage{geometry}
 
-\newgeometry{vmargin={15mm}, hmargin={1in,1in}}
+\newgeometry{vmargin={1in}, hmargin={1in}}
 
 
 \title{3A3 Compressor Lab Report}
@@ -91,6 +91,7 @@ While the variation in temperature is small, the vapour pressure for each temper
 
 \subsection{Compressor Theory}
 
+An attempt to determine the relationship between pressure rise and flow rate was made using the following theory.
 For an isentropic compressor $Tds = 0 = dh_0 - vdp$ which relates the change specific stagnation enthalpy and static pressure as follows:
 \begin{equation}
     w_s = \int_{p_1}^{p_2} vdp = \int_{p_1}^{p_2} \frac{dp}{\rho}
@@ -111,7 +112,7 @@ It is important to note that these assumptions are not strictly true, and the re
 
 For the water setup, the flow rate was measured using a venturi flume, which measures the pressure difference across a constriction in the flow.
 \begin{equation}
-    \dot{m} = C_f A_1 \sqrt{\frac{2\rho_w \Delta p}{1 - \left( \frac{A_1}{A_2} \right)^2}}
+    \dot{m} = C_f A_1 \sqrt{\frac{2\rho_w \Delta p}{1 - \left( \frac{A_1}{A_2} \right)^2}} \label{eq:venturi_flume}
 \end{equation}
 The calibrated discharge coefficient, and geomtry of the venturi flume were given in the form of a constant $a=0.193$ such that $\dot{m}=a \sqrt{\Delta p}$
 
@@ -166,10 +167,7 @@ However, using equation \ref{eq:radial_velocity} gives $V_1 = 1.913 m/s$, $\chi_
 Accounting for the thickness of the blade has a significant effect on the radial velocity,
 However, the angle of the relative velocity is not significantly affected.
 
-As the inlet flow rate is decreased, so will the radial velocity, but the tangential velocity $u_1$ will be kept constant.
-From the velocity diagram, this should mean that the angle of the relative velocity, $\chi_1$ should decrease.
-However, this is fixed by the geomtry of the impeller.
-This means that our assumption that the inlet flow velocity is purely in the radial direction is not true.
+These are close to the measured geometry of the impeller, and so the assumptions made are reasonable.
 
 % Draw a velocity triangle for this situation and determine the relative velocity at the inlet to the
 % rotor blade. 
@@ -282,7 +280,7 @@ The ratio of dynamic viscosities of the fluids is given by the ratio of time to 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.9\textwidth]{pressure_reynolds.png}
-    \caption{Reynolds number at tip for various compressor conditions and setups.}
+    \caption{Pressure coefficient against tip Reynolds number for various compressor arrangements.}
     \label{fig:compressor_pressure_re}
 \end{figure}
 
@@ -299,15 +297,14 @@ However, the gradient of the curves appears to initially increase, and then rema
 This was not expected, and is likely due to the compressor power increasing to maintain the same speed as the flow rate increases.
 The isentropic efficiency of the compressor will also decrease at higher flow rates.
 
+The area of the compressor channel increases, and so by continuity the velocity must decrease.
+From Bernoulli's equation, this means that the pressure must increase in the radial direction.
+The contribution of pressure on the torque of the compressor is the distance from the centre of the impeller multiplied by the circumferential component of pressure.
+This may explain why impeller blades are curved, as to decrease this component of pressure further away from the centre of the impeller, reducing the torque and increasing efficiency.
+
+
 % Explain why throttling the water compressor at inlet and exit produce different cavitation
 % results. Also explain why the pressure rise is similar when cavitation is not present.
-%%
-
-Cavitation affect on pressure rise.
-
-
-%% Change of pressure rise with Reynolds number. Reference to figure 3 may be useful -
-%% k/d is comparable to the roughness height of the blade surface divided by the channel span
 
 %% Change in cavitation with rotor speed and throttle location? Sketch two velocity
 %% triangles, one at a nominal design condition and when the flow coefficient is much lower.
@@ -319,22 +316,57 @@ Audible noise was also heard at lower inlet pressures where more severe cavitati
 Cavitation bubbles were also observed to coalesce to form larger bubbles, which then collapsed.
 This suggests that more severe caviation was occuring at the lower inlet pressures.
 
+Cavitation was not observed for varying the outlet valve because throttling the outlet valve increases the pressure at compressor outlet.
+This means that the pressure at the inlet is also increased and so the minimum pressure is above the vapour pressure of water,
+and so cavitation is not expected to occur.
+
 The location of cavitation was observed to be on the pressure surface but appeared to be further from the inlet than expected.
 This means that the lowest static pressure is not at the inlet, and is instead further downstream on the trailing edge.
+A possible reason for this may be that the flow must accelerate around the corner of the leading edge (See figure \ref{fig:flow_scenario_velocity_diagrams}), and so the pressure is
+lowest further downstream than at the section of minimum area between leading and trailing edges.
 
+The impact of cavitation on compressor performance was difficult to observe, as only one point of cavitation was observed.
+However, it can be seen that just before the point of cavitation, the pressure rise coefficient appears to be constant with flow coefficient.
+This is due to compressible 
 
+%% Change of pressure rise with Reynolds number. Reference to figure 3 may be useful -
+%% k/d is comparable to the roughness height of the blade surface divided by the channel span
 
 %$ Can you explain the differences? Note that the two compressors do not give exactly the same
 %% pressure rise-flow rate characteristics, and so care must be taken in comparing the effect of
 %% Reynolds number.
 
+Figure \ref{fig:compressor_pressure_re} shows that the Reynolds number of the glycerol setup is much lower than that of water.
+This was expected due to its higher viscosity.
+
+
+% Change in cavitation with rotor speed and throttle location? Sketch two velocity
+% triangles, one at a nominal design condition and when the flow coefficient is much lower
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{flow_scenario_velocity_diagrams.jpg}
+    \caption{Velocity diagrams for the compressor at nominal design condition and when the flow coefficient is much lower. The dashed line indicates the angle of blade leading edge.}
+    \label{fig:flow_scenario_velocity_diagrams}
+\end{figure}
+
+The velocity diagrams for low flow and low speed are shown in figure \ref{fig:flow_scenario_velocity_diagrams}.
+When compared to nominal design conditions at both high speed and high flow, the relative velocity is initially not aligned with the blade angle.
+This means that the flow must turn to align with the blade angle.
 
 % Suggest a reason why the venturi might not be suitable for measuring the flow rate of the
 % glycerine solution.
-The venturi flume 
+The venturi flume may not be suitable for measuring flows of high viscosity fluids, as equation for mass flow rate \ref{eq:venturi_flume} 
+is derived from Bernoulli's equation which assumes invicid flow.
 
 \section{Conclusion}
 % Summarize the main findings of the experiment and draw conclusions based on the results.
+
+In conclusion, five compressor arrangements were tested, and the pressure rise and flow coefficients were calculated and plotted.
+The pressure rise coefficient was found to decrease with increasing flow coefficient, 
+which was correctly predicted from theory derived with a constant energy assumption.
+Incompressible and invicid flow assumptions were used to understand pressure and velocity changes in the radial direction.
+
 
 \section{Appendix}
 
