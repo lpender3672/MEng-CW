@@ -49,19 +49,18 @@ The glycerine setup the flow rate was varied by a screw valve at outlet of the c
 % Define a suitable non-dimensional cavitation number. Plot a graph of non-dimensional
 % cavitation number against non-dimensional flow coefficient.
 
-
-The reynolds number takes a standard form of:
-\begin{equation}
-    Re = \frac{\rho UD}{\mu} = O\left( \frac{\rho ND^2}{\mu} \right)
-\end{equation}
-The factor of a half the diameter for outer blade velocity is omitted to simplify the non dimensionalisation. 
-
 Two more non-dimensional groups are often used to characterise the flow in a compressor, the flow coefficient and the pressure rise coefficient.
 These are defined as follows:
 \begin{align}
     \text{Flow Coefficient} &= \frac{\dot{Q}}{ND^3} \label{eq:flow_coeff}\\
     \text{Pressure Coefficient} &= \frac{\Delta p}{\rho N^2 D^2} \label{eq:pressure_coeff}
 \end{align}
+
+The reynolds number at the outlet tips takes the standard form of:
+\begin{equation}
+    Re_{tip} = \frac{\rho ND^2}{\mu}
+\end{equation}
+Note: the factor of half from calculating the tip velocity is taken out to simplify the analysis.
 
 Cavitation is caused by local pressure drops below that of the vapour pressure of the fluid, causing the fluid to vaporise.
 The collapse of these bubbles can cause high pressure waves and damage to the impeller.
@@ -87,10 +86,12 @@ The pressure at the inlet of the compressor is therefore given by:
 \begin{equation}
     p_1 =  P_a + \rho g h - \Delta p
 \end{equation}
+The vapour pressure of water rises with temperature as seen in figure \ref{fig:vapour_pressure_water} of the Appendix.
+While the variation in temperature is small, the vapour pressure for each temperature datapoint is interpolated from this data, and is used in calculation for the cavitation number.
 
 \subsection{Compressor Theory}
 
-For an isentropic compressor $Tds = 0 = dh - vdp$ which relates the change specific enthalpy and static pressure as follows:
+For an isentropic compressor $Tds = 0 = dh_0 - vdp$ which relates the change specific stagnation enthalpy and static pressure as follows:
 \begin{equation}
     w_s = \int_{p_1}^{p_2} vdp = \int_{p_1}^{p_2} \frac{dp}{\rho}
 \end{equation}
@@ -126,18 +127,49 @@ Which can easily be converted to mass flow rate using the known density $\rho_g$
 % Using the mass flow rate and the impeller measurements, determine the radial velocity at the
 % inlet to the blade at maximum flow condition, this is the starting value when valves are fully
 % open. Non-dimensionalise your value by the blade speed.
-Assuming incompressibility, the inlet and outlet radial component of velocity can simply be calculated from continuity.
+The following analysis is based on the assumptions that:
+\begin{itemize}
+    \item The flow is incompressible.
+    \item In the absolute frame, the inlet flow has only radial velocity.
+\end{itemize} 
+
+The radial inlet velocity can simply be calculated from continuity.
 \begin{equation}
-    \dot{Q} = 2\pi r_1 v_1 = 2\pi r_2 v_{2r}
+    v_1 = \frac{\dot{Q}}{\pi D_1 h} \label{eq:simple_radial_velocity}
 \end{equation}
+However, the impeller blades have an additional thickness $b$ which should be accounted for.
+The angle of the blade to the circumferential direction is 30 degrees and so the circumferential width is $2b$.
+The equation for the inlet velocity is then given by:
+\begin{equation}
+    v_1 = \frac{\dot{Q}}{(\pi D_1 - 2b N) h} \label{eq:radial_velocity}
+\end{equation}
+Where $N = 6$ blades for this compressor setup.
+
+The relative velocity of the flow follows the leading edge and so at the inlet this makes an angle of $\chi_1$ to the radial direction.
+This is shown in the velocity diagram in figure \ref{fig:vel_diagrams}.
+From this, because the radial and tangential velocities are perpendicular,
+the angle of the relative velocity to the radial direction is given by:
+\begin{equation}
+    \chi_1 = \arctan\left( \frac{u_1}{v_1} \right)
+\end{equation}
+
+The radial velocity $v_1$ can also be non dimensionalised by the inlet blade speed to give:
+\begin{equation}
+    \frac{v_1}{U_1} = \frac{2v_1}{N D_1}
+\end{equation}
+
 
 For the water setup at maximum flow condition, both inlet and outlet valves are fully open.
-Then, rearanging for the radial velocity at the inlet gives $V_1 = 1.74 m/s$.
+At the compressor speed of $298.97$ rad/s, $u_1 = 3.767 m/s$.
+From equation \ref{eq:simple_radial_velocity}, $V_1 = 1.736 m/s$, $\chi_1 = 65.2^\circ$.
+However, using equation \ref{eq:radial_velocity} gives $V_1 = 1.913 m/s$, $\chi_1 = 63.1^\circ$.
+Accounting for the thickness of the blade has a significant effect on the radial velocity,
+However, the angle of the relative velocity is not significantly affected.
 
-This can be non-dimensionalised by the inlet blade speed to give:
-\begin{equation}
-    \frac{V_1}{U_1} = \frac{2\dot{Q}}{\pi N D_1 D_2 h}
-\end{equation}
+As the inlet flow rate is decreased, so will the radial velocity, but the tangential velocity $u_1$ will be kept constant.
+From the velocity diagram, this should mean that the angle of the relative velocity, $\chi_1$ should decrease.
+However, this is fixed by the geomtry of the impeller.
+This means that our assumption that the inlet flow velocity is purely in the radial direction is not true.
 
 % Draw a velocity triangle for this situation and determine the relative velocity at the inlet to the
 % rotor blade. 
@@ -145,14 +177,20 @@ This can be non-dimensionalised by the inlet blade speed to give:
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.6\textwidth]{velocity_diagrams.jpg}
-    \caption{Compressor sketch and velocity diagrams. The high pressure surface is indicated by the blue line, with the suction surface on the opposite side of the channel.}
+    \caption{Compressor sketch and velocity diagrams. The high pressure surface is indicated by the red line, with the suction surface as the blue line.
+    Note: Velocity triangles will have different scales.}
     \label{fig:vel_diagrams}
 \end{figure}
+
 
 % Use this velocity, the inlet diameter of the impeller and the kinematic viscosity of
 % water to estimate the Reynolds number for the compressor. The magnitude of this Reynolds
 % number will be comparable to values that you are familiar with for pipe flow
 
+The reynolds number at the inlet of the compressor is given by:
+\begin{equation}
+    Re_{in} = \frac{\rho v_1 D_1}{\mu}
+\end{equation}
 
 
 \subsection{Viscosity measurements}
@@ -183,10 +221,10 @@ This can be used to determine the ratio of dynamic viscosities
     \label{fig:impeller_annotations}
 \end{figure}
 
-And so angles of impeller blades to the radial direction are given by:
+And so angles for the leading edge of the impeller blades to the radial direction are given by:
 \begin{alignat}{2}
-    \chi_1 &= 180 - 62 - 67 &= 51^\circ \notag \\
-    \chi_2 &= 62 - 17 &= 45^\circ \notag
+    \chi_1 &= 180-73-36 &= 71^\circ \notag \\
+    \chi_2 &= 8 + 36 &= 44^\circ \notag
 \end{alignat}
 
 These values are shown in the table below, along with additional inlet and outlet diameter measurements with callipers.
@@ -243,7 +281,7 @@ The ratio of dynamic viscosities of the fluids is given by the ratio of time to 
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.9\textwidth]{compressor_reynolds.png}
+    \includegraphics[width=0.9\textwidth]{pressure_reynolds.png}
     \caption{Reynolds number at tip for various compressor conditions and setups.}
     \label{fig:compressor_pressure_re}
 \end{figure}
@@ -274,7 +312,17 @@ Cavitation affect on pressure rise.
 %% Change in cavitation with rotor speed and throttle location? Sketch two velocity
 %% triangles, one at a nominal design condition and when the flow coefficient is much lower.
 
-Cavitation bubbles were observed to coalesce to form larger bubbles, which then collapsed.
+Cavitation was only observed for the smallest recorded flow rate while throttling inlet at the higher speed setting.
+It was first detected visually using a stroboscope which was synchronised to the compressor speed.
+It also occured at the smallest cavitation number, which shows that the cavitation number is a good predictor of cavitation.
+Audible noise was also heard at lower inlet pressures where more severe cavitation was seen.
+Cavitation bubbles were also observed to coalesce to form larger bubbles, which then collapsed.
+This suggests that more severe caviation was occuring at the lower inlet pressures.
+
+The location of cavitation was observed to be on the pressure surface but appeared to be further from the inlet than expected.
+This means that the lowest static pressure is not at the inlet, and is instead further downstream on the trailing edge.
+
+
 
 %$ Can you explain the differences? Note that the two compressors do not give exactly the same
 %% pressure rise-flow rate characteristics, and so care must be taken in comparing the effect of
@@ -287,5 +335,145 @@ The venturi flume
 
 \section{Conclusion}
 % Summarize the main findings of the experiment and draw conclusions based on the results.
+
+\section{Appendix}
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{cccc}
+        \hline
+        Venturi Pressure (kPa) & Mass Flow (kg/s) & Compressor Pressure Rise (kPa) & Temperature ($^\circ C$)\\
+        \hline
+        20.7 & 0.8781 & 54.2 & 17.9 \\
+        20.2 & 0.8674 & 54.3 & 17.9 \\
+        19.2 & 0.8457 & 55.2 & 17.9 \\
+        18.1 & 0.8211 & 56.0 & 17.9 \\
+        15.7 & 0.7647 & 57.2 & 17.9 \\
+        12.2 & 0.6741 & 59.2 & 17.9 \\
+        9.8 & 0.6042 & 60.9 & 17.9 \\
+        6.6 & 0.4958 & 62.8 & 17.9 \\
+        4.4 & 0.4048 & 63.9 & 17.9 \\
+        2.3 & 0.2927 & 66.4 & 17.9 \\
+        1.1 & 0.2024 & 67.1 & 17.9 \\
+        0.3 & 0.1057 & 67.9 & 17.9 \\
+        \hline
+    \end{tabular}
+    \caption{Water full speed data on varied outlet valve flow}
+    \label{tab:water_full_speed_outlet_data}
+\end{table}
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{cccc}
+        \hline
+        Venturi Pressure (kPa) & Mass Flow (kg/s) & Compressor Pressure Rise (kPa) & Temperature ($^\circ C$)\\        \hline
+        2.0 & 0.2730 & 16 & 18.1 \\
+        1.9 & 0.2660 & 16.2 & 18.2 \\
+        1.7 & 0.2516 & 16.2 & 18.2 \\
+        1.5 & 0.2364 & 16.3 & 18.2 \\
+        1.0 & 0.1930 & 16.6 & 18.2 \\
+        0.8 & 0.1726 & 16.7 & 18.2 \\
+        0.6 & 0.1495 & 16.9 & 18.2 \\
+        0.5 & 0.1365 & 17 & 18.2 \\
+        \hline
+    \end{tabular}
+    \caption{Water half speed data on varied outlet valve flow.}
+    \label{tab:water_half_speed_outlet_data}
+\end{table}
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{cccc}
+        \hline
+        Venturi Pressure (kPa) & Mass Flow (kg/s) & Compressor Pressure Rise (kPa) & Temperature ($^\circ C$)\\        \hline
+        20.8 & 0.8802 & 54.6 & 18.3 \\
+        19.5 & 0.8523 & 55.7 & 18.3 \\
+        18.1 & 0.8211 & 56.5 & 18.3 \\
+        12.9 & 0.6932 & 59.6 & 18.3 \\
+        10.4 & 0.6224 & 61.2 & 18.3 \\
+        6.9 & 0.5070 & 64.1 & 18.3 \\
+        5.0 & 0.4316 & 64.6 & 18.3 \\
+        4.4 & 0.4048 & 64.9 & 18.3 \\
+        2.5 & 0.3052 & 66.9 & 18.4 \\
+        1.0 & 0.1930 & 69.1 & 18.4 \\
+        0.4 & 0.1221 & 69.9 & 18.4 \\
+        0.2 & 0.0863 & 70.0 & 18.5 \\
+        \hline
+    \end{tabular}
+    \caption{Water full speed data for varied inlet valve.}
+    \label{tab:water_full_speed_inlet_data}
+\end{table}
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{cccc}
+        \hline
+        Venturi Pressure (kPa) & Mass Flow (kg/s) & Compressor Pressure Rise (kPa) & Temperature ($^\circ C$)\\        \hline
+        1.9 & 0.2660 & 16.0 & 18.5 \\
+        1.7 & 0.2516 & 16.1 & 18.5 \\
+        1.5 & 0.2364 & 16.3 & 18.5 \\
+        1.3 & 0.2201 & 16.5 & 18.5 \\
+        1.1 & 0.2024 & 16.6 & 18.5 \\
+        0.9 & 0.1831 & 16.7 & 18.5 \\
+        0.8 & 0.1726 & 16.7 & 18.5 \\
+        0.5 & 0.1365 & 17.0 & 18.5 \\
+        0.4 & 0.1221 & 17.2 & 18.5 \\
+        0.3 & 0.1057 & 17.2 & 18.5 \\
+        0.2 & 0.0863 & 17.2 & 18.5 \\
+        0.1 & 0.0610 & 17.1 & 18.5 \\
+        \hline
+    \end{tabular}
+    \caption{Water half speed data for varied inlet valve.}
+    \label{tab:water_half_speed_inlet_data}
+\end{table}
+
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{ccc}
+        \hline
+        Time (s)& Flow Rate (kg/s) & Pressure (kPa) \\
+        \hline
+        12.66 & 1.3862 & 57.5 \\
+        12.13 & 1.4468 & 60.6 \\
+        11.81 & 1.4860 & 62.5 \\
+        12.2  & 1.4385  & 63.5 \\
+        16.81 & 1.0440 & 68.7 \\
+        25.91 & 0.6773 & 73.6 \\
+        133.19 & 0.1318 & 80.5 \\
+        53.09 & 0.3306 & 77.2 \\
+        19.1  & 0.9188 & 66.4 \\
+        16.16 & 1.0860 & 63.9 \\
+        15.15 & 1.1584 & 62.7 \\
+        34.55 & 0.5079 & 75.3 \\
+        23.92 & 0.7336 & 70.5 \\
+        17.36 & 1.0109   & 64.8 \\
+        \hline
+    \end{tabular}
+    \caption{glycerine compressor data for varied outlet valve.}
+    \label{tab:glycerine_outlet_data}
+\end{table}
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{vapour_pressure_water.png}
+    \caption{Vapour pressure of water at various temperatures \cite{vapour_pressure}}
+    \label{fig:vapour_pressure_water}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{re_roughness.jpg}
+    \caption{Fricton factor vs Reynolds number for pipes of varying roughness \cite{handout}}
+    \label{fig:Re_vs_friction_factor}
+\end{figure}
+
+\begin{thebibliography}{9}
+    \bibitem{vapour_pressure} % help add link https://www.wiredchemist.com/chemistry/data/vapor-pressure
+    The Wired Chemist ,\textit{Vapour Pressure of Water}, \texttt{https://www.wiredchemist.com/chemistry/data/vapor-pressure}, Accessed 2023.2.27
+    \bibitem{handout}
+    Taylor, J.V. 2023, \textit{Module 3A3: Radial Compressor Lab handout}
+\end{thebibliography}
 
 \end{document}
