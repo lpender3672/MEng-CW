@@ -22,9 +22,6 @@
 
 \maketitle
 
-\section{Abstract}
-% Provide a brief summary of the lab report, including the objective, methodology, and key findings.
-
 \section{Introduction}
 
 Two compressor setups were used in this experiment.
@@ -203,6 +200,9 @@ However, using thin film theory, the time taken for a fluid to travel a specific
     
 Where $\mu$ is the dynamic viscosity, $T$ is the time taken for the fluid to travel a distance $L$, and $\rho$ is the density of the fluid.
 This can be used to determine the ratio of dynamic viscosities
+
+%%%%%%%%%%%%%%%%%%%%
+
 \section{Results}
 % Present the data obtained from the experiment, including tables, graphs, and figures.
 
@@ -286,6 +286,8 @@ The ratio of dynamic viscosities of the fluids is given by the ratio of time to 
 
 % Pressure Rise Coefficient against Tip Reynolds number.
 
+%%%%%%%%%%%%%%%%%%%%%%%
+
 \section{Discussion}
 % Analyze and interpret the results, discussing their significance and any observations or trends.
 % Do the results agree with what you expect for:
@@ -329,17 +331,6 @@ The impact of cavitation on compressor performance was difficult to observe, as 
 However, it can be seen that just before the point of cavitation, the pressure rise coefficient appears to be constant with flow coefficient.
 This is due to compressible 
 
-%% Change of pressure rise with Reynolds number. Reference to figure 3 may be useful -
-%% k/d is comparable to the roughness height of the blade surface divided by the channel span
-
-%$ Can you explain the differences? Note that the two compressors do not give exactly the same
-%% pressure rise-flow rate characteristics, and so care must be taken in comparing the effect of
-%% Reynolds number.
-
-Figure \ref{fig:compressor_pressure_re} shows that the Reynolds number of the glycerol setup is much lower than that of water.
-This was expected due to its higher viscosity.
-
-
 % Change in cavitation with rotor speed and throttle location? Sketch two velocity
 % triangles, one at a nominal design condition and when the flow coefficient is much lower
 
@@ -354,6 +345,22 @@ The velocity diagrams for low flow and low speed are shown in figure \ref{fig:fl
 When compared to nominal design conditions at both high speed and high flow, the relative velocity is initially not aligned with the blade angle.
 This means that the flow must turn to align with the blade angle.
 
+
+%$ Can you explain the differences? Note that the two compressors do not give exactly the same
+%% pressure rise-flow rate characteristics, and so care must be taken in comparing the effect of
+%% Reynolds number.
+
+%% Change of pressure rise with Reynolds number. Reference to figure 3 may be useful -
+%% k/d is comparable to the roughness height of the blade surface divided by the channel span
+
+Figure \ref{fig:Re_vs_friction_factor} shows the variation of friction factor with Reynolds number for pipes of varying relative pipe roughness.
+Friction factor takes a similar form to the pressure coefficient.
+For steel, the roughness factor $k = 0.1$ mm, and so the relative roughness is $k/h = 0.0156$.
+At this value, and for high reynolds numbers, figure \ref{fig:Re_vs_friction_factor} indicates that the
+pressure coefficient will be constant with Reynolds number for this case in the turbulent region.
+However, only 3 values for tip Reynolds number are known, and so it is difficult to make a comparison.
+Additionally, the two compressors will not give exactly the same pressure rise-flow rate characteristics.
+
 % Suggest a reason why the venturi might not be suitable for measuring the flow rate of the
 % glycerine solution.
 The venturi flume may not be suitable for measuring flows of high viscosity fluids, as equation for mass flow rate \ref{eq:venturi_flume} 
@@ -366,7 +373,12 @@ In conclusion, five compressor arrangements were tested, and the pressure rise a
 The pressure rise coefficient was found to decrease with increasing flow coefficient, 
 which was correctly predicted from theory derived with a constant energy assumption.
 Incompressible and invicid flow assumptions were used to understand pressure and velocity changes in the radial direction.
+A non-dimensional cavitation number was derived and used to correctly predict the most likely conditions for cavitation.
+Cavitation was observed both visually and audibly, and was found to occur at a point on the trailing edge but offset from the inlet of the impeller.
+This is considered to be due to the flow turning to align with the blade angle; creating a region of minimum pressure further downstream.
+The onset of cavitation appeared to cause a constant pressure rise coefficient upon reducing the flow coefficient further.
 
+%%%%%%%%%%%%%%%%%%%%%%%
 
 \section{Appendix}
 
