@@ -16,7 +16,7 @@
 
 \title{3A3 Compressor Lab Report}
 \author{[Louis Pender]}
-\date{\today}
+\date{February 27, 2024}
 
 \begin{document}
 
@@ -24,7 +24,7 @@
 
 \section{Introduction}
 
-Two compressor setups were used in this experiment.
+Two compressor circuits were used in this experiment.
 One with pure water, where the speed could be varied, and another using glycerine, a more viscous solution of 60\%
 glycerine and 40\% water, where the compressor speed was fixed.
 For the water setup, the flow rates were varied by screw valves at the inlet and outlet which were measured by pressure difference of a venturi flume.
@@ -71,8 +71,9 @@ A non-dimensional number that could be used to predict cavitation would be the d
 At the inlet, where the pressure is predicted to be the lowest, $v = N \frac{D_1}{2}$
 This gives a non-dimensional cavitation number of:
 \begin{equation}
-    C_t = 8\frac{p - p_v}{\rho (ND_1)^2}
+    C_t = \frac{p - p_v}{\rho (ND_1)^2}
 \end{equation}
+Note: a factor of 8 has been omitted from the dynamic pressure term to simplify the analysis.
 Cavitation was predicted to occur at the inlet of the compressor, where the velocity is highest and so pressure lowest.
 
 To obtain the cavitation number $C_t$ at the inlet of the compressor, the pressure at the inlet of the compressor is required.
@@ -146,28 +147,15 @@ Where $N = 6$ blades for this compressor setup.
 The relative velocity of the flow follows the leading edge and so at the inlet this makes an angle of $\chi_1$ to the radial direction.
 This is shown in the velocity diagram in figure \ref{fig:vel_diagrams}.
 From this, because the radial and tangential velocities are perpendicular,
-the angle of the relative velocity to the radial direction is given by:
+the initial angle of the relative velocity to the radial direction is given by:
 \begin{equation}
-    \chi_1 = \arctan\left( \frac{u_1}{v_1} \right)
+    \chi = \arctan\left( \frac{u_1}{v_1} \right)
 \end{equation}
-
-The radial velocity $v_1$ can also be non dimensionalised by the inlet blade speed to give:
-\begin{equation}
-    \frac{v_1}{U_1} = \frac{2v_1}{N D_1}
-\end{equation}
-
-
-For the water setup at maximum flow condition, both inlet and outlet valves are fully open.
-At the compressor speed of $298.97$ rad/s, $u_1 = 3.767 m/s$.
-From equation \ref{eq:simple_radial_velocity}, $V_1 = 1.736 m/s$, $\chi_1 = 65.2^\circ$.
-However, using equation \ref{eq:radial_velocity} gives $V_1 = 1.913 m/s$, $\chi_1 = 63.1^\circ$.
-Accounting for the thickness of the blade has a significant effect on the radial velocity,
-However, the angle of the relative velocity is not significantly affected.
-
-These are close to the measured geometry of the impeller, and so the assumptions made are reasonable.
 
 % Draw a velocity triangle for this situation and determine the relative velocity at the inlet to the
 % rotor blade. 
+The velocity triangle for the inlet of the compressor at the design condition is shown in figure \ref{fig:vel_diagrams} seen below.
+This means that the relative velocity at the inlet to the rotor blade is closely aligned with the blade angle $\chi_1$.
 
 \begin{figure}[H]
     \centering
@@ -177,6 +165,10 @@ These are close to the measured geometry of the impeller, and so the assumptions
     \label{fig:vel_diagrams}
 \end{figure}
 
+The radial velocity $v_1$ can also be non dimensionalised by the inlet blade speed to give:
+\begin{equation}
+    \frac{v_1}{U_1} = \frac{2v_1}{N D_1}
+\end{equation}
 
 % Use this velocity, the inlet diameter of the impeller and the kinematic viscosity of
 % water to estimate the Reynolds number for the compressor. The magnitude of this Reynolds
@@ -236,9 +228,9 @@ These values are shown in the table below, along with additional inlet and outle
         Inlet Diameter $D_1$ & 25.2 mm \\
         Outlet Diameter $D_2$ & 79.3 mm \\
         Blade Span $h$ & 6.40 mm \\
-        Blade Width $b$ & 3.9 mm \\
-        Inlet Blade Angle $\chi_1$ & $51^\circ$ \\
-        Outlet Blade Angle $\chi_2$ & $45^\circ$ \\
+        Blade Width $b$ & 3.90 mm \\
+        Inlet Blade Angle $\chi_1$ & $71^\circ$ \\
+        Outlet Blade Angle $\chi_2$ & $44^\circ$ \\
         \hline
     \end{tabular}
     \caption{Impeller geometry measurements.}
@@ -246,20 +238,21 @@ These values are shown in the table below, along with additional inlet and outle
 \end{table}
 
 The ambient pressure was measured as $754$ mmHg, corresponding to $100.56$ kPa.
+At the ambient conditions the density of water is $998.2 kg/m^3$.
 
 \subsection{Viscosiy measurements}
 
-At the ambient conditions the density of water is $998.2 kg/m^3$.
+The dynamic viscosity of water at an average of $18.3^\circ C$ was taken as $1.054 \times 10^{-6}$
 The density of the glycerine solution was known to be $1170 kg/m^3$.
 
 \begin{table}[H]
     \centering
-    \begin{tabular}{|c|c|c|}
+    \begin{tabular}{|c|c|c|c|}
         \hline
-        \textbf{Length} $(m)$ & \textbf{Time} (s) & \textbf{Density} ($kg/m^3$) \\
+        \textbf{Length} $(m)$ & \textbf{Time} (s) & \textbf{Density} ($kg/m^3$) & \textbf{Dynamic Viscosity} ($m^2/s$) \\
         \hline
-        10 & 40.35 & 998.2 \\
-        2 & 102.01 & 1170 \\
+        10 & 40.35 & 998.2 & $1.054 \times 10^{-6}$\\
+        2 & 102.01 & 1170 & $1.561 \times 10^{-5}$\\
         \hline
     \end{tabular}
     \caption{Time taken for 10mL of fluid to travel a specific length at $18.3^\circ C.$}
@@ -293,16 +286,27 @@ The ratio of dynamic viscosities of the fluids is given by the ratio of time to 
 % Do the results agree with what you expect for:
 %% Change of pressure rise with flow rate
 
+For the water setup at maximum flow condition, both inlet and outlet valves are fully open.
+At the compressor speed of $298.97$ rad/s, $u_1 = 3.767 m/s$.
+From equation \ref{eq:simple_radial_velocity}, $V_1 = 1.736 m/s$, giving $\chi = 65.2^\circ$.
+However, using equation \ref{eq:radial_velocity} gives $V_1 = 1.913 m/s$ and $\chi = 63.1^\circ$.
+Accounting for the thickness of the blade has a significant effect on the radial velocity,
+However, the angle of the relative velocity is not significantly affected.
+These values are close to the measured geometry of the impeller, which suggests
+that the conditions are within the designed range of the compressor.
+
 Figure \ref{fig:compressor_non_dims} shows that for all compressor arrangements, the pressure coefficient decrease with increasing flow coefficient.
 This was expected for water from theory shown by the inverse relationship in equation \ref{eq:inverse_relationship}.
 However, the gradient of the curves appears to initially increase, and then remains constant.
-This was not expected, and is likely due to the compressor power increasing to maintain the same speed as the flow rate increases.
+This is different to relation \ref{eq:inverse_relationship} and is due to the compressor power increasing to maintain the same speed as the flow rate increases.
 The isentropic efficiency of the compressor will also decrease at higher flow rates.
 
 The area of the compressor channel increases, and so by continuity the velocity must decrease.
 From Bernoulli's equation, this means that the pressure must increase in the radial direction.
 The contribution of pressure on the torque of the compressor is the distance from the centre of the impeller multiplied by the circumferential component of pressure.
 This may explain why impeller blades are curved, as to decrease this component of pressure further away from the centre of the impeller, reducing the torque and increasing efficiency.
+
+
 
 
 % Explain why throttling the water compressor at inlet and exit produce different cavitation
@@ -343,8 +347,7 @@ This is due to compressible
 
 The velocity diagrams for low flow and low speed are shown in figure \ref{fig:flow_scenario_velocity_diagrams}.
 When compared to nominal design conditions at both high speed and high flow, the relative velocity is initially not aligned with the blade angle.
-This means that the flow must turn to align with the blade angle.
-
+This means that the flow must turn to align with the blade angle, which, as previously mentioned can cause cavitation downstream of the inlet.
 
 %$ Can you explain the differences? Note that the two compressors do not give exactly the same
 %% pressure rise-flow rate characteristics, and so care must be taken in comparing the effect of
