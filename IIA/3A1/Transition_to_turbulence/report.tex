@@ -10,6 +10,7 @@
 \usepackage{caption}
 \usepackage{subcaption}
 \usepackage{geometry}
+\usepackage{multirow}
 
 \newgeometry{vmargin={1in}, hmargin={1in}}
 
@@ -80,6 +81,32 @@ The viscosity of air is $1.7894 \times 10^{-5} Ns/m^2$ at 15oC.
     \label{fig:calibration}
 \end{figure}
 
+\begin{table}[h]
+    \centering
+    \begin{tabular}{cccccc}
+        \hline
+        \multirow{2}{*}{Setup} & \multirow{2}{*}{Dial} & \multirow{2}{*}{$\Delta p$} & \multirow{2}{*}{$U_{\infty}$} & \multirow{2}{*}{Re} & \multirow{2}{*}{Comment} \\
+        & & & & & \\
+        \hline
+        \hline
+        \multirow{4}{*}{Flat Plate} & 300 & 0.11 & 0.42378 & $2.03 \times 10^4$ & Laminar \\
+        & 650 & 1.04 & 1.3030 & $6.24 \times 10^4$ & Transitioning \\
+        & 820 & 1.59 & 1.6112 & $7.72 \times 10^4$ & Turbulent \\
+        & 1000 & 2.1 & 1.8516 & $8.87 \times 10^4$ & Fully developed \\
+        \hline
+        \hline
+        \multirow{3}{*}{Protrusion} & 300 & 0.11 & 0.42378 & $2.03 \times 10^4$ & Laminar \\
+        & 370 & 0.34 & 0.74515 & $3.57 \times 10^4$ & Transitioning \\
+        & 430 & 0.47 & 0.87598 & $4.20 \times 10^4$ & Turbulent \\
+        \hline
+        \hline
+        \multirow{1}{*}{Trip Wire} & 200 & 0.04 & 0.25556 & $1.22 \times 10^4$ & Turbulent \\
+        \hline
+    \end{tabular}
+    \caption{Observations and Reynolds numbers for various arrangements of the tunnel.}
+    \label{tab:observations}
+\end{table}
+
 
 
 % 1. Express your results in terms of the Reynolds number.
@@ -126,7 +153,7 @@ Calculate the friction velocity
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.8\textwidth]{clauser.jpg}
+    \includegraphics[width=0.8\textwidth]{clauser_data.png}
     \caption{Clauser plot}
     \label{fig:clauser}
 \end{figure}
