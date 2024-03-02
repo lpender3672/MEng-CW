@@ -108,10 +108,43 @@ The viscosity of air is $1.7894 \times 10^{-5} Ns/m^2$ at 15oC.
 \end{table}
 
 
+\begin{figure}[H]
+    \centering 
+    \begin{subfigure}{0.8\textwidth}
+        \includegraphics[width=\textwidth]{1_laminar.jpg}
+        \caption{Laminar boundary layer at 300 dial}
+    \end{subfigure}
+    \begin{subfigure}{0.8\textwidth}
+        \includegraphics[width=\textwidth]{2_transition.jpg}
+        \caption{Transitioning boundary layer at 650 dial}
+    \end{subfigure}
+    \begin{subfigure}{0.8\textwidth}
+        \includegraphics[width=\textwidth]{3_transition.jpg}
+        \caption{Transitioning boundary layer at 820 dial}
+    \end{subfigure}
+    \begin{subfigure}{0.8\textwidth}
+        \includegraphics[width=\textwidth]{4_turbulent.jpg}
+        \caption{Turbulent boundary layer at 1000 dial}
+    \end{subfigure}
+    \caption{Aenometer oscilloscope readings for various tunnel speeds for the flat plate}
+    \label{fig:boundary_layer}
+\end{figure}
 
 % 1. Express your results in terms of the Reynolds number.
 
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.99\textwidth]{clauser_data.png}
+    \caption{Clauser plot}
+    \label{fig:clauser}
+\end{figure}
 
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.99\textwidth]{u_fluctuation.png}
+    \caption{Fluctuation of velocity with distance from the wall}
+    \label{fig:fluctuation}
+\end{figure}
 
 %%%%%%%%%%%%%%%%%%%%%%%
 
@@ -133,8 +166,8 @@ The viscosity of air is $1.7894 \times 10^{-5} Ns/m^2$ at 15oC.
 % demonstrator will provide you with the zero offset when the probe stop is just in
 % contact with the plate (≈ 0.2mm).
 
-The linear region on the Clauser plot should provide an estimation of the skin friction Cf.
-Calculate the friction velocity
+From interpolating the between linear regions on the Clauser the skin friction coefficient is estimated to be $C_f = 0.0043$.
+The friction velocity is then given by:
 \begin{equation}
     U_* = \left( \frac{\tau}{\rho} \right)^{\frac{1}{2}} = \left[ \frac{1}{2}C_f \bar{ U}_1^2 \right]^{\frac{1}{2}}
 \end{equation}
@@ -151,16 +184,9 @@ Calculate the friction velocity
 
 \section{Appendix}
 
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.8\textwidth]{clauser_data.png}
-    \caption{Clauser plot}
-    \label{fig:clauser}
-\end{figure}
-
 \begin{thebibliography}{9}
     \bibitem{handout}
-    Cambridge University Engineering Department, \textit{Module 3A1: Transition to Turbulence Lab handout}
+    Cambridge University Engineering Department, \textit{Module 3A1: Transition to Turbulence Lab Handout}
 \end{thebibliography}
 
 \end{document}
