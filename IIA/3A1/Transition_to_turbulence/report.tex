@@ -25,6 +25,23 @@
 \section{Introduction}
 
 
+\section{Objectives}
+
+\begin{itemize}
+    \item To observe with the aid of a hot-wire anemometer and a stethoscope the transition
+    from a laminar to a turbulent boundary layer on a flat plate:
+    \begin{itemize}
+        \item when smooth
+        \item behind an isolated roughness element on the centre-line of the plate
+        \item behind a two-dimensional roughness trip
+    \end{itemize}
+
+    \item To obtain the transition Reynolds numbers for the above conditions.
+    \item To measure the angle of the turbulent wedge that is formed downstream of the roughness element.
+    \item To measure the mean and turbulent profiles of the boundary layer when it is fully turbulent.
+    \item To use the mean flow velocity profile to estimate the skin friction co-efficient. % On Clauser Plot
+\end{itemize}
+
 
 \section{Theory}
 % Describe the experimental setup, equipment used, and the steps followed during the experiment.
@@ -38,10 +55,15 @@ The heat loss of the wire can be modelled by King's Law
 \begin{equation}
     E^2 = A + B U^{\frac{1}{2}}
 \end{equation}
-Considering a turbulent flow the velocity profile can be modelled as a mean velocity $\bar{U} + u'$ where $u'$ is the fluctuating component.
-The voltage then can also be modelled as a mean voltage $\bar{E} + e'$ where $e'$ is the fluctuating component.
-
-
+Considering a turbulent flow the velocity profile can be modelled as $\bar{U} + U'$ and similarly, a voltage $\bar{E} + E'$ which represents the sum of a mean value and a fluctuating component.
+Additionally the following relation holds:
+\begin{equation}
+    \frac{E'}{U'} = \frac{d\bar{E}}{d\bar{U}}
+\end{equation}
+This can be substituted into the King's Law to give
+\begin{equation}
+    \frac{U'}{E'} = \frac{4\bar{E}\bar{U}^{\frac{1}{2}}}{B} = \frac{4\bar{E}(\bar{E}^2 - A)}{B^2}
+\end{equation}
 
 %%%%%%%%%%%%%%%%%%%%
 
@@ -49,6 +71,7 @@ The voltage then can also be modelled as a mean voltage $\bar{E} + e'$ where $e'
 % Present the data obtained from the experiment, including tables, graphs, and figures.
 
 The density of air $\rho = 1.225kgm^{-3}$ for the standard atmosphere with 15oC and 760 mmHg
+The viscosity of air is $1.7894 \times 10^{-5} Ns/m^2$ at 15oC.
 
 \begin{figure}[H]
     \centering
