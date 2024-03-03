@@ -24,9 +24,6 @@
 
 \maketitle
 
-\section{Introduction}
-
-
 \section{Objectives}
 
 \begin{itemize}
@@ -37,7 +34,7 @@
         \item behind an isolated roughness element on the centre-line of the plate
         \item behind a two-dimensional roughness trip
     \end{itemize}
-
+    
     \item To obtain the transition Reynolds numbers for the above conditions.
     \item To measure the angle of the turbulent wedge that is formed downstream of the roughness element.
     \item To measure the mean and turbulent profiles of the boundary layer when it is fully turbulent.
@@ -68,13 +65,34 @@ This can be substituted into the King's Law to give
     \label{eq:small_kings}
 \end{equation}
 
+The parameter that governs the transition to turbulent flow is the Reynolds number based on the distance $x$ from the leading edge of the plate.
+\begin{equation}
+    Re_x = \frac{\rho \bar{U}x}{\mu}
+\end{equation}
+
+A turbulent boundary layer profile can be approximated by the log law seen below:
+\begin{equation}
+    \frac{u}{u_*} = \frac{1}{\kappa} \ln \left( \frac{y u_*}{\nu} \right) + B
+\end{equation}
+Where $u_*$ is the friction velocity, $y$ is the distance from the wall, and $\nu$ is the kinematic viscosity of the fluid.
+The values of $\kappa$ and $B$ are constants which are taken as 0.41 and 5.0 respectively.
+
+The friction velocity is defined as follows:
+\begin{equation}
+    U_* = \left( \frac{\tau}{\rho} \right)^{\frac{1}{2}} = \left[ \frac{1}{2}C_f \bar{ U}_1^2 \right]^{\frac{1}{2}}
+    \label{eq:friction_velocity}
+\end{equation}
+
+
+% The actual transition from laminar to turbulent boundary layer flow may occur over a region of the plate, not at a single point.
+
 %%%%%%%%%%%%%%%%%%%%
 
 \section{Results}
 % Present the data obtained from the experiment, including tables, graphs, and figures.
 
-The density of air $\rho = 1.225kgm^{-3}$ for the standard atmosphere with 15oC and 760 mmHg
-The viscosity of air is $1.7894 \times 10^{-5} Ns/m^2$ at 15oC.
+The density of air $\rho = 1.225kgm^{-3}$ for the standard atmosphere with $15^\circ C$ and 760 mmHg
+At these standard conditions the viscosity of air is $1.48 \times 10^{-5} Ns/m^2$.
 
 \begin{figure}[H]
     \centering
@@ -87,22 +105,22 @@ The viscosity of air is $1.7894 \times 10^{-5} Ns/m^2$ at 15oC.
     \centering
     \begin{tabular}{cccccc}
         \hline
-        Setup & Dial & $\Delta p$ & $U_{\infty}$ & Re & Comment \\
+        Setup & Dial & $\Delta p$ & $U_{\infty}$ & $Re_x$ & Comment \\
         & & (mBar) & (m/s) & & \\
         \hline
         \hline
-        \multirow{4}{*}{Flat Plate} & 300 & 0.11 & 4.238 & $2.03 \times 10^5$ & Laminar \\
-        & 650 & 1.04 &  13.03 & $6.24 \times 10^5$ & Transitioning \\
-        & 820 & 1.59 & 16.11 & $7.72 \times 10^5$ & Transitioning \\
-        & 1000 & 2.10 & 18.52 & $8.87 \times 10^5$ & Turbulent \\
+        \multirow{4}{*}{Flat Plate} & 300 & 0.11 & 4.238 & $4.00 \times 10^5$ & Laminar \\
+        & 650 & 1.04 &  13.03 & $1.23 \times 10^6$ & Transitioning \\
+        & 820 & 1.59 & 16.11 & $1.52 \times 10^6$ & Transitioning \\
+        & 1000 & 2.10 & 18.52 & $1.75 \times 10^6$ & Turbulent \\
         \hline
         \hline
-        \multirow{3}{*}{Protrusion} & 300 & 0.11 & 4.238 & $2.03 \times 10^5$ & Laminar \\
-        & 370 & 0.34 & 7.451  & $3.57 \times 10^5$ & Transitioning \\
-        & 430 & 0.47 & 8.760  & $4.20 \times 10^5$ & Turbulent \\
+        \multirow{3}{*}{Protrusion} & 300 & 0.11 & 4.238 & $4.00 \times 10^5$ & Laminar \\
+        & 370 & 0.34 & 7.451  & $7.03 \times 10^6$ & Transitioning \\
+        & 430 & 0.47 & 8.760  & $8.27 \times 10^6$ & Turbulent \\
         \hline
         \hline
-        \multirow{1}{*}{Trip Wire} & 200 & 0.04 & 2.556 & $1.22 \times 10^4$ & Turbulent \\
+        \multirow{1}{*}{Trip Wire} & 200 & 0.04 & 2.556 & $2.41 \times 10^5$ & Turbulent \\
         \hline
     \end{tabular}
     \caption{Observations and Reynolds numbers for various arrangements of the tunnel.}
@@ -140,8 +158,15 @@ The viscosity of air is $1.7894 \times 10^{-5} Ns/m^2$ at 15oC.
 
 \begin{figure}[H]
     \centering
+    \includegraphics[width=0.99\textwidth]{turbulent_profile.png}
+    \caption{Profile of turbulent boundary layer for a dial setting of 500}
+    \label{fig:turbulent_profile}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
     \includegraphics[width=0.99\textwidth]{clauser_data.png}
-    \caption{Clauser plot of turbulent boundary layer profile for a dial setting of 500}
+    \caption{Clauser plot of turbulent boundary layer profile for a dial setting of 500 \cite{handout}}
     \label{fig:clauser}
 \end{figure}
 
@@ -174,12 +199,17 @@ Figure \ref{fig:oscilloscope_laminar} shows a fully laminar boundary layer as th
 however upon increasing tunnel speed increased fluctuations in voltage were observed, as seen in figure \ref{fig:oscilloscope_turbulent}.
 From equation \ref{eq:small_kings}, this corresponds to fluctuations in velocity, which is an indication of turbulent eddies in the boundary layer.
 Table \ref{tab:observations} shows the Reynolds number for the corresponding tunnel speeds.
-From literature it is known that the transition Reynolds number for a flat plate is $Re_{\delta} \approx 5 \times 10^5$.
-This agrees nicely with observations made, however the actual transition point depends on surface 
+From lecture notes the critical Reynolds number for a flat plate is $Re_{xcr} \approx 5 \times 10^5$.
+This agrees nicely with oscilloscope observations and calculated Reynolds Numbers.
 
 
 %%% Stethoscope observations for the different arangements
 
+
+%%% Profile of the boundary layer
+
+Figure \ref{fig:turbulent_profile} shows the profile of the boundary layer for a dial setting of 500.
+Also shown is the log law approximation for the turbulent boundary layer of friction coefficient $C_f = 0.0042$.
 
 
 % 3. How long are the intermittent patches of turbulence (spots) in the transition zone?
@@ -188,6 +218,8 @@ This agrees nicely with observations made, however the actual transition point d
 % 4. Try to estimate the size of a typical eddy in the turbulent flow.
 %% Done by measuring the time between the peaks of the velocity fluctuations and using local fluctuations in velocity
 
+
+
 % 5. For the boundary layer profile, calculate the velocity ratio u'/U1
 % where u'(y) is the velocity at height y and U1 ( is the free-stream velocity, and plot versus y, the distance
 % from the surface. The points should also be plotted on the Clauser plot supplied. The
@@ -195,14 +227,14 @@ This agrees nicely with observations made, however the actual transition point d
 % contact with the plate (≈ 0.2mm).
 
 The boundary layer profile is shown on the Clauser plot in Figure \ref{fig:clauser}.
-It can be observed that
+The profile does not fit a constant friction coefficient line seen in the Clauser plot for the regions close to the wall and far from the wall.
+
+The reason why the profile far from the wall does not fit the Clauser plot is because the turbulent boundary layer is not fully developed?
+The reason why the profile close to the wall does not fit is not clear.
 
 From interpolating the between linear regions on the Clauser the skin friction coefficient is estimated to be $C_f = 0.0042$.
-The friction velocity is then given by:
-\begin{equation}
-    U_* = \left( \frac{\tau}{\rho} \right)^{\frac{1}{2}} = \left[ \frac{1}{2}C_f \bar{ U}_1^2 \right]^{\frac{1}{2}}
-\end{equation}
-
+The friction velocity is then calculated using \ref{eq:friction_velocity} as $u_* = 0.22$.
+This was then used to plot figure \ref{fig:fluctuation}.
 
 % 7. Calculate and plot versus distance from the wall on separate axes and discuss
 
