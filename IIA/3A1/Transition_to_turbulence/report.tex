@@ -11,6 +11,7 @@
 \usepackage{subcaption}
 \usepackage{geometry}
 \usepackage{multirow}
+\usepackage{hyperref}
 
 \newgeometry{vmargin={1in}, hmargin={1in}}
 
@@ -64,6 +65,7 @@ Additionally the following relation holds:
 This can be substituted into the King's Law to give
 \begin{equation}
     \frac{U'}{E'} = \frac{4\bar{E}\bar{U}^{\frac{1}{2}}}{B} = \frac{4\bar{E}(\bar{E}^2 - A)}{B^2}
+    \label{eq:small_kings}
 \end{equation}
 
 %%%%%%%%%%%%%%%%%%%%
@@ -85,22 +87,22 @@ The viscosity of air is $1.7894 \times 10^{-5} Ns/m^2$ at 15oC.
     \centering
     \begin{tabular}{cccccc}
         \hline
-        \multirow{2}{*}{Setup} & \multirow{2}{*}{Dial} & \multirow{2}{*}{$\Delta p$} & \multirow{2}{*}{$U_{\infty}$} & \multirow{2}{*}{Re} & \multirow{2}{*}{Comment} \\
-        & & & & & \\
+        Setup & Dial & $\Delta p$ & $U_{\infty}$ & Re & Comment \\
+        & & (mBar) & (m/s) & & \\
         \hline
         \hline
-        \multirow{4}{*}{Flat Plate} & 300 & 0.11 & 0.42378 & $2.03 \times 10^4$ & Laminar \\
-        & 650 & 1.04 & 1.3030 & $6.24 \times 10^4$ & Transitioning \\
-        & 820 & 1.59 & 1.6112 & $7.72 \times 10^4$ & Turbulent \\
-        & 1000 & 2.1 & 1.8516 & $8.87 \times 10^4$ & Fully developed \\
+        \multirow{4}{*}{Flat Plate} & 300 & 0.11 & 4.238 & $2.03 \times 10^5$ & Laminar \\
+        & 650 & 1.04 &  13.03 & $6.24 \times 10^5$ & Transitioning \\
+        & 820 & 1.59 & 16.11 & $7.72 \times 10^5$ & Transitioning \\
+        & 1000 & 2.10 & 18.52 & $8.87 \times 10^5$ & Turbulent \\
         \hline
         \hline
-        \multirow{3}{*}{Protrusion} & 300 & 0.11 & 0.42378 & $2.03 \times 10^4$ & Laminar \\
-        & 370 & 0.34 & 0.74515 & $3.57 \times 10^4$ & Transitioning \\
-        & 430 & 0.47 & 0.87598 & $4.20 \times 10^4$ & Turbulent \\
+        \multirow{3}{*}{Protrusion} & 300 & 0.11 & 4.238 & $2.03 \times 10^5$ & Laminar \\
+        & 370 & 0.34 & 7.451  & $3.57 \times 10^5$ & Transitioning \\
+        & 430 & 0.47 & 8.760  & $4.20 \times 10^5$ & Turbulent \\
         \hline
         \hline
-        \multirow{1}{*}{Trip Wire} & 200 & 0.04 & 0.25556 & $1.22 \times 10^4$ & Turbulent \\
+        \multirow{1}{*}{Trip Wire} & 200 & 0.04 & 2.556 & $1.22 \times 10^4$ & Turbulent \\
         \hline
     \end{tabular}
     \caption{Observations and Reynolds numbers for various arrangements of the tunnel.}
@@ -113,21 +115,25 @@ The viscosity of air is $1.7894 \times 10^{-5} Ns/m^2$ at 15oC.
     \begin{subfigure}{0.8\textwidth}
         \includegraphics[width=\textwidth]{1_laminar.jpg}
         \caption{Laminar boundary layer at 300 dial}
+        \label{fig:oscilloscope_laminar}
     \end{subfigure}
     \begin{subfigure}{0.8\textwidth}
         \includegraphics[width=\textwidth]{2_transition.jpg}
         \caption{Transitioning boundary layer at 650 dial}
+        \label{fig:oscilloscope_mostly_laminar}
     \end{subfigure}
     \begin{subfigure}{0.8\textwidth}
         \includegraphics[width=\textwidth]{3_transition.jpg}
         \caption{Transitioning boundary layer at 820 dial}
+        \label{fig:oscilloscope_mostly_turbulent}
     \end{subfigure}
     \begin{subfigure}{0.8\textwidth}
         \includegraphics[width=\textwidth]{4_turbulent.jpg}
         \caption{Turbulent boundary layer at 1000 dial}
+        \label{fig:oscilloscope_turbulent}
     \end{subfigure}
-    \caption{Aenometer oscilloscope readings for various tunnel speeds for the flat plate}
-    \label{fig:boundary_layer}
+    \caption{Aenometer oscilloscope readings for various tunnel speeds for the flat plate at a distance of 0.2mm}
+    \label{fig:oscilloscope}
 \end{figure}
 
 % 1. Express your results in terms of the Reynolds number.
@@ -135,7 +141,7 @@ The viscosity of air is $1.7894 \times 10^{-5} Ns/m^2$ at 15oC.
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.99\textwidth]{clauser_data.png}
-    \caption{Clauser plot}
+    \caption{Clauser plot of turbulent boundary layer profile for a dial setting of 500}
     \label{fig:clauser}
 \end{figure}
 
@@ -155,11 +161,32 @@ The viscosity of air is $1.7894 \times 10^{-5} Ns/m^2$ at 15oC.
 
 % 2. Discuss the observations you have made.
 
-% laminar boundary layer
+%%% Kings law agrees with data?
+Figure \ref{fig:calibration} shows the calibration curve for the hot wire anemometer.
+The data points obtained agree with the model of King's Law, which is a good indication that the anemometer is functioning correctly.
+The values for A and B were found as $A	= 1.589867$ and $B	= 0.596894$.
+
+%%% observations of turbulent regions in the boundary layer table 1 and figure 2
+%%%
+
+Figure \ref{fig:oscilloscope} shows the oscilloscope readings for the anemometer at various tunnel speeds.
+Figure \ref{fig:oscilloscope_laminar} shows a fully laminar boundary layer as the voltage is smooth, 
+however upon increasing tunnel speed increased fluctuations in voltage were observed, as seen in figure \ref{fig:oscilloscope_turbulent}.
+From equation \ref{eq:small_kings}, this corresponds to fluctuations in velocity, which is an indication of turbulent eddies in the boundary layer.
+Table \ref{tab:observations} shows the Reynolds number for the corresponding tunnel speeds.
+From literature it is known that the transition Reynolds number for a flat plate is $Re_{\delta} \approx 5 \times 10^5$.
+This agrees nicely with observations made, however the actual transition point depends on surface 
+
+
+%%% Stethoscope observations for the different arangements
+
+
 
 % 3. How long are the intermittent patches of turbulence (spots) in the transition zone?
+% calcualted from the local velocity and time difference between the spots
 
 % 4. Try to estimate the size of a typical eddy in the turbulent flow.
+%% Done by measuring the time between the peaks of the velocity fluctuations and using local fluctuations in velocity
 
 % 5. For the boundary layer profile, calculate the velocity ratio u'/U1
 % where u'(y) is the velocity at height y and U1 ( is the free-stream velocity, and plot versus y, the distance
@@ -167,7 +194,10 @@ The viscosity of air is $1.7894 \times 10^{-5} Ns/m^2$ at 15oC.
 % demonstrator will provide you with the zero offset when the probe stop is just in
 % contact with the plate (≈ 0.2mm).
 
-From interpolating the between linear regions on the Clauser the skin friction coefficient is estimated to be $C_f = 0.0043$.
+The boundary layer profile is shown on the Clauser plot in Figure \ref{fig:clauser}.
+It can be observed that
+
+From interpolating the between linear regions on the Clauser the skin friction coefficient is estimated to be $C_f = 0.0042$.
 The friction velocity is then given by:
 \begin{equation}
     U_* = \left( \frac{\tau}{\rho} \right)^{\frac{1}{2}} = \left[ \frac{1}{2}C_f \bar{ U}_1^2 \right]^{\frac{1}{2}}
