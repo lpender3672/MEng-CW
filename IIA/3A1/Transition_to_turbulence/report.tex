@@ -70,14 +70,16 @@ The parameter that governs the transition to turbulent flow is the Reynolds numb
     Re_x = \frac{\rho \bar{U}x}{\mu}
 \end{equation}
 
-A turbulent boundary layer profile can be approximated by the log law seen below:
+A turbulent boundary layer profile can be approximated by the log law seen below \cite{notes}:
 \begin{equation}
     \frac{u}{u_*} = \frac{1}{\kappa} \ln \left( \frac{y u_*}{\nu} \right) + B
 \end{equation}
 Where $u_*$ is the friction velocity, $y$ is the distance from the wall, and $\nu$ is the kinematic viscosity of the fluid.
 The values of $\kappa$ and $B$ are constants which are taken as 0.41 and 5.0 respectively.
+This profile was derived for an overlapping region of the boundary layer, where both turbulent and viscous shear stresses are significant.
+However, in this case it can be used to approximate the entire boundary layer profile as the inner law region is small and the effect of the outer law is small over the pressure gradient.
 
-The friction velocity is defined as follows:
+The friction velocity is defined as follows from the skin friction coefficient $C_f$:
 \begin{equation}
     U_* = \left( \frac{\tau}{\rho} \right)^{\frac{1}{2}} = \left[ \frac{1}{2}C_f \bar{ U}_1^2 \right]^{\frac{1}{2}}
     \label{eq:friction_velocity}
@@ -195,7 +197,7 @@ At these standard conditions the viscosity of air is $1.48 \times 10^{-5} Ns/m^2
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.5\textwidth]{turbulent_wedge.jpg}
-    \caption{Angle of turbulent wedge formed downstream of the protrusion. The angle was found to be $\beta \approx 6^\circ$.}
+    \caption{Angle of turbulent wedge formed downstream of the protrusion. The angle was found to be $\beta \approx 6^\circ$ at a dial setting of 400.}
     \label{fig:turbulent_wedge}
 \end{figure}
 
@@ -244,11 +246,14 @@ Figure \ref{fig:oscilloscope_laminar} shows a fully laminar boundary layer as th
 however upon increasing tunnel speed increased fluctuations in voltage were observed, as seen in figure \ref{fig:oscilloscope_turbulent}.
 From equation \ref{eq:small_kings}, this corresponds to fluctuations in velocity, which is an indication of turbulent eddies in the boundary layer.
 Table \ref{tab:observations} shows the Reynolds number for the corresponding tunnel speeds.
-From lecture notes the critical Reynolds number for a flat plate is $Re_{xcr} \approx 5 \times 10^5$.
-This agrees nicely with oscilloscope observations and calculated Reynolds Numbers.
+From this the critical Reynolds number for each arangement lies between the observed laminar and transitioning row entries.
+From lecture notes the critical Reynolds number for a flat plate is $Re_{xcr} \approx 5 \times 10^5$ \cite{notes} which agrees with the range $4-12 \times 10^5$.
+For the protrusion, $Re_{xcr}$ was found to be in the range $4-70 \times 10^5$.
+Only one Reynolds number was tested for the trip wire, and it was found to be turbulent so the value of $Re_{xcr}$ must be below $2.4\times 10^5$.
+Further testing would be required to find more precise values of $Re_{xcr}$ for each arangement.
 
 %%% Stethoscope observations for the different arangements
-The stethoscope was used to measure the angle of the turbulent wedge formed downstream of the protrusion.
+The stethoscope was used to measure the angle of the turbulent wedge formed downstream of the protrusion at a dial speed of 400.
 This was done by slowly moving the stethoscope into the turbulent region until sufficient turbulent noise was heard at two points along the wedge.
 The distance of the stethoscope from the wedge was then recorded, and the angle was calculated to be $\beta \approx 6^\circ$, as shown in figure \ref{fig:turbulent_wedge}.
 It was also observed that the amplitude of noise varied over small distances from the measurement, which suggests that the edges of the turbulent wedge
@@ -264,10 +269,12 @@ This is likely due to the boundary layer not being fully developed, as the flow 
 % 3. How long are the intermittent patches of turbulence (spots) in the transition zone?
 % calcualted from the local velocity and time difference between the spots
 
-Table \ref{tab:spot_sizes} shows the size of turbulent spots and eddies for various tunnel speeds.
+Table \ref{tab:spot_sizes} shows the size of turbulent spots and eddies for various setups and tunnel speeds.
 The size of the turbulent spots for the flat plate were observed to increase from 35.4mm to 1580.4mm as the Reynolds number increased past $Re_{xcr}$.
-This is expected as more turbulent spots are formed as the boundary layer transitions to turbulent flow.
+The frequency of the spots was also observed to increase with Reynolds number.
+This was expected as more turbulent spots are formed as the boundary layer transitions to turbulent flow.
 These turbulent spots can coalesce to form larger spots as the boundary layer transitions to fully turbulent.
+Turbulent spots were also observed for the protrusion which were found to be a similar size to the flat plate but at a higher Reynolds number.
 
 % 4. Try to estimate the size of a typical eddy in the turbulent flow.
 %% Done by measuring the time between the peaks of the velocity fluctuations and using local fluctuations in velocity
@@ -288,7 +295,6 @@ However, the trip wire case had much larger eddies.
 
 The boundary layer profile is shown on the Clauser plot in Figure \ref{fig:clauser}.
 The profile does not fit a constant friction coefficient line seen in the Clauser plot for the regions close to the wall and far from the wall.
-
 For flow far from the wall the turbulent boundary layer is not fully developed and so does not agree with the clauser plot for a fully developed turbulent boundary layer.
 The reason why the profile close to the wall does not fit is not known.
 
@@ -329,6 +335,13 @@ to the Clauser plot being for a fully developed turbulent boundary layer.
 
     \bibitem{textbook}
     Frank M. White. \textit{Fluid Mechanics}. McGraw-Hill Education, 2004.
+
+    \bibitem{notes}
+    Li Jie, \textit{3A1: Boundary Layers Handout}. Cambridge University Engineering Department, 2023.
 \end{thebibliography}
 
 \end{document}
+
+
+%% Honestly I have no clue why the clauser plot does not fit at the start.
+%% I can believe that the boundary layer is not a fully developed as turbulent as the anemometer
