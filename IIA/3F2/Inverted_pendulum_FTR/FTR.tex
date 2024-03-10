@@ -39,7 +39,7 @@
         |- (-#1/2,-#3) -- (-#1/2,-0.7*#3) -- (-#2/2,0) -- cycle;
       \path[mass] (0,0) -- (0,-#3) node[pos=0.52] {$m$};
   }},
-  pics/pulley/.default=0.3,
+  pics/pulley/.default=0.4,
 }
 
 \tikzstyle{vvec}=[->,vcol,thick,line cap=round]
@@ -48,10 +48,10 @@
 \tikzstyle{metal}=[fill,top color=black!40,bottom color=black!20,shading angle=10]
 \tikzstyle{mass}=[line width=0.6,black!30!black,fill=black!40!black!10,rounded corners=1,
                   top color=black!40!black!20,bottom color=black!40!black!10,shading angle=20]
-\tikzstyle{pulcol}=[draw=blue!30!black,%fill=blue!40!black!10
-                    top color=blue!40!black!20,bottom color=blue!40!black!10,shading angle=20]
+\tikzstyle{pulcol}=[draw=black!30!black,%fill=blue!40!black!10
+                    top color=black!40!black!20,bottom color=black!40!black!10,shading angle=20]
 \tikzstyle{rope}=[black,thick,line cap=round]
-\def\rope#1{ \draw[black,line width=1.5] #1; \draw[rope] #1; }
+\def\rope#1{ \draw[black,line width=1] #1; \draw[rope] #1; }
 \tikzstyle{mount}=[blue!20!black,fill,top color=blue!20!black!70,bottom color=blue!20!black!40,shading angle=10] %,line width=1.8,line cap=round
 %\tikzstyle{mount}=[color=black!60,line width=1.8,line cap=round]
 %\tikzstyle{spring}=[line width=0.8,black!80,snake=coil,segment amplitude=5,segment length=5,line cap=round]
@@ -83,14 +83,13 @@
 
 \section{Theory}
 
-\subsection{Inverted Pendulum System}
+\subsection{Inverted Pendulum Dynamical System}
 
-
+\def\h{0.8}  % mass height
+\def\w{0.8}  % mass width
+\def\R{0.4}  % pulley radius
 \begin{figure}[H]
     \centering
-    \def\h{0.6}  % mass height
-    \def\w{0.8}  % mass width
-    \def\R{0.33}  % pulley radius
     \begin{tikzpicture}
         \def\H{0.6} % wall height
         \def\T{0.3} % wall thickness
@@ -100,38 +99,177 @@
         \def\pA{-\W+1.8*\R} % A pulley x position
         \def\pB{\W+1.8*\R} % B pulley x position
         \def\Rp{0.25} % pendulum radius
-        \def\xp{1.4} % pendulum x position
-        \def\L{1.2}  % pendulum length
+        \def\xp{1.0} % pendulum x position
+        \def\L{1.8}  % pendulum length
         \draw[ground] (-\W+1.8*\R+\T/2,0) -- (-\W+1.8*\R+\T/2,\H) --++ (-\T,0) --++ (0,-\H-\D) --++
-                    (\T+2.0*\W-1.8*\R-\T/2,0) -- (\W,0) -- cycle;
+                    (\T+2.0*\W-\T/2,0) -- (\W + 1.8*\R,0) -- cycle;
         %\draw (0,\H) -- (0,0) -- (\W,0) --++ (0,-\D);
         \rope{(\x,\h/2) -- (\pA,\h/2) arc (90:270:\R) --++ (-\pA,0) coordinate (T)}
         \pic at (\pA,\h/2-\R) {pulley};
         \rope{(\x+\w,\h/2) -- (\pB,\h/2) arc (90:-90:\R) --++ (-\pB,0) coordinate (T)}
         \pic at (\pB,\h/2-\R) {pulley};
-        \draw[mass] (\x,0) rectangle++ (\w,\h) node[midway] {$M$};
-        \draw (\x+\w/2, \h/2) -- (\xp,-\L);
+        \draw[mass] (\x,0) rectangle ++ (\w,\h);
+        \node[above] at (\x+\w/2,\h) {$M$};
+        \draw[fill, black] (\x+\w/2, \h/2) circle (0.05);
+        \draw[black,line width=1.0] (\x+\w/2, \h/2) coordinate (b) -- (\xp,-\L) coordinate (a) node[midway, left] {$l$};
         \draw[mass] (\xp,-\L) circle (\Rp) ++ (0,0) node {$m$};
+        \draw[dashed] (b) -- (\x+\w/2,-\L) coordinate (c);
+        %% arrows 
+        \draw[<-|] (\x+\w/2,\h+0.5) -- (\pA,\h+0.5) node[midway, above] {$x$};
+        \pic[draw, <-, "$\theta$", angle eccentricity=1.5, angle radius=1.2cm] {angle=a--b--c};
+        \draw[->,thick] (\pA,0)++(180:1.5*\R) arc (180:90:1.5*\R) node[midway, above] {$T$};
+
     \end{tikzpicture}
 
     \caption{Inverted pendulum system.}
     \label{fig:inverted_pendulum}
 \end{figure}
 
+\begin{figure}[H]
+  \centering
+
+  \begin{tikzpicture}
+    \def\H{0.6} % wall height
+    \def\T{0.3} % wall thickness
+    \def\W{0.8} % ground length
+    \def\D{0.2} % ground depth
+    \def\x{0.8} % mass x position
+    \def\pA{1.8*\R} % pulley x position
+    \def\Rp{0.25} % pendulum radius
+    \def\xp{0.2} % pendulum x position
+    \def\L{1.8}  % pendulum length
+    %\draw (0,\H) -- (0,0) -- (\W,0) --++ (0,-\D);
+
+    \pic at (\pA,\h/2-\R) {pulley};
+    \draw[->,thick] (\pA,0)++(180:1.5*\R) arc (180:90:1.5*\R) node[midway, above] {$T$};
+    \draw[->>,thick] (\pA,0)++(135:3.0*\R) arc (135:90:3.0*\R)  --++ (0.4, -0.1) node[midway, above] {$\ddot{x}/a$};
+    \draw[->,thick] (\pA,-\R) -- (\pA+1.0,-\R) node[midway, below] {$F_c$};
+
+    \begin{scope}[xshift=5cm]
+
+      \draw[mass] (\x,0) rectangle ++ (\w,\h);
+      \draw[fill, black] (\x+\w/2, \h/2) circle (0.05) ++ (0,0) node[left] {$P$};
+      \draw[black,line width=1.0] (\x+\w/2, \h/2) coordinate (b) -- (\xp,-\L) coordinate (a) node[midway, left] {$l$};
+      \draw[mass] (\xp,-\L) circle (\Rp) ++ (-0.2,0) node[left] {$Q$};
+
+      %% arrows 
+      \draw[<-|] (\x+\w/2,\h+0.5) -- (-1,\h+0.5) node[midway, above] {$x$};
+      \draw[->,thick] (\x+\w,\h/2) -- (\x+\w+1.0, \h/2) node[midway, above] {$F_c$};
+      \draw[->,thick] (\x,\h/2) -- (\x-1.0, \h/2) node[midway, above] {$F_f$};
+      \draw[->,thick] (\x+\w/2, 0) -- (\x+\w/2, -1.5) coordinate (c) node[midway, right] {$Mg$};
+      \draw[->,thick] (\xp, -\L-\Rp) --++ (0, -0.6) node[midway, right] {$mg$};
+      \draw[->,thick] (\x+\w/2, \h) --++ (0, +1.2) node[midway, right] {$R$};
+
+
+      \pic[draw, <-, "$\theta$", angle eccentricity=1.5, angle radius=1.2cm] {angle=a--b--c};
+
+    \end{scope}
+
+  \end{tikzpicture}
+  \caption{Free body diagrams of the inverted pendulum system.}
+  \label{fig:inverted_pendulum_fbd}
+
+\end{figure}
+The forces $F_c$, $F_f$ and $R$ are the cable tension, friction force and vertical reaction acting on mass $M$.
+The frictional force is defined below
+\begin{equation}
+  F_f = F \text{sgn}(\dot{x}) \quad \text{where} \quad \text{sgn}(\dot{x}) = \begin{cases} 1 & \dot{x} > 0 \\ -1 & \dot{x} < 0 \\ \text{undefined for } \dot{x} = 0 & \end{cases}
+\end{equation}
+The vectors $\mathbf{r}_P$ and $\mathbf{r}_Q$ are the position vectors of masses $M$ and $m$ respectively.
+\begin{equation}
+  \mathbf{r}_P = x \mathbf{i} \quad \text{and} \quad \mathbf{r}_Q = (x-l\sin\theta) \mathbf{i} - l\cos\theta \mathbf{j}
+\end{equation}
+These positions can be differentiated to find the momentum $\mathbf{p}$ of the body.
+\begin{equation}
+  \mathbf{p} = \left[(M+m)\dot{x}-ml\dot{\theta}\cos\theta \right] \mathbf{i} + ml\dot{\theta}\sin\theta\mathbf{j}
+  \label{eq:trolly_momentum}
+\end{equation}
+The angular momentum about the point P is given by
+\begin{align}
+  \mathbf{h}_P &= \sum_i m_i(\mathbf{r}_i - \mathbf{r}_p) \times \mathbf{p}_i \\
+  &= m (\mathbf{r}_Q - \mathbf{r}_P) \times \dot{\mathbf{r}}_Q \\
+  &= \left[ -ml^2\dot{\theta} + ml\dot{x}\cos\theta \right] \mathbf{k}
+\end{align}
+This can be differentiated and used with the equation below to find one of the equations of motion 
+\begin{equation}
+  \mathbf{Q}^{(e)} = \dot{\mathbf{h}}_P + \dot{\mathbf{r}}_P \times \mathbf{p}
+\end{equation}
+Here the only external force that does not pass through P is the weight of the pendulum bob $mg$ which is a distance $l\sin\theta$ from P,
+and so the torque acts in the $+\mathbf{k}$ direction. The equation of motion is then
+\begin{equation}
+  mgl\sin\theta = ml\ddot{\theta} - ml\ddot{x}\cos\theta
+  \label{eq:angular_momentum_deriv_eq}
+\end{equation}
+From differentiating the linear momentum $\mathbf{p}$ and from newtons second law;
+\begin{equation}
+  \dot{\mathbf{p}} = \left[F_c - F_f \right] \mathbf{i} + \left[ R - (m+M)g \right]\mathbf{j}
+\end{equation}
+From considering the unrestrained $\mathbf{i}$ direction the equation of motion is shown to be:
+\begin{equation}
+  (M+m)\ddot{x} - ml\ddot{\theta}\cos\theta + ml\dot{\theta}^2\sin\theta = F_c - F_f
+  \label{eq:x_momentum_deriv_eq}
+\end{equation}
+However, the force in the cable $F_c$ is required to be in terms of the torque $T$ by the motor.
+This is found from considering the angular momentum about the motors axis. The angular acceleration of the pulley is $\ddot{\alpha}$ and the radius of the pulley is $a$.
+\begin{align}
+  Q &= I\ddot{\alpha} \notag \\
+  aF_c - T &= -I\frac{\ddot{x}}{a} \notag \\
+  \implies F_c &= \frac{T}{a} - \frac{I}{a}\ddot{x}
+\end{align}
+This can be then substituted into equation \ref{eq:x_momentum_deriv_eq} and rearanged to give the equation of motion in terms of the torque $T$.
+This is shown below along with a simplified form of equation \ref{eq:angular_momentum_deriv_eq}.
+
+\begin{align}
+  \left( 1 + \frac{M}{m} + \frac{I}{ma^2} \right) \ddot{x} &= \frac{T}{ma} - \frac{F}{m}\text{sgn}(\dot{x}) + l\cos\theta . \ddot{\theta} - l\sin\theta . \dot{\theta}^2 \label{eq:motion_1} \\
+  l \ddot{\theta} &= \cos\theta \ddot{x} - g\sin\theta \label{eq:motion_2}
+\end{align}
+
 \subsection{State Space Model}
 
+\begin{align}
+  \mathbf{\dot{x}} &= \mathbf{Ax} + \mathbf{Bu} \\
+  \mathbf{y} &= \mathbf{Cx}
+\end{align}
 
-\subsection{Compressible flow theory}
+\subsubsection{Crane Model}
 
-\subsection{Visualisation Techniques}
+For the crane model the equilibrium point is at $\theta = 0$ and $\dot{\theta} = 0$.
+This means that equations \ref{eq:motion_1} and \ref{eq:motion_2} can be linearised about this point to give the equations:
+\begin{align}
+  \left( 1 + \frac{M}{m} + \frac{I}{ma^2} \right) \ddot{x} &= \frac{T}{ma} - \frac{F}{m}\text{sgn}(\dot{x}) + l \ddot{\theta} \label{eq:crane_motion_1} \\
+  l \ddot{\theta} &= \ddot{x} - g\theta \label{eq:crane_motion_2}
+\end{align}
+These can be solved to give the state space model of the system.
+\begin{align}
+  \ddot{x} &= \frac{mg}{l\left(M+\frac{I}{a^2}\right)} l\theta + u - f \\
+  \ddot{l\theta} &= -\frac{g}{l}l\theta + u - f
+\end{align}
+Where torque input $u$, and friction disturbance $f$, are defined as follows
+\begin{equation}
+  u = \frac{T}{a\left(M+\frac{I}{a^2}\right)} \quad \text{and} \quad f = \left(\frac{F}{M + \frac{I}{a^2}} \right) \text{sgn} (\dot{x})
+\end{equation}
+The state space equations are in a form of simple harmonic motion with natural frequencies shown below,
+\begin{align}
+  \omega_1^2 &= \frac{g}{l} \\
+  \omega_0^2 &= \omega_1^2\left(1 + \frac{m}{M+\frac{I}{a^2}} \right)
+\end{align}
+This gives the final state space model of the system as
 
+\begin{equation}
+  \frac{d}{dt} 
+  \begin{bmatrix}
+     x \\ \dot{x} \\ l\theta \\ \dot{l\theta} \end{bmatrix} = \begin{bmatrix} 
+      0 & 1 & 0 & 0 \\ 0 & 0 & \omega_1^2 - \omega_0^2 & 0 \\ 0 & 0 & 0 & 1 \\ 0 & 0 & -\omega_1^2 & 0 \end{bmatrix} \begin{bmatrix} 
+        x \\ \dot{x} \\ l\theta \\ \dot{l\theta} \end{bmatrix} + \begin{bmatrix} 
+          0 \\ 1 \\ 0 \\ 1 \end{bmatrix} (u - f)
+\end{equation}
 
 \section{Method}
 
-\subsubsection{Apparatus}
+\subsection{Apparatus}
 
 
-\subsubsection{Procedure}
+\subsection{Procedure}
 
 
 \subsection{Uncertainty}
