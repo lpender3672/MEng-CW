@@ -39,7 +39,7 @@
         |- (-#1/2,-#3) -- (-#1/2,-0.7*#3) -- (-#2/2,0) -- cycle;
       \path[mass] (0,0) -- (0,-#3) node[pos=0.52] {$m$};
   }},
-  pics/pulley/.default=0.4,
+  pics/pulley/.default=0.45,
 }
 
 \tikzstyle{vvec}=[->,vcol,thick,line cap=round]
@@ -87,11 +87,11 @@
 
 \def\h{0.8}  % mass height
 \def\w{0.8}  % mass width
-\def\R{0.4}  % pulley radius
+\def\R{0.45}  % pulley radius
 \begin{figure}[H]
     \centering
     \begin{tikzpicture}
-        \def\H{0.6} % wall height
+        \def\H{0.4} % wall height
         \def\T{0.3} % wall thickness
         \def\W{2.6} % ground length
         \def\D{0.2} % ground depth
@@ -101,21 +101,23 @@
         \def\Rp{0.25} % pendulum radius
         \def\xp{1.0} % pendulum x position
         \def\L{1.8}  % pendulum length
-        \draw[ground] (-\W+1.8*\R+\T/2,0) -- (-\W+1.8*\R+\T/2,\H) --++ (-\T,0) --++ (0,-\H-\D) --++
-                    (\T+2.0*\W-\T/2,0) -- (\W + 1.8*\R,0) -- cycle;
+        \def\wh{0.15} % wheel height
+        \draw[ground] (\pA,0) rectangle (\pB,-\D);
         %\draw (0,\H) -- (0,0) -- (\W,0) --++ (0,-\D);
-        \rope{(\x,\h/2) -- (\pA,\h/2) arc (90:270:\R) --++ (-\pA,0) coordinate (T)}
-        \pic at (\pA,\h/2-\R) {pulley};
-        \rope{(\x+\w,\h/2) -- (\pB,\h/2) arc (90:-90:\R) --++ (-\pB,0) coordinate (T)}
-        \pic at (\pB,\h/2-\R) {pulley};
-        \draw[mass] (\x,0) rectangle ++ (\w,\h);
-        \node[above] at (\x+\w/2,\h) {$M$};
-        \draw[fill, black] (\x+\w/2, \h/2) circle (0.05);
-        \draw[black,line width=1.0] (\x+\w/2, \h/2) coordinate (b) -- (\xp,-\L) coordinate (a) node[midway, left] {$l$};
+        \rope{(\x,\h/2 + \wh) -- (\pA,\h/2 + \wh) arc (90:270:\R) --++ (-\pA,0) coordinate (T)}
+        \pic at (\pA,\h/2-\R + \wh) {pulley};
+        \rope{(\x+\w,\h/2 + \wh) -- (\pB,\h/2 + \wh) arc (90:-90:\R) --++ (-\pB,0) coordinate (T)}
+        \pic at (\pB,\h/2-\R + \wh) {pulley};
+        \draw[mass] (\x,\wh) rectangle ++ (\w,\h);
+        \draw[black, thick] (\x+\wh/2, \wh/2) circle (\wh/2);
+        \draw[black, thick] (\x+\w-\wh/2, \wh/2) circle (\wh/2);
+        \node[above] at (\x+\w/2,\h + \wh) {$M$};
+        \draw[fill, black] (\x+\w/2, \h/2 + \wh) circle (0.05);
+        \draw[black,line width=1.0] (\x+\w/2, \h/2 + \wh) coordinate (b) -- (\xp,-\L) coordinate (a) node[midway, left] {$l$};
         \draw[mass] (\xp,-\L) circle (\Rp) ++ (0,0) node {$m$};
         \draw[dashed] (b) -- (\x+\w/2,-\L) coordinate (c);
         %% arrows 
-        \draw[<-|] (\x+\w/2,\h+0.5) -- (\pA,\h+0.5) node[midway, above] {$x$};
+        \draw[<-|] (\x+\w/2,\h+0.6) -- (\pA,\h+0.6) node[midway, above] {$x$};
         \pic[draw, <-, "$\theta$", angle eccentricity=1.5, angle radius=1.2cm] {angle=a--b--c};
         \draw[->,thick] (\pA,0)++(180:1.5*\R) arc (180:90:1.5*\R) node[midway, above] {$T$};
 
@@ -142,8 +144,8 @@
 
     \pic at (\pA,\h/2-\R) {pulley};
     \draw[->,thick] (\pA,0)++(180:1.5*\R) arc (180:90:1.5*\R) node[midway, above] {$T$};
-    \draw[->>,thick] (\pA,0)++(135:3.0*\R) arc (135:90:3.0*\R)  --++ (0.4, -0.1) node[midway, above] {$\ddot{x}/a$};
-    \draw[->,thick] (\pA,-\R) -- (\pA+1.0,-\R) node[midway, below] {$F_c$};
+    \draw[->>,thick] (\pA,0)++(135:3.0*\R) arc (135:90:3.0*\R)  --++ (0.3, -0.05) node[midway, above] {$\ddot{x}/a$};
+    \draw[->,thick] (\pA,-\R-0.05) -- (\pA+1.0,-\R-0.05) node[midway, below] {$F_c$};
 
     \begin{scope}[xshift=5cm]
 
