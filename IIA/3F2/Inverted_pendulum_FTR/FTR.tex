@@ -233,12 +233,16 @@ This is shown below along with a simplified form of equation \ref{eq:angular_mom
   \mathbf{y} &= \mathbf{Cx}
 \end{align}
 
+\begin{equation} 
+  y = \mathbf{C} (s\mathbf{I} - \mathbf{A}) ^{-1} \mathbf{B} u
+\end{equation}
+
 \subsubsection{Crane Model}
 
 For the crane model the equilibrium point is at $\theta = 0$ and $\dot{\theta} = 0$.
 This means that equations \ref{eq:motion_1} and \ref{eq:motion_2} can be linearised about this point to give the equations:
 \begin{align}
-  \left( 1 + \frac{M}{m} + \frac{I}{ma^2} \right) \ddot{x} &= \frac{T}{ma} - \frac{F}{m}\text{sgn}(\dot{x}) + l \ddot{\theta} \label{eq:crane_motion_1} \\
+  \left( 1 + \frac{M}{m} + \frac{I}{ma^2} \right) \ddot{x} &= \frac{T}{ma} - \left(\frac{F}{m}\right)\text{sgn}(\dot{x}) + l \ddot{\theta} \label{eq:crane_motion_1} \\
   l \ddot{\theta} &= \ddot{x} - g\theta \label{eq:crane_motion_2}
 \end{align}
 These can be solved to give the state space model of the system.
@@ -261,9 +265,50 @@ This gives the final state space model of the system as
   \frac{d}{dt} 
   \begin{bmatrix}
      x \\ \dot{x} \\ l\theta \\ \dot{l\theta} \end{bmatrix} = \begin{bmatrix} 
-      0 & 1 & 0 & 0 \\ 0 & 0 & \omega_1^2 - \omega_0^2 & 0 \\ 0 & 0 & 0 & 1 \\ 0 & 0 & -\omega_1^2 & 0 \end{bmatrix} \begin{bmatrix} 
+      0 & 1 & 0 & 0 \\ 0 & 0 & \omega_1^2 - \omega_0^2 & 0 \\ 0 & 0 & 0 & 1 \\ 0 & 0 & -\omega_0^2 & 0 \end{bmatrix} \begin{bmatrix} 
         x \\ \dot{x} \\ l\theta \\ \dot{l\theta} \end{bmatrix} + \begin{bmatrix} 
           0 \\ 1 \\ 0 \\ 1 \end{bmatrix} (u - f)
+\end{equation}
+
+\subsubsection{Inverted Pendulum Model}
+
+For the inverted pendulum model the linearization is about the point $\theta = \pi$ and $\dot{\theta} = 0$.
+Small deviations from this point are given by $\phi$ such that $\theta = \pi - \phi$.
+Substituting into and linearising equations \ref{eq:motion_1} and \ref{eq:motion_2} yield the following:
+\begin{align}
+  \left( 1 + \frac{M}{m} + \frac{I}{ma^2} \right) \ddot{x} &= \frac{T}{ma} - \left(\frac{F}{m} \right)\text{sgn}(\dot{x}) + l \ddot{\phi} \\
+  l \ddot{\phi} &= \ddot{x} + g\phi \label{eq:invp_motion_2}
+\end{align}
+
+\begin{equation}
+  \frac{d}{dt} 
+  \begin{bmatrix}
+     x \\ \dot{x} \\ l\phi \\ \dot{l\phi} \end{bmatrix} = \begin{bmatrix} 
+      0 & 1 & 0 & 0 \\ 0 & 0 & \omega_0^2 - \omega_1^2 & 0 \\ 0 & 0 & 0 & 1 \\ 0 & 0 & \omega_0^2 & 0 \end{bmatrix} \begin{bmatrix} 
+        x \\ \dot{x} \\ l\phi \\ \dot{l\phi} \end{bmatrix} + \begin{bmatrix} 
+          0 \\ 1 \\ 0 \\ 1 \end{bmatrix} (u - f)
+\end{equation}
+
+\subsection{Closed loop control}
+
+\subsubsection{Crane}
+
+\begin{equation}
+  \left[\begin{matrix}\frac{617.283950617284 \left(\omega_{1}^{2} + s^{2}\right)}{k_{1} \omega_{1}^{2} + k_{1} s^{2} + k_{2} \omega_{1}^{2} s + k_{2} s^{3} + k_{3} s^{2} + k_{4} s^{3} + \omega_{0}^{2} s^{2} + s^{4}}\\\frac{165.185185185185 s \left(\omega_{1}^{2} + s^{2}\right)}{k_{1} \omega_{1}^{2} + k_{1} s^{2} + k_{2} \omega_{1}^{2} s + k_{2} s^{3} + k_{3} s^{2} + k_{4} s^{3} + \omega_{0}^{2} s^{2} + s^{4}}\\\frac{1256.2962962963 s^{2}}{k_{1} \omega_{1}^{2} + k_{1} s^{2} + k_{2} \omega_{1}^{2} s + k_{2} s^{3} + k_{3} s^{2} + k_{4} s^{3} + \omega_{0}^{2} s^{2} + s^{4}}\\- \frac{126.41975308642 s^{3}}{k_{1} \omega_{1}^{2} + k_{1} s^{2} + k_{2} \omega_{1}^{2} s + k_{2} s^{3} + k_{3} s^{2} + k_{4} s^{3} + \omega_{0}^{2} s^{2} + s^{4}}\end{matrix}\right]
+\end{equation}
+
+\begin{equation}
+  s^{4} + \left(k_{2} + k_{4}\right) s^{3} + \left(k_{1} + k_{3} + \omega_{0}^{2}\right) s^{2} + k_{2} \omega_{1}^{2} s + k_{1} \omega_{1}^{2}
+\end{equation}
+
+\subsubsection{Inverted Pendulum}
+
+\begin{equation}
+  \left[\begin{matrix}\frac{617.283950617284 \left(- \omega_{1}^{2} + s^{2}\right)}{- k_{1} \omega_{1}^{2} + k_{1} s^{2} - k_{2} \omega_{1}^{2} s + k_{2} s^{3} + k_{3} s^{2} + k_{4} s^{3} - \omega_{0}^{2} s^{2} + s^{4}}\\\frac{165.185185185185 s \left(- \omega_{1}^{2} + s^{2}\right)}{- k_{1} \omega_{1}^{2} + k_{1} s^{2} - k_{2} \omega_{1}^{2} s + k_{2} s^{3} + k_{3} s^{2} + k_{4} s^{3} - \omega_{0}^{2} s^{2} + s^{4}}\\\frac{1256.2962962963 s^{2}}{- k_{1} \omega_{1}^{2} + k_{1} s^{2} - k_{2} \omega_{1}^{2} s + k_{2} s^{3} + k_{3} s^{2} + k_{4} s^{3} - \omega_{0}^{2} s^{2} + s^{4}}\\- \frac{126.41975308642 s^{3}}{- k_{1} \omega_{1}^{2} + k_{1} s^{2} - k_{2} \omega_{1}^{2} s + k_{2} s^{3} + k_{3} s^{2} + k_{4} s^{3} - \omega_{0}^{2} s^{2} + s^{4}}\end{matrix}\right]
+\end{equation}
+
+\begin{equation}
+  s^{4} + \left(k_{2} + k_{4}\right) s^{3} + \left(k_{1} + k_{3} - \omega_{0}^{2}\right) s^{2} -  k_{2} \omega_{1}^{2} s -  k_{1} \omega_{1}^{2}
 \end{equation}
 
 \section{Method}
