@@ -228,13 +228,33 @@ This is shown below along with a simplified form of equation \ref{eq:angular_mom
 
 \subsection{State Space Model}
 
+A linear state space model is given by the following equations
 \begin{align}
-  \mathbf{\dot{x}} &= \mathbf{Ax} + \mathbf{Bu} \\
+  \mathbf{\dot{x}} &= \mathbf{Ax} + \mathbf{B}u \\
   \mathbf{y} &= \mathbf{Cx}
 \end{align}
+Where the state vector $\mathbf{x}$ is defined as a perturbation from an equilibrium point,
+
+Where the matricies are defined as follows,
+\begin{equation}
+  \mathbf{A}_{ij} = \frac{\partial f_i}{\partial x_j} \Bigr|_{x=x_e} \quad \mathbf{B}_{i} = \frac{\partial f_i}{\partial u} \Bigr|_{x=x_e}
+\end{equation}
+
+The Laplace transform of the state space model is taken and rearanged into a matrix of transfer functions for the system.
 
 \begin{equation} 
-  y = \mathbf{C} (s\mathbf{I} - \mathbf{A}) ^{-1} \mathbf{B} u
+  \frac{\mathbf{y}}{u} = \mathbf{C} (s\mathbf{I} - \mathbf{A}) ^{-1} \mathbf{B}
+\end{equation}
+
+For the closed loop transfer function the system input $u = w - \mathbf{Kx}$ where $\mathbf{K}$ is the control gain matrix.
+This means that the closed loop transfer function is given by
+
+\begin{equation}
+  \frac{\mathbf{y}}{w} = \mathbf{C} (s\mathbf{I} - \mathbf{A} + \mathbf{KB}) ^{-1} \mathbf{B}
+\end{equation}
+The poles of which are determined by the polynomial
+\begin{equation}
+  \text{det} \left( s\mathbf{I} - \mathbf{A} + \mathbf{KB} \right) = 0
 \end{equation}
 
 \subsubsection{Crane Model}
@@ -247,12 +267,13 @@ This means that equations \ref{eq:motion_1} and \ref{eq:motion_2} can be lineari
 \end{align}
 These can be solved to give the state space model of the system.
 \begin{align}
-  \ddot{x} &= \frac{mg}{l\left(M+\frac{I}{a^2}\right)} l\theta + u - f \\
-  \ddot{l\theta} &= -\frac{g}{l}l\theta + u - f
+  \frac{d}{dt} \dot{x} &= \frac{mg}{l\left(M+\frac{I}{a^2}\right)} l\theta + u - f \\
+  \frac{d}{dt} \dot{l\theta} &= -\frac{g}{l}l\theta + u - f
 \end{align}
 Where torque input $u$, and friction disturbance $f$, are defined as follows
 \begin{equation}
   u = \frac{T}{a\left(M+\frac{I}{a^2}\right)} \quad \text{and} \quad f = \left(\frac{F}{M + \frac{I}{a^2}} \right) \text{sgn} (\dot{x})
+  \label{eq:ss_system_inputs}
 \end{equation}
 The state space equations are in a form of simple harmonic motion with natural frequencies shown below,
 \begin{align}
@@ -280,6 +301,8 @@ Substituting into and linearising equations \ref{eq:motion_1} and \ref{eq:motion
   l \ddot{\phi} &= \ddot{x} + g\phi \label{eq:invp_motion_2}
 \end{align}
 
+The states can be substituted and solved for the state space model in terms of the same input $u$ and disturbance $f$ as the crane model defined in equation \ref{eq:ss_system_inputs}.
+
 \begin{equation}
   \frac{d}{dt} 
   \begin{bmatrix}
@@ -291,21 +314,15 @@ Substituting into and linearising equations \ref{eq:motion_1} and \ref{eq:motion
 
 \subsection{Closed loop control}
 
+
 \subsubsection{Crane}
 
-\begin{equation}
-  \left[\begin{matrix}\frac{617.283950617284 \left(\omega_{1}^{2} + s^{2}\right)}{k_{1} \omega_{1}^{2} + k_{1} s^{2} + k_{2} \omega_{1}^{2} s + k_{2} s^{3} + k_{3} s^{2} + k_{4} s^{3} + \omega_{0}^{2} s^{2} + s^{4}}\\\frac{165.185185185185 s \left(\omega_{1}^{2} + s^{2}\right)}{k_{1} \omega_{1}^{2} + k_{1} s^{2} + k_{2} \omega_{1}^{2} s + k_{2} s^{3} + k_{3} s^{2} + k_{4} s^{3} + \omega_{0}^{2} s^{2} + s^{4}}\\\frac{1256.2962962963 s^{2}}{k_{1} \omega_{1}^{2} + k_{1} s^{2} + k_{2} \omega_{1}^{2} s + k_{2} s^{3} + k_{3} s^{2} + k_{4} s^{3} + \omega_{0}^{2} s^{2} + s^{4}}\\- \frac{126.41975308642 s^{3}}{k_{1} \omega_{1}^{2} + k_{1} s^{2} + k_{2} \omega_{1}^{2} s + k_{2} s^{3} + k_{3} s^{2} + k_{4} s^{3} + \omega_{0}^{2} s^{2} + s^{4}}\end{matrix}\right]
-\end{equation}
 
 \begin{equation}
   s^{4} + \left(k_{2} + k_{4}\right) s^{3} + \left(k_{1} + k_{3} + \omega_{0}^{2}\right) s^{2} + k_{2} \omega_{1}^{2} s + k_{1} \omega_{1}^{2}
 \end{equation}
 
 \subsubsection{Inverted Pendulum}
-
-\begin{equation}
-  \left[\begin{matrix}\frac{617.283950617284 \left(- \omega_{1}^{2} + s^{2}\right)}{- k_{1} \omega_{1}^{2} + k_{1} s^{2} - k_{2} \omega_{1}^{2} s + k_{2} s^{3} + k_{3} s^{2} + k_{4} s^{3} - \omega_{0}^{2} s^{2} + s^{4}}\\\frac{165.185185185185 s \left(- \omega_{1}^{2} + s^{2}\right)}{- k_{1} \omega_{1}^{2} + k_{1} s^{2} - k_{2} \omega_{1}^{2} s + k_{2} s^{3} + k_{3} s^{2} + k_{4} s^{3} - \omega_{0}^{2} s^{2} + s^{4}}\\\frac{1256.2962962963 s^{2}}{- k_{1} \omega_{1}^{2} + k_{1} s^{2} - k_{2} \omega_{1}^{2} s + k_{2} s^{3} + k_{3} s^{2} + k_{4} s^{3} - \omega_{0}^{2} s^{2} + s^{4}}\\- \frac{126.41975308642 s^{3}}{- k_{1} \omega_{1}^{2} + k_{1} s^{2} - k_{2} \omega_{1}^{2} s + k_{2} s^{3} + k_{3} s^{2} + k_{4} s^{3} - \omega_{0}^{2} s^{2} + s^{4}}\end{matrix}\right]
-\end{equation}
 
 \begin{equation}
   s^{4} + \left(k_{2} + k_{4}\right) s^{3} + \left(k_{1} + k_{3} - \omega_{0}^{2}\right) s^{2} -  k_{2} \omega_{1}^{2} s -  k_{1} \omega_{1}^{2}
@@ -336,6 +353,16 @@ Substituting into and linearising equations \ref{eq:motion_1} and \ref{eq:motion
 \newpage
 \section{Appendix}
 
+Crane closed loop transfer function
+\begin{equation}
+  \mathbf{C} (s\mathbf{I} - \mathbf{A} + \mathbf{KB}) ^{-1} \mathbf{B} = \left[\begin{matrix}\frac{617.283950617284 \left(\omega_{1}^{2} + s^{2}\right)}{k_{1} \omega_{1}^{2} + k_{1} s^{2} + k_{2} \omega_{1}^{2} s + k_{2} s^{3} + k_{3} s^{2} + k_{4} s^{3} + \omega_{0}^{2} s^{2} + s^{4}}\\\frac{165.185185185185 s \left(\omega_{1}^{2} + s^{2}\right)}{k_{1} \omega_{1}^{2} + k_{1} s^{2} + k_{2} \omega_{1}^{2} s + k_{2} s^{3} + k_{3} s^{2} + k_{4} s^{3} + \omega_{0}^{2} s^{2} + s^{4}}\\\frac{1256.2962962963 s^{2}}{k_{1} \omega_{1}^{2} + k_{1} s^{2} + k_{2} \omega_{1}^{2} s + k_{2} s^{3} + k_{3} s^{2} + k_{4} s^{3} + \omega_{0}^{2} s^{2} + s^{4}}\\- \frac{126.41975308642 s^{3}}{k_{1} \omega_{1}^{2} + k_{1} s^{2} + k_{2} \omega_{1}^{2} s + k_{2} s^{3} + k_{3} s^{2} + k_{4} s^{3} + \omega_{0}^{2} s^{2} + s^{4}}\end{matrix}\right]
+\end{equation}
+
+Inverted pendulum closed loop transfer function
+
+\begin{equation}
+  \mathbf{C} (s\mathbf{I} - \mathbf{A} + \mathbf{KB}) ^{-1} \mathbf{B} = \left[\begin{matrix}\frac{617.283950617284 \left(- \omega_{1}^{2} + s^{2}\right)}{- k_{1} \omega_{1}^{2} + k_{1} s^{2} - k_{2} \omega_{1}^{2} s + k_{2} s^{3} + k_{3} s^{2} + k_{4} s^{3} - \omega_{0}^{2} s^{2} + s^{4}}\\\frac{165.185185185185 s \left(- \omega_{1}^{2} + s^{2}\right)}{- k_{1} \omega_{1}^{2} + k_{1} s^{2} - k_{2} \omega_{1}^{2} s + k_{2} s^{3} + k_{3} s^{2} + k_{4} s^{3} - \omega_{0}^{2} s^{2} + s^{4}}\\\frac{1256.2962962963 s^{2}}{- k_{1} \omega_{1}^{2} + k_{1} s^{2} - k_{2} \omega_{1}^{2} s + k_{2} s^{3} + k_{3} s^{2} + k_{4} s^{3} - \omega_{0}^{2} s^{2} + s^{4}}\\- \frac{126.41975308642 s^{3}}{- k_{1} \omega_{1}^{2} + k_{1} s^{2} - k_{2} \omega_{1}^{2} s + k_{2} s^{3} + k_{3} s^{2} + k_{4} s^{3} - \omega_{0}^{2} s^{2} + s^{4}}\end{matrix}\right]
+\end{equation}
 
 % bibliography
 \newpage
