@@ -75,11 +75,16 @@
 \newpage
 
 \section{Introduction}
+% and purpose
+Control of systems is essential  
 
 \subsection{Purpose}
+% talk about why this is important
 
 \subsection{Objectives}
 % list the objectives of the experiment
+
+% analyse mechanical systems
 
 \section{Theory}
 
@@ -233,11 +238,9 @@ A linear state space model is given by the following equations
   \mathbf{\dot{x}} &= \mathbf{Ax} + \mathbf{B}u \\
   \mathbf{y} &= \mathbf{Cx}
 \end{align}
-Where the state vector $\mathbf{x}$ is defined as a perturbation from an equilibrium point,
-
-Where the matricies are defined as follows,
+Where the state vector $\mathbf{x}$ is defined as a perturbation from an equilibrium point and the matricies are defined as follows,
 \begin{equation}
-  \mathbf{A}_{ij} = \frac{\partial f_i}{\partial x_j} \Bigr|_{x=x_e} \quad \mathbf{B}_{i} = \frac{\partial f_i}{\partial u} \Bigr|_{x=x_e}
+  \mathbf{A}_{ij} = \frac{\partial f_i}{\partial x_j} \Bigr|_{\mathbf{x}=\mathbf{x}_e} \quad \mathbf{B}_{i} = \frac{\partial f_i}{\partial u} \Bigr|_{\mathbf{x}=\mathbf{x}_e}
 \end{equation}
 
 The Laplace transform of the state space model is taken and rearanged into a matrix of transfer functions for the system.
@@ -246,16 +249,37 @@ The Laplace transform of the state space model is taken and rearanged into a mat
   \frac{\mathbf{y}}{u} = \mathbf{C} (s\mathbf{I} - \mathbf{A}) ^{-1} \mathbf{B}
 \end{equation}
 
-For the closed loop transfer function the system input $u = w - \mathbf{Kx}$ where $\mathbf{K}$ is the control gain matrix.
-This means that the closed loop transfer function is given by
+\subsection{Controllability}
 
+% waffle through controllability
+% define controlability
+
+A state space model is controllable if given initial and final states $\mathbf{x}(0)$ and $\mathbf{x}(t)$
+then there exists an input signal $u$ that transfers from the initial to the final state in finite time $t$.
+
+It can be shown from Cayley-Hamilton theorem that\dots 
+
+\begin{equation}
+  \mathbf{P} = \begin{bmatrix}
+    \mathbf{B} & \mathbf{AB} & \cdots & \mathbf{A}^{n-1}\mathbf{B}
+  \end{bmatrix}
+\end{equation}
+
+\subsection{Closed loop stability}
+Given that the system is controllable, the poles can be arbitrarily assigned using closed loop feedback.
+With feedback the new plant input is $u = w - \mathbf{Kx}$, where $\mathbf{K}$ is the control gain matrix.
+This means that the closed loop transfer function is given by
 \begin{equation}
   \frac{\mathbf{y}}{w} = \mathbf{C} (s\mathbf{I} - \mathbf{A} + \mathbf{KB}) ^{-1} \mathbf{B}
 \end{equation}
-The poles of which are determined by the polynomial
+
+The poles of the closed loop transfer function are given by the roots of the characteristic polynomial
 \begin{equation}
   \text{det} \left( s\mathbf{I} - \mathbf{A} + \mathbf{KB} \right) = 0
 \end{equation}
+
+All poles must have a positive real part for the system to be stable.
+The poles are the roots of a polynomial which means the Routh-Hurwitz criteria can be used.
 
 \subsubsection{Crane Model}
 
@@ -294,10 +318,17 @@ This gives the final state space model of the system as
 \subsubsection{Inverted Pendulum Model}
 
 For the inverted pendulum model the linearization is about the point $\theta = \pi$ and $\dot{\theta} = 0$.
-Small deviations from this point are given by $\phi$ such that $\theta = \pi - \phi$.
-Substituting into and linearising equations \ref{eq:motion_1} and \ref{eq:motion_2} yield the following:
+The same quations of motion, \ref{eq:motion_1} and \ref{eq:motion_2}, are substituted with $\theta = \pi - \phi$.
 \begin{align}
-  \left( 1 + \frac{M}{m} + \frac{I}{ma^2} \right) \ddot{x} &= \frac{T}{ma} - \left(\frac{F}{m} \right)\text{sgn}(\dot{x}) + l \ddot{\phi} \\
+  \left( 1 + \frac{M}{m} + \frac{I}{ma^2} \right) \ddot{x} &= \frac{T}{ma} - \frac{F}{m}\text{sgn}(\dot{x}) - l\sin\phi . \ddot{\phi} - l\cos\phi . \dot{\phi}^2 \label{eq:motion_1} \\
+   - l \ddot{\phi} &= \sin\phi \ddot{x} - g\cos\phi \label{eq:motion_2}
+\end{align}
+The new states become $\mathbf{x} = \left[ x \quad \dot{x} \quad l\phi \quad l\dot{\phi} \right]^T$
+
+
+linearising equations \ref{eq:motion_1} and \ref{eq:motion_2} yield the following:
+\begin{align}
+  \left( 1 + \frac{M}{m} + \frac{I}{ma^2} \right) \ddot{x} &= \frac{T}{ma} - \left(\frac{F}{m} \right)\text{sgn}(\dot{x}) + l \ddot{\phi} \label{eq:invp_motion_1} \\
   l \ddot{\phi} &= \ddot{x} + g\phi \label{eq:invp_motion_2}
 \end{align}
 
@@ -321,6 +352,18 @@ The states can be substituted and solved for the state space model in terms of t
 \begin{equation}
   s^{4} + \left(k_{2} + k_{4}\right) s^{3} + \left(k_{1} + k_{3} + \omega_{0}^{2}\right) s^{2} + k_{2} \omega_{1}^{2} s + k_{1} \omega_{1}^{2}
 \end{equation}
+Application of the Ruth Hurwitz criteria gives the following requirements
+\begin{align}
+  k_{2} + k_{4} &> 0 \\
+  k_{1} + k_{3} + \omega_{0}^{2} &> 0 \\
+  k_{2} \omega_{1}^{2} &> 0 \\
+  \left(k_{3} + \omega_{0}^{2} - \omega_{1}^{2}\right) k_{2}^{2} + \left(- k_{1} k_{4} + k_{3} k_{4} + k_{4} \omega_{0}^{2}\right) k_{2} -  k_{1} k_{4}^{2} &> 0
+\end{align}
+If the system is at the limit of instablility then the last equality becomes an equality which can be solved for $k_2$. Only one solution exists that satisfies the inequalities above.
+\begin{equation}
+  k_2 = \frac{k_{4} \left(k_{1} - k_{3} - \omega_{0}^{2} \pm \sqrt{k_{1}^{2} + 2 k_{1} k_{3} + 2 k_{1} \omega_{0}^{2} - 4 k_{1} \omega_{1}^{2} + k_{3}^{2} + 2 k_{3} \omega_{0}^{2} + \omega_{0}^{4}}\right)}{2 \left(k_{3} + \omega_{0}^{2} - \omega_{1}^{2}\right)}
+\end{equation}
+When this solution is substituted back into the characteristic polynomial
 
 \subsubsection{Inverted Pendulum}
 
@@ -329,12 +372,35 @@ The states can be substituted and solved for the state space model in terms of t
 \end{equation}
 
 
+\subsubsection{Eigenvalue Sensitivity}
 
-\subsubsection{Linear Quadratic Regulator}
+The roots of a polynomial can be very sensitive to coefficients, particularly when roots are nearly repeated.
+This is shown by considering the polynomial
+\begin{equation}
+  d(s) = (s+k)^4 + \eta k^4
+\end{equation}
+
+\begin{figure}
+  \centering
+  \includegraphics[width=0.6\textwidth]{figures/pole_sensitivity.png}
+  \caption{}
+  \label{fig:pole_sensitivity}
+\end{figure}
+
+\subsection{Nonlinear Friction term}
+So far we have only considered linear theory, however the sign function cannot be linearised
+
+\subsection{Linear Quadratic Regulator}
+
+The cost function associated with optimal control
 
 \begin{equation}
   J = \int_0^\infty \left( \mathbf{x}^T \mathbf{Q} \mathbf{x} + \mathbf{u}^T \mathbf{R} \mathbf{u} \right) dt
 \end{equation}
+
+\subsubsection{Optimal Performance Evaluation}
+
+The real world performance of the LQR determined system gains can be observed by measuring the input power and the response.
 
 \section{Method}
 
@@ -347,9 +413,94 @@ The states can be substituted and solved for the state space model in terms of t
 \subsection{Uncertainty}
 
 
-
 \section{Results}
 
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.99\textwidth]{figures/3.3.png}
+  \caption{}
+  \label{fig:exp3.3}
+\end{figure}
+
+From carriage velocity, the time for a period was measured at 0.36s which gives a frequency of 17.45 rad/s.
+The system has high damping where the amplitude of carriage velocity halved over about 1 period, giving a damping ratio of $\zeta \approx 0.11$.
+
+Calculated closed loop pole locations are: $[-3.89861823 \pm 18.69316043j, -2.16928301 \pm 6.46486529j]$
+These indicate a highly damped system with frequency responses of 18.7 and 6.5 rad/s and corresponding damping ratios of ~0.208 and ~0.336.
+
+The observed response is consistent with the calculated pole locations.
+
+There is a small discrepency between the simulated and observed response. This is due to uncertainty in system parameters rather than numerical error in the verlet integrator method.
+Uncertainty in the system parameters include the sensor constants, amplifier gains, friction coefficients, mass and moments of inertia of the system.
+
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.99\textwidth]{figures/3.4a.png}
+  \caption{All poles at $-\omega_1 = -\sqrt{78.5}$}
+  \label{fig:exp3.4a}
+\end{figure}
+
+After carefully calculating the poles using $k_1 = \omega_1^2$, $k_2 = 4\omega_1$, $k_3 = 5\omega_1^2 - \omega_0^2$ and finally $k_4 = 0$ </br>
+And converting using scale factors shown in the appendix A7, the gains $p_i$ were found to be $[ 0.13,  0.21,  0.23, 0.  ]$ </br>
+
+The poles, however, were calculated from these values as $[-12.45360996 \pm 6.46216554j, -4.89083448 \pm 2.84116008j]$
+
+This shows that the poles are not consistent with the target pole position. </br>
+This may be due to the fact that the locations of poles are very sensitive to the coefficients of the closed loop characteristic polynomial.
+This is especially true for repeated poles, which is the case here.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.99\textwidth]{figures/3.4b.png}
+  \caption{Poles at $-\alpha, -\beta, -\omega \pm j\omega$ where $\alpha = 10; \beta = 10; \omega = 10$}
+  \label{fig:exp3.4b}
+\end{figure}
+
+Chosen Values </br>
+$\alpha = 10; \beta = 10; \omega = 10$
+
+The calculated values of P are $[0.41284404 0.46282964 0.27212883 0.28834576]$ </br>
+The poles are $[-10.0 \pm 10.0j, -10.0\pm 1.08564988\times 10^{-6}j ]$ which is very close to the design point of a repeated pole at $-10$, and poles at -$10\pm 10j$
+
+The response shows some oscillation components, but the system is highly damped and the frequency response is difficult to measure.
+This makes it difficult to compare the observed response with the pole locations.
+
+The simulated response shows a lower frequency of about ???
+
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.6\textwidth]{figures/3.5roots.jpg}
+  \caption{Limit of stability}
+  \label{fig:roots3.5}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.99\textwidth]{figures/3.5.png}
+  \caption{Limit of stability}
+  \label{fig:exp3.5}
+\end{figure}
+
+Predicted gain $k_2 =   41.426084064823016$ </br>
+Predicted frequency $\hat{\omega} = 4.105928985604413$ Hz
+
+The value of $p_2$ was reduced from 0.46 to 0.19 where the onset of oscillations was observed</br>
+Measured Gain $k_2 = 31.35$ </br>
+Measured frequency 21.67 rad/s
+The amplitude of velocity of the carriage drops to half of the maximum value after 4 cycles, which gives the damping ratio as $\zeta \approx 0.03$
+
+The closed loop pole locations are $[ 4.57476482 \pm 26.11156105j , -1.93649322 \pm 4.95114934j]$ </br>
+The first two poles that lie to the right of the imaginary axis suggests that the system should be unstable for this value of $p_2 = 0.19$.
+
+
+Measurements indicate that the gain $k_2$ for unstability is smaller than expected. </br>
+
+From theory covered in A6 of the appendix, the onset of instability is related to friction in the limit cycles which is not considered in linear theory. </br>
+For small oscillations the real system has a large additional damping term from friction, which is why the linear model predicts instability to occur at a higher gain than observed. </br>
+
+At a gain of $p_2 = 0.18$ oscillations occur at larger amplitudes and so according to A6 the additional damping from friction is smaller which causes the system to become unstable. </br> 
 
 \section{Discussion}
 
@@ -360,6 +511,11 @@ The states can be substituted and solved for the state space model in terms of t
 
 \newpage
 \section{Appendix}
+
+\begin{align}
+  \left( 1 + \frac{M}{m} + \frac{I}{ma^2} \right) \ddot{x} &= \frac{T}{ma} - \frac{F}{m}\text{sgn}(\dot{x}) - l\sin\phi . \ddot{\phi} - l\cos\phi . \dot{\phi}^2 \\
+   - l \ddot{\phi} &= \sin\phi \ddot{x} - g\cos\phi
+\end{align}
 
 Crane closed loop transfer function
 \begin{equation}

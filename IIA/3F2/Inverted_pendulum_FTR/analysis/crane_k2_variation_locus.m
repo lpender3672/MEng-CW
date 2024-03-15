@@ -11,7 +11,7 @@ gamma = M/m + I/(m*a^2);
 
 % State-space matrices
 omega_1 = sqrt(g/L);
-omega_0 = omega_1 * sqrt(1 + 1/gamma)
+omega_0 = omega_1 * sqrt(1 + 1/gamma);
 
 Ac = [0, 1, 0, 0;
       0, 0, omega_1^2 - omega_0^2, 0;
