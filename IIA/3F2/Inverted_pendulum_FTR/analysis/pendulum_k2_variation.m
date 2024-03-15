@@ -60,7 +60,7 @@ plot(real(eig_values_p), imag(eig_values_p), 'g.', 'MarkerSize', 16);
 
 xlabel('Real');
 ylabel('Imaginary');
-xlim([-40,50]);
+xlim([-30,50]);
 ylim([-40,40])
 title('Eigenvalue Locations for Different Values of k2');
 grid on;

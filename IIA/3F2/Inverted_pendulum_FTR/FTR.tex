@@ -377,7 +377,7 @@ When this solution is substituted back into the characteristic polynomial
 The roots of a polynomial can be very sensitive to coefficients, particularly when roots are nearly repeated.
 This is shown by considering the polynomial
 \begin{equation}
-  d(s) = (s+k)^4 + \eta k^4
+  d(s) = (s+k)^4 + \epsilon k^4
 \end{equation}
 
 \begin{figure}
@@ -414,6 +414,8 @@ The real world performance of the LQR determined system gains can be observed by
 
 
 \section{Results}
+
+\subsection{Crane}
 
 \begin{figure}[H]
   \centering
@@ -472,7 +474,7 @@ The simulated response shows a lower frequency of about ???
 \begin{figure}[H]
   \centering
   \includegraphics[width=0.6\textwidth]{figures/3.5roots.jpg}
-  \caption{Limit of stability}
+  \caption{Crane root locus for varying $k_2$ only}
   \label{fig:roots3.5}
 \end{figure}
 
@@ -502,8 +504,58 @@ For small oscillations the real system has a large additional damping term from 
 
 At a gain of $p_2 = 0.18$ oscillations occur at larger amplitudes and so according to A6 the additional damping from friction is smaller which causes the system to become unstable. </br> 
 
+\subsection{Inverted Pendulum}
+
+% No Carriage feedback
+%% EXPLAIN BEHAVIOUR
+
+% 4.3 pole placement at -omega1
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.99\textwidth]{figures/4.3.png}
+  \caption{Inverted pendulum root locus for varying $k_2$ only}
+  \label{fig:4.3}
+\end{figure}
+
+% 4.4 limit cycles
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.6\textwidth]{figures/4.4roots.jpg}
+  \caption{Inverted pendulum root locus for varying $k_2$ only}
+  \label{fig:roots4.4}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.99\textwidth]{figures/4.4_lo.png}
+  \caption{Inverted pendulum response at minimum $k_2 = $ for stability}
+  \label{fig:roots4.4_lo}
+\end{figure}
+
+The value of $p_2 = 0.3$ was found for large oscillations.
+This can be seen in the poles $-1.27029093 \pm 2.37834982j$
+These have a small imaginary component and so have a lower frequency, as observed.
+The value of damping is also small which is given by the real part.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.99\textwidth]{figures/4.4_hi.png}
+  \caption{Inverted pendulum response at maximum $k_2 = $ for stability}
+  \label{fig:roots4.4_hi}
+\end{figure}
+
+Value of $p_2$ for at the onset of instability: 0.78
+The carriage velocity amplitude halves after 7 cycles giving a damping ratio of $\zeta \approx 0.016$
+The frequency of carriage velocity is calculated to be about 44 rad/s
+This gives calculated poles of $-0.704 \pm 44j$
+
+The corresponding poles of the system are $-4.07147154 \pm 30.42971361j$
+This shows that the damping is higher than expected 
+
 \section{Discussion}
 
+currently in the results
 
 
 \section{Conclusion}
