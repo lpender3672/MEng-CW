@@ -11,7 +11,7 @@ gamma = M/m + I/(m*a^2);
 
 % State-space matrices
 omega_1 = sqrt(g/L);
-omega_0 = omega_1 * sqrt(1 + 1/gamma)
+omega_0 = omega_1 * sqrt(1 + 1/gamma);
 
 Ap = [0, 1, 0, 0;
       0, 0, omega_0^2 - omega_1^2, 0;
@@ -30,7 +30,7 @@ Cp = -(ka*km/(m*a*gamma)) * (Sp \ opamp_p);
 sys = ss(Ap, B, Cp, 0);
 
 % Define gain range for k2
-k2_range = [-logspace(3, -5, 1000), logspace(-5, 3, 1000)];  % Adjust the range and number of gains as needed
+k2_range = [-logspace(3, -5, 500), logspace(-5, 3, 1500)];  % Adjust the range and number of gains as needed
 
 % Set fixed values for k1, k3, and k4
 
