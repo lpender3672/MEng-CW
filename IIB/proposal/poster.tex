@@ -1,0 +1,109 @@
+\documentclass[a2,portrait]{a0poster}
+
+\usepackage{multicol} % This is so we can have multiple columns of text side-by-side
+\columnsep=100pt % This is the amount of white space between the columns in the poster
+\columnseprule=3pt % This is the thickness of the black line between the columns in the poster
+
+\usepackage[svgnames]{xcolor} % Specify colors by their 'svgnames', for a full list of available color names see here: http://www.latex-community.org/forum/viewtopic.php?f=37&t=24668
+
+\usepackage{times} % Use the times font
+\usepackage{graphicx} % Required for including images
+\graphicspath{{images/}} % Location of the graphics files
+
+\usepackage{booktabs} % Top and bottom rules for table
+\usepackage[font=small,labelfont=bf]{caption} % Required for specifying captions to tables and figures
+
+\begin{document}
+
+%----------------------------------------------------------------------------------------
+%	POSTER HEADER 
+%----------------------------------------------------------------------------------------
+
+\begin{center}
+\begin{minipage}{0.75\textwidth}
+\centering
+\Huge \color{NavyBlue} \textbf{Efficient and low noise toroidal propeller design} \color{Black}\\ % Title
+\huge \textbf{Louis Pender}\\[0.5cm] % Author(s)
+\huge Cambridge University Engineering Department\\ % University/department
+\end{minipage}
+\end{center}
+
+%----------------------------------------------------------------------------------------
+
+\begin{multicols}{2} % Begin the two-column layout 
+
+
+%----------------------------------------------------------------------------------------
+%  PURPOSE
+%----------------------------------------------------------------------------------------
+
+\color{Navy}
+\section*{Purpose}
+
+The development of low noise toroidal propellers is crucial for the aviation industry to address growing public concerns over aircraft noise pollution, comply with stringent regulations, and facilitate the adoption of innovative technologies.
+These propellers can significantly reduce noise levels compared to conventional designs, fostering a positive public perception of aviation technologies and enabling the widespread adoption of solutions like urban air mobility and drone-based services.
+In the military sector, low noise toroidal propellers enhance stealth operations and surveillance missions by reducing the acoustic signature of aircraft, improving operational effectiveness and personnel safety.
+
+%----------------------------------------------------------------------------------------
+%	OBJECTIVES
+%----------------------------------------------------------------------------------------
+
+\color{Navy} 
+\section*{Objectives}
+
+\begin{itemize}
+\item To select key geometric parameters for a toroidal propeller important for efficiency and noise reduction
+\item To develop computational models for the prediction of the performance of toroidal propellers.
+\item To design an experimental setup to further test and validate the computational models.
+\item To present designs for a range of both audible and effective performance.
+\end{itemize}
+
+%----------------------------------------------------------------------------------------
+%	INTRODUCTION
+%----------------------------------------------------------------------------------------
+
+\color{Black} 
+\section*{Introduction}
+% purpose of the project
+Your introduction text goes here
+
+%----------------------------------------------------------------------------------------
+%	METHODS
+%----------------------------------------------------------------------------------------
+
+\color{SaddleBrown} 
+\section*{Methods}
+
+Your methods text goes here
+
+%----------------------------------------------------------------------------------------
+%	RESULTS 
+%----------------------------------------------------------------------------------------
+
+\color{Black} 
+\section*{Results}
+
+Your results text goes here
+
+%----------------------------------------------------------------------------------------
+%	CONCLUSIONS
+%----------------------------------------------------------------------------------------
+
+\color{DarkSlateGray} 
+\section*{Conclusions}
+
+Your conclusions text goes here
+
+%----------------------------------------------------------------------------------------
+%	REFERENCES
+%----------------------------------------------------------------------------------------
+
+\color{Black} 
+\section*{References}
+
+Your references text goes here
+
+%----------------------------------------------------------------------------------------
+
+\end{multicols}
+\end{document}
