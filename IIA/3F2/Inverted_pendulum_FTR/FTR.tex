@@ -13,13 +13,18 @@
 \usetikzlibrary{calc}
 \usetikzlibrary{angles,quotes} % for pic
 \usetikzlibrary{patterns,snakes}
+\usetikzlibrary{arrows}
 \tikzset{>=latex} % for LaTeX arrow head
 
-\usepackage[margin=0.5in]{geometry}
+\usepackage[margin=1in]{geometry}
 
 \setlength{\parskip}{\baselineskip}%
 \setlength{\parindent}{0pt}%
 
+
+%----------------------------------------------------------------------------------------
+% Dynamical Systems TikZ Styles
+%----------------------------------------------------------------------------------------
 
 % PULLEY
 \def\r{0.05} % pulley small radius
@@ -60,6 +65,19 @@
 \pgfdeclarelayer{back} % to draw on background
 \pgfsetlayers{back,main} % set order
 
+%----------------------------------------------------------------------------------------
+% Control Systems TikZ Styles
+%----------------------------------------------------------------------------------------
+
+\tikzstyle{block} = [draw, fill=blue!20, rectangle, 
+    minimum height=3em, minimum width=6em]
+\tikzstyle{sum} = [draw, fill=blue!20, circle, node distance=1cm]
+\tikzstyle{input} = [coordinate]
+\tikzstyle{output} = [coordinate]
+\tikzstyle{pinstyle} = [pin edge={to-,thin,black}]
+
+%----------------------------------------------------------------------------------------
+
 \begin{document}
 
 \title{Full Technical Report: 3F2 Inverted Pendulum Lab}
@@ -75,14 +93,23 @@
 \newpage
 
 \section{Introduction}
-% and purpose
-Control of systems is essential  
 
 \subsection{Purpose}
 % talk about why this is important
 
+State space dynamic models provide a powerful framework for modeling and analyzing complex real-world systems, enabling engineers to develop accurate and efficient control strategies. For example, state space models are widely used in the automotive industry to design advanced vehicle dynamics control systems, ensuring improved stability, handling, and safety. In the aerospace sector, state space models are employed to analyze and control aircraft dynamics, satellite attitude control systems, and missile guidance systems.
+
+State feedback and pole placement techniques are essential tools for designing controllers that can modify the dynamics of real-world control systems to achieve desired performance characteristics. These techniques find extensive applications in robotics, where they are used to design controllers for manipulators, mobile robots, and humanoid robots, enabling precise motion control and trajectory tracking.
+
 \subsection{Objectives}
 % list the objectives of the experiment
+
+\begin{itemize}
+  \item To derive and linearize equations of motion for crane and inverted pendulum arangements of the system.
+  \item To illustrate the use of state feedback and pole placement techniques to design a controller for the inverted pendulum system.
+  \item To explain the limitations of pole placement control and effects of non-linearities in the system.
+  \item To demonstrate the use of LQR control to design a controller for the inverted pendulum system.
+\end{itemize}
 
 % analyse mechanical systems
 
@@ -246,7 +273,7 @@ Where the state vector $\mathbf{x}$ is defined as a perturbation from an equilib
 The Laplace transform of the state space model is taken and rearanged into a matrix of transfer functions for the system.
 
 \begin{equation} 
-  \frac{\mathbf{y}}{u} = \mathbf{C} (s\mathbf{I} - \mathbf{A}) ^{-1} \mathbf{B}
+  \mathbf{G}(s) = \frac{\mathbf{y}}{u} = \mathbf{C} (s\mathbf{I} - \mathbf{A}) ^{-1} \mathbf{B}
 \end{equation}
 
 \subsection{Controllability}
@@ -257,7 +284,7 @@ The Laplace transform of the state space model is taken and rearanged into a mat
 A state space model is controllable if given initial and final states $\mathbf{x}(0)$ and $\mathbf{x}(t)$
 then there exists an input signal $u$ that transfers from the initial to the final state in finite time $t$.
 
-It can be shown from Cayley-Hamilton theorem that\dots 
+It can be shown from Cayley-Hamilton theorem that a system is controllable if the controllability matrix $\mathbf{P}$ is full rank.
 
 \begin{equation}
   \mathbf{P} = \begin{bmatrix}
@@ -267,10 +294,36 @@ It can be shown from Cayley-Hamilton theorem that\dots
 
 \subsection{Closed loop stability}
 Given that the system is controllable, the poles can be arbitrarily assigned using closed loop feedback.
+
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}[auto, node distance=2cm,>=latex']
+    % We start by placing the blocks
+    \node [input, name=input] {};
+    \node [sum, right of=input] (sum) {};
+    \node [block, right of=sum] (system) {$\mathbf{G}(s)$};
+    % We draw an edge between the controller and system block to 
+    % calculate the coordinate u. We need it to place the measurement block. 
+    \node [output, right of=system] (output) {};
+    \node [block, below of=system] (feedback) {$\mathbf{K}$};
+
+    % Once the nodes are placed, connecting them is easy. 
+    \draw [draw,->] (input) -- node {$r$} (sum);
+    \draw [->] (sum) -- node {$u$} (system);
+    \draw [->] (system) -- node [name=y] {$\mathbf{y}$}(output);
+    \draw [->] (y) |- (feedback);
+    \draw [->] (feedback) -| node[pos=0.99] {$-$} 
+        node [near end] {} (sum);
+  \end{tikzpicture}
+  \caption{Block diagram of a feedback control system.}
+  \label{fig:feedback_control_system}
+\end{figure}
+
 With feedback the new plant input is $u = w - \mathbf{Kx}$, where $\mathbf{K}$ is the control gain matrix.
 This means that the closed loop transfer function is given by
 \begin{equation}
-  \frac{\mathbf{y}}{w} = \mathbf{C} (s\mathbf{I} - \mathbf{A} + \mathbf{KB}) ^{-1} \mathbf{B}
+  \mathbf{H}(s) = \frac{\mathbf{y}}{r} = \mathbf{C} (s\mathbf{I} - \mathbf{A} + \mathbf{KB}) ^{-1} \mathbf{B}
+  \label{eq:closed_loop_tf}
 \end{equation}
 
 The poles of the closed loop transfer function are given by the roots of the characteristic polynomial
@@ -381,6 +434,7 @@ The value of $k_2$ can be found by solving this equation and the solution is sho
 
 \begin{equation}
   k_2 = \frac{k_{4} \left(k_{1} - k_{3} - \omega_{0}^{2} \pm \sqrt{k_{1}^{2} + 2 k_{1} k_{3} + 2 k_{1} \omega_{0}^{2} - 4 k_{1} \omega_{1}^{2} + k_{3}^{2} + 2 k_{3} \omega_{0}^{2} + \omega_{0}^{4}}\right)}{2 \left(k_{3} + \omega_{0}^{2} - \omega_{1}^{2}\right)}
+  \label{eq:predicted_crane_k2}
 \end{equation}
 When this solution is substituted back into the characteristic polynomial
 
@@ -426,11 +480,13 @@ This is shown by considering the polynomial
 \begin{equation}
   d(s) = (s+k)^4 + \epsilon k^4
 \end{equation}
+For $\epsilon = 0$ the polynomial has a fourth order repeated root at $s = -k$.
+However, even for small $\epsilon$ the roots of the polynomial can vary significantly. This is shown below in figure \ref{fig:pole_sensitivity}.
 
 \begin{figure}[H]
   \centering
   \includegraphics[width=0.6\textwidth]{figures/pole_sensitivity.png}
-  \caption{}
+  \caption{Variation of the roots of a polynomial for small perturbations in the coefficient, $\epsilon$.}
   \label{fig:pole_sensitivity}
 \end{figure}
 
@@ -438,12 +494,52 @@ This is shown by considering the polynomial
 So far we have only considered linear theory, however the sign function in the friction term $f$ cannot be linearised.
 The describing function method can be used to find the frequency-response function for
 the nonlinear friction.
+The following analysis will be on single output systems, however the method can be extended to each output.
 
-Suppose that $\dot{x} = E\text{sgn}(\omega t)$ then the $sgn(\omega t)$ can be expanded into a Fourier series seen below.
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}[auto, node distance=2cm,>=latex']
+    % We start by placing the blocks
+    \node [input, name=input] {};
+    \node [sum, right of=input] (sum) {};
+    \node [block, right of=sum] (system) {$G(s)$};
+    % We draw an edge between the controller and system block to 
+    % calculate the coordinate u. We need it to place the measurement block. 
+    \node [output, right of=system] (output) {};
+    \node [block, below of=system] (feedback) {$\psi(y)$};
+
+    % Once the nodes are placed, connecting them is easy. 
+    \draw [draw,->] (input) -- node {$u$} (sum);
+    \draw [->] (sum) -- node {} (system);
+    \draw [->] (system) -- node [name=y] {$y$}(output);
+    \draw [->] (y) |- (feedback);
+    \draw [->] (feedback) -| node[pos=0.99] {$-$} 
+        node [near end] {} (sum);
+  \end{tikzpicture}
+  \caption{Nonlinearity $\psi(y)$ }
+  \label{fig:nonlinear_block_diagram}
+\end{figure}
+
+From the \textit{harmonic balance equation} \cite{non_linear_systems}, $\Psi(E)G(j\omega) + 1 = 0$.
+The function $\Psi(E)$ "describes" the nonlinearity $\psi$ for a harmonic input of amplitude $E$ which is defined below.
+This is also in the form of an additional feedback gain for $k_2$.
 
 \begin{equation}
-  \text{sgn}(\omega t) = \frac{4}{\pi}\sum_{n=0}^{\infty} \frac{\sin((2n+1)\omega t)}{2n+1}
+  \Psi(E) = \frac{2}{\pi E} \int_0^{\pi} \psi(E\sin\theta)\sin\theta d\theta
 \end{equation}
+
+However, its important to note that this method neglects higher order harmonics, assuming that the transfer function $H(j\omega)$ have sharp low pass filtering characteristics.
+In the case of the sign function for friction, the nonlinearity is given by 
+\begin{equation}
+  \psi(\mathbf{y}) = \left(\frac{F}{M + \frac{I}{a^2}} \right) \text{sgn}(\dot{x})
+\end{equation}
+
+This gives the additional gain due to the nonlinearity as
+\begin{align}
+  \Psi(E) &= \frac{2}{\pi E} \left(\frac{F}{M + \frac{I}{a^2}} \right) \int_0^{\pi} \text{sgn}(E\sin\theta)\sin\theta d\theta \\
+          &= \frac{4}{\pi E} \frac{F}{M + I/{a^2}}
+\end{align}
+
 
 \subsection{Linear Quadratic Regulator}
 
@@ -461,12 +557,26 @@ The real world performance of the LQR determined system gains can be observed by
 
 \subsection{Apparatus}
 
+Two digital optical encoders were used to measure the position of the crane and the carriage.
+These were numerically differentiated on microcontrollers to give the velocity of the crane and carriage.
+These were then all converted to an analog signal and amplified by entered gains and selected controller signs.
+The signals are summed and drive the current to the 3 phase brushless motor. 
+The analog demand and state signals were converted digitally at a rate of 400 Hz to a computer for data logging. 
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.6\textwidth]{figures/electrical_layout.png}
+  \caption{Circuit block diagram for the electrical layout of the system.}
+  \label{fig:electrical_layout}
+\end{figure}
 
 \subsection{Procedure}
 
 
+
 \subsection{Uncertainty}
 
+%\iffalse
 
 \section{Results}
 
@@ -479,17 +589,20 @@ The real world performance of the LQR determined system gains can be observed by
   \label{fig:exp3.3}
 \end{figure}
 
-From carriage velocity, the time for a period was measured at 0.36s which gives a frequency of 17.45 rad/s.
-The system has high damping where the amplitude of carriage velocity halved over about 1 period, giving a damping ratio of $\zeta \approx 0.11$.
+From figure \ref{fig:exp3.3} the oscillatory response of the carriage velocity was measured to give a period of 0.36s giving a frequency of 17.45 rad/s.
+The response also shows moderate damping where the amplitude of carriage velocity halved over about 1 period, giving a damping ratio of $\zeta \approx 0.11$.
 
-Calculated closed loop pole locations are: $[-3.89861823 \pm 18.69316043j, -2.16928301 \pm 6.46486529j]$
-These indicate a highly damped system with frequency responses of 18.7 and 6.5 rad/s and corresponding damping ratios of ~0.208 and ~0.336.
+From the closed loop gain setpoints the pole locations are calculated as: \\
+$[-3.89861823 \pm 18.69316043j, -2.16928301 \pm 6.46486529j]$
+These indicate a highly damped system with frequency responses of 18.7 and 6.5 rad/s and corresponding damping ratios of 0.208 and 0.336.
 
-The observed response is consistent with the calculated pole locations.
+The frequency is consistent with the calculated pole locations. The measured damping ratio is slightly lower than expected, 
+which is likely due to high uncertainty in the periods over which the amplitude halved, and the rule of thumb method used requiring small damping ratios to be valid.
 
-There is a small discrepency between the simulated and observed response. This is due to uncertainty in system parameters rather than numerical error in the verlet integrator method.
+There is a small discrepency between the simulated and observed responses. This is due to uncertainty in system parameters rather than numerical error in the verlet integrator method.
 Uncertainty in the system parameters include the sensor constants, amplifier gains, friction coefficients, mass and moments of inertia of the system.
 
+As expected, the 
 
 \begin{figure}[H]
   \centering
@@ -498,14 +611,14 @@ Uncertainty in the system parameters include the sensor constants, amplifier gai
   \label{fig:exp3.4a}
 \end{figure}
 
-After carefully calculating the poles using $k_1 = \omega_1^2$, $k_2 = 4\omega_1$, $k_3 = 5\omega_1^2 - \omega_0^2$ and finally $k_4 = 0$ </br>
-And converting using scale factors shown in the appendix A7, the gains $p_i$ were found to be $[ 0.13,  0.21,  0.23, 0.  ]$ </br>
+% After carefully calculating the poles using $k_1 = \omega_1^2$, $k_2 = 4\omega_1$, $k_3 = 5\omega_1^2 - \omega_0^2$ and finally $k_4 = 0$
+The gains were calculated from equating expanded coefficients of $(s - \omega_1)^4$ with the characteristic polynomial \ref{eq:crane_poly}.
+These were found to be $[ 0.13,  0.21,  0.23, 0.00 ]$, rounded to 2 decimal places which was the maximum precision of the potentiometers.
 
-The poles, however, were calculated from these values as $[-12.45360996 \pm 6.46216554j, -4.89083448 \pm 2.84116008j]$
-
-This shows that the poles are not consistent with the target pole position. </br>
-This may be due to the fact that the locations of poles are very sensitive to the coefficients of the closed loop characteristic polynomial.
-This is especially true for repeated poles, which is the case here.
+The calculated poles from these rounded values were found to be $[-12.45360996 \pm 6.46216554j, -4.89083448 \pm 2.84116008j]$.
+This shows that the poles are not consistent with the target pole position.
+Figure \ref{fig:pole_sensitivity} demonstrates the high sensitivity of the pole locations to small variations of coefficients in the characteristic polynomial.
+This explains why the position of the 2 decimal place rounded gains are so far from the target pole positions.
 
 \begin{figure}[H]
   \centering
@@ -514,10 +627,10 @@ This is especially true for repeated poles, which is the case here.
   \label{fig:exp3.4b}
 \end{figure}
 
-Chosen Values </br>
-$\alpha = 10; \beta = 10; \omega = 10$
+Figure \ref{fig:exp3.4b} show chosen values for $\alpha; \beta; \omega$
 
-The calculated values of P are $[0.41284404 0.46282964 0.27212883 0.28834576]$ </br>
+The calculated values of P were found as $[0.41284404 0.46282964 0.27212883 0.28834576]$
+
 The poles are $[-10.0 \pm 10.0j, -10.0\pm 1.08564988\times 10^{-6}j ]$ which is very close to the design point of a repeated pole at $-10$, and poles at -$10\pm 10j$
 
 The response shows some oscillation components, but the system is highly damped and the frequency response is difficult to measure.
@@ -528,7 +641,7 @@ The simulated response shows a lower frequency of about ???
 
 \begin{figure}[H]
   \centering
-  \includegraphics[width=0.6\textwidth]{figures/3.5roots.jpg}
+  \includegraphics[width=0.7\textwidth]{figures/3.5roots.jpg}
   \caption{Crane root locus for varying $k_2$ only}
   \label{fig:roots3.5}
 \end{figure}
@@ -540,24 +653,20 @@ The simulated response shows a lower frequency of about ???
   \label{fig:exp3.5}
 \end{figure}
 
-Predicted gain $k_2 =   41.426084064823016$ </br>
-Predicted frequency $\hat{\omega} = 4.105928985604413$ Hz
+Figure \ref{fig:exp3.5} shows the response for the smallest $k_2$ where instability starts to occur.
+The value of $p_2$ reduced from 0.46 to 0.19 which corresponds to $k_2 = 31.35$
+The measured frequency was $21.67$ rad/s and the amplitude of velocity of the carriage dropped to half of the maximum value after 4 cycles, giving the damping ratio as $\zeta \approx 0.03$
 
-The value of $p_2$ was reduced from 0.46 to 0.19 where the onset of oscillations was observed</br>
-Measured Gain $k_2 = 31.35$ </br>
-Measured frequency 21.67 rad/s
-The amplitude of velocity of the carriage drops to half of the maximum value after 4 cycles, which gives the damping ratio as $\zeta \approx 0.03$
-
-The closed loop pole locations are $[ 4.57476482 \pm 26.11156105j , -1.93649322 \pm 4.95114934j]$ </br>
+From equation \ref{eq:predicted_crane_k2} the predicted gain at the onset of instability $k_2 = 41.43$ and frequency $\hat{\omega} = 25.76$ Rad/s
+Additionally, the theoretical closed loop pole locations were found as $[ 4.57476482 \pm 26.11156105j , -1.93649322 \pm 4.95114934j]$
 The first two poles that lie to the right of the imaginary axis suggests that the system should be unstable for this value of $p_2 = 0.19$.
 
+Both of these indicate that the lower bound gain $k_2$ at the onset of unstability is smaller than expected. This means that the system is more stable than predicted by the linear model.
 
-Measurements indicate that the gain $k_2$ for unstability is smaller than expected. </br>
-
-From theory covered in A6 of the appendix, the onset of instability is related to friction in the limit cycles which is not considered in linear theory. </br>
-For small oscillations the real system has a large additional damping term from friction, which is why the linear model predicts instability to occur at a higher gain than observed. </br>
-
-At a gain of $p_2 = 0.18$ oscillations occur at larger amplitudes and so according to A6 the additional damping from friction is smaller which causes the system to become unstable. </br> 
+%%% This is becuase of the additional gain from friction in the real system.
+From theory covered in A6 of the appendix, the onset of instability is related to friction in the limit cycles which is not considered in linear theory.
+For small oscillations the real system has a large additional damping term from friction, which is why the linear model predicts instability to occur at a higher gain than observed.
+At a gain of $p_2 = 0.18$ oscillations occur at larger amplitudes and so according to A6 the additional damping from friction is smaller which causes the system to become unstable.
 
 \subsection{Inverted Pendulum}
 
@@ -576,7 +685,7 @@ At a gain of $p_2 = 0.18$ oscillations occur at larger amplitudes and so accordi
 
 \begin{figure}[H]
   \centering
-  \includegraphics[width=0.6\textwidth]{figures/4.4roots.jpg}
+  \includegraphics[width=0.7\textwidth]{figures/4.4roots.jpg}
   \caption{Inverted pendulum root locus for varying $k_2$ only}
   \label{fig:roots4.4}
 \end{figure}
@@ -608,6 +717,8 @@ This gives calculated poles of $-0.704 \pm 44j$
 The corresponding poles of the system are $-4.07147154 \pm 30.42971361j$
 This shows that the damping is higher than expected 
 
+%\fi
+
 \section{Discussion}
 
 currently in the results
@@ -618,6 +729,8 @@ currently in the results
 
 \newpage
 \section{Appendix}
+
+\subsection{Transfer functions}
 
 \begin{align}
   \left( 1 + \frac{M}{m} + \frac{I}{ma^2} \right) \ddot{x} &= \frac{T}{ma} - \frac{F}{m}\text{sgn}(\dot{x}) - l\sin\phi . \ddot{\phi} - l\cos\phi . \dot{\phi}^2 \\
@@ -638,6 +751,30 @@ Inverted pendulum closed loop transfer function
 % bibliography
 \newpage
 \begin{thebibliography}{9}
+
+\bibitem{handout}
+  G. Vinnicombe,
+  \emph{Inverted Pendulum Lab Handout}.
+  University of Cambridge,
+  2022.
+
+\bibitem{feedback_control_of_dynamic_systems}
+  G. F. Franklin, J. D. Powell, A. Emami-Naeini,
+  \emph{Feedback Control of Dynamic Systems}.
+  Pearson,
+  2015.
+
+\bibitem{non_linear_systems}
+  H. K. Khalil,
+  \emph{Nonlinear Systems}.
+  Pearson,
+  2002.
+
+\bibitem{modern_control_systems}
+  R. C. Dorf, R. H. Bishop,
+  \emph{Modern Control Systems}.
+  Pearson,
+  2016.
 
 \end{thebibliography}
 
