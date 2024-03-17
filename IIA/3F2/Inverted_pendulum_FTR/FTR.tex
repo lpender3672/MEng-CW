@@ -435,7 +435,15 @@ This is shown by considering the polynomial
 \end{figure}
 
 \subsection{Nonlinear Friction term}
-So far we have only considered linear theory, however the sign function cannot be linearised
+So far we have only considered linear theory, however the sign function in the friction term $f$ cannot be linearised.
+The describing function method can be used to find the frequency-response function for
+the nonlinear friction.
+
+Suppose that $\dot{x} = E\text{sgn}(\omega t)$ then the $sgn(\omega t)$ can be expanded into a Fourier series seen below.
+
+\begin{equation}
+  \text{sgn}(\omega t) = \frac{4}{\pi}\sum_{n=0}^{\infty} \frac{\sin((2n+1)\omega t)}{2n+1}
+\end{equation}
 
 \subsection{Linear Quadratic Regulator}
 
