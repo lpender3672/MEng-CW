@@ -87,7 +87,7 @@
 
 \begin{abstract}
     \centering
-    Dynamics of an inverted pendulum system are derived and linearized about a stable "crane" and an unstable "inverted pendulum" equilibrium. State feedback and pole placement techniques are used to design a controller for the both state space systems.
+    Dynamics of an inverted pendulum system are derived and linearized about a stable \textit{crane} and an unstable \textit{inverted pendulum} equilibrium. State feedback and pole placement techniques are used to design a controller for the both state space systems.
 \end{abstract}
 
 %-----------------------------------------------------------------------------------------
@@ -758,6 +758,14 @@ This shows that the damping is higher than expected
 
 \subsection{Inverted Pendulum LQR}
 
+It was observed that the simulation required smaller time steps
+
+\begin{figure}
+  \centering
+  \includegraphics[width=0.99\textwidth]{figures/lqr_pendulum_fast.png}
+  \caption{Fast response of the pendulum with LQR}
+  \label{fig:lqr_fast}
+\end{figure}
 
 %\fi
 
