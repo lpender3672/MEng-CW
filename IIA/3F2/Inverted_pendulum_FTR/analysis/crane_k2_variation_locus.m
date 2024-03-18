@@ -30,7 +30,7 @@ Cc = -(ka*km/(m*a*gamma)) * (Sc \ opamp_c);
 sys = ss(Ac, B, Cc, 0);
 
 % Define gain range for k2
-k2_range = [-logspace(5, -3, 1000), logspace(-3, 5, 1000)];  % Adjust the range and number of gains as needed
+p2_range = [-logspace(5, -3, 1000), logspace(-3, 5, 1000)];  % Adjust the range and number of gains as needed
 
 % Set fixed values for k1, k3, and k4
 
@@ -41,29 +41,29 @@ k2 = (2*omega^2*(alpha+beta)+2*omega*alpha*beta)/om12;
 k3 = 2*omega^2+2*omega*(alpha+beta)+alpha*beta-om02-k1;
 k4 = 2*omega+alpha+beta-k2;
 
-K = [k1, k2, k3, k4] / Cc;
-k1 = K(1); k2 = K(2); k3 = K(3); k4 = K(4);
+P = [k1, k2, k3, k4] / Cc;
+p1 = P(1); p2 = P(2); p3 = P(3); p4 = P(4);
 
+P
 
 figure;
 hold on;
-for k2_iter = k2_range
-    K_p = [k1, k2_iter, k3, k4];
-    eig_values_p = eig(Ac - B * K_p * Cc);
-    if k2_iter > 0
+for p2_iter = p2_range
+    P_p = [p1, p2_iter, p3, p4];
+    eig_values_p = eig(Ac - B * P_p * Cc);
+    if p2_iter > 0
         plot(real(eig_values_p), imag(eig_values_p), 'b.', 'MarkerSize', 8);
     else
         plot(real(eig_values_p), imag(eig_values_p), 'r.', 'MarkerSize', 8);
     end
 end
 
-K_p = [k1, k2, k3, k4];
-eig_values_p = eig(Ac - B * K_p * Cc);
+eig_values_p = eig(Ac - B * P * Cc);
 plot(real(eig_values_p), imag(eig_values_p), 'g.', 'MarkerSize', 16);
 
 xlabel('Real');
 ylabel('Imaginary');
-xlim([-30,30]);
+xlim([-30,40]);
 ylim([-30,30])
-title('Eigenvalue Locations for Different Values of k2');
+title('Eigenvalue Locations for Different Values of p_2');
 grid on;
