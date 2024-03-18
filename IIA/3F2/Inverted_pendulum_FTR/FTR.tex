@@ -410,7 +410,7 @@ The same quations of motion, \ref{eq:motion_1} and \ref{eq:motion_2}, are substi
 \end{align}
 The new states become $\mathbf{x} = \left[ x \quad \dot{x} \quad l\phi \quad l\dot{\phi} \right]^T$
 
-linearising equations \ref{eq:motion_1} and \ref{eq:motion_2} yield the following:
+Linearising substituted equations, shown in the appendix, yield the following:
 \begin{align}
   \left( 1 + \frac{M}{m} + \frac{I}{ma^2} \right) \ddot{x} &= \frac{T}{ma} - \left(\frac{F}{m} \right)\text{sgn}(\dot{x}) + l \ddot{\phi} \label{eq:invp_motion_1} \\
   l \ddot{\phi} &= \ddot{x} + g\phi \label{eq:invp_motion_2}
@@ -467,7 +467,7 @@ The value of $k_2$ can be found by solving this equation and the solution is sho
   k_2 = \frac{k_{4} \left(k_{1} - k_{3} - \omega_{0}^{2} \pm \sqrt{k_{1}^{2} + 2 k_{1} k_{3} + 2 k_{1} \omega_{0}^{2} - 4 k_{1} \omega_{1}^{2} + k_{3}^{2} + 2 k_{3} \omega_{0}^{2} + \omega_{0}^{4}}\right)}{2 \left(k_{3} + \omega_{0}^{2} - \omega_{1}^{2}\right)}
   \label{eq:predicted_crane_k2}
 \end{equation}
-When this solution is substituted back into the characteristic polynomial
+Only one of these solutions for k2 satisfy the condition $k_2 > 0$ and is therefore the only valid solution.
 
 \subsubsection{Inverted Pendulum}
 
@@ -501,8 +501,10 @@ This is again the same as the last condition for stability becoming an equality 
 The value of $k_2$ at the point of marginal stability is found by solving this equation and the solution is shown below.
 
 \begin{equation}
-  k_2 = \frac{k_{4} \left(k_{1} - k_{3} - \omega_{0}^{2} - \sqrt{k_{1}^{2} + 2 k_{1} k_{3} + 2 k_{1} \omega_{0}^{2} - 4 k_{1} \omega_{1}^{2} + k_{3}^{2} + 2 k_{3} \omega_{0}^{2} + \omega_{0}^{4}}\right)}{2 \left(k_{3} + \omega_{0}^{2} - \omega_{1}^{2}\right)}
+  k_2 = \frac{k_{4} \left(k_{1} - k_{3} - \omega_{0}^{2} \pm \sqrt{k_{1}^{2} + 2 k_{1} k_{3} + 2 k_{1} \omega_{0}^{2} - 4 k_{1} \omega_{1}^{2} + k_{3}^{2} + 2 k_{3} \omega_{0}^{2} + \omega_{0}^{4}}\right)}{2 \left(k_{3} + \omega_{0}^{2} - \omega_{1}^{2}\right)}
 \end{equation}
+Only one of these solutions for k2 satisfy the condition $k_2 < 0$ and is therefore the only valid solution.
+
 
 \subsubsection{Eigenvalue Sensitivity}
 
@@ -581,7 +583,7 @@ The cost function associated with optimal control
 \end{equation}
 
 Where the matricies $\mathbf{Q}$ and $\mathbf{R}$ are the diagonal state and control weighting matricies respectively.
-They are chosen using Bryson's rule, a heuristic method for choosing the matricies shown below 
+They are chosen using Bryson's rule, a heuristic method for choosing the matricies shown below \cite{feedback_control_of_dynamic_systems}
 
 \begin{equation}
   \mathbf{Q}_{ii} = \frac{1}{\text{max}(\mathbf{x}_i)^2} \quad \mathbf{R} = \frac{1}{\text{max}(u)^2}
@@ -611,8 +613,14 @@ The analog demand and state signals were converted digitally at a rate of 400 Hz
   \label{fig:electrical_layout}
 \end{figure}
 
+One important thing to note is that the potentiometers used to set the gains are accurate to 2 decimal places.
+The calculated gains required to set the poles at the desired locations are likely irrational numbers, and so
+it is often required to round the gain values to the nearest reachable potentiometer values, and recalculate 
+the theoretical pole locations.
+
 \subsection{Procedure}
 
+A detailed procedure is given in the lab manual \cite{handout}.
 
 %\iffalse
 %-----------------------------------------------------------------------------------------
@@ -623,7 +631,11 @@ The analog demand and state signals were converted digitally at a rate of 400 Hz
 
 \subsubsection{Friction Measurement}
 
+The dynamic and static friction were measured as 2.4 and 3.0 N respectively.
+
 \subsubsection{Carriage Controller}
+
+
 
 \subsubsection{Empirical synthesis of $p_3$ and $p_4$ controller}
 
@@ -638,7 +650,7 @@ From figure \ref{fig:exp3.3} the oscillatory response of the carriage velocity w
 The response also shows moderate damping where the amplitude of carriage velocity halved over about 1 period, giving a damping ratio of $\zeta \approx 0.11$.
 
 From the closed loop gain setpoints the pole locations are calculated as: \\
-$[-3.89861823 \pm 18.69316043j, -2.16928301 \pm 6.46486529j]$
+$[-3.8986 \pm 18.693j, -2.1693 \pm 6.4649j]$
 These indicate a highly damped system with frequency responses of 18.7 and 6.5 rad/s and corresponding damping ratios of 0.208 and 0.336.
 
 The frequency is consistent with the calculated pole locations. The measured damping ratio is slightly lower than expected, 
@@ -646,8 +658,6 @@ which is likely due to high uncertainty in the periods over which the amplitude 
 
 There is a small discrepency between the simulated and observed responses. This is due to uncertainty in system parameters rather than numerical error in the verlet integrator method.
 Uncertainty in the system parameters include the sensor constants, amplifier gains, friction coefficients, mass and moments of inertia of the system.
-
-As expected, the 
 
 \subsubsection{Pole Placement}
 
@@ -662,7 +672,7 @@ As expected, the
 The gains were calculated from equating expanded coefficients of $(s - \omega_1)^4$ with the characteristic polynomial \ref{eq:crane_poly}.
 These were found to be $[ 0.13,  0.21,  0.23, 0.00 ]$, rounded to 2 decimal places which was the maximum precision of the potentiometers.
 
-The calculated poles from these rounded values were found to be $[-12.45360996 \pm 6.46216554j, -4.89083448 \pm 2.84116008j]$.
+The calculated poles from these rounded values were found to be $[-12.454 \pm 6.4622j, -4.8908 \pm 2.8411j]$.
 This shows that the poles are not consistent with the target pole position.
 Figure \ref{fig:pole_sensitivity} demonstrates the high sensitivity of the pole locations to small variations of coefficients in the characteristic polynomial.
 This explains why the position of the 2 decimal place rounded gains are so far from the target pole positions.
@@ -677,15 +687,14 @@ This explains why the position of the 2 decimal place rounded gains are so far f
 Figure \ref{fig:exp3.4b} shows the response for gains calculated at chosen pole locations, $-\alpha, -\beta, -\omega \pm j\omega$.
 The values were chosen as $\alpha = 10; \beta= 10; \omega = 10$ for which the gain values were calculated by expanding the polynomial from the roots and equating
 coefficients with the characteristic polynomial \ref{eq:crane_poly}.
-These were found to be $[0.41284404 \quad 0.46282964 \quad 0.27212883 \quad 0.28834576]$
-
-The poles at the rounded gain values are found to be $[-10.34437835 \pm 10.61053723j, \quad -9.31735005 \pm 1.90749139j]$ 
+These were found to be $[0.4128, \quad 0.4628, \quad 0.2721, \quad 0.2883]$
+The gain values, rounded to 2 decimal places, give poles of $[-10.34 \pm 10.61j, \quad -9.32 \pm 1.91j]$ 
 which is quite close to the design point of a repeated pole at $-10$, and poles at -$10\pm 10j$
 
 The response shows some oscillation components, but the system is highly damped and the frequency response is difficult to measure.
+However, it does reach the step demand faster and suggesting that the real part of the poles are further from the imaginary axis than the in figure \ref{exp3.3}. 
 This makes it difficult to compare the observed response with the pole locations.
-
-The simulated response shows a lower frequency of about ???
+The response does however closely match the simulated response, given the uncertainty of the system parameters.
 
 \subsubsection{Variation of $p_2$}
 
@@ -712,15 +721,20 @@ The measured frequency was $21.67$ rad/s and the amplitude of velocity of the ca
 
 From equation \ref{eq:predicted_crane_k2} the predicted gain at the onset of instability $k_2 = 41.43$ and frequency $\hat{\omega} = 25.76$ Rad/s
 Additionally, the theoretical closed loop pole locations were found as \\ 
-$[ 4.57476482 \pm 26.11156105j , \quad -1.93649322 \pm 4.95114934j]$
+$[ 4.5748 \pm 26.112j , \quad -1.9365 \pm 4.9511j]$
 The first two poles that lie to the right of the imaginary axis suggests that the system should be unstable for this value of $p_2 = 0.19$.
 
 Both of these indicate that the lower bound gain $k_2$ at the onset of unstability is smaller than expected. This means that the system is more stable than predicted by the linear model.
-From nonlinear theory, for oscillations of amplitude $E$ there is an additional gain $\Delta k_2$ from equation \ref{eq:additional_k2}.
-
-From theory covered in A6 of the appendix, the onset of instability is related to friction in the limit cycles which is not considered in linear theory.
+From nonlinear theory, for oscillations of amplitude $E$ there is an additional gain $\Delta k_2$ from equation \ref{eq:additional_k2} which is inversely proportional to $E$.
+Figure \ref{fig:roots3.5} also shows the effect of this additional gain, as it causes the poles to move further to the left of the imaginary axis.
 For small oscillations the real system has a large additional damping term from friction, which is why the linear model predicts instability to occur at a higher gain than observed.
-At a gain of $p_2 = 0.18$ oscillations occur at larger amplitudes and so according to A6 the additional damping from friction is smaller which causes the system to become unstable.
+At any smaller gain, the oscillations occur at a larger amplitudes which reduces additional damping from friction causing the system to become unstable.
+%The difference in measured and predicted gain from linear theory is also equal to this additional gain and so the amplitude of carriage velocity oscillations, $E$, can be calculated using the equation below.
+
+%For the value of measured friction and observed difference in gain, the amplitude of velocity oscillations was calculated as $E = 0.2995$ m/s.
+F%rom the graph this is measured to be about to $0.6$ m/s, which is double the value predicted.
+
+
 
 %---------------------------------------------------------------------------------------------------------------------
 \subsection{Inverted Pendulum}
@@ -734,9 +748,7 @@ For the case where $p_3 = p_4 = 0$, so no pendulum feedback, then the carriage a
 A first test showed that even a very small pendulum angle caused an initial motion of the carriage.
 On another test, the pendulum was carefully left at an initial angle of zero, where it was stationary.
 A very small force displaced the pendulum and the carriage accelerated away from the zero position. 
-
-This unstability is predicted by the poles of the system, where there is a repeated pole at 0
-
+This unstability is predicted by the poles of the system, where there is a repeated pole at 0.
 
 \subsubsection{Pole Placement}
 % 4.3 pole placement at -omega1
@@ -748,7 +760,15 @@ This unstability is predicted by the poles of the system, where there is a repea
 \end{figure}
 
 Figure \ref{fig:4.3} shows the response of pendulum system with feedback gains chosen such that all four poles lie close to $-\omega_1 = -\sqrt{78.5}$.
-These values were found to be $\mathbf{P} = [0.2540, \quad 0.3222, \quad 0.3465, \quad 0.2802]$
+These values were found to be: \\
+$\mathbf{P} = [0.2540, \quad 0.3222, \quad 0.3465, \quad 0.2802]$.
+The corresponding poles at the rounded gain values are: \\
+$[-12.3384 \pm 4.907j, \quad -5.439 \pm 2.182j]$
+These poles are not very close to the desired location of $-\sqrt{78.5}$.
+
+The measured frequency of the carriage response is 3.59 rad/s which lies in the range of the frequency predicted by the poles.
+Interestingly, the simulated response of the system is unstable and the pendulum falls over.
+The cause of this 
 
 % 4.4 limit cycles
 \subsubsection{Limit Cycles}
@@ -768,10 +788,15 @@ These values were found to be $\mathbf{P} = [0.2540, \quad 0.3222, \quad 0.3465,
 \end{figure}
 
 Figure \ref{fig:roots4.4_lo} shows the response at the onset of instability at a lower bound of $p_2 = 0.30$.
-Large oscillations were observed 
-This can be seen in the poles $-1.27029093 \pm 2.37834982j$
-These have a small imaginary component and so have a lower frequency, as observed.
-The value of damping is also small which is given by the real part.
+Large oscillations were observed of constant amplitude at a measured frequency of 2.92 rad/s.
+The frequency is similar to the pole locations $-1.2703 \pm 2.3783j$.
+However, the observed damping ratio is much lower than predicted by the poles.
+
+From nonlinear theory, for oscillations of amplitude $E$ there is an additional gain $\Delta k_2$ from equation \ref{eq:additional_k2} which is inversely proportional to $E$.
+
+\begin{equation}
+  E = \frac{4F}{\pi(M + I/a^2)\Delta k_2}
+\end{equation}
 
 \begin{figure}[H]
   \centering
@@ -785,10 +810,20 @@ The carriage velocity amplitude halves after approximately 7 cycles giving a dam
 The frequency of carriage velocity is calculated to be about 44 rad/s
 This gives the approximated poles of $-0.7 \pm 44j$
 
-The calculated poles of the system are $-4.07147154 \pm 30.42971361j$
-This shows that the damping is higher than expected 
+The calculated poles of the system are $-4.0715 \pm 30.430j$
+This gives an expected damping ratio of at $0.1337$ which is significantly higher than the measured value.
+
+The simulated response of the system is unstable and the pendulum falls over.
 
 \subsubsection{No pendulum feedback}
+
+For the case of no pendulum position, or velocity feedback, then $p_3 = p_4 = 0$.
+From this, and using the same $p_1$ and $p_2$ values of as section 4.2.2 the closed loop poles are calculated as: \\
+$[37.963,  8.5190, -2.0332, -9.2094]$
+Clearly, the poles lie to the right of the imaginary axis indicating that the system is unstable.
+This is due to positive feedback from the carriage position and velocity shown in the controller layout in figure \ref{fig:electrical_layout}.
+This is different to the crane control system as that uses negative feedback to stabilise the carriage.
+Therefor, the pendulum will fall over, displacing the carriage, and accelerate away fron the setpoint.
 
 
 \subsection{Inverted Pendulum LQR}
@@ -800,32 +835,43 @@ This shows that the damping is higher than expected
   \label{fig:lqr_fast}
 \end{figure}
 
+\begin{equation}
+  \mathbf{Q} = \left[\begin{matrix}6.25 & 0 & 0 & 0\\0 & 0.0001 & 0 & 0\\0 & 0 & 58.36 & 0\\0 & 0 & 0 & 0.0064\end{matrix}\right] \quad \mathbf{R} = \left[\begin{matrix}0.0001025\end{matrix}\right]
+\end{equation}
+
 From figure \ref{fig:lqr_fast} there exists clear oscillations at a frequency of 75.4 rad/s.
-These oscillations are not present in the simulated non-linear response of the system.
-This suggests that they are caused by noise and the high gain values chosen by LQR.
+The pole locations from rounded gains are $[-20.691 \pm 19.306j, \quad -4.0153 \pm +2.8415j]$.
+The frequency of the small amplitude oscillations differ significantly from the pole frequencies.
+Additionally, these oscillations are not present in the simulated non-linear response of the system.
+This suggests that they are caused by noise and the high derivative gain values chosen by LQR.
 
-
-It was observed that the simulation required smaller time steps
-
-
+A higher input signal weight $\mathbf{R}$ was tested, which produced larger gains and a faster response, however the oscillations grew in amplitude.
+For further improvement of response times without increasing amplifed noise, an observer could be designed to better estimate the derivative states.
 
 %\fi
 
 
 \section{Conclusion}
 
+In this report, the dynamics of an inverted pendulum system were derived and linearized about both a stable crane and an unstable inverted pendulum equilibrium.
+State feedback and pole placement techniques were successfully utilized to design controllers for both arrangements.
+In the crane limit cycle for $k_2$, the onset of instability occurred at a smaller gain $k_2$ than predicted by the linear model and Routh Hurwitz.
+The describing function for nonlinear signum friction explained this as an additional $k_2$ gain inversely proportional to oscillation amplitude.
+Pole placement was used to shape the system response, though high sensitivity to gain values was noted.
 
 \newpage
 \section{Appendix}
 
-substituted equation of motion
-
-\subsection{Transfer functions}
+Substituted equations of motion to be linearized about $\phi = 0$.
 
 \begin{align}
   \left( 1 + \frac{M}{m} + \frac{I}{ma^2} \right) \ddot{x} &= \frac{T}{ma} - \frac{F}{m}\text{sgn}(\dot{x}) - l\sin\phi . \ddot{\phi} - l\cos\phi . \dot{\phi}^2 \\
    - l \ddot{\phi} &= \sin\phi \ddot{x} - g\cos\phi
 \end{align}
+
+\subsection{Transfer functions}
+
+The transfer functions of each closed loop system were derived from equation \ref{eq:closed_loop_tf} SymPy in Python.
 
 Crane closed loop transfer function
 \begin{equation}
@@ -839,7 +885,7 @@ Inverted pendulum closed loop transfer function
 \end{equation}
 
 
-\subsection{MATLAB root locus code example}
+\subsection{MATLAB root locus code}
 
 \begin {lstlisting}[language=ML]
 % Constants

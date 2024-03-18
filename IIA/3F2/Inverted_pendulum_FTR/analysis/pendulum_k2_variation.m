@@ -62,5 +62,5 @@ xlabel('Real');
 ylabel('Imaginary');
 xlim([-30,50]);
 ylim([-40,40])
-title('Eigenvalue Locations for Different Values of k2');
+title('Eigenvalue Locations for Different Values of p_2');
 grid on;
