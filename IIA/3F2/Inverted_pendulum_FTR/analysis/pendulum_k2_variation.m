@@ -30,7 +30,7 @@ Cp = -(ka*km/(m*a*gamma)) * (Sp \ opamp_p);
 sys = ss(Ap, B, Cp, 0);
 
 % Define gain range for k2
-k2_range = [-logspace(3, -5, 500), logspace(-5, 3, 1500)];  % Adjust the range and number of gains as needed
+k2_range = [-logspace(3, -5, 500), logspace(-1, 3, 1500)];  % Adjust the range and number of gains as needed
 
 % Set fixed values for k1, k3, and k4
 

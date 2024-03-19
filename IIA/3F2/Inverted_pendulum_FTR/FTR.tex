@@ -116,7 +116,12 @@
 
 \begin{abstract}
     \centering
-    Dynamics of an inverted pendulum system are derived and linearized about a stable \textit{crane} and an unstable \textit{inverted pendulum} equilibrium. State feedback and pole placement techniques are used to design a controller for the both state space systems.
+    Dynamics of an inverted pendulum system are derived and linearized about a stable \textit{crane} and an unstable \textit{inverted pendulum} equilibrium.
+    Theory of state feedback and pole placement techniques are used to design controllers for the both state space systems.
+    Discrepency between designed pole placement and actual pole placement is discussed.
+    Nonlinear simulation of the designed control systems are performed and compared with results obtained from the real systems.
+    Theory for a describing function for the nonlinear friction model is presented and used to explain the discrepancy between predicted linear and actual nonlinear system responses.
+    LQR control is introduced and Brysons Rule is used to design a controller with desirable response for the inverted pendulum system.
 \end{abstract}
 
 %-----------------------------------------------------------------------------------------
@@ -321,6 +326,7 @@ It can be shown from Cayley-Hamilton theorem that a system is controllable if th
   \mathbf{P} = \begin{bmatrix}
     \mathbf{B} & \mathbf{AB} & \cdots & \mathbf{A}^{n-1}\mathbf{B}
   \end{bmatrix}
+  \label{eq:controllability_matrix}
 \end{equation}
 
 \subsection{Closed loop stability}
@@ -400,6 +406,12 @@ This gives the final state space model of the system as
           0 \\ 1 \\ 0 \\ 1 \end{bmatrix} (u - f)
 \end{equation}
 
+The controllability matrix can then be calculated from equation \ref{eq:controllability_matrix} as
+\begin{equation}
+  \mathbf{P} = \left[\begin{matrix}0 & 1 & 0 & - \omega_{0}^{2} + \omega_{1}^{2}\\1 & 0 & - \omega_{0}^{2} + \omega_{1}^{2} & 0\\0 & 1 & 0 & - \omega_{0}^{2}\\1 & 0 & - \omega_{0}^{2} & 0\end{matrix}\right]
+\end{equation}
+This gives a rank of 4 for when $\omega_1 \neq 0$ and so the system is controllable.
+
 \subsubsection{Inverted Pendulum Model}
 
 For the inverted pendulum model the linearization is about the point $\theta = \pi$ and $\dot{\theta} = 0$.
@@ -427,6 +439,12 @@ The states can be substituted and solved for the state space model in terms of t
           0 \\ 1 \\ 0 \\ 1 \end{bmatrix} (u - f)
 \end{equation}
 
+The controllability matrix can then be calculated from equation \ref{eq:controllability_matrix} as
+\begin{equation}
+  \mathbf{P} = \left[\begin{matrix}0 & 1 & 0 & \omega_{0}^{2} - \omega_{1}^{2}\\1 & 0 & \omega_{0}^{2} - \omega_{1}^{2} & 0\\0 & 1 & 0 & \omega_{0}^{2}\\1 & 0 & \omega_{0}^{2} & 0\end{matrix}\right]
+\end{equation}
+This gives a rank of 4 for when $\omega_1 \neq 0$ and so the system is controllable.
+
 \subsection{Closed loop control}
 
 
@@ -437,7 +455,7 @@ From equation \ref{eq:det_poly} the closed loop characteristic polynomial of the
   s^{4} + \left(k_{2} + k_{4}\right) s^{3} + \left(k_{1} + k_{3} + \omega_{0}^{2}\right) s^{2} + k_{2} \omega_{1}^{2} s + k_{1} \omega_{1}^{2}
   \label{eq:crane_poly}
 \end{equation}
-Application of the Ruth Hurwitz criteria gives the following conditions for stability
+Application of the Routh Hurwitz criteria gives the following conditions for stability
 \begin{align}
   k_{2} + k_{4} &> 0 \\
   k_{1} + k_{3} + \omega_{0}^{2} &> 0 \\
@@ -467,7 +485,7 @@ The value of $k_2$ can be found by solving this equation and the solution is sho
   k_{2} = \frac{k_{4} \left(k_{1} - k_{3} - \omega_{0}^{2} \pm \sqrt{k_{1}^{2} + 2 k_{1} k_{3} + 2 k_{1} \omega_{0}^{2} - 4 k_{1} \omega_{1}^{2} + k_{3}^{2} + 2 k_{3} \omega_{0}^{2} + \omega_{0}^{4}}\right)}{2 \left(k_{3} + \omega_{0}^{2} - \omega_{1}^{2}\right)}
   \label{eq:predicted_crane_k2}
 \end{equation}
-Only one of these solutions for k2 satisfy the condition $k_2 > 0$ and is therefore the only valid solution.
+For the case considered, only one of these solutions for k2 satisfy the condition $k_2 > 0$ and is therefore the only valid solution.
 
 \subsubsection{Inverted Pendulum}
 
@@ -478,7 +496,7 @@ From equation \ref{eq:det_poly} the closed loop characteristic polynomial of the
   \label{eq:pendulum_poly}
 \end{equation}
 
-Application of the Ruth Hurwitz criteria gives the following conditions for stability
+Application of the Routh Hurwitz criteria gives the following conditions for stability
 \begin{align}
   k_{2} + k_{4} &> 0 \\
   k_{1} + k_{3} - \omega_{0}^{2} &> 0 \\
@@ -493,10 +511,13 @@ From substituting this into the characteristic polynomial \ref{eq:pendulum_poly}
   - \hat{\omega}^{3} \left(k_{2} + k_{4}\right) - \hat{\omega} k_{2} \omega_{1}^{2} &= 0\\
   \hat{\omega}^{4} - \hat{\omega}^{2} \left(k_{1} + k_{3} - \omega_{0}^{2}\right) - k_{1} \omega_{1}^{2} &= 0
 \end{align}
-This gives the same frequency as the crane model \ref{eq:marginal_stability_frequency}. This is substituted back into the second equation to give:
-\begin{equation}
+This gives a similar frequency as the crane model \ref{eq:marginal_stability_frequency}. This is substituted back into the second equation to give:
+\begin{align}
+  \begin{gathered}
+  \hat{\omega} = \sqrt{\frac{-k_2}{k_2 + k_4}} \omega_1 \\
   \frac{\omega_1^2}{(k_2 + k_4)^2} \left( \left(- k_{3} + \omega_{0}^{2} - \omega_{1}^{2}\right) k_{2}^{2} + \left(k_{1} - k_{3} + \omega_{0}^{2}\right) k_{4} k_{2} + k_{1} k_{4}^{2} \right) = 0
-\end{equation}
+  \end{gathered}
+\end{align}
 This is again the same as the last condition for stability becoming an equality at the point of marginal stability.
 The value of $k_2$ at the point of marginal stability is found by solving this equation and the solution is shown below.
 
@@ -504,7 +525,7 @@ The value of $k_2$ at the point of marginal stability is found by solving this e
   k_{2} = \frac{k_{4} \left(k_{1} - k_{3} - \omega_{0}^{2} \pm \sqrt{k_{1}^{2} + 2 k_{1} k_{3} + 2 k_{1} \omega_{0}^{2} - 4 k_{1} \omega_{1}^{2} + k_{3}^{2} + 2 k_{3} \omega_{0}^{2} + \omega_{0}^{4}}\right)}{2 \left(k_{3} + \omega_{0}^{2} - \omega_{1}^{2}\right)}
   \label{eq:predicted_pendulum_k2}
 \end{equation}
-Only one of these solutions for k2 satisfy the condition $k_2 < 0$ and is therefore the only valid solution.
+For the case considered, both of these solutions for $k_2$ satisfy the conditions $k_2 < 0$ and $k_2 + k_4< 0$.
 
 
 \subsubsection{Eigenvalue Sensitivity}
@@ -525,7 +546,7 @@ However, even for small $\epsilon$ the roots of the polynomial can vary signific
 \end{figure}
 
 \subsection{Nonlinear Friction term}
-So far we have only considered linear theory, however the sign function in the friction term $f$ cannot be linearised.
+So far we have only considered linear theory, however the sign function in the friction term $f$ \ref{eq:ss_system_inputs} cannot be linearised.
 The describing function method can be used to find the frequency-response function for
 the nonlinear friction.
 The following analysis will be on single output systems, however the method can be extended to each output.
@@ -556,7 +577,7 @@ The following analysis will be on single output systems, however the method can 
 
 From the \textit{harmonic balance equation} \cite{non_linear_systems}, $\Psi(E)G(j\omega) + 1 = 0$.
 The function $\Psi(E)$ "describes" the nonlinearity $\psi$ for a harmonic input of amplitude $E$ which is defined below.
-This is also in the form of an additional feedback gain for $k_2$.
+This is also in the form of an additional positive feedback gain for $k_2$.
 
 \begin{equation}
   \Psi(E) = \frac{2}{\pi E} \int_0^{\pi} \psi(E\sin\theta)\sin\theta d\theta
@@ -577,7 +598,7 @@ This gives the additional gain due to the nonlinearity as
 
 \subsection{Linear Quadratic Regulator}
 
-The cost function associated with optimal control
+The cost function associated with optimal control is defined as follows:
 
 \begin{equation}
   J = \int_0^\infty \left( \mathbf{x}^T \mathbf{Q} \mathbf{x} + \mathbf{u}^T \mathbf{R} \mathbf{u} \right) dt
@@ -591,11 +612,8 @@ They are chosen using Bryson's rule, a heuristic method for choosing the matrici
 \end{equation}
 
 Where max is an approximation for the maximum desired value of the state or control input.
-From this the response can be tuned to 
-
-\subsubsection{Optimal Performance Evaluation}
-
-The real world performance of the LQR determined system gains can be observed by measuring the input power and the response.
+From this the closed loop response can be tuned to have desired characteristics, such as fast response or minimal control effort.
+The result of LQR is the gain matrix $\mathbf{K}$ such that $\mathbf{u} = -\mathbf{Kx}$ that minimises the cost function.
 
 \section{Method}
 
@@ -673,7 +691,7 @@ Uncertainty in the system parameters include the sensor constants, amplifier gai
 The gains were calculated from equating expanded coefficients of $(s - \omega_1)^4$ with the characteristic polynomial \ref{eq:crane_poly}.
 These were found to be $[ 0.13,  0.21,  0.23, 0.00 ]$, rounded to 2 decimal places which was the maximum precision of the potentiometers.
 
-The calculated poles from these rounded values were found to be $[-12.454 \pm 6.4622j, -4.8908 \pm 2.8411j]$.
+The calculated poles from 2 decimal place rounded gain values were found to be $[-12.454 \pm 6.4622j, -4.8908 \pm 2.8411j]$.
 This shows that the poles are not consistent with the target pole position.
 Figure \ref{fig:pole_sensitivity} demonstrates the high sensitivity of the pole locations to small variations of coefficients in the characteristic polynomial.
 This explains why the position of the 2 decimal place rounded gains are so far from the target pole positions.
@@ -693,7 +711,7 @@ The gain values, rounded to 2 decimal places, give poles of $[-10.34 \pm 10.61j,
 which is quite close to the design point of a repeated pole at $-10$, and poles at -$10\pm 10j$
 
 The response shows some oscillation components, but the system is highly damped and the frequency response is difficult to measure.
-However, it does reach the step demand faster and suggesting that the real part of the poles are further from the imaginary axis than the in figure \ref{exp3.3}. 
+However, it does reach the step demand faster and suggesting that the real part of the poles are further from the imaginary axis than the in figure \ref{fig:exp3.3}. 
 This makes it difficult to compare the observed response with the pole locations.
 The response does however closely match the simulated response, given the uncertainty of the system parameters.
 
@@ -702,7 +720,7 @@ The response does however closely match the simulated response, given the uncert
 \begin{figure}[H]
   \centering
   \includegraphics[width=0.7\textwidth]{figures/3.5roots.jpg}
-  \caption{Crane root locus for varying $p_2$ only with $p_1 = 0.4128,\;p_3 = 0.2721,\;p_4 = 0.2883$}
+  \caption{Crane pole positions for varying $p_2$ only with $p_1 = 0.4128,\;p_3 = 0.2721,\;p_4 = 0.2883$}
   \label{fig:roots3.5}
 \end{figure}
 
@@ -714,7 +732,7 @@ The response does however closely match the simulated response, given the uncert
 \end{figure}
 
 Figure \ref{fig:roots3.5} shows the pole locations of the system as $p_2$ is varied. As $p_2$ is increased the pole locations follows the locus around to the right, where they reach the imaginary axis at the limit of stability.
-The blue shows positive values for $p_2$ and the red shows negative values. This graphically shows the Ruth Hurwitz criteria for $k_2 > 0$.
+The blue shows positive values for $p_2$ and the red shows negative values. This graphically shows the Routh Hurwitz criteria for $k_2 > 0$.
 
 Figure \ref{fig:exp3.5} shows the real systems response at the smallest $k_2$ where instability starts to occur.
 The value of $p_2$ reduced from 0.46 to 0.19 which corresponds to $k_2 = 31.35$
@@ -733,7 +751,7 @@ At any smaller gain, the oscillations occur at a larger amplitudes which reduces
 %The difference in measured and predicted gain from linear theory is also equal to this additional gain and so the amplitude of carriage velocity oscillations, $E$, can be calculated using the equation below.
 
 %For the value of measured friction and observed difference in gain, the amplitude of velocity oscillations was calculated as $E = 0.2995$ m/s.
-F%rom the graph this is measured to be about to $0.6$ m/s, which is double the value predicted.
+% From the graph this is measured to be about to $0.6$ m/s, which is double the value predicted.
 
 
 
@@ -769,73 +787,84 @@ These poles are not very close to the desired location of $-\sqrt{78.5}$.
 
 The measured frequency of the carriage response is 3.59 rad/s which lies in the range of the frequency predicted by the poles.
 Interestingly, the simulated response of the system is unstable and the pendulum falls over.
-The cause of this 
+The cause of this is thought to be due to the accumulation of numerical errors in verlet integration due to friction.
+This is further considered in section 4.2.3.
 
 % 4.4 limit cycles
 \subsubsection{Limit Cycles}
 
+From theory covered, derivation of Routh Hurwitz critera at the limit of stability gives two solutions for the gain $k_2$.
+The first solution corresponds to a low frequency cycle at $2.46$ rad/s at a gain of $k_2 = -7.24$.
+The second solution corresponds to a higher frequency of $31.63$ rad/s at a gain of $k_2 = -93.8$.
+Figure \ref{fig:roots4.4} shows the pole positions of the system as $k_2$ is varied.
+The high frequency case is indicated by where the outer circle crosses the imaginary axis.
+Similarly, the low frequency case is indicated by where the inner circle crosses the imaginary axis.
+
+The simulated response of the non-linear system for both limit cycles is unstable and the pendulum falls over.
+Reasons for this are not fully understood, but it is likely due to the external friction forces.
+Verlet integration should conserve energy, however with large components of external friction in the limit cases, numerical error may accumulate.
+
 \begin{figure}[H]
   \centering
   \includegraphics[width=0.7\textwidth]{figures/4.4roots.jpg}
-  \caption{Inverted pendulum root locus for varying $k_2$ only}
+  \caption{Pendulum pole positions for varying $p_2$ only with $p_1 = 0.23,\;p_3 = 0.63,\;p_4 = 0.40$}
   \label{fig:roots4.4}
 \end{figure}
+The red poles are where $p_2 < 0$ for which the system is unstable.
+For the outer blue loop, at the imaginary axis the poles are at the high frequency limit cycle.
+As $k_2$ increases, becoming less negative, the poles move to the left and become more damped.
 
 \begin{figure}[H]
   \centering
   \includegraphics[width=0.99\textwidth]{figures/4.4_lo.png}
-  \caption{Inverted pendulum response at minimum $k_2 = $ for stability}
+  \caption{Inverted pendulum response at minimum set $k_2$ for stability}
   \label{fig:roots4.4_lo}
 \end{figure}
 
-Figure \ref{fig:roots4.4_lo} shows the response at the onset of instability at a lower bound of $p_2 = 0.30$.
+Figure \ref{fig:roots4.4_lo} shows the actual response at the onset of instability at a lower bound of $p_2 = 0.30$ which corresponds to $k_2 = -33.0$.
 Large oscillations were observed of constant amplitude at a measured frequency of 2.92 rad/s.
-The frequency is similar to the pole locations $-1.2703 \pm 2.3783j$.
-However, the observed damping ratio is much lower than predicted by the poles.
-
+The frequency is similar to the pole locations $-1.2703 \pm 2.3783j$ and to the low frequency limit cycle frequency $\hat{\omega}= 2.46$ rad/s.
+The observed damping ratio is much lower than predicted by the poles, which suggests the magnitude of $k_2$ is much smaller.
 From nonlinear theory, for oscillations of amplitude $E$ there is an additional gain $\Psi(E)$ from equation \ref{eq:additional_k2} which is inversely proportional to $E$.
-At the low frequency limit cycle, shown by the inner loop on figure \ref{fig:roots4.4} the amplitudes are large.
-This means that the additional gain is small and so the 3rd Ruth Hurwitz criterion $k_2 + \Psi(E) < 0$ is likely satisfied.
-However for stability the overall gain, $k_2 + \Psi(E) < k_{2,\text{max}}$, where the maximum value of $k_2$ is defined in equation \ref{eq:predicted_pendulum_k2}.
-In the limit cycle, this becomes an equality and the reduction in $k_2$ that causes instability is denoted $\Delta k_2$.
+At the limit for stability the overall gain, $k_2 + \Psi(E) = k_{2,\text{crit}}$, where the critical value of $k_2$ is defined in equation \ref{eq:predicted_pendulum_k2}.
+The reduction in $k_2$ from the value predicted by linear theory that causes instability is denoted $\Delta k_2$.
 From substituting the friction term into equation \ref{eq:additional_k2} the amplitude of oscillations can be calculated as:
 
 \begin{equation}
   E = \frac{4F}{\pi(M + I/a^2)\Delta k_2}
 \end{equation}
 
-The value of $E/\hat{omega}$ was calculated to be 0.62 which is approximately double the measured value of 0.3.
+The value of $E/\hat{\omega}$ was calculated to be 0.117 which is much smaller than the observed, $\approx 0.3$ m.
+This suggests from non-linear theory that a smaller value of $k_2$ should have been achieved.
+This may not be true however, as the theory perhaps incorrectly assumed that the system filtered out high frequency components of the non-linearity.
 
 \begin{figure}[H]
   \centering
   \includegraphics[width=0.99\textwidth]{figures/4.4_hi.png}
-  \caption{Inverted pendulum response at maximum $k_2 = $ for stability}
+  \caption{Inverted pendulum response at maximum set $k_2$ for stability}
   \label{fig:roots4.4_hi}
 \end{figure}
 
-Figure \ref{fig:roots4.4_hi} shows the response at the onset of instability at an upper bound of $p_2 = 0.78$.
-The carriage velocity amplitude halves after approximately 7 cycles giving a damping ratio of $\zeta \approx 0.016$
-The frequency of carriage velocity is calculated to be about 44 rad/s
-This gives the approximated poles of $-0.7 \pm 44j$
-The calculated poles of the closed loop system are $-4.0715 \pm 30.430j$
-This gives an expected damping ratio of at $0.1337$ which is significantly higher than the measured value.
+Figure \ref{fig:roots4.4_hi} shows the response at the onset of instability at an upper bound of $p_2 = 0.78$ which corresponds to $k_2 = -85.8$.
+The carriage velocity amplitude halves after approximately 7 cycles which gives a damping ratio of $\zeta \approx 0.016$
+The predicted poles from the closed loop system are $-4.0715 \pm 30.430j$, giving a damping ratio of at $0.1337$ which is significantly higher than the measured value.
 
-For small oscillations the additional gain from nonlinearity, $\Psi(E)$, is positive and large compared to the negative set value of $k_2$.
-This means that the overall $k_2 + \Psi(E)$ is smaller and so the damping is smaller than expected for the linear case.
-The overall feedback gain must still satisfy the Ruth Hurwitz condition, $k_2 + \Psi(E) < 0$, 
-which is why stability is lost for a larger $k_2$ setpoint.
+The frequency of carriage velocity is calculated to be about 44 rad/s, indicating that its at the high frequency limit cycle.
+For small oscillations the additional gain from nonlinearity, $\Psi(E)$, is positive compared to the negative set value of $k_2 = -85.8$.
+The sum of these gives the overall gain a smaller magnitude than the critical $k_2 = -93.8$, causing the damping ratio to be lower than expected.
+This also indicates that this Routh Hurwitz condition is likely not broken, however the system still becomes unstable so another condition must be violated.
 
-The simulated response of the system is unstable and the pendulum falls over.
 
 \subsubsection{No pendulum feedback}
 
 For the case of no pendulum position, or velocity feedback, then $p_3 = p_4 = 0$.
-From this, and using the same $p_1$ and $p_2$ values of as section 4.2.2 the closed loop poles are calculated as: \\
+It is already clear that these no longer satisfy the Routh Hurwitz conditions.
+With the same $p_1$ and $p_2$ values of as section 4.2.2 the closed loop poles are calculated as: \\
 $[37.963,  8.5190, -2.0332, -9.2094]$
 Clearly, the poles lie to the right of the imaginary axis indicating that the system is unstable.
 This is due to positive feedback from the carriage position and velocity shown in the controller layout in figure \ref{fig:electrical_layout}.
 This is different to the crane control system as that uses negative feedback to stabilise the carriage.
-Therefor, the pendulum will fall over, displacing the carriage, and accelerate away fron the setpoint.
+Therefore, the pendulum will fall over, displacing the carriage, and accelerate away from the setpoint.
 
 
 \subsection{Inverted Pendulum LQR}
@@ -869,7 +898,13 @@ In this report, the dynamics of an inverted pendulum system were derived and lin
 State feedback and pole placement techniques were successfully utilized to design controllers for both arrangements.
 In the crane limit cycle for $k_2$, the onset of instability occurred at a smaller gain $k_2$ than predicted by the linear model and Routh Hurwitz.
 The describing function for nonlinear signum friction explained this as an additional $k_2$ gain inversely proportional to oscillation amplitude.
-Pole placement was used to shape the system response, though high sensitivity to gain values was noted.
+Pole placement was used to shape the system response, though high sensitivity to gains was observed, especially for the cases of repeated poles.
+For the inverted pendulum, instability was observed for cases of no carriage feedback and no pendulum feedback 
+which agreed with predictions from Routh Hurwitz criteria and pole placement.
+High and low frequency limit cycles were observed for the inverted pendulum at minimum and maximum $k_2$ respective gains.
+Discrepency between behaviour predicted by linear theory and observed behaviour was attributed to additional gain from the describing function.
+LQR was used to design a controller for the inverted pendulum, which produced a fast response from high gains which made it sensitive to noise, producing high frequency oscillations.
+
 
 \newpage
 \section{Appendix}
@@ -897,7 +932,7 @@ Inverted pendulum closed loop transfer function
 \end{equation}
 
 
-\subsection{MATLAB root locus code}
+\subsection{MATLAB pole position code}
 
 \begin {lstlisting}[language=ML]
 % Constants
