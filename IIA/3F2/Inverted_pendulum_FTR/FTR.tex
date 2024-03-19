@@ -464,7 +464,7 @@ The second result shows that the last condition for stability becomes an equalit
 The value of $k_2$ can be found by solving this equation and the solution is shown below.
 
 \begin{equation}
-  k_2 = \frac{k_{4} \left(k_{1} - k_{3} - \omega_{0}^{2} \pm \sqrt{k_{1}^{2} + 2 k_{1} k_{3} + 2 k_{1} \omega_{0}^{2} - 4 k_{1} \omega_{1}^{2} + k_{3}^{2} + 2 k_{3} \omega_{0}^{2} + \omega_{0}^{4}}\right)}{2 \left(k_{3} + \omega_{0}^{2} - \omega_{1}^{2}\right)}
+  k_{2} = \frac{k_{4} \left(k_{1} - k_{3} - \omega_{0}^{2} \pm \sqrt{k_{1}^{2} + 2 k_{1} k_{3} + 2 k_{1} \omega_{0}^{2} - 4 k_{1} \omega_{1}^{2} + k_{3}^{2} + 2 k_{3} \omega_{0}^{2} + \omega_{0}^{4}}\right)}{2 \left(k_{3} + \omega_{0}^{2} - \omega_{1}^{2}\right)}
   \label{eq:predicted_crane_k2}
 \end{equation}
 Only one of these solutions for k2 satisfy the condition $k_2 > 0$ and is therefore the only valid solution.
@@ -501,7 +501,8 @@ This is again the same as the last condition for stability becoming an equality 
 The value of $k_2$ at the point of marginal stability is found by solving this equation and the solution is shown below.
 
 \begin{equation}
-  k_2 = \frac{k_{4} \left(k_{1} - k_{3} - \omega_{0}^{2} \pm \sqrt{k_{1}^{2} + 2 k_{1} k_{3} + 2 k_{1} \omega_{0}^{2} - 4 k_{1} \omega_{1}^{2} + k_{3}^{2} + 2 k_{3} \omega_{0}^{2} + \omega_{0}^{4}}\right)}{2 \left(k_{3} + \omega_{0}^{2} - \omega_{1}^{2}\right)}
+  k_{2} = \frac{k_{4} \left(k_{1} - k_{3} - \omega_{0}^{2} \pm \sqrt{k_{1}^{2} + 2 k_{1} k_{3} + 2 k_{1} \omega_{0}^{2} - 4 k_{1} \omega_{1}^{2} + k_{3}^{2} + 2 k_{3} \omega_{0}^{2} + \omega_{0}^{4}}\right)}{2 \left(k_{3} + \omega_{0}^{2} - \omega_{1}^{2}\right)}
+  \label{eq:predicted_pendulum_k2}
 \end{equation}
 Only one of these solutions for k2 satisfy the condition $k_2 < 0$ and is therefore the only valid solution.
 
@@ -792,11 +793,18 @@ Large oscillations were observed of constant amplitude at a measured frequency o
 The frequency is similar to the pole locations $-1.2703 \pm 2.3783j$.
 However, the observed damping ratio is much lower than predicted by the poles.
 
-From nonlinear theory, for oscillations of amplitude $E$ there is an additional gain $\Delta k_2$ from equation \ref{eq:additional_k2} which is inversely proportional to $E$.
+From nonlinear theory, for oscillations of amplitude $E$ there is an additional gain $\Psi(E)$ from equation \ref{eq:additional_k2} which is inversely proportional to $E$.
+At the low frequency limit cycle, shown by the inner loop on figure \ref{fig:roots4.4} the amplitudes are large.
+This means that the additional gain is small and so the 3rd Ruth Hurwitz criterion $k_2 + \Psi(E) < 0$ is likely satisfied.
+However for stability the overall gain, $k_2 + \Psi(E) < k_{2,\text{max}}$, where the maximum value of $k_2$ is defined in equation \ref{eq:predicted_pendulum_k2}.
+In the limit cycle, this becomes an equality and the reduction in $k_2$ that causes instability is denoted $\Delta k_2$.
+From substituting the friction term into equation \ref{eq:additional_k2} the amplitude of oscillations can be calculated as:
 
 \begin{equation}
   E = \frac{4F}{\pi(M + I/a^2)\Delta k_2}
 \end{equation}
+
+The value of $E/\hat{omega}$ was calculated to be 0.62 which is approximately double the measured value of 0.3.
 
 \begin{figure}[H]
   \centering
@@ -809,9 +817,13 @@ Figure \ref{fig:roots4.4_hi} shows the response at the onset of instability at a
 The carriage velocity amplitude halves after approximately 7 cycles giving a damping ratio of $\zeta \approx 0.016$
 The frequency of carriage velocity is calculated to be about 44 rad/s
 This gives the approximated poles of $-0.7 \pm 44j$
-
-The calculated poles of the system are $-4.0715 \pm 30.430j$
+The calculated poles of the closed loop system are $-4.0715 \pm 30.430j$
 This gives an expected damping ratio of at $0.1337$ which is significantly higher than the measured value.
+
+For small oscillations the additional gain from nonlinearity, $\Psi(E)$, is positive and large compared to the negative set value of $k_2$.
+This means that the overall $k_2 + \Psi(E)$ is smaller and so the damping is smaller than expected for the linear case.
+The overall feedback gain must still satisfy the Ruth Hurwitz condition, $k_2 + \Psi(E) < 0$, 
+which is why stability is lost for a larger $k_2$ setpoint.
 
 The simulated response of the system is unstable and the pendulum falls over.
 
