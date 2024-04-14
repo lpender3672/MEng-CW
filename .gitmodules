@@ -1,0 +1,9 @@
+[submodule "IA/Flood-Warning-System"]
+	path = IA/Flood-Warning-System
+	url = https://github.com/lpender3672/PartIA-Flood-Warning-System.git
+[submodule "IB/IDP"]
+	path = IB/IDP
+	url = https://github.com/lpender3672/IDP_M213.git
+[submodule "IIA/Shell_tube_heat_exchanger"]
+	path = IIA/Shell_tube_heat_exchanger
+	url = https://github.com/lpender3672/shell_tube_heat_exchanger.git
