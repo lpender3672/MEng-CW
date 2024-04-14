@@ -7,3 +7,6 @@
 [submodule "IIA/Shell_tube_heat_exchanger"]
 	path = IIA/Shell_tube_heat_exchanger
 	url = https://github.com/lpender3672/shell_tube_heat_exchanger.git
+[submodule "IA/Mars_Lander"]
+	path = IA/Mars_Lander
+	url = https://github.com/lpender3672/IA_Mars_Lander.git
