@@ -1,0 +1,218 @@
+\documentclass{article}
+
+\usepackage[utf8]{inputenc}
+
+\usepackage{amsmath, bm}
+\usepackage{graphicx}
+\usepackage{amssymb}
+\usepackage{float}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{hyperref}
+\usepackage{tikz}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{listings}
+\usepackage{xcolor}
+
+\usetikzlibrary{calc}
+\usetikzlibrary{angles,quotes} % for pic
+\usetikzlibrary{patterns,snakes}
+\usetikzlibrary{arrows}
+\tikzset{>=latex} % for LaTeX arrow head
+
+\setlength{\parskip}{\baselineskip}%
+\setlength{\parindent}{0pt}%
+
+
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2
+}
+
+\lstset{style=mystyle}
+
+
+
+\begin{document}
+
+\title{GA3: Heat Exchanger Interim Report}
+\author{lwp26}
+\date{May 2024}
+\maketitle 
+
+\iffalse
+\begin{abstract}
+    \centering
+    This report presents the development of a software tool to help solve constrained design optimization of a shell and tube heat exchanger.
+    The software is developed in Python and uses LMTD and NTU methods to solve for the output parameters.
+    Computational model is compared with experimental data 
+    Various optimization algorithms were tested with constraints and the results are presented.
+\end{abstract}
+\fi
+
+%-----------------------------------------------------------------------------------------
+\section{Introduction}
+%-----------------------------------------------------------------------------------------
+
+Heat exchangers have a wide range of applications in HVAC, power generation and chemical industries.
+These essential components are typically much larger than other components in a system and can significantly contribute to the overall cost.
+Designing high performance, low cost heat exchangers involves solving complex optimization problems with multiple constraints.
+This report presents the development of a software tool to help solve constrained design optimization of a shell and tube heat exchanger.
+The software is developed in Python and uses LMTD and NTU methods to solve for the output parameters.
+Computational model is compared with experimental data gathered from a heat exchanger test rig, from which the uncertainty is quantified.
+Simplicial homology global optimization algorithms are tested with constraints and the results are presented.
+
+% Various optimization algorithms were tested with constraints and results are presented.
+ 
+\subsection{Objectives}
+% list the objectives of the experiment
+
+\begin{itemize}
+    \item To analyse pressure loss and heat transfer for various shell and tube heat exchanger designs.
+    \item To produce a software tool for constrained design optimization of shell and tube heat exchangers.
+    \item To select an optimal design to be compared with other groups designs and software tools.
+    \item To manufacture and test the selected design against other groups and software predictions.
+\end{itemize}
+
+% analyse mechanical systems
+
+\section{Performance Characterisation}
+
+\subsection{Hydraulic Analysis}
+
+\subsection{$\varepsilon$-NTU}
+
+\subsection{LMTD}
+
+\subsection{Comparison with Experimental Data}
+
+\section{Optimization Problem}
+
+The objective is to maximise the heat transfer rate $\dot{Q}$ subject to physical constraints.
+
+\subsection{Constraints}
+
+Many standard physical quantities are constrained to discrete values and standards, such as the number of tubes, baffles and pipe diameters.
+For our design, we have the following constraints:
+\begin{itemize}
+  \item Total mass of the heat exchanger $M_{\text{total}} < 1.2$ Kg.
+  \item Total length of the heat exchanger $L_{\text{total}} < 0.35$ m.
+  \item Total length of the tubes $L_{\text{tubes}} < 3.5$ m.
+  \item Tubes have outer and inner diameters, $d_{o} = 8$ mm, and $d_{i} = 6$ mm.
+  \item Shell has inner diameter $D_{\text{shell}} = 64$ mm.
+  \item Nozzles must 
+\end{itemize}
+
+Additional constraints were imposed to reduce the search space and simplify the problem.
+The number of tubes was constrained to not decrease over the hot fluid path inside the heat exchanger.
+This is thought to be a reasonable assumption because increasing the area at regions of smaller temperature difference increases overall heat transfer.
+For example, if we were to decrease area then more heat transfer would occur in the first stage where there is a higher temperature difference, however there would be a significant reduction of heat transfer in the later stages.
+
+\subsection{Design Parameters}
+
+Significant simplifications were made to reduce the number of design parameters.
+One such simplification was to assume that the tubes are packed as far away from each other as possible.
+This means that the pitch can be calculated from the constrained geometry and number of tubes.
+
+The search space for a given template with $n$ hot stages and $m$ cold stages is $n + m + 1$ dimensional.
+This arises from the 1 dimensional length, number of tubes in each hot stage, and number of baffles in each cold stage.
+The simplest design has 1 hot stage and 1 cold stage, and so the search space is 3 dimensional.
+
+
+\subsection{Post Optimality Analysis}
+% uncertainty quantification?
+
+In reality there is a large uncertainty in the calculated values due to assumptions and empirical relations.
+
+
+\section{Software}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{software.png}
+    \caption{Screenshot of the software tool.}
+    \label{fig:software}
+\end{figure}
+
+\subsection{Implementation}
+
+The Python application used PyQt6 and matplotlib for the GUI. The calculations were done using NumPy and SciPy libraries.
+The software tool allows the user to interactively change the design parameters for a wide range of heat exchanger configurations.
+Calculated values are displayed in real-time and the user can compare the performance of different designs.
+
+\subsection{Architecture}
+The software features object oriented design with classes for the heat exchanger and fluid path components.
+Seperate optimization threads are used to prevent the GUI from freezing during long calculations.
+
+\subsection{Visualisation}
+% challenging to visualise higher dimensional spaces
+% I'm not as big as a fan of 3D plots as I used to be - they're harder to interpret than colour maps
+
+\section{Discussion}
+
+\subsection{Comparison of $\varepsilon$-NTU and LMTD Methods}
+
+
+
+\section{Conclusion}
+
+
+\newpage
+\section{Appendix}
+
+\begin {lstlisting}[language=Python]
+
+\end{lstlisting}
+
+
+% bibliography
+\newpage
+\begin{thebibliography}{9}
+
+\bibitem{handout}
+  G. Vinnicombe,
+  \emph{Inverted Pendulum Lab Handout}.
+  University of Cambridge,
+  2022.
+
+\bibitem{feedback_control_of_dynamic_systems}
+  G. F. Franklin, J. D. Powell, A. Emami-Naeini,
+  \emph{Feedback Control of Dynamic Systems}.
+  Pearson,
+  2015.
+
+\bibitem{non_linear_systems}
+  H. K. Khalil,
+  \emph{Nonlinear Systems}.
+  Pearson,
+  2002.
+
+\bibitem{modern_control_systems}
+  R. C. Dorf, R. H. Bishop,
+  \emph{Modern Control Systems}.
+  Pearson,
+  2016.
+
+\end{thebibliography}
+
+\end{document}
