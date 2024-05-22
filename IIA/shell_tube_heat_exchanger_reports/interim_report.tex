@@ -100,9 +100,16 @@ Simplicial homology global optimization algorithms are tested with constraints a
 
 \subsection{Hydraulic Analysis}
 
+% Brief overview of pressure drop of various components
+% Correction made to baffles
+% Fit empirical calculations to experimental data
+
 \subsection{$\varepsilon$-NTU}
+% read up on this
+% Fscale for various arrangements
 
 \subsection{LMTD}
+% read up on this
 
 \subsection{Comparison with Experimental Data}
 
@@ -138,6 +145,11 @@ The search space for a given template with $n$ hot stages and $m$ cold stages is
 This arises from the 1 dimensional length, number of tubes in each hot stage, and number of baffles in each cold stage.
 The simplest design has 1 hot stage and 1 cold stage, and so the search space is 3 dimensional.
 
+\subsection{Algorithms}
+Three optimization algorithms were tested: Brute force, Nelder-Mead, and Simplicial Homology.
+In an early version of the program, the brute force algorithm was a fast and robust way to find the optimal design.
+However, the introduction of a variable number of tubes and baffles in each stage made the brute force algorithm computationally infeasible.
+The Nelder-Mead algorithm
 
 \subsection{Post Optimality Analysis}
 % uncertainty quantification?
