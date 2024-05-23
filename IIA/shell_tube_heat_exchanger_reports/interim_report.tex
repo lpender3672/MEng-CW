@@ -108,8 +108,20 @@ The compressor characteristics in the closed loop circuit relate the equivilent 
 This is iteratively solved to calculate the mass flow rate for a heat exchanger design and compressor characteristic.
 
 The pressure drop in shell side flow is more complex than the tube side flow due to bundle pass and baffle configurations.
-Kerns method was used to calculate the pressure drop in each cold flow pass. This is a 
-% Basically we used korns method when we should have used bell-dell method
+Kerns method was used to calculate the pressure drop in each cold flow pass.
+This uses a more accurate effective diameter based on triangular or square pitch defined in the equation below.
+
+\begin{equation}
+  d'_{\text{sh,sq}} = \frac{4(Y^2 - \pi d_o^2/4)}{\pi d_o / 2}
+\end{equation}
+\begin{equation}
+  d'_{\text{sh,tri}} = \frac{4(\frac{Y^2 \sqrt{3}}{4} - \frac{\pi d_o^2}{8})}{\pi d_o / 2}
+\end{equation}
+Then pressure drop is given by the equation below.
+\begin{equation}
+  \Delta P = \text{some nasty equation}
+\end{equation}
+% Basically we used kerns method when we should have used bell-dell method
 
 % Turbulent flow is obtained at lower Reynolds numbers on the shell side.
 
@@ -120,7 +132,47 @@ Kerns method was used to calculate the pressure drop in each cold flow pass. Thi
 \subsection{LMTD}
 % read up on this
 
-\subsection{Comparison with Experimental Data}
+\subsection{Comparison of Methods and Experimental Data}
+
+Experimental data for previous designs was compared with our model to improve the accuracy.
+
+\subsubsection{Hydraulic Analysis}
+
+\begin{figure}[H]
+  \centering
+  \begin{subfigure}{.49\textwidth}
+    \centering
+    \includegraphics[width=0.99\textwidth]{dp_ucalc_vs_meas.png}
+    \caption{Correction lines from 2022 and 2023 designs.}
+    \label{fig:uncorrected_pressure_drops}
+  \end{subfigure}
+  \begin{subfigure}{.49\textwidth}
+    \centering
+    \includegraphics[width=.99\linewidth]{dp_ccalc_vs_meas.png}
+    \caption{Applied correction on previous and new 2019 designs.}
+    \label{fig:corrected_pressure_drops}
+  \end{subfigure}
+    
+  \caption{Pressure drop calculated from measured mass flow rate compared to measured pressure drop.}
+  \label{fig:pressure_drops}
+
+\end{figure}
+
+The correlation coefficients for hot and cold pressure drops are:  $\mathbf{0.93874}$ and $\mathbf{0.50926}$
+This demonstrates that the model is more accurate at predicting the hot mass flow rate than the cold mass flow rate,
+which is expected from Kerns simple method.
+As shown, in the cold flow case, Kerns method significantly underestimates the pressure drop in the cold flow path, and in many cases, outside of the compressor characteristics.
+The corrected pressure drop...
+
+\subsubsection{$\varepsilon$-NTU and LMTD}
+
+\subsubsection{Thermal}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\textwidth]{Qdot_ccalc_vs_measured.png}
+  \caption{Calculated against measured heat transfer rate.}
+\end{figure}
 
 \section{Optimization Problem}
 
