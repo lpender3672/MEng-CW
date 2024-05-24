@@ -10,6 +10,7 @@
 \usepackage{subcaption}
 \usepackage{hyperref}
 \usepackage{tikz}
+\usepackage{layout}
 
 \usepackage[margin=1in]{geometry}
 \usepackage{listings}
@@ -23,6 +24,7 @@
 
 \setlength{\parskip}{\baselineskip}%
 \setlength{\parindent}{0pt}%
+\linespread{0.9}
 
 
 \definecolor{codegreen}{rgb}{0,0.6,0}
@@ -162,7 +164,7 @@ The correlation coefficients for hot and cold pressure drops are:  $\mathbf{0.93
 This demonstrates that the model is more accurate at predicting the hot mass flow rate than the cold mass flow rate,
 which is expected from Kerns simple method.
 As shown, in the cold flow case, Kerns method significantly underestimates the pressure drop in the cold flow path, and in many cases, outside of the compressor characteristics.
-The corrected pressure drop...
+The corrected pressure drop.
 
 \subsubsection{$\varepsilon$-NTU and LMTD}
 
@@ -202,14 +204,16 @@ Significant simplifications were made to reduce the number of design parameters.
 One such simplification was to assume that the tubes are packed as far away from each other as possible.
 This means that the pitch can be calculated from the constrained geometry and number of tubes.
 
-The search space for a given template with $n$ hot stages and $m$ cold stages is $n + m + 1$ dimensional.
+The search space for a given template with $p$ hot stages and $q$ cold stages is $p + q + 1$ dimensional.
 This arises from the 1 dimensional length, number of tubes in each hot stage, and number of baffles in each cold stage.
 The simplest design has 1 hot stage and 1 cold stage, and so the search space is 3 dimensional.
 
 \subsection{Algorithms}
 Three optimization algorithms were tested: Brute force, Sequential Least Squares Programming, and Simplicial Homology.
+An unconstrained Nelder-Mead algorithm was also tested which had a cost value of infinity when constraints were violated but this did not reliably converge.
 In an early version of the program, the brute force algorithm was both fast and robust at finding the global optimal design.
-However, the introduction of a variable number of tubes and baffles in each stage made the brute force algorithm computationally infeasible.
+However, the introduction of a variable number of tubes and baffles in each stage increased the complexity $O(n^{p+q+1})$.
+
 The Nelder-Mead algorithm
 
 \subsection{Post Optimality Analysis}
@@ -220,26 +224,36 @@ In reality there is a large uncertainty in the calculated values due to assumpti
 
 \section{Software}
 
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.6\textwidth]{software.png}
-    \caption{Screenshot of the software tool.}
-    \label{fig:software}
-\end{figure}
-
 \subsection{Implementation}
 
 The Python application used PyQt6 and matplotlib for the GUI. The calculations were done using NumPy and SciPy libraries.
 The software tool allows the user to interactively change the design parameters for a wide range of heat exchanger configurations.
 Calculated values are displayed in real-time and the user can compare the performance of different designs.
+When the optimiser is started it will attempt to find the optimal design for the number of stages and tube patterns set.
+After an optimal solution is found, the design is loaded into the GUI for manual inspection and comparison with other designs.
 
-\subsection{Architecture}
+\subsection{Design}
 The software features object oriented design with classes for the heat exchanger and fluid path components.
+The structure is designed to be easily extendable with new components and optimization thread workers.
 Seperate optimization threads are used to prevent the GUI from freezing during long calculations.
 
-\subsection{Visualisation}
+The graphical user interface is designed to be intuitive and user friendly. A log dispays optimization progress, warning and error messages. There is also a diagram of the heat exchanger which helps
+the user visualise the flow path of multi-stage designs.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.6\textwidth]{software.png}
+  \caption{Screenshot of the software tool.}
+  \label{fig:software}
+\end{figure}
+
+\subsection{Best Designs from Constraints}
 % challenging to visualise higher dimensional spaces
 % I'm not as big as a fan of 3D plots as I used to be - they're harder to interpret than colour maps
+Configurations with more stages provide additional complexity in the manufacturing process.
+
+
+
 
 \section{Discussion}
 
