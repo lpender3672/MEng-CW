@@ -16,6 +16,8 @@
 \usepackage{listings}
 \usepackage{xcolor}
 \usepackage{color, colortbl}
+\usepackage{textgreek}
+\usepackage{mathrsfs}
 
 \usetikzlibrary{calc}
 \usetikzlibrary{angles,quotes} % for pic
@@ -112,33 +114,49 @@ This is iteratively solved to calculate the mass flow rate for a heat exchanger 
 
 The pressure drop in shell side flow is more complex than the tube side flow due to bundle pass and baffle configurations.
 Kerns method was used to calculate the pressure drop in each cold flow pass.
-This uses a more accurate effective diameter based on triangular or square pitch defined in the equation below.
+This uses an effective diameter based on triangular or square pitch defined in the equation below.
 
 \begin{equation}
-  d'_{\text{sh,sq}} = \frac{4(Y^2 - \pi d_o^2/4)}{\pi d_o / 2}
+  d'_{\text{sh,sq}} = \frac{4(Y^2 - \pi d_o^2/4)}{\pi d_o / 2}  \quad \text{and} \quad d'_{\text{sh,tri}} = \frac{4(\frac{Y^2 \sqrt{3}}{4} - \frac{\pi d_o^2}{8})}{\pi d_o / 2}
 \end{equation}
-\begin{equation}
-  d'_{\text{sh,tri}} = \frac{4(\frac{Y^2 \sqrt{3}}{4} - \frac{\pi d_o^2}{8})}{\pi d_o / 2}
-\end{equation}
+
 Then pressure drop is given by the equation below.
 \begin{equation}
   \Delta P = \text{some nasty equation}
 \end{equation}
-% Basically we used kerns method when we should have used bell-dell method
+% Basically we used kerns method when we should have used tinker method
 
 % Turbulent flow is obtained at lower Reynolds numbers on the shell side.
 
-\subsection{$\varepsilon$-NTU}
+\subsection{$\mathcal{E}$-NTU}
 % read up on this
 % Fscale for various arrangements
-The $\varepsilon$-NTU method is used to calculate the heat transfer rate for a wide range of heat exchanger configurations.
-Fundamentally, the effectiveness is a function of the number of transfer units NTU and the heat capacity rate ratio, $C^*$.
-
+The $\mathcal{E}$-NTU method is used to calculate the heat transfer rate for a wide range of heat exchanger configurations.
+The effectiveness can be found from a dimensionless number of "transfer units" denoted $NTU$ and a heat capacity rate ratio, $C^*$ or $R$.
+\begin{equation}
+  NTU = \frac{HA}{C_{\text{min}}} \quad \text{and} \quad C^* = \frac{C_{\text{min}}}{C_{\text{max}}} = \frac{(\dot{m}c_p)_{\text{min}}}{(\dot{m}c_p)_{\text{max}}}
+\end{equation}
+The $\mathcal{E}$-NTU method changes when the shell fluid is minimum or maximum heat capacity rate.
+A generalised method known as P-NTU defines a temperature effectiveness $P$ as a function of NTU and a ratio of heat capacity rates $R$ both defined below.
+\begin{equation}
+   R_1 = \frac{C_1}{C_2} \quad \quad P_1 = \frac{C_\text{min}}{C_1} \mathcal{E} = f(NTU, R_1)
+\end{equation}
+Extensive work has been done to find functions, $f$, for various heat exchanger configurations to calculate the effectiveness $\mathcal{E}$ \cite{HeatTransfer}.
+This is then used to obtain outlet temperatures and heat transfer rate $\dot{Q}$.
 
 
 \subsection{LMTD}
 % read up on this
 
+The Log Mean Temperature Difference (LMTD) method is based on the analytical solution for a single stage counterflow heat exchanger.
+For a general heat exchanger, a correction factor $F$ is applied which represents the deviation from counterflow log mean temperature difference.
+
+\begin{equation}
+  \dot{Q} = HAF \Delta T_{\text{lm}} \quad \text{where} \quad \Delta T_{\text{lm}} = \frac{\Delta T_1 - \Delta T_2}{\ln(\Delta T_1 / \Delta T_2)}
+\end{equation}
+For this counterflow definition of F, $\Delta T_1 = T_{\text{hot,in}} - T_{\text{cold,out}}$ and $\Delta T_2 = T_{\text{hot,out}} - T_{\text{cold,in}}$.
+Variations from this, including the coflow case or multiple passes, require the F factor to be calculated from the P-NTU temperature effectiveness, $P_1$, and heat capacity rate ratio $R_1$
+from well defined relations \cite{HeatTransfer}.
 
 
 \subsection{Comparison of Methods and Experimental Data}
@@ -158,11 +176,11 @@ Experimental data for previous designs was compared with our model to improve th
   \begin{subfigure}{.49\textwidth}
     \centering
     \includegraphics[width=.99\linewidth]{dp_ccalc_vs_meas.png}
-    \caption{Applied correction on previous and new 2019 designs.}
+    \caption{Applied correction on \ref{fig:uncorrected_pressure_drops} and unseen 2019 designs.}
     \label{fig:corrected_pressure_drops}
   \end{subfigure}
     
-  \caption{Pressure drop calculated from measured mass flow rate compared to measured pressure drop.}
+  \caption{Pressure drops calculated from measured mass flow rates compared to measured pressure drops.}
   \label{fig:pressure_drops}
 
 \end{figure}
@@ -173,23 +191,35 @@ which is expected from Kerns simple method.
 As shown, in the cold flow case, Kerns method significantly underestimates the pressure drop in the cold flow path, and in many cases, outside of the compressor characteristics.
 The corrected pressure drop.
 
-\subsubsection{$\varepsilon$-NTU and LMTD}
+\subsubsection{$\mathcal{E}$-NTU and LMTD}
 
 
 \begin{figure}[H]
   \centering
-  \includegraphics[width=0.8\textwidth]{Qdot_ccalc_vs_measured.png}
-  \caption{Calculated against measured heat transfer rate.}
+  \begin{subfigure}{.49\textwidth}
+    \centering
+    \includegraphics[width=0.99\textwidth]{Qdot_ucalc_vs_measured.png}
+    \caption{Correction line from 2022 and 2023 designs.}
+    \label{fig:uncorrected_Qdot}
+  \end{subfigure}
+  \begin{subfigure}{.49\textwidth}
+    \centering
+    \includegraphics[width=0.99\textwidth]{Qdot_ccalc_vs_measured.png}
+    \caption{Applied correction on \ref{fig:uncorrected_Qdot} and unseen 2019 designs.}
+    \label{fig:corrected_Qdot}
+  \end{subfigure}
+  \label{fig:Qdot}
+  \caption{Heat transfer rate calculated from measured mass flow rate compared to measured heat transfer rate.}
 \end{figure}
 
 \begin{figure}[H]
   \centering
   \includegraphics[width=0.6\textwidth]{entu_lmtd_speed.png}
-  \caption{Calculation time for $\varepsilon$-NTU and LMTD methods for various heat exchanger configurations.}
+  \caption{Calculation time for $\mathcal{E}$-NTU and LMTD methods for various heat exchanger configurations.}
   \label{fig:entu_lmtd_speed}
 \end{figure}
 
-From figure \ref{fig:entu_lmtd_speed} we can see that the $\varepsilon$-NTU method is typically twice as fast as the LMTD method.
+From figure \ref{fig:entu_lmtd_speed} we can see that the $\mathcal{E}$-NTU method is $2$ to $2.5$ times faster than the LMTD method.
 This is important for the optimization algorithm as the objective function is calculated thousands of times during the process.
 
 
@@ -246,18 +276,13 @@ The simplest design has 1 hot stage and 1 cold stage, and so the search space is
 
 \subsection{Algorithms}
 Three optimization algorithms were tested: Brute force, Sequential Least Squares Programming, and Simplicial Homology Global Optimization.
-An unconstrained Nelder-Mead algorithm was also tested which had a cost value of infinity when constraints were violated but this did not reliably converge.
 In an early version of the program, the brute force algorithm was both fast and robust at finding the global optimal design.
 However, the introduction of a variable number of tubes and baffles in each stage increased the complexity $O(n^{p+q+1})$.
+SLSP was performed for a large number of uniformly distributed random initial values in attempt to find the global optimum.
+However, this method required a large number of sample points to find the global optimum and was not robust for the high dimensional search space.
 
-SLSP was used with random initial guesses to find the global optimum.
-
-
-\subsection{Post Optimality Analysis}
-% uncertainty quantification?
-
-In reality there is a large uncertainty in the calculated values due to assumptions and empirical relations.
-
+The Simplicial Homology Global Optimization algorithm was chosen for its robustness and ability to find optima in all cases.
+SHGO is a derivative-free global optimization algorithm that efficiently subdivides the search space into smaller regions (simplicial complexes) to find the global optimum \cite{SHGO}.
 
 \section{Software}
 
@@ -271,10 +296,9 @@ After an optimal solution is found, the design is loaded into the GUI for manual
 
 \subsection{Design}
 The software features object oriented design with classes for the heat exchanger and fluid path components.
-The structure is designed to be easily extendable with new components and optimization thread workers.
+The structure is designed to easily modify fluid properties and introduce new flow components.
 Seperate optimization threads are used to prevent the GUI from freezing during long calculations.
-
-The graphical user interface is designed to be intuitive and user friendly. A log dispays optimization progress, warning and error messages. There is also a diagram of the heat exchanger which helps
+A log dispays optimization progress, warning and error messages. There is also a diagram of the heat exchanger which helps
 the user visualise the flow path of multi-stage designs.
 
 \begin{figure}[H]
@@ -316,10 +340,13 @@ From table \ref{table:designs} we can see that the optimal design has 1 cold sta
 However, this design with a different number of tubes in each section is much harder to manufacture than a circularly symmetric design.
 Manual inspection of the design 
 
+\section{Future Work}
+
+
 \section{Conclusion}
 
 
-\newpage
+
 \section{Appendix}
 
 \begin {lstlisting}[language=Python]
@@ -328,32 +355,22 @@ Manual inspection of the design
 
 
 % bibliography
-\newpage
+
 \begin{thebibliography}{9}
 
-\bibitem{handout}
-  G. Vinnicombe,
-  \emph{Inverted Pendulum Lab Handout}.
-  University of Cambridge,
-  2022.
+  \bibitem{HeatTransfer}
+    Holman J. P.
+    \emph{Heat Transfer. 10th ed.}
+    McGraw-Hill,
+    2010.
 
-\bibitem{feedback_control_of_dynamic_systems}
-  G. F. Franklin, J. D. Powell, A. Emami-Naeini,
-  \emph{Feedback Control of Dynamic Systems}.
-  Pearson,
-  2015.
+%Endres, SC, Sandrock, C, Focke, WW (2018) “A simplicial homology algorithm for lipschitz optimisation”, Journal of Global Optimization.
 
-\bibitem{non_linear_systems}
-  H. K. Khalil,
-  \emph{Nonlinear Systems}.
-  Pearson,
-  2002.
-
-\bibitem{modern_control_systems}
-  R. C. Dorf, R. H. Bishop,
-  \emph{Modern Control Systems}.
-  Pearson,
-  2016.
+  \bibitem{SHGO}
+  Endres, SC, Sandrock, C, Focke, WW,
+  \emph{A simplicial homology algorithm for lipschitz optimisation},
+  Journal of Global Optimization,
+  2018.
 
 \end{thebibliography}
 
