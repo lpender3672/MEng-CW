@@ -15,6 +15,7 @@
 \usepackage[margin=1in]{geometry}
 \usepackage{listings}
 \usepackage{xcolor}
+\usepackage{color, colortbl}
 
 \usetikzlibrary{calc}
 \usetikzlibrary{angles,quotes} % for pic
@@ -130,17 +131,15 @@ Then pressure drop is given by the equation below.
 \subsection{$\varepsilon$-NTU}
 % read up on this
 % Fscale for various arrangements
+The $\varepsilon$-NTU method is used to calculate the heat transfer rate for a wide range of heat exchanger configurations.
+Fundamentally, the effectiveness is a function of the number of transfer units NTU and the heat capacity rate ratio, $C^*$.
+
+
 
 \subsection{LMTD}
 % read up on this
 
 
-\begin{figure}
-  \centering
-  \includegraphics[width=0.8\textwidth]{entu_lmtd_speed.png}
-  \caption{Calculation time for $\varepsilon$-NTU and LMTD methods for various heat exchanger configurations.}
-  \label{fig:entu_lmtd_speed}
-\end{figure}
 
 \subsection{Comparison of Methods and Experimental Data}
 
@@ -168,7 +167,7 @@ Experimental data for previous designs was compared with our model to improve th
 
 \end{figure}
 
-The correlation coefficients for hot and cold pressure drops are:  $\mathbf{0.93874}$ and $\mathbf{0.50926}$
+The correlation coefficients for hot and cold pressure drops are $\mathbf{0.93874}$ and $\mathbf{0.50926}$ respectively.
 This demonstrates that the model is more accurate at predicting the hot mass flow rate than the cold mass flow rate,
 which is expected from Kerns simple method.
 As shown, in the cold flow case, Kerns method significantly underestimates the pressure drop in the cold flow path, and in many cases, outside of the compressor characteristics.
@@ -176,13 +175,23 @@ The corrected pressure drop.
 
 \subsubsection{$\varepsilon$-NTU and LMTD}
 
-\subsubsection{Thermal}
 
 \begin{figure}[H]
   \centering
   \includegraphics[width=0.8\textwidth]{Qdot_ccalc_vs_measured.png}
   \caption{Calculated against measured heat transfer rate.}
 \end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.6\textwidth]{entu_lmtd_speed.png}
+  \caption{Calculation time for $\varepsilon$-NTU and LMTD methods for various heat exchanger configurations.}
+  \label{fig:entu_lmtd_speed}
+\end{figure}
+
+From figure \ref{fig:entu_lmtd_speed} we can see that the $\varepsilon$-NTU method is typically twice as fast as the LMTD method.
+This is important for the optimization algorithm as the objective function is calculated thousands of times during the process.
+
 
 \section{Optimization Problem}
 
@@ -193,36 +202,56 @@ The objective is to maximise the heat transfer rate $\dot{Q}$ subject to physica
 Many standard physical quantities are constrained to discrete values and standards, such as the number of tubes, baffles and pipe diameters.
 For our design, we have the following constraints:
 \begin{itemize}
-  \item Total mass of the heat exchanger $M_{\text{total}} < 1.2$ Kg.
+  \item Total mass of the heat exchanger $M < 1.2$ Kg.
   \item Total length of the heat exchanger $L_{\text{total}} < 0.35$ m.
-  \item Total length of the tubes $L_{\text{tubes}} < 3.5$ m.
+  \item Total length of the tubes $\sum L_{\text{tube}} < 3.5$ m.
   \item Tubes have outer and inner diameters, $d_{o} = 8$ mm, and $d_{i} = 6$ mm.
   \item Shell has inner diameter $D_{\text{shell}} = 64$ mm.
   \item Nozzles must 
 \end{itemize}
 
-Additional constraints were imposed to reduce the search space and simplify the problem.
+The total length of the tubes constraint must be modified to account for the manufacturing process.
+For $n_t$ tubes, $n_t - 1$ cuts with a blade thickness of $1.5 mm$ are required and so the actual maximum length is given below.
+\begin{equation}
+  \sum L_\text{tube} < 3.5 - 0.0015 \times (n_t - 1)
+\end{equation}
+The tube lengths are also limited by the maximum length of the heat exchanger, $0.35$ m.
+The nozzle width is 40 mm, however, if there is an even number of hot sections then the nozzles are on the same side so the opposite end section can be shortened.
+This can allow a longer maximum tube length than an odd number of hot passes.
+\begin{equation}
+  L_\text{tube} < 0.35 - 0.04 \times (1 + N_{hot}\mod 2)
+\end{equation}
+
+Additional constraints were also imposed to reduce the search space and simplify the problem.
+
+The number of baffles was constrained to 8 in the cold fluid path. % TODO: explain why this was done other than awais said so
+
 The number of tubes was constrained to not decrease over the hot fluid path inside the heat exchanger.
-This is thought to be a reasonable assumption because increasing the area at regions of smaller temperature difference increases overall heat transfer.
-For example, if we were to decrease area then more heat transfer would occur in the first stage where there is a higher temperature difference, however there would be a significant reduction of heat transfer in the later stages.
+This should not exclude the global optimium because increasing the area at regions of smaller temperature difference increases overall heat transfer.
+For example, if we allowed the area to decrease then more heat transfer would occur in the first stage,
+however there would be a significant reduction of heat transfer in the later stages from both reduced area and temperature difference.
 
 \subsection{Design Parameters}
 
-Significant simplifications were made to reduce the number of design parameters.
-One such simplification was to assume that the tubes are packed as far away from each other as possible.
-This means that the pitch can be calculated from the constrained geometry and number of tubes.
+Simplifications were made to reduce the number of design parameters.
+For heat exchangers with a large number of tubes, a consistent pattern can be arranged with constant pitch.
+However, the nature of this compact design means that the tubes are not arranged in a simple pattern and so the pitch varies between tubes.
+It was therefore decided to use an empirical relation to estimate the pitch based on the number of tubes in each equal area hot section.
+This assumes that, in each hot flow section, the tubes are packed as far away from each other as possible.
+% Please consider the validity of this assumption
 
-The search space for a given template with $p$ hot stages and $q$ cold stages is $p + q + 1$ dimensional.
+The search space for a given template with $N_\text{hot}$ hot stages and $N_\text{cold}$ cold stages is $(N_\text{hot} + N_\text{cold} + 1)$ dimensional.
 This arises from the 1 dimensional length, number of tubes in each hot stage, and number of baffles in each cold stage.
 The simplest design has 1 hot stage and 1 cold stage, and so the search space is 3 dimensional.
 
 \subsection{Algorithms}
-Three optimization algorithms were tested: Brute force, Sequential Least Squares Programming, and Simplicial Homology.
+Three optimization algorithms were tested: Brute force, Sequential Least Squares Programming, and Simplicial Homology Global Optimization.
 An unconstrained Nelder-Mead algorithm was also tested which had a cost value of infinity when constraints were violated but this did not reliably converge.
 In an early version of the program, the brute force algorithm was both fast and robust at finding the global optimal design.
 However, the introduction of a variable number of tubes and baffles in each stage increased the complexity $O(n^{p+q+1})$.
 
-The Nelder-Mead algorithm
+SLSP was used with random initial guesses to find the global optimum.
+
 
 \subsection{Post Optimality Analysis}
 % uncertainty quantification?
@@ -258,16 +287,34 @@ the user visualise the flow path of multi-stage designs.
 \subsection{Best Designs from Constraints}
 % challenging to visualise higher dimensional spaces
 % I'm not as big as a fan of 3D plots as I used to be - they're harder to interpret than colour maps
-Configurations with more stages provide additional complexity in the manufacturing process.
 
+\begin{table}[h!]
+  \centering
+  \begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|}
+      \hline
+      \rowcolor{gray!30}
+      \multicolumn{3}{|c|}{\textbf{Configuration}} & \multicolumn{4}{c|}{\textbf{Optimised Parameters}} & \multicolumn{5}{c|}{\textbf{Result}} \\ \hline
+      \rowcolor{gray!10}
+      $N_\text{cold}$ & $N_\text{hot}$ & Pattern & Tubes & Baffles & $L_\text{tube}$ & $\dot{m}_1$ & $\dot{m}_2$ & $\dot{Q}$ & $\epsilon$ & Mass & $\Sigma L_\text{tube}$ \\ \hline
+      1 & 1 & Triangle & 13 & 8 & 0.2678 & 0.5892 & 0.4778 & 12297 & 0.1446 & 1.095 & \textcolor{red}{3.481} \\ \hline
+      1 & 1 & Square & 13 & 8 & 0.2678 & 0.5885 & 0.4778 & 12314 & 0.145 & 1.095 & \textcolor{red}{3.481} \\ \hline
+      1 & 2 & Triangle & 6,6 & 8 & 0.2877 & 0.5928 & 0.4296 & 14126 & 0.211 & \textcolor{red}{1.100} & 3.452 \\ \hline
+      1 & 2 & Square & 6,6 & 8 & 0.2877 & 0.5928 & 0.4296 & 14123 & 0.2109 & \textcolor{red}{1.100} & 3.452 \\ \hline
+      \rowcolor{yellow!30}
+      1 & 3 & Triangle & 4,5,5 & 8 & 0.2470 & 0.5818 & 0.3685 & 14328 & 0.2524 & 1.079 & \textcolor{red}{3.458} \\ \hline
+      1 & 3 & Square & 5,5,5 & 8 & 0.2320 & 0.5755 & 0.3855 & 14336 & 0.2414 & 1.076 & \textcolor{red}{3.480} \\ \hline
+      2 & 2 & Triangle & 5,6 & 8,8 & \textcolor{red}{0.2900} & 0.5908 & 0.4174 & 13896 & 0.2106 & 1.085 & 3.190 \\ \hline
+      2 & 2 & Square & 6,6 & 8,7 & 0.2766 & 0.5902 & 0.4304 & 13901 & 0.2044 & \textcolor{red}{1.100} & 3.319 \\ \hline
+      2 & 4 & Triangle & 4,4,4,4 & 7,7 & 0.2173 & 0.5714 & 0.3209 & 14136 & 0.2828 & 1.091 & \textcolor{red}{3.477} \\ \hline
+      2 & 4 & Square & 4,4,4,4 & 7,7 & 0.2173 & 0.5728 & 0.3209 & 14103 & 0.2816 & 1.091 & \textcolor{red}{3.477} \\ \hline
+  \end{tabular}
+  \caption{Optimized Parameters and Results, with the limiting factor in red.}
+  \label{table:designs}
+\end{table}
 
-
-
-\section{Discussion}
-
-\subsection{Comparison of $\varepsilon$-NTU and LMTD Methods}
-
-
+From table \ref{table:designs} we can see that the optimal design has 1 cold stage and 3 hot stages.
+However, this design with a different number of tubes in each section is much harder to manufacture than a circularly symmetric design.
+Manual inspection of the design 
 
 \section{Conclusion}
 
