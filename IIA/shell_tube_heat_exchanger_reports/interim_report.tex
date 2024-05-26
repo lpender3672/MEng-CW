@@ -134,20 +134,27 @@ The shell velocity and pressure drop for 1 of $N_b$ cold stages with $n_b$ baffl
   v_\text{sh} = \frac{\dot{m}_1}{N_b A_s} \quad \text{and} \quad \Delta P = \frac{1}{2}f \rho v_\text{sh}^2 \left( \frac{d_\text{sh}}{d'_\text{sh}} \right) (n_b + 1)
 \end{equation}
 Where the friction factor $f$ is calculated from the effective diameter Reynolds number $f = 0.202 \times Re_{d'_\text{sh}}^{-0.153}$. \\
-The hot side pressure drop is similar way to the worked example handout \cite{worked_example} with some minor modifications for $N_t$ hot passes.
+The hot side pressure drop is found from friction and pressure loss factors defined in the handout \cite{handout}.
+There are some minor modifications made for calculations involving $N_t$ hot passes.
 The pressure loss factors $K_c$ and $K_e$ depend on $\sigma$ which is the ratio of a single stage tube area to the expansion area.
-For multipass configurations with constrictions into, and expansions out of U bends have twice the area of a single pass.
+For multipass configurations with constrictions or expansions into U bends, the expansion area is twice the area of a single pass.
 The pressure loss coefficient in the sharp U bends was estimated to be 1.0 for each bend on both the hot and cold sides.
 
 % Basically we used kerns method when we should have used tinker method
 % Turbulent flow is obtained at lower Reynolds numbers on the shell side.
 
-\subsection{Conductivity}
+\subsection{Thermal Analysis}
 
-The Nusselt numbers and heat transfer coefficients are calculated in the same way as the worked example, but for each hot pass.
-The total conductivity is the sum of the conductivities over all hot passes
+LMTD and $\mathcal{E}$-NTU methods were used to calculate the heat transfer rate from the mass flow rates found in the hydraulic analysis.
+Both methods require an overall heat transfer value $HA$ which is calculated from pipe geometry, film heat transfer coefficients and tube conductivity.
+Kerns method is used to calculate the shell side film heat transfer coefficient $h_o$ from terms defined in the hydraulic analysis.
+\begin{equation}
+  \frac{h_o d'_{\text{sh}}}{k} = 0.36 Re^{0.55}_{d'_{\text{sh}}}Pr^{1/3}
+\end{equation}
+This is then used to calculate the hot section heat transfer coefficient $H_i$ using equation 3 in the handout \cite{handout} which is then
+multiplied by the section tube area and summed to get the overall $HA$ value.
 
-\subsection{$\mathcal{E}$-NTU}
+\subsubsection{$\mathcal{E}$-NTU}
 % read up on this
 % Fscale for various arrangements
 The $\mathcal{E}$-NTU method is used to calculate the heat transfer rate for a wide range of heat exchanger configurations.
@@ -164,7 +171,7 @@ Extensive work has been done to find functions, $f$, for various heat exchanger 
 This can then used to obtain outlet temperatures and heat transfer rate $\dot{Q}$.
 
 
-\subsection{LMTD}
+\subsubsection{LMTD}
 % read up on this
 
 The Log Mean Temperature Difference (LMTD) method is based on the analytical solution for a single stage counterflow heat exchanger.
@@ -180,7 +187,7 @@ from well defined relations \cite{HeatTransfer}.
 
 \subsection{Comparison of Methods and Experimental Data}
 
-Experimental data for previous designs was compared with our model to improve the accuracy.
+Experimental data for previous designs and their compressor characteristics are compared with our model to improve the accuracy.
 
 \subsubsection{Hydraulic Analysis}
 
@@ -231,6 +238,10 @@ The corrected pressure drop.
   \caption{Heat transfer rate calculated from measured mass flow rate compared to measured heat transfer rate.}
 \end{figure}
 
+The correlation coefficient between calculated and measured heat transfer rates in figure \ref{fig:uncorrected_Qdot} is $\mathbf{0.91772}$ which shows good agreement.
+The 2019 designs show a significant deviation from the corrected 2022 and 2023 designs.
+This may be due to changes in test rig setup after the pandemic, and some unique design features observed for the 2019 designs.
+
 \begin{figure}[H]
   \centering
   \includegraphics[width=0.6\textwidth]{entu_lmtd_speed.png}
@@ -239,7 +250,9 @@ The corrected pressure drop.
 \end{figure}
 
 From figure \ref{fig:entu_lmtd_speed} we can see that the $\mathcal{E}$-NTU method is $2$ to $2.5$ times faster than the LMTD method.
-This is important for the optimization algorithm as the objective function is calculated thousands of times during the process.
+This is because while both $\mathcal{E}$-NTU method performs a single calculation for each heat exchanger configuration, while the LMTD method requires a similar length F factor calculation and an iterative solver for the outlet temperatures.
+This is an important consideration for the optimization algorithm as the objective function is calculated thousands of times during the process.
+
 
 
 \section{Optimization Problem}
@@ -260,21 +273,27 @@ For our design, we have the following constraints:
   \item The tube pitch must be greater than $12$ mm.
 \end{itemize}
 
+The mass calculation has a level of uncertainty in the manufactured components and so the constraint is reduced to 1.1 kg.
 The total length of the tubes constraint must be modified to account for the manufacturing process.
 For $n_t$ total tubes, $n_t - 1$ cuts with a blade thickness of $1.5 mm$ are required and so the actual maximum length is given below.
+\vspace{5pt}
 \begin{equation}
   \sum L_\text{tube} < 3.5 - 0.0015 \times (n_t - 1)
 \end{equation}
+\vspace{5pt}
 The tube lengths are also limited by the maximum length of the heat exchanger, $0.35$ m.
 The nozzle width is 40 mm, however, if there is an even number of hot sections then the nozzles are on the same side so the opposite end section can be shortened.
 This can allow a longer maximum tube length than an odd number of hot passes.
+\vspace{5pt}
 \begin{equation}
   L_\text{tube} < 0.29 - 0.02 \times ( N_{hot}\mod 2)
 \end{equation}
-
+\vspace{5pt}
 Additional constraints were also imposed to reduce the search space and simplify the problem.
 
 The number of baffles was constrained to 8 in the cold fluid path. % TODO: explain why this was done other than awais said so
+This was also to prevent the baffle spacing to become small relative to the shell diameter and cause further
+innacuracies in Kerns method.
 
 The number of tubes was constrained to not decrease over the hot fluid path inside the heat exchanger.
 This should not exclude the global optimium because increasing the area at regions of smaller temperature difference increases overall heat transfer.
@@ -290,6 +309,16 @@ It was therefore decided to use an empirical relation to estimate the pitch base
 This assumes that, in each hot flow section, the tubes are packed as far away from each other as possible.
 This is assumed to be optimal as it promotes turbulent mixing throughout the shell flow to reduce local temperature gradients.
 % Please consider the validity of this assumption
+% insert figure
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.6\textwidth]{pitch_vs_tubes.png}
+  \caption{Tube pitch as a function of the number of tubes in each hot section.}
+  \label{fig:pitch_vs_tubes}
+\end{figure}
+
+Figure \ref{fig:pitch_vs_tubes} shows the pitch as a function of the number of tubes for varying hot sections. 
 
 The search space for a given template with $N_\text{hot}$ hot stages and $N_\text{cold}$ cold stages is $(N_\text{hot} + N_\text{cold} + 1)$ dimensional.
 This arises from the 1 dimensional length, number of tubes in each hot stage, and number of baffles in each cold stage.
@@ -365,33 +394,30 @@ It was satisfying to see that the software tool was finding longer solutions wit
 However, this design with a different number of tubes in each section is much harder to manufacture than a circularly symmetric design.
 Manual inspection of the design 
 
-From table \ref{table:designs} the optimal design predicted by the software has 1 cold stage and 3 hot stages.
-This was the design that our pair proposed to the group and was selected as the final design configuration.
-The circular and axial symmetry in the design was exploited to reduce the number of unique components and simplify the manufacturing process.
+From table \ref{table:designs} the yellow row shows the optimal design predicted by the software has 1 cold stage and 3 hot stages.
+This was the design proposed by our pair and selected by the group.
+During the development of CAD, slight modifications were made and checked with the software tool.
+A slightly shorter 5,5,5 tube configuration was used for circular and axial symmetry, reducing the number of unique components and simplifying the manufacturing process.
+The number of baffles was also reduced to 7 for some reason. % why? this is stupid
 
 
-\begin{figure}
+\begin{figure}[H]
   \centering
-  \includegraphics[width=0.7\textwidth]{final.png}
-  \caption{Final design parts list with 1 cold stage and 3 hot stages.}
+  \includegraphics[width=0.9\textwidth]{final.png}
+  \caption{Final design with 1 cold stage and 3 hot stages.}
   \label{fig:final_design}
 \end{figure}
 
+\section{Conclusion}
 
-\begin {lstlisting}[language=Python]
-
-\end{lstlisting}
+The software tool developed for the design optimization of shell and tube heat exchangers was successful in finding the optimal design for a given set of constraints.
+The Simplicial Homology Global Optimization algorithm was chosen for its robustness and ability to find optima in all cases.
+A design with 1 cold stage and 3 hot stages was selected and 
 
 
 % bibliography
 
 \begin{thebibliography}{9}
-
-  \bibitem{HeatTransfer}
-    Holman J. P.
-    \emph{Heat Transfer. 10th ed.}
-    McGraw-Hill,
-    2010.
 
 %Endres, SC, Sandrock, C, Focke, WW (2018) “A simplicial homology algorithm for lipschitz optimisation”, Journal of Global Optimization.
 
@@ -401,23 +427,23 @@ The circular and axial symmetry in the design was exploited to reduce the number
   University of Cambridge,
   2024.
 
-  \bibitem{worked_example}
-  J. V. Taylor and J. C. Massey
-  \emph{GA3 Heat Exchanger: Worked Example}
-  University of Cambridge,
-  2024.
-
-  \bibitem{SHGO}
-  Endres, SC, Sandrock, C, Focke, WW,
-  \emph{A simplicial homology algorithm for lipschitz optimisation},
-  Journal of Global Optimization,
-  2018.
+  \bibitem{HeatTransfer}
+  Holman J. P.
+  \emph{Heat Transfer. 10th ed.}
+  McGraw-Hill,
+  2010.
 
   \bibitem{HE_design}
   Sadik Kakac, Hongtan Liu, Anchasa Pramuanjaroenkij,
   \emph{Heat Exchangers: Selection, Rating, and Thermal Design, Third Edition}
   CRC Press,
   2012.
+
+  \bibitem{SHGO}
+  Endres, SC, Sandrock, C, Focke, WW,
+  \emph{A Simplicial Homology Algorithm for Lipschitz Optimisation},
+  Journal of Global Optimization,
+  2018.
 
 \end{thebibliography}
 
