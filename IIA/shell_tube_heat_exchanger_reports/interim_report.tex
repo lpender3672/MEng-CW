@@ -103,8 +103,7 @@ The software is developed in Python and implements Kerns, LMTD and NTU methods t
 % Compare Kerns, Bell-Delaware and Tinker methods for pressure drop calculations
 One of the key challenges in heat exchanger design is the accurate prediction of shell-side pressure drop and heat transfer coefficients.
 Two methods commonly used in industry are Kerns and Bell-Delaware methods.
-Kerns method is often used for preliminary design calculations, while the Bell-Delaware method is widely used for detailed design.
-The 
+Kerns method is often used for preliminary design calculations, while the Bell-Delaware method is widely used for detailed design. 
 
 % analyse mechanical systems
 
@@ -122,11 +121,9 @@ This is iteratively solved to calculate the mass flow rate for a heat exchanger 
 The pressure drop in shell side flow is more complex than the tube side flow due to bundle pass and baffle configurations.
 Kerns method was used to calculate the pressure drop in each cold flow pass.
 This uses an effective diameter which depends on triangular or square pitch and a bundle crossflow area, $A_s$ defined by equation 6 in the handout \cite{handout}.
-
 \begin{equation}
   d'_{\text{sh,sq}} = \frac{4(Y^2 - \pi d_o^2/4)}{\pi d_o / 2}  \quad \text{,} \quad d'_{\text{sh,tri}} = \frac{4 \left( \frac{Y^2 \sqrt{3}}{4} - \frac{\pi d_o^2}{8} \right)}{\pi d_o / 2}
 \end{equation}
-
 The shell velocity and pressure drop for 1 of $N_b$ cold stages with $n_b$ baffles is given by the equations below \cite{HE_design}.
 \begin{equation}
   v_\text{sh} = \frac{\dot{m}_1}{N_b A_s} \quad \text{and} \quad \Delta P = \frac{1}{2}f \rho v_\text{sh}^2 \left( \frac{d_\text{sh}}{d'_\text{sh}} \right) (n_b + 1)
@@ -144,7 +141,7 @@ The pressure loss coefficient in the sharp U bends was estimated to be 1.0 for e
 \subsection{Thermal Analysis}
 
 LMTD and $\mathcal{E}$-NTU methods were used to calculate the heat transfer rate from the mass flow rates found in the hydraulic analysis.
-Both methods require an overall heat transfer value $HA$ which is calculated from pipe geometry, film heat transfer coefficients and tube conductivity.
+Both methods require an overall heat transfer value $HA$ which is calculated from tube geometry, film heat transfer coefficients and tube conductivity.
 Kerns method is used to calculate the shell side film heat transfer coefficient $h_o$ from terms defined in the hydraulic analysis.
 \begin{equation}
   \frac{h_o d'_{\text{sh}}}{k} = 0.36 Re^{0.55}_{d'_{\text{sh}}}Pr^{1/3}
@@ -185,7 +182,7 @@ from well defined relations \cite{HeatTransfer}.
 
 \subsection{Comparison of Methods and Experimental Data}
 
-Experimental data for previous designs and their compressor characteristics are compared with our model to improve the accuracy and quantify uncertainty.
+Experimental data for previous designs and their compressor characteristics are compared with our model to improve the accuracy and quantify uncertainty in future analysis.
 
 \subsubsection{Hydraulic Analysis}
 
@@ -215,7 +212,7 @@ The correlation coefficients for hot and cold pressure drops are $\mathbf{0.9387
 This demonstrates that the model is more accurate at predicting the hot mass flow rate than the cold mass flow rate.
 The cold flow pressure drop is generally underestimated by Kerns method, which is expected \cite{HE_design}.
 As shown, in the cold flow case, Kerns method significantly underestimates the pressure drop in the cold flow path, and in many cases, outside of the compressor characteristics.
-The corrected pressure drop.
+The corrected pressure drops lie within the compressor characteristics.
 
 \subsubsection{$\mathcal{E}$-NTU and LMTD}
 
@@ -261,7 +258,7 @@ In rare cases, the hydraulic analysis may fail to converge and so the cost is se
 
 \subsection{Constraints}
 
-Many standard physical quantities are constrained to discrete values and standards, such as the number of tubes, baffles and pipe diameters.
+Many standard physical quantities are constrained to discrete values and standards, such as the number of tubes, baffles and tube diameters.
 For our design, we have the following constraints:
 \begin{itemize}
   \item Total mass of the heat exchanger $M < 1.2$ Kg.
@@ -309,7 +306,7 @@ For heat exchangers with a large number of tubes, a consistent pattern can be ar
 However, the nature of this compact design means that the tubes are not arranged in a simple pattern and so the pitch varies between tubes.
 It was therefore decided to use an empirical relation to estimate the pitch based on the number of tubes in each equal area hot section.
 This assumes that, in each hot flow section, the tubes are packed as far away from each other as possible.
-This is assumed to be optimal as it promotes turbulent mixing throughout the shell flow to reduce local temperature gradients.
+This is assumed to be optimal as it promotes turbulent mixing throughout the shell flow to reduce high temperature gradients from unmixed flow.
 % Please consider the validity of this assumption
 % insert figure
 
@@ -324,7 +321,7 @@ Figure \ref{fig:pitch_vs_tubes} shows an average pitch as a function of the numb
 These relations are of the form $Y$ = $k d_\text{sh} /\sqrt{n_t}$ where $k$ varies with tube pattern, and number of hot sections.
 This result agrees with intuition that for a large number of total tubes, triangular packing achieves a higher average pitch than square packing.
 However, this is still a very crude approximation and the actual average pitch will be much lower than this considering equal spacing from the shell wall and any cold section divider walls.
-A significant improvement would come from implementing a 2D packing algorithm to be ran exhastively beforehand and stored in a lookup table as to not slow down the optimization algorithm.
+A significant improvement would come from implementing a 2D packing algorithm to be run exhaustively beforehand and stored in a lookup table as to not slow down the optimization algorithm.
 
 The search space for a given template with $N_\text{hot}$ hot stages and $N_\text{cold}$ cold stages is $(N_\text{hot} + N_\text{cold} + 1)$ dimensional.
 This arises from the 1 dimensional length, number of tubes in each hot stage, and number of baffles in each cold stage.
@@ -354,7 +351,7 @@ After an optimal solution is found, the design is loaded into the GUI for manual
 The software features object oriented design with classes for the heat exchanger and fluid path components.
 The structure is designed to easily modify fluid properties and introduce new flow components.
 Seperate optimization threads are used to prevent the GUI from freezing during long calculations.
-A log dispays optimization progress, warning and error messages. There is also a diagram of the heat exchanger which helps
+A log displays optimization progress, warning and error messages. There is also a diagram of the heat exchanger which helps
 the user visualise the flow path of multi-stage designs.
 
 \begin{figure}[H]
@@ -430,8 +427,8 @@ Calculated heat transfer rates showed a strong correlation of $\mathbf{0.91772}$
 An interactive software tool was developed to rapidly test a wide range of heat exchanger configurations and compare performance.
 Common mass and geometry specification constraints were considered with further constraints to reduce the search space.
 Three algorithms for finding an optimal design were compared and SHGO was chosen for its robustness and ability to find optima in all cases.
-A design with 1 cold stage and 3 hot stages was selected and further design modifications were made for manufacturability and practicality.
-
+Various heat exchanger configurations were optimised for which were limited by different constraints.
+The highest heat transfer design with 1 cold stage and 3 hot stages was selected and small design modifications were made for manufacturability.
 
 % bibliography
 
