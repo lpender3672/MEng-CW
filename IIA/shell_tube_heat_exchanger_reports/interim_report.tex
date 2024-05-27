@@ -84,9 +84,7 @@ Heat exchangers have a wide range of applications in HVAC, power generation and 
 These essential components are typically much larger than other components in a system and can significantly contribute to the overall cost.
 Designing high performance, low cost heat exchangers involves solving complex optimization problems with multiple constraints.
 This report presents the development of a software tool to help solve constrained design optimization of a shell and tube heat exchanger.
-The software is developed in Python and uses LMTD and NTU methods to solve for the output parameters.
-Computational model is compared with experimental data gathered from a heat exchanger test rig, from which the uncertainty is quantified.
-Simplicial homology global optimization algorithms are tested with constraints and the results are presented.
+The software is developed in Python and implements Kerns, LMTD and NTU methods to solve for heat exchanger performance.
 
 % Various optimization algorithms were tested with constraints and results are presented.
  
@@ -187,29 +185,31 @@ from well defined relations \cite{HeatTransfer}.
 
 \subsection{Comparison of Methods and Experimental Data}
 
-Experimental data for previous designs and their compressor characteristics are compared with our model to improve the accuracy.
+Experimental data for previous designs and their compressor characteristics are compared with our model to improve the accuracy and quantify uncertainty.
 
 \subsubsection{Hydraulic Analysis}
+
+\vspace{-0.5cm}
 
 \begin{figure}[H]
   \centering
   \begin{subfigure}{.49\textwidth}
     \centering
-    \includegraphics[width=0.99\textwidth]{dp_ucalc_vs_meas.png}
+    \includegraphics[width=0.95\textwidth]{dp_ucalc_vs_meas.png}
     \caption{Correction lines from 2022 and 2023 designs.}
     \label{fig:uncorrected_pressure_drops}
   \end{subfigure}
   \begin{subfigure}{.49\textwidth}
     \centering
-    \includegraphics[width=.99\linewidth]{dp_ccalc_vs_meas.png}
+    \includegraphics[width=.95\linewidth]{dp_ccalc_vs_meas.png}
     \caption{Applied correction on \ref{fig:uncorrected_pressure_drops} and unseen 2019 designs.}
     \label{fig:corrected_pressure_drops}
   \end{subfigure}
-    
   \caption{Pressure drops calculated from measured mass flow rates compared to measured pressure drops.}
   \label{fig:pressure_drops}
-
 \end{figure}
+
+\vspace{-0.5cm}
 
 The correlation coefficients for hot and cold pressure drops are $\mathbf{0.93874}$ and $\mathbf{0.50926}$ respectively.
 This demonstrates that the model is more accurate at predicting the hot mass flow rate than the cold mass flow rate.
@@ -219,18 +219,17 @@ The corrected pressure drop.
 
 \subsubsection{$\mathcal{E}$-NTU and LMTD}
 
-
 \begin{figure}[H]
   \centering
   \begin{subfigure}{.49\textwidth}
     \centering
-    \includegraphics[width=0.99\textwidth]{Qdot_ucalc_vs_measured.png}
+    \includegraphics[width=0.95\textwidth]{Qdot_ucalc_vs_measured.png}
     \caption{Correction line from 2022 and 2023 designs.}
     \label{fig:uncorrected_Qdot}
   \end{subfigure}
   \begin{subfigure}{.49\textwidth}
     \centering
-    \includegraphics[width=0.99\textwidth]{Qdot_ccalc_vs_measured.png}
+    \includegraphics[width=0.95\textwidth]{Qdot_ccalc_vs_measured.png}
     \caption{Applied correction on \ref{fig:uncorrected_Qdot} and unseen 2019 designs.}
     \label{fig:corrected_Qdot}
   \end{subfigure}
@@ -254,10 +253,11 @@ This is because while both $\mathcal{E}$-NTU method performs a single calculatio
 This is an important consideration for the optimization algorithm as the objective function is calculated thousands of times during the process.
 
 
-
 \section{Optimization Problem}
 
 The goal is to maximise the heat transfer rate $\dot{Q}$ subject to physical constraints. For variable flow rate and outlet temperatures, the effectiveness may not be maximised at the maximum heat transfer rate.
+An objective function which calculates a cost to be minimised was defined as $2\times10^4 /\dot{Q}$, which typically ranges from $0.5$ to $2$.
+In rare cases, the hydraulic analysis may fail to converge and so the cost is set to $10^6$ to prevent the algorithm from selecting this design.
 
 \subsection{Constraints}
 
@@ -272,6 +272,8 @@ For our design, we have the following constraints:
   \item Nozzles must not be closer than $20$ mm to the edge of the shell or header end.
   \item The tube pitch must be greater than $12$ mm.
 \end{itemize}
+
+\newpage
 
 The mass calculation has a level of uncertainty in the manufactured components and so the constraint is reduced to 1.1 kg.
 The total length of the tubes constraint must be modified to account for the manufacturing process.
@@ -314,11 +316,15 @@ This is assumed to be optimal as it promotes turbulent mixing throughout the she
 \begin{figure}[H]
   \centering
   \includegraphics[width=0.6\textwidth]{pitch_vs_tubes.png}
-  \caption{Tube pitch as a function of the number of tubes in each hot section.}
+  \caption{Average tube pitch as a function of the number of tubes in each hot section.}
   \label{fig:pitch_vs_tubes}
 \end{figure}
 
-Figure \ref{fig:pitch_vs_tubes} shows the pitch as a function of the number of tubes for varying hot sections. 
+Figure \ref{fig:pitch_vs_tubes} shows an average pitch as a function of the number of tubes for varying hot sections.
+These relations are of the form $Y$ = $k d_\text{sh} /\sqrt{n_t}$ where $k$ varies with tube pattern, and number of hot sections.
+This result agrees with intuition that for a large number of total tubes, triangular packing achieves a higher average pitch than square packing.
+However, this is still a very crude approximation and the actual average pitch will be much lower than this considering equal spacing from the shell wall and any cold section divider walls.
+A significant improvement would come from implementing a 2D packing algorithm to be ran exhastively beforehand and stored in a lookup table as to not slow down the optimization algorithm.
 
 The search space for a given template with $N_\text{hot}$ hot stages and $N_\text{cold}$ cold stages is $(N_\text{hot} + N_\text{cold} + 1)$ dimensional.
 This arises from the 1 dimensional length, number of tubes in each hot stage, and number of baffles in each cold stage.
@@ -362,7 +368,7 @@ the user visualise the flow path of multi-stage designs.
 % challenging to visualise higher dimensional spaces
 % I'm not as big as a fan of 3D plots as I used to be - they're harder to interpret than colour maps
 
-\begin{table}[h!]
+\begin{table}[H]
   \centering
   \begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|}
       \hline
@@ -386,33 +392,45 @@ the user visualise the flow path of multi-stage designs.
   \label{table:designs}
 \end{table}
 
-It is important to note that in reality, the pattern of the tubes is not strictly followed in order to fit high numbers of tubes into the heat exchanger.
+It is important to note that in reality, the pattern of the tubes is not strictly followed in order to fit high numbers of tubes into the heat exchanger \ref{fig:final_tube_layout}.
 These arrangements maximise the average pitch and are typically similar to the triangular pattern.
-The software overestimates the triangular pitch and underestimates the square pitch to account for this.
 
-It was satisfying to see that the software tool was finding longer solutions with additional tubes in later hot passes over shorter designs with an equal number of tubes in each hot pass.
+It was interesting to see that the software tool was finding longer solutions with additional tubes in later hot passes over shorter designs with an equal number of tubes in each hot pass.
 However, this design with a different number of tubes in each section is much harder to manufacture than a circularly symmetric design.
-Manual inspection of the design 
 
 From table \ref{table:designs} the yellow row shows the optimal design predicted by the software has 1 cold stage and 3 hot stages.
 This was the design proposed by our pair and selected by the group.
 During the development of CAD, slight modifications were made and checked with the software tool.
 A slightly shorter 5,5,5 tube configuration was used for circular and axial symmetry, reducing the number of unique components and simplifying the manufacturing process.
-The number of baffles was also reduced to 7 for some reason. % why? this is stupid
-
+The group also decided to reduce the number of baffles to 7.
+This may have been out of concern that the baffle spacing would become too small relative to the shell diameter.
+There are also practical reasons for having an odd number of baffles, as the cold inlet and outlet nozzles are on the same side of the shell.
 
 \begin{figure}[H]
   \centering
-  \includegraphics[width=0.9\textwidth]{final.png}
+  \includegraphics[width=0.85\textwidth]{final.png}
   \caption{Final design with 1 cold stage and 3 hot stages.}
   \label{fig:final_design}
 \end{figure}
 
-\section{Conclusion}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.45\textwidth]{final_tube_layout.png}
+  \caption{Layout of the tubes in the final design showing incoherent pattern and variable pitch.}
+  \label{fig:final_tube_layout}
+\end{figure}
 
-The software tool developed for the design optimization of shell and tube heat exchangers was successful in finding the optimal design for a given set of constraints.
-The Simplicial Homology Global Optimization algorithm was chosen for its robustness and ability to find optima in all cases.
-A design with 1 cold stage and 3 hot stages was selected and 
+
+\section{Summary}
+
+Hydraulic analysis was performed using Kerns method and compared with experimental data.
+Innacuracies in the method were identified for the cold flow path and improved by a linear fit to the pressure calculation.
+$\mathcal{E}$-NTU and LMTD methods were compared by calculation time, with $\mathcal{E}$-NTU being 2-2.5 times faster on average.
+Calculated heat transfer rates showed a strong correlation of $\mathbf{0.91772}$ to experimentally measured values for a range of heat exchanger designs.
+An interactive software tool was developed to rapidly test a wide range of heat exchanger configurations and compare performance.
+Common mass and geometry specification constraints were considered with further constraints to reduce the search space.
+Three algorithms for finding an optimal design were compared and SHGO was chosen for its robustness and ability to find optima in all cases.
+A design with 1 cold stage and 3 hot stages was selected and further design modifications were made for manufacturability and practicality.
 
 
 % bibliography
