@@ -60,7 +60,7 @@
 \begin{document}
 
 \title{GA3: Heat Exchanger Performance Report}
-\author{lwp26}
+\author{lwp26 - Group E}
 \date{May 2024}
 \maketitle 
 
@@ -68,16 +68,14 @@
 
 \section{Uncertainty Analysis}
 
-\subsection{Preliminary Analysis}
-
 \begin{equation}
-    \dot{Q} = f(L_\text{tube}, \dot{m}_1, \dot{m}_2, T_{1in}, T_{2in}) = f(x_1, x_2, \ldots, x_N)
+    \dot{Q} = f(L_\text{tube}, Y, B, T_{1in}, T_{2in}) = f(x_1, x_2, \ldots, x_N)
 \end{equation}
 
-The relative uncertainty due to variable $i$ is found numerically by:
+The relative uncertainty of $\dot{Q}$ due to variable $i$ is found numerically by a central difference method:
 
 \begin{equation}
-    u_i(\dot{Q}) \approx \frac{ \left| \dot{Q}(x_i + \delta x_i) - \dot{Q}(x_i) \right|}{\dot{Q}(x_i)}
+    u_i(\dot{Q}) \approx \frac{ \left| \dot{Q}(x_i + \delta x_i) - \dot{Q}(x_i - \delta x_i) \right|}{2\dot{Q}(x_i)} \label{eq:central_difference}
 \end{equation}
 
 An initial test was performed to determine the sensitivity of $\dot{Q}$ to baffle spacing, pitch and length.
@@ -85,9 +83,6 @@ The absolute uncertainty in baffle spacing, pitch and length is taken to be 1mm.
 This represents a high relative uncertainty in the pitch due to the empirical method used in the software.
 The relative uncertainty in calculated $\dot{Q}$ was found to be 0.00546\%, 0.58286\% and 0.11430\% for baffle spacing, pitch and length respectively.
 This shows that an uncertainty in baffle spacing has negligible effect and is not considered in further analysis.
-
-% Due to the large number of inputs, a Monte Carlo simulation was used to determine the uncertainty in $\dot{Q}$.
-
 For all 2024 designs the number of tubes and baffles are equal across cross sections.
 
 \subsection{Uncertainty of Inputs}
@@ -99,6 +94,7 @@ The uncertainty in the pitch is harder to determine.
 Given that the CAD drawings are available, it makes sense to define a true average pitch and compare this to the calculated pitch to determine the uncertainty.
 The true average pitch is defined as the average edge length of a network spanning a given hot section.
 For all designs in 2024 the hot sections are circularly symmetric and so the average pitch is the same for all hot sections.
+The absolute uncertainty in the pitch is then taken to be the maximum difference between the calculated and true average pitch.
 
 \begin{minipage}[t]{0.29\textwidth}
     \centering
@@ -123,19 +119,48 @@ For all designs in 2024 the hot sections are circularly symmetric and so the ave
     \label{tab:pitch_comparison}
 \end{minipage}
 
+\subsection{Uncertainty of Outputs}
+Corrections from available experimental data were applied to the pressure calculations to improve the accuracy Kerns method.
+The uncertainty in mass flow from these corrections is not considered in this short report.
+A correction was also applied to the final $\dot{Q}$ value as it had a strong correlation coefficient.
+Uncertainty in the uncorrected $\dot{Q}$ was estimated for each variable by the same central difference method in equation \ref{eq:central_difference}.
+These values are shown for each design in the table \ref{tab:uncorrected_uncertainty} below, along with the overall propagated uncertainty.
 
+\begin{table}[h!]
+    \centering
+    \begin{tabular}{c|cccccc}
+        \hline
+        Group & $u_Y(\dot{Q})$ & $u_L(\dot{Q})$ & $u_{T_\text{1in}}(\dot{Q})$ & $u_{T_\text{2in}}(\dot{Q})$ & $u_\text{unc}(\dot{Q})$ \\
+         & (\%) & (\%) & (\%) & (\%) & (\%) \\
+        \hline
+        A & 2.38 & 0.119 & 1.35 & 1.35 & 3.06 \\
+        B & 2.31 & 0.127 & 1.32 & 1.32 & 2.97 \\
+        C & 2.44 & 0.117 & 1.37 & 1.37 & 3.11 \\
+        D & 3.17 & 0.132 & 1.32 & 1.32 & 3.68 \\
+        E & 3.86 & 0.137 & 1.37 & 1.37 & 4.32 \\
+        \hline
+    \end{tabular}
+    \caption{Relative uncertainty components of each groups design to each variable, and the uncertainty in uncorrected $\dot{Q}$ due to all variables.}
+    \label{tab:uncorrected_uncertainty}
+\end{table}
+
+The correction applied to $\dot{Q}$ was based on a limited set of 2022 and 2023 data.
+The uncertainty in the slope and intercept coefficients for this correction was estimated using a t-distribution with a 90\% confidence level.
+This is displayed with the uncorrected uncertainty below in figure \ref{fig:uncertainty_regions}.
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.99\textwidth]{Qdot_uncertainty_bands.png}
-    \caption{$\dot{Q}$ Uncertainty Regions for 2024 Designs}
-    \label{fig:uncertainty}
+    \caption{$\dot{Q}$ Uncertainty Regions for 2024 Designs given uncorrected \ref{tab:uncorrected_uncertainty}}
+    \label{fig:uncertainty_regions}
 \end{figure}
 
 \section{Performance Degradation}
 
 Fouling is a common issue in heat exchangers, leading to a reduction in heat transfer.
 This can be due to a variety of mechanisms depending on the fluid, geometry and operating conditions.
+For feedwater heaters the most common fouling mechanisms are
+This is often modelled by an empirical fouling factor, which acts as additional thermal resistance \cite{HeatTransfer}.
 
 \subsection{Performance Comparison}
 
