@@ -66,22 +66,34 @@
 
 \section{Introduction}
 
+The performance of various heat exchanger geometries can be analysed using the software previously developed.
+The resulting heat transfer rate $\dot{Q}$ depends on many variables, and experimental data used to calibrate the software.
+However, the confidence in the software's predictions is limited by uncertainty in input variables and methods used to calibrate the software from limited experimental data.
+This report will analyse the uncertainty in the software's predictions and compare the performance of various groups heat exchanger designs.
+% group C manifold
+
 \section{Uncertainty Analysis}
-
+The heat transfer rate is a function of geometry, operating conditions and compressor characteristics defined below.
 \begin{equation}
-    \dot{Q} = f(L_\text{tube}, Y, B, T_{1in}, T_{2in}) = f(x_1, \; \dots \; x_i \; \dots \; , x_N)
+    \dot{Q} = f(L_\text{tube}, Y, B, T_{1in}, T_{2in}, \dot{m}_1(\Delta P_1), \dot{m}_2(\Delta P_2)) = f(x_1, \; \dots \; x_i \; \dots \; , x_N, \dot{m}_1(\Delta P_1), \dot{m}_2(\Delta P_2))
 \end{equation}
-
 The relative uncertainty of $\dot{Q}$ due to absolute uncertainty $\delta x_i$ is found numerically by a central difference method:
 \begin{equation}
-    u_i(\dot{Q}) \approx \frac{1}{\dot{Q}}\left|\frac{\partial \dot{Q}}{\partial x_i} \delta x_i \right| \approx \frac{ \left| \dot{Q}(x_i + \delta x_i) - \dot{Q}(x_i - \delta x_i) \right|}{2\dot{Q}(x_i)} \label{eq:central_difference} \quad \text{and} \quad u_\text{unc}(\dot{Q}) = \sqrt{\sum_{i=1}^N u_i(\dot{Q})^2}
+    u_i(\dot{Q}) \approx \frac{1}{\dot{Q}}\left|\frac{\partial \dot{Q}}{\partial x_i} \delta x_i \right| \approx \frac{ \left| \dot{Q}(x_i + \delta x_i) - \dot{Q}(x_i - \delta x_i) \right|}{2\dot{Q}(x_i)} \label{eq:central_difference} \quad \text{and} \quad u(\dot{Q}) = \sqrt{\sum_{i=1}^N u_i(\dot{Q})^2}
 \end{equation}
+The uncertainty in compressor characteristics is handled by applying the uncertainty band to pressures at all operating points \ref{fig:compressor_uncertainty}.
 An initial test was performed to determine the sensitivity of $\dot{Q}$ to baffle spacing, pitch and length.
 The absolute uncertainty in baffle spacing, pitch and length is taken to be 1mm.
 This represents a high relative uncertainty in the pitch due to the empirical method used in the software.
 The relative uncertainty in calculated $\dot{Q}$ was found to be 0.00546\%, 0.58286\% and 0.11430\% for baffle spacing, pitch and length respectively.
 This shows that an uncertainty in baffle spacing has negligible effect and is not considered in further analysis.
-For all 2024 designs the number of tubes and baffles are equal across cross sections.
+For all 2024 designs the number of tubes and baffles are equal in each of the designs cross sections.
+
+\subsection{Special Cases}
+
+Group C have a unique manifold for their hot section flow and so have a reduced pressure rise across the hot section.
+The pressure loss coefficient is not known and so the nozzle loss coefficient was underestimated to be 0.
+The expansion and constriction losses were taken to be the same as other groups 
 
 \subsection{Uncertainty of Inputs}
 
@@ -116,6 +128,17 @@ The absolute uncertainty in the pitch is then taken to be the maximum difference
     \label{tab:pitch_comparison}
 \end{minipage}
 
+The uncertainty in the compressor characteristics is assumed to be 5\% as shown below in figure \ref{fig:compressor_uncertainty}.
+The uncertainty in $\dot{Q}$ was found by calculating the same central difference method at 5\% higher and lower pressure characteristic pressure curves.
+These are shown by the upper and lower lines of the shaded regions in figure \ref{fig:compressor_uncertainty}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{compressor_characteristics.png}
+    \caption{Assumed 5\% uncertainty in compressor characteristics}
+    \label{fig:compressor_uncertainty}
+\end{figure}
+
 \subsection{Uncertainty of Outputs}
 Corrections from available experimental data were applied to the pressure calculations to improve the accuracy Kerns method.
 The uncertainty in mass flow from these corrections is not considered in this short report.
@@ -123,19 +146,21 @@ A correction was also applied to the final $\dot{Q}$ value as it had a strong co
 Uncertainty in the uncorrected $\dot{Q}$ was estimated for each variable by the same central difference method in equation \ref{eq:central_difference}.
 These values are shown for each design in the table \ref{tab:uncorrected_uncertainty} below, along with the overall propagated uncertainty.
 
+
 \begin{table}[h!]
     \centering
-    \begin{tabular}{c|ccccc|c}
-        Group & $u_Y(\dot{Q})$ & $u_L(\dot{Q})$ & $u_{T_\text{1in}}(\dot{Q})$ & $u_{T_\text{2in}}(\dot{Q})$ & $u_\text{unc}(\dot{Q})$ & $u_\text{cor}(\dot{Q})$\\
-         & (\%) & (\%) & (\%) & (\%) & (\%) & (\%) \\
-        \hline
-        A & 2.38 & 0.119 & 1.35 & 1.35 & 3.06 & 12.14 \\
-        B & 2.31 & 0.127 & 1.32 & 1.32 & 2.97 & 12.18 \\
-        C & 2.44 & 0.117 & 1.37 & 1.37 & 3.11 & 12.15 \\
-        D & 3.17 & 0.132 & 1.32 & 1.32 & 3.68 & 12.54 \\
-        E & 3.86 & 0.137 & 1.37 & 1.37 & 4.32 & 12.75 \\
+    \begin{tabular}{c|c|c|c|c|c|c|c|c}
+
+        Group & $u_Y(\dot{Q})$ & $u_L(\dot{Q})$ & $u_{T_\text{1in}}(\dot{Q})$ & $u_{T_\text{2in}}(\dot{Q})$ & $u_\text{cold}(\dot{Q})$ & $u_\text{hot}(\dot{Q})$ & $u_\text{unc}(\dot{Q})$ & $u_\text{cor}(\dot{Q})$\\
+        & (\%) & (\%) & (\%) & (\%) & (\%) & (\%) & (\%) & (\%) \\
+    \hline
+    Group-A & 2.384050     & 0.119312      & 1.348202    & 1.348202    & 0.718815    & 1.257291   & 3.380932 & 12.30      \\
+    Group-B & 2.307477     & 0.127439      & 1.322163    & 1.322163    & 0.690370    & 1.243790   & 3.295534 & 12.35    \\
+    Group-C & 2.437940     & 0.116954      & 1.367768    & 1.367768    & 0.726736    & 1.266629   & 3.439666 & 12.31     \\
+    Group-D & 3.174105     & 0.132264      & 1.318523    & 1.318523    & 0.714964    & 1.235442   & 3.950561 & 12.69     \\
+    Group-E & 3.860030     & 0.137442      & 1.371735    & 1.371735    & 0.735290    & 1.162906   & 4.535972 & 12.84    \\
     \end{tabular}
-    \caption{Relative uncertainty components of uncorrected $\dot{Q}$ for each group, and the overall uncertainty in uncorrected and corrected (\ref{fig:uncertainty_regions}) $\dot{Q}$ due to all variables.}
+    \caption{Table of u\_Qdot values for different groups}
     \label{tab:uncorrected_uncertainty}
 \end{table}
 
@@ -151,9 +176,9 @@ This is displayed with the uncorrected uncertainty below in figure \ref{fig:unce
 \end{figure}
 
 This shows a significant uncertainty in the corrected $\dot{Q}$ value for all designs. Comparisons between designs are difficult due to the large uncertainty in the corrected $\dot{Q}$ value.
-The uncertainty in our, group E, design is slightly higher than other groups due to our high tube count and high relative uncertainty in pitch.
+The uncertainty in our, group E, design is slightly higher than other groups due to our high tube count and high relative uncertainty in calculated pitch.
 The impact this has on $\dot{Q}$ can be seen in the table \ref{tab:uncorrected_uncertainty}.
-
+Variables that affect $\dot{Q}$ the most are hot pressure characteristics and both hot and cold inlet temperatures.
 
 \section{Performance Degradation}
 
@@ -162,10 +187,12 @@ This can be due to a variety of mechanisms depending on the fluid, geometry and 
 For feedwater heaters the most common fouling mechanisms are deposition of iron oxides and inorganic salts \cite{HeatTransfer}.
 This is often modelled by an empirical fouling factor, which acts as additional thermal resistance \cite{HeatTransfer}.
 For shell and tube heat exchangers, this fouling factor has been found to increase over time \cite{fouling}.
-We will only consider a constant fouling factor of $R_f = 0.00174$.
+We will only consider a constant fouling factor of $R_f = 0.00174$. The total fouling factor \cite{HE_design} is defined for both sides of the pipe as:
+\begin{equation}
+    R_{Tf} = R_f \left( 1 + \frac{d_o}{d_i} \right)
+\end{equation}
 
 \subsection{Performance Comparison}
-
 
 \begin{figure}[H]
     \centering
@@ -199,6 +226,12 @@ These were also 3.53\% and 3.82\% below predicted optimal for their configuratio
       \emph{Heat Transfer. 10th ed.}
       McGraw-Hill,
       2010.
+
+      \bibitem{HE_design}
+        Sadik Kakac, Hongtan Liu, Anchasa Pramuanjaroenkij,
+        \emph{Heat Exchangers: Selection, Rating, and Thermal Design, Third Edition}
+        CRC Press,
+        2012.
 
       \bibitem{fouling}
       M. Ratel, Y. Kapoor, Z. Anxionnaz-Minvielle, L Seminel, B. Vinet
