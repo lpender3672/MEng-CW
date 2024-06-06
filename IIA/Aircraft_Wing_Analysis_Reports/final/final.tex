@@ -58,12 +58,87 @@
 
 \begin{document}
 
-\title{GA3: Heat Exchanger Final Report}
+\title{SA1: Wing Analysis Final Report}
 \author{lwp26}
 \date{June 2024}
 \maketitle 
 
+\section{Introduction}
+\subsection{Purpose}
 
+\subsection{Objectives}
+
+\section{Development of Software Tool}
+
+\subsection{Panel Method}
+
+Many of the panel method functions could be vectorized to improve performance.
+\subsubsection{Single Panel}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.3\textwidth]{figures/single_panel.jpg}
+    \caption{Single Panel}
+    \label{fig:single_panel}
+\end{figure}
+The streamfunction due to a linearly distributed vortex panel is given by
+\begin{equation}
+    \psi(X,Y) = \gamma_a f_a + \gamma_b f_b
+\end{equation}
+where $f_a$ and $f_b$ are influence coefficients of the panel at points $a$ and $b$ respectively.
+The influence functions can be found by integrating the Biot-Savart law over the panel.
+
+A function is written to calculate the influence coefficients for a vector of panel points.
+
+
+\subsection{Boundary Layer Solver}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.2\textwidth]{figures/bl_solver_flowchart.png}
+    \caption{Boundary Layer Profile}
+    \label{fig:BL}
+\end{figure}
+
+\subsubsection{Laminar Regime}
+
+Test for transition to turbulence
+\begin{equation}
+    \ln(Re_\theta) = 18.4 H_E - 21.74 \quad \text{ where } \quad Re_\theta = Re_L\left( \frac{u_e}{U} \right) \left( \frac{\theta}{L} \right)
+\end{equation}
+
+\begin{equation}
+    m = - \frac{\theta^2}{\mu}\frac{du_e}{dx} = -Re_L \left( \frac{\theta}{L} \right)^2 \frac{d(u_e / U)}{d(x/L)}
+\end{equation}
+
+If $m > 0.09$, then the laminar boundary layer seperates and is treated as turbulent.
+
+\begin{equation}
+    \dot{\mathbf{y}} = \begin{bmatrix}
+        \frac{d \theta}{d x} \\[5pt]
+        \frac{d \delta_E}{d x}
+    \end{bmatrix} = f(x,\mathbf{y}) = \begin{bmatrix}
+        \frac{c_f}{2} - \frac{H+2}{u_e}\frac{d u_e}{d x} \theta \\[5pt]
+        c_\text{diss} - \frac{3}{u_e} \frac{d \delta_E}{d x} \delta_E
+    \end{bmatrix}
+\end{equation}
+
+\begin{align}
+    H &= \begin{cases}
+        \frac{11 H_E + 15}{48H_E - 59} & \text{if } H_E  \ge 1.46 \\
+        2.803 & \text{if } H_E < 1.46
+    \end{cases} \\
+    c_f &= 0.091416\left[(H-1)Re_\theta \right]^{-0.232}e^{-1.26H} \\
+    c_\text{diss} &= 0.010024\left[(H-1)Re_\theta \right]^{1/6}
+\end{align}
+
+\section{Software Validation}
+
+\section{Topology Optimization}
+
+\subsection{High Reynolds Number}
+
+\subsection{Low Reynolds Number}
 
 
 \end{document}
