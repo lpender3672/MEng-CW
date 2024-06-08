@@ -187,7 +187,13 @@ If $m > 0.09$, then the laminar boundary layer seperates and is treated as turbu
 A spline fit tool is used to paramaterize complex curves with a small number of control points.
 The calculated lift and drag coefficients are very sensitive to control point position.
 
+A Naca 0012 airfoil is used as a starting point to gain insight into the effect of changing the airfoil shape on performance.
+
 \subsection{High Reynolds Number}
+
+The first changes made to the initial NACA 0012 airfoil were increasing curvature of the top surface.
+This was done first all along the airfoil, then only in the region of the leading edge.
+This can be seen below in figure \ref{fig:v5_geometry} and the performance in figure \ref{fig:v5_lod}.
 
 \begin{figure}[H]
     \centering
@@ -208,10 +214,22 @@ The calculated lift and drag coefficients are very sensitive to control point po
         \centering
         \includegraphics[width=0.99\textwidth]{figures/hiRe_upperprofile_5_a5.eps}
         \caption{Pressure coefficient and momentum thickness profiles for $\alpha = 5^\circ$}
-        \label{fig:v5_profile}
+        \label{fig:v5_uprofile}
     \end{subfigure}
     \caption{Performance of initial 5 design iterations and their upper surface boundary layer profiles}
 \end{figure}
+
+Figure \ref{fig:v5_uprofile} shows that these changes have a significant effect on the shape of the suction peak.
+For maximum lift the area enclosed by the upper surface pressure coefficient profile should be minimised.
+This means that the suction peak area should be maximised.
+Version 2 had a 10\% higher lift coefficient which resulted in a higher lift to drag ratio seen in figure \ref{fig:v5_lod}.
+All of versions 3 4 and 5 consisted of variations of the leading edge curvature which had worse lift to drag ratios.
+This did move the suction peak further back along the upper surface but due to an increased gradient behind the peak,
+the area enclosed by the profile was decreased overall.
+A thinner version 5 produced a lift coefficient 11\% lower than the initial NACA 0012 airfoil.
+
+Changes were then made to upper surface to ensure its convex to prevent adverse pressure gradients and increase area enclosed by the suction peak.
+This can be seen in figure \ref{fig:v9_geometry} and the performance in figure \ref{fig:v9_lod}.
 
 \begin{figure}[H]
     \centering
@@ -226,16 +244,30 @@ The calculated lift and drag coefficients are very sensitive to control point po
         \centering
         \includegraphics[width=1.2\textwidth, center]{figures/hiRe_lad_9.eps}
         \caption{Airfoil}
-        \label{fig:v9_lod}
+        \label{fig:v9_lad}
     \end{subfigure}
     \begin{subfigure}{0.54\textwidth}
         \centering
         \includegraphics[width=0.99\textwidth]{figures/hiRe_upperprofile_9_a3.eps}
         \caption{Pressure coefficient and momentum thickness profiles for $\alpha = 3^\circ$}
-        \label{fig:v9_profile}
+        \label{fig:v9_uprofile}
     \end{subfigure}
     \caption{Performance of design iterations 6-9 and their upper surface boundary layer profiles}
 \end{figure}
+
+This change shows a higher lift achieved as the low pressure coefficient is maintained by the convex upper surface.
+The drag coefficient curves for many designs in figure \ref{fig:v9_lad} show a sudden increase at varying angles of attack.
+This is due to the point of transition to turbulence jumping forward on the upper surface with the increased angle of attack.
+An earlier transition point means that the boundary layer can grow to be significantly thicker, increasing the drag of the aerofoil.
+However, the NACA0012 demonstrates that early transition with small adverse pressure gradients can also produce lower drag coefficients.
+
+Attempts were made to smooth the upper surface to prevent jumps in the transition point for a robust aerofoil design.
+These can occur if there are too many closely spaced control points which can create a zig-zag shape, producing alternating favourable and adverse pressure gradients.
+Small variations increasing the radius of curvature produced an even larger enclosed area by the suction peak and hence higher lift,
+but at the cost of an increased pressure gradient behind the peak and hence higher drag (Versions 7 and 8).
+
+Changes to the lower surface were then considered.
+The lower surface was flattened to remove the adverse pressure gradient and increase pressure coefficient on the bottom surface to increase lift.
 
 \begin{figure}[H]
     \begin{subfigure}{0.54\textwidth}
@@ -266,6 +298,17 @@ The calculated lift and drag coefficients are very sensitive to control point po
     \end{subfigure}
     \caption{Upper and lower surface pressure coefficient and momentum thickness profiles for $\alpha = 7^\circ$}
 \end{figure}
+
+This improved pressure on the bottom surface and moved transition along which is two desired effects.
+Also improved the lift generated on the top surface in a relatively unexpected manner since we didn't change this.
+idea moves stagnation point down which increases streamline curvature around top and achieves lower cp on top (more lift)
+
+Changed lower trailing edge to be a tiny bit convex and it was previously concave. 
+Approaching concave we get favourable pressure gradient helping to move transition along. 
+At concave part we get higher pressures (which for bottom surface increases lift).
+Boundary layer turbulent at this point and isn't too badly affected at end. 
+Trying to extend concavity further we increased drag as transition occurred earlier. (Approached adverse pressure gradient sooner)
+
 
 \begin{figure}[H]
     \centering
