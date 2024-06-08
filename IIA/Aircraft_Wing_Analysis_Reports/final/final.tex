@@ -114,6 +114,8 @@ Test for transition to turbulence
 
 If $m > 0.09$, then the laminar boundary layer seperates and is treated as turbulent.
 
+\subsubsection{Turbulent Regime}
+
 \begin{equation}
     \dot{\mathbf{y}} = \begin{bmatrix}
         \frac{d \theta}{d x} \\[5pt]
@@ -135,7 +137,51 @@ If $m > 0.09$, then the laminar boundary layer seperates and is treated as turbu
 
 \section{Software Performance}
 
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{figures/RePanelVec_times.eps}
+    \caption{Computation time for NACA 0012 airfoil for varying number of panels, low and high Reynolds numbers, vectorized and loop algorithms at $\alpha = 5^\circ$}
+    \label{fig:airfoil}
+\end{figure}
+
+
+\begin{figure}[H]
+    \centering
+    \captionsetup{justification=centering}
+    \begin{subfigure}{0.45\textwidth}
+        \includegraphics[width=0.99\textwidth]{figures/NACA0012_lift_validation.png}
+        \caption{Lift coefficient against angle of attack}
+        \label{fig:0012_lift_validation}
+    \end{subfigure}
+    \begin{subfigure}{0.45\textwidth}
+        \centering
+        \includegraphics[width=0.99\textwidth]{figures/NACA0012_drag_validation.png}
+        \caption{Drag coefficient against lift coefficient}
+        \label{fig:0012_drag_validation}
+    \end{subfigure}
+    \caption{Experimetnal and calculated performance at $Re = 3\times10^6$ for the NACA0012 aerofoil}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \captionsetup{justification=centering}
+    \begin{subfigure}{0.45\textwidth}
+        \includegraphics[width=0.9\textwidth]{figures/NACA4412_lift_validation.png}
+        \caption{Lift coefficient against angle of attack}
+        \label{fig:4412_lift_validation}
+    \end{subfigure}
+    \begin{subfigure}{0.45\textwidth}
+        \centering
+        \includegraphics[width=0.9\textwidth]{figures/NACA4412_drag_validation.png}
+        \caption{Drag coefficient against lift coefficient}
+        \label{fig:4412_drag_validation}
+    \end{subfigure}
+    \caption{Experimetnal and calculated performance at $Re = 3\times10^6$ for the NACA4412 aerofoil}
+\end{figure}
+
 \section{Topology Optimization}
+
+\subsection{Changing Topology}
 
 \subsection{High Reynolds Number}
 
