@@ -14,6 +14,7 @@
 \usepackage{hyperref}
 \usepackage{tikz}
 \usepackage{layout}
+\usepackage[export]{adjustbox}
 
 \usepackage[margin=1in]{geometry}
 \usepackage{listings}
@@ -183,127 +184,135 @@ If $m > 0.09$, then the laminar boundary layer seperates and is treated as turbu
 
 \subsection{Changing Topology}
 
+A spline fit tool is used to paramaterize complex curves with a small number of control points.
+The calculated lift and drag coefficients are very sensitive to control point position.
+
 \subsection{High Reynolds Number}
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.6\textwidth]{figures/hiRe_geometry_3.eps}
+    \includegraphics[width=0.8\textwidth]{figures/hiRe_geometry_5.eps}
+    \caption{Airfoil Geometry of first 5 design iterations}
+    \label{fig:v5_geometry}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}{0.45\textwidth}
+        \centering
+        \includegraphics[width=1.2\textwidth, center]{figures/hiRe_lod_5.eps}
+        \caption{Airfoil}
+        \label{fig:v5_lod}
+    \end{subfigure}
+    \begin{subfigure}{0.54\textwidth}
+        \centering
+        \includegraphics[width=0.99\textwidth]{figures/hiRe_upperprofile_5_a5.eps}
+        \caption{Pressure coefficient and momentum thickness profiles for $\alpha = 5^\circ$}
+        \label{fig:v5_profile}
+    \end{subfigure}
+    \caption{Performance of initial 5 design iterations and their upper surface boundary layer profiles}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{figures/hiRe_geometry_9.eps}
+    \caption{Airfoil Geometry}
+    \label{fig:v9_geometry}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}{0.45\textwidth}
+        \centering
+        \includegraphics[width=1.2\textwidth, center]{figures/hiRe_lad_9.eps}
+        \caption{Airfoil}
+        \label{fig:v9_lod}
+    \end{subfigure}
+    \begin{subfigure}{0.54\textwidth}
+        \centering
+        \includegraphics[width=0.99\textwidth]{figures/hiRe_upperprofile_9_a3.eps}
+        \caption{Pressure coefficient and momentum thickness profiles for $\alpha = 3^\circ$}
+        \label{fig:v9_profile}
+    \end{subfigure}
+    \caption{Performance of design iterations 6-9 and their upper surface boundary layer profiles}
+\end{figure}
+
+\begin{figure}[H]
+    \begin{subfigure}{0.54\textwidth}
+        \centering
+        \includegraphics[width=1.2\textwidth, center]{figures/hiRe_geometry_14.eps}
+        \caption{Airfoil Geometry}
+        \label{fig:v14_geometry}
+    \end{subfigure}
+    \begin{subfigure}{0.45\textwidth}
+        \centering
+        \includegraphics[width=1.2\textwidth, center]{figures/hiRe_lod_14.eps}
+        \caption{Drag polar and lift to drag ratio against angle of attack}
+        \label{fig:v14_lod}
+    \end{subfigure}
+    \caption{}
+\end{figure}
+
+\begin{figure}[H]
+    \begin{subfigure}{0.49\textwidth}
+        \centering
+        \includegraphics[width=1.1\textwidth, center]{figures/hiRe_upperprofile_14_a7.eps}
+        \label{fig:v14_uprofile}
+    \end{subfigure}
+    \begin{subfigure}{0.49\textwidth}
+        \centering
+        \includegraphics[width=1.1\textwidth, center]{figures/hiRe_lowerprofile_14_a7.eps}
+        \label{fig:v14_lprofile}
+    \end{subfigure}
+    \caption{Upper and lower surface pressure coefficient and momentum thickness profiles for $\alpha = 7^\circ$}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{figures/hiRe_geometry_17.eps}
     \caption{Airfoil}
-    \label{fig:airfoil}
+    \label{fig:v17_geometry}
 \end{figure}
+
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.6\textwidth]{figures/hiRe_upperprofile_3_a5.eps}
-    \caption{Pressure coefficient and momentum thickness profiles for $\alpha = 5^\circ$}
-    \label{fig:airfoil}
+    \begin{subfigure}{0.45\textwidth}
+        \centering
+        \includegraphics[width=1.2\textwidth, center]{figures/hiRe_lod_17.eps}
+        \caption{Airfoil}
+        \label{fig:v17_lod}
+    \end{subfigure}
+    \begin{subfigure}{0.54\textwidth}
+        \centering
+        \includegraphics[width=0.99\textwidth]{figures/hiRe_lowerprofile_17_a7.eps}
+        \caption{Pressure coefficient and momentum thickness profiles for $\alpha = 7^\circ$}
+        \label{fig:v17_lprofile}
+    \end{subfigure}
+    \caption{Performance of design iterations 14-17 and their upper surface boundary layer profiles}
 \end{figure}
+
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.6\textwidth]{figures/hiRe_geometry_5.eps}
+    \includegraphics[width=0.8\textwidth]{figures/hiRe_geometry_21.eps}
     \caption{Airfoil}
-    \label{fig:airfoil}
+    \label{fig:v21_geometry}
 \end{figure}
+
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.6\textwidth]{figures/hiRe_upperprofile_5_a5.eps}
-    \caption{Pressure coefficient and momentum thickness profiles for $\alpha = 5^\circ$}
-    \label{fig:airfoil}
-\end{figure}
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.6\textwidth]{figures/hiRe_geometry_8.eps}
-    \caption{Airfoil}
-    \label{fig:airfoil}
-\end{figure}
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.6\textwidth]{figures/hiRe_lod_8.eps}
-    \caption{Airfoil}
-    \label{fig:airfoil}
-\end{figure}
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.6\textwidth]{figures/hiRe_upperprofile_8_a5.eps}
-    \caption{Pressure coefficient and momentum thickness profiles for $\alpha = 5^\circ$}
-    \label{fig:airfoil}
-\end{figure}
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.6\textwidth]{figures/hiRe_geometry_9.eps}
-    \caption{Airfoil}
-    \label{fig:airfoil}
-\end{figure}
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.6\textwidth]{figures/hiRe_lad_9.eps}
-    \caption{Airfoil}
-    \label{fig:airfoil}
-\end{figure}
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.6\textwidth]{figures/hiRe_upperprofile_9_a3.eps}
-    \caption{Pressure coefficient and momentum thickness profiles for $\alpha = 3^\circ$}
-    \label{fig:airfoil}
-\end{figure}
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.6\textwidth]{figures/hiRe_geometry_14.eps}
-    \caption{Airfoil}
-    \label{fig:airfoil}
-\end{figure}
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.6\textwidth]{figures/hiRe_lod_14.eps}
-    \caption{Airfoil}
-    \label{fig:airfoil}
-\end{figure}
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.6\textwidth]{figures/hiRe_upperprofile_14_a7.eps}
-    \caption{Pressure coefficient and momentum thickness profiles for $\alpha = 7^\circ$}
-    \label{fig:airfoil}
-\end{figure}
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.6\textwidth]{figures/hiRe_lowerprofile_14_a7.eps}
-    \caption{Pressure coefficient and momentum thickness profiles for $\alpha = 7^\circ$}
-    \label{fig:airfoil}
-\end{figure}
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.6\textwidth]{figures/hiRe_geometry_17.eps}
-    \caption{Airfoil}
-    \label{fig:airfoil}
-\end{figure}
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.6\textwidth]{figures/hiRe_lod_17.eps}
-    \caption{Airfoil}
-    \label{fig:airfoil}
-\end{figure}
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.6\textwidth]{figures/hiRe_lowerprofile_17_a7.eps}
-    \caption{Pressure coefficient and momentum thickness profiles for $\alpha = 7^\circ$}
-    \label{fig:airfoil}
-\end{figure}
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.6\textwidth]{figures/hiRe_geometry_21.eps}
-    \caption{Airfoil}
-    \label{fig:airfoil}
-\end{figure}
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.6\textwidth]{figures/hiRe_lod_21.eps}
-    \caption{Airfoil}
-    \label{fig:airfoil}
-\end{figure}
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.6\textwidth]{figures/hiRe_upperprofile_21_a7.eps}
-    \caption{Pressure coefficient and momentum thickness profiles for $\alpha = 7^\circ$}
-    \label{fig:airfoil}
+    \begin{subfigure}{0.45\textwidth}
+        \centering
+        \includegraphics[width=1.2\textwidth, center]{figures/hiRe_lod_21.eps}
+        \caption{Airfoil}
+        \label{fig:v21_lod}
+    \end{subfigure}
+    \begin{subfigure}{0.54\textwidth}
+        \centering
+        \includegraphics[width=0.6\textwidth]{figures/hiRe_upperprofile_21_a7.eps}
+        \caption{Pressure coefficient and momentum thickness profiles for $\alpha = 7^\circ$}
+        \label{fig:v21_uprofile}
+    \end{subfigure}
+    \caption{Performance of design iterations 14-17 and their upper surface boundary layer profiles}
 \end{figure}
 
 \subsection{Low Reynolds Number}
