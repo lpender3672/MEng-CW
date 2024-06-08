@@ -114,6 +114,8 @@ Test for transition to turbulence
 
 If $m > 0.09$, then the laminar boundary layer seperates and is treated as turbulent.
 
+\subsubsection{Turbulent Regime}
+
 \begin{equation}
     \dot{\mathbf{y}} = \begin{bmatrix}
         \frac{d \theta}{d x} \\[5pt]
@@ -135,7 +137,31 @@ If $m > 0.09$, then the laminar boundary layer seperates and is treated as turbu
 
 \section{Software Performance}
 
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{figures/RePanelVec_times.eps}
+    \caption{Computation time for NACA 0012 airfoil for varying number of panels, low and high Reynolds numbers, vectorized and loop algorithms at $\alpha = 5^\circ$}
+    \label{fig:airfoil}
+\end{figure}
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{figures/NACA0012_lift_validation.png}
+    \caption{Lift coefficient against angle of attack for NACA 0012 airfoil at $Re = 3\times10^6$}
+    \label{fig:0012_lift_validation}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{figures/NACA0012_drag_validation.png}
+    \caption{Drag coefficient against lift coefficient for NACA 0012 airfoil at $Re = 3\times10^6$}
+    \label{fig:0012_drag_validation}
+\end{figure}
+
 \section{Topology Optimization}
+
+\subsection{Changing Topology}
 
 \subsection{High Reynolds Number}
 
