@@ -74,7 +74,9 @@
 
 \subsection{Panel Method}
 
-Many of the panel method functions could be vectorized to improve performance.
+Many of the panel method functions were vectorized to improve performance.
+A detailed performance comparison was later made between the vectorized and non-vectorized functions for various panel sizes and Reynolds numbers \ref{fig:RePanelVec_times}.
+
 \subsubsection{Single Panel}
 
 \begin{figure}[H]
@@ -89,34 +91,91 @@ The streamfunction due to a linearly distributed vortex panel is given by
 \end{equation}
 where $f_a$ and $f_b$ are influence coefficients of the panel at points $a$ and $b$ respectively.
 The influence functions can be found by integrating the Biot-Savart law over the panel.
+A function is written to calculate the influence coefficients for arbitrary panel points through coordinate transformations.
 
-A function is written to calculate the influence coefficients for a vector of panel points.
+The streamfunction due to the superposition of all panels is given by
+\begin{equation}
+    \psi_p(x_i, y_i) = \sum_{\text{ip} = 1}^\text{np} \left[ \gamma_\text{ip} f_a^{(\text{ip})} + \gamma_{\text{ip}+1} f_b^{(\text{ip})} \right]
+\end{equation}
+This can be written in matrix format as $\psi_p(x_i, y_i) = \left[ \boldsymbol{\Psi \gamma} \right]_i$ and the overall streamfunction is $\psi = \psi_p + \psi_{fs}$. \\
+The free stream function is given by $\psi_{fs} = y\cos \alpha - x\sin \alpha$.
 
+The stream function must be constant from panel edge to panel edge.
+\begin{equation}
+    \sum_{\text{j} = 1}^{\text{np}+1} \left[  \boldsymbol{\Psi}_{i+1,j}  - \boldsymbol{\Psi}_{i,j} \right] \gamma_j = \psi_{fs}(x_i, y_i) - \psi_{fs}(x_{i+1}, y_{i+1})
+\end{equation}
+This can be written in matrix form as $ \mathbf{A} \boldsymbol{\gamma} = \boldsymbol{b}$ with
+\begin{align}
+    \mathbf{A}_{i,j} = \boldsymbol{\Psi}_{i+1,j} &- \boldsymbol{\Psi}_{i,j} \\
+    \boldsymbol{b}_i = \psi_{fs}(x_i, y_i) &- \psi_{fs}(x_{i+1}, y_{i+1}) \\
+\end{align}
+The final equations are supplied by the repetition $\gamma_{\text{np}+1} = \gamma_1$ and the trailing edge Kutta condition $\gamma_{\text{np}+1} = -(u_e)_{\text{te}}$.
+The trailing edge velocity is extrapolated from the last two panels.
+\begin{equation}
+    (u_e)_{\text{te}} = \gamma_2 - \frac{1}{2}\gamma_3 + \frac{1}{2}\gamma_{\text{np} - 1} - \gamma_{\text{np}}
+\end{equation}
 
 \subsection{Boundary Layer Solver}
 
+From panel methods, the velocity distribution over the aerofoil surface is known.
+From this the pressure distribution can be found and the boundary layer can be solved for.
+This gives an estimated drag coefficient for skin friction of the aerofoil.
+This method also assumes a smooth surface and so does not account for surface roughness.
+
+The routine for solving the upper or lower aerofoil surface boundary layer is shown below in figure \ref{fig:BL}.
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.2\textwidth]{figures/bl_solver_flowchart.png}
-    \caption{Boundary Layer Profile}
+    \includegraphics[width=0.3\textwidth]{figures/bl_solver_flowchart.png}
+    \caption{Boundary Layer Solve Routine}
     \label{fig:BL}
 \end{figure}
+In box represents an iterative loop that is marches along the panels of the aerofoil for the given flow regime.
+Each iteration performs checks for relevent transitions and seperations,
+which if triggered sets an index flag and loops the new regime starting on the same panel.
 
 \subsubsection{Laminar Regime}
 
-Test for transition to turbulence
+For the laminar regime, Thwaites' solution is used to accelerate the calculation of the boundary layer profile.
+
 \begin{equation}
     \ln(Re_\theta) = 18.4 H_E - 21.74 \quad \text{ where } \quad Re_\theta = Re_L\left( \frac{u_e}{U} \right) \left( \frac{\theta}{L} \right)
 \end{equation}
 
+Thwaites' method defines a form parameter $m$ that uniquely determines the shape of the velocity profile.
 \begin{equation}
     m = - \frac{\theta^2}{\mu}\frac{du_e}{dx} = -Re_L \left( \frac{\theta}{L} \right)^2 \frac{d(u_e / U)}{d(x/L)}
+    \label{}
 \end{equation}
+From the momentum integral equation it can be shown that
+\begin{equation}
+    U\frac{d}{dx}\left( \theta^2 \right) = 2\nu[m(H+2) + l] = \nu L(m)
+\end{equation}
+A general fit for $L(m)$ is given by $L(m) = 0.45 + 6m$, however for adverse pressure gradients this relation is poor
+as in reality the profiles cannot be expressed simply in terms of one parameter, $m$ \cite{BL_notes}.
+With this relation, the analytical Thwaites solution is found as
+\begin{equation}
+    \left[ \frac{\theta}{L}\right]^2 = \frac{0.45}{Re_L} \left[\frac{u_e(x)}{U} \right]^{-6} \int_0^{x/L} \left[ \frac{u_e(x')}{U} \right]^5 d \left( \frac{x'}{L} \right)
+\end{equation}
+The velocity is discretized at the panel edges and so is taken as linear over the panels.
+The additional integral term for the panel behind the $i$th point is calculated using the equation below and is added to a cumulative sum variable.
+\begin{equation}
+    \int_{x_{i-1}}^{x_i} \left[ \frac{u_e(x')}{U} \right]^5 d \left( \frac{x'}{L} \right) = \left[ \bar{u}^5 + \frac{5}{6}(\Delta u)^2 + \frac{1}{16}(\Delta u)^5 \right] \Delta x
+\end{equation}
+where $\bar{u} = (u_{i} - u{i-1})/2$ and $\Delta u = u_i - u_{i-1}$.
+Checks are made for laminar separation and transition to turbulent flow as seen in figure \ref{fig:BL}.
 
 If $m > 0.09$, then the laminar boundary layer seperates and is treated as turbulent.
+The shape factor can also be determined by a lookup table from $m$ and is used to test for natural transition to turbulent flow.
+$H_E$ is found from $H$ from a given script \cite{handout} based on an inverted relation by Eppler and Somers \cite{Eppler_Somers}.
+Natural transition is detected by the empirical criterion also proposed by Eppler and Somers \cite{Eppler_Somers}.
+\begin{equation}
+    \log{Re_\theta} = 18.4 H_E - 21.74 \quad \text{ where } \quad Re_\theta = Re_L\left( \frac{(u_e)_i}{U} \right) \left( \frac{\theta_i}{L} \right)
+\end{equation}
 
 \subsubsection{Turbulent Regime}
 
+The turbulent regime cannot be solved analytically and so is solved numerically.
+Von Karman's boundary-layer integral equation is given by
 \begin{equation}
     \dot{\mathbf{y}} = \begin{bmatrix}
         \frac{d \theta}{d x} \\[5pt]
@@ -126,7 +185,8 @@ If $m > 0.09$, then the laminar boundary layer seperates and is treated as turbu
         c_\text{diss} - \frac{3}{u_e} \frac{d \delta_E}{d x} \delta_E
     \end{bmatrix}
 \end{equation}
-
+Where $c_f$ and $c_\text{diss}$ are empirical relations for the skin friction coefficient and dissipation coefficient respectively.
+Empirical relations for these coefficients and the shape factor proposed by Eppler and Somers \cite{Eppler_Somers} are used.
 \begin{align}
     H &= \begin{cases}
         \frac{11 H_E + 15}{48H_E - 59} & \text{if } H_E  \ge 1.46 \\
@@ -136,8 +196,21 @@ If $m > 0.09$, then the laminar boundary layer seperates and is treated as turbu
     c_\text{diss} &= 0.010024\left[(H-1)Re_\theta \right]^{1/6}
 \end{align}
 
+A test for turbulent transition is made by calculating the new panels energy shape factor and comparing it to the critical
+value proposed by Eppler and Somers $H_E < 1.46$ \cite{Eppler_Somers}.
+
+\subsubsection{Complete Separation}
+
+After turbulent separation, it is assumed that the shape factor remains unchanged from its seperation value.
+
+\begin{equation}
+    \theta_{i} = \theta_{i-1} \left( \frac{(u_e)_{i-1}}{(u_e)_i} \right) ^ {(H + 2)}
+\end{equation}
+
+
 \section{Software Performance}
 
+\subsection{Comparison with Experimental Data}
 
 \begin{figure}[H]
     \centering
@@ -172,6 +245,18 @@ If $m > 0.09$, then the laminar boundary layer seperates and is treated as turbu
     \end{subfigure}
     \caption{Experimetnal and calculated performance at $Re = 3\times10^6$ for the NACA4412 aerofoil}
 \end{figure}
+
+\subsection{Discussion of limitations}
+
+% 1. is only for 2D infinite length wings
+% 2. subsonic flow only
+% 2. discrete panel method - problems 
+% talk about natural transition
+% less known about seperations and reattachment but assume these are valid
+
+% 3. unable to handle turbulent reattachment
+% 4. does not account for surface roughness
+
 
 \section{Topology Optimization}
 
@@ -605,5 +690,16 @@ Additional constraints were partially implemented such as minimum thickness due 
 It was interesting to note that for many manually selected initial conditions, the optimizer would converge to local maximum lift to drag ratios.
 The optimizer was run for a large number of random initial conditions and a global maximum was found at a lift to drag ratio of.
 
+
+\begin{thebibliography}{9}
+    \bibitem{handout}
+    Garcia-Mayoral Ricardo, \textit{Project SA1—Aircraft Wing Analysis Handout} Cambridge University Engineering Department, 2024.
+
+    \bibitem{Eppler_Somers}
+    Eppler \& Somers, \textit{A computer program for the design and analysis of low-speed airfoils}, NASA TM 80210.
+
+    \bibitem{BL_notes}
+    Li Jie, \textit{3A1: Boundary Layers Handout}. Cambridge University Engineering Department, 2023.
+\end{thebibliography}
 
 \end{document}
