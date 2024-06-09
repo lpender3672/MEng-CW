@@ -470,10 +470,118 @@ This involved increasing radius of curvature of the bump and
 were shaped to be even thicker aerofoils to achieve a larger curve radius which successfully pushed back the separation bubble, at the cost of increased length for boundary layer growth.
 These changes were found to be very sensitive and so it may not be possible to push the upper surface separation point as far back as the lower surface.
 
-M18 and M19 were shaped to be even thicker aerofoils to achieve a larger curve radius which successfully pushed back the separation bubble, at the cost of increased length for boundary layer growth. This still provided a marginal improvement in drag but not enough to be further considered.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{figures/loRe_geometry_20.eps}
+    \caption{Airfoil}
+    \label{fig:m20_geometry}
+\end{figure}
+
+\begin{figure}[H]
+    \begin{subfigure}{0.49\textwidth}
+        \centering
+        \includegraphics[width=1.1\textwidth, center]{figures/loRe_upperprofile_20_a5.eps}
+        \caption{}
+        \label{fig:m20_uprofile}
+    \end{subfigure}
+    \begin{subfigure}{0.49\textwidth}
+        \centering
+        \includegraphics[width=1.1\textwidth, center]{figures/loRe_lowerprofile_20_a5.eps}
+        \caption{}
+        \label{fig:m20_lprofile}
+    \end{subfigure}
+    \caption{Upper and lower surface pressure coefficient and momentum thickness profiles for $\alpha = 5^\circ$}
+\end{figure}
+
+Design marks 18 and 19 were shaped to be even thicker aerofoils to achieve a larger curve radius which successfully pushed back the separation bubble, at the cost of increased length for boundary layer growth.
+This still provided a marginal improvement in drag but not enough to be further considered.
+
+Mark 20 had reduced lower surface curvature close to the trailing edge in attempt to reduce the adverse pressure gradient and move seperation point further back.
+This change only increased the gradient upstream and so resulted in loss of lift and increased drag.
+
+Focus was then placed on moving the upper surface seperation bubble further back to reduce drag.
+This was done by smoothing the top surface to decrease pressure gradients.
 
 
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{figures/loRe_geometry_23.eps}
+    \caption{Airfoil}
+    \label{fig:m23_geometry}
+\end{figure}
 
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}{0.45\textwidth}
+        \centering
+        \includegraphics[width=1.2\textwidth, center]{figures/loRe_lod_23.eps}
+        \caption{Airfoil}
+        \label{fig:m23_lod}
+    \end{subfigure}
+    \begin{subfigure}{0.54\textwidth}
+        \centering
+        \includegraphics[width=0.99\textwidth]{figures/loRe_upperprofile_23_a5.eps}
+        \caption{Pressure coefficient and momentum thickness profiles for $\alpha = 7^\circ$}
+        \label{fig:m23_uprofile}
+    \end{subfigure}
+    \caption{Performance of design iterations 21-23 and their upper surface boundary layer profiles}
+\end{figure}
+
+Result of changes TODO
+Improvement over m21 still there but transition occurring on adverse p grad slightly earlier. 
+
+Marks 24 and 25 consisted of more aggressive changes which ended up creating a suction at the start which performs poorly.
+
+An attempt to fix this was made by continuing the curvature further. 
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{figures/loRe_geometry_29.eps}
+    \caption{Airfoil}
+    \label{fig:m29_geometry}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}{0.45\textwidth}
+        \centering
+        \includegraphics[width=1.2\textwidth, center]{figures/loRe_lod_29.eps}
+        \caption{Airfoil}
+        \label{fig:m29_lod}
+    \end{subfigure}
+    \begin{subfigure}{0.54\textwidth}
+        \centering
+        \includegraphics[width=0.99\textwidth]{figures/loRe_upperprofile_29_a5.eps}
+        \caption{Pressure coefficient and momentum thickness profiles for $\alpha = 7^\circ$}
+        \label{fig:m29_uprofile}
+    \end{subfigure}
+    \caption{Performance of design iterations 22-29 and their upper surface boundary layer profiles}
+\end{figure}
+
+This reduced the pressure on the top surface significantly increasing lift.
+Mark 28 shows that the laminar separation bubble was pushed so far back that natural transition occurs instead.
+This was expected to significantly reduce the drag, however, turbulent separation was now occurring sooner which increased the drag.
+This was found to be due to a stronger adverse pressure gradient at the trailing edge.
+
+Mark 29 featured reduction in curvature at the trailing edge, which delayed transition but produced regions of initially larger, then smaller adverse pressure gradients.
+This caused earlier turbulent separation but reduced turbulent boundary layer growth after separation to reach a smaller final momentum thickness, and hence drag.
+Another marginal improvement was seen in the final design mark 30 
+
+\begin{figure}[H]
+    \begin{subfigure}{0.54\textwidth}
+        \centering
+        \includegraphics[width=1.2\textwidth, center]{figures/loRe_geometry_31.eps}
+        \caption{Airfoil Geometry}
+        \label{fig:m31_geometry}
+    \end{subfigure}
+    \begin{subfigure}{0.45\textwidth}
+        \centering
+        \includegraphics[width=1.2\textwidth, center]{figures/loRe_lod_31.eps}
+        \caption{Drag polar and lift to drag ratio against angle of attack}
+        \label{fig:m31_lod}
+    \end{subfigure}
+    \caption{}
+\end{figure}
 
 \section{Extensions}
 
