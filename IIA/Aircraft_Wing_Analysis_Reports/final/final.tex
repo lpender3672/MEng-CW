@@ -66,9 +66,20 @@
 \maketitle 
 
 \section{Introduction}
+
 \subsection{Purpose}
 
+Something about the use of software to rapidly design aerofoils instead of experimental wind tunnel testing.
+Importance of aerospace industry and the need for high efficiency aerofoils.
+
 \subsection{Objectives}
+
+\begin{itemize}
+    \item To write a Matlab code that calculates the lift and drag on a 2D aerofoil section;
+    \item To design high-efficiency aerofoil sections using numerical calculations to guide the design process;
+    \item To gain an understanding of the aerodynamics of aerofoils, in particular the role of the boundary layer in limiting performance.
+    \item To obtain an appreciation of the strengths and limitations of CFD itself.
+\end{itemize}
 
 \section{Development of Software Tool}
 
@@ -253,10 +264,16 @@ After turbulent separation, it is assumed that the shape factor remains unchange
 % 2. discrete panel method - problems 
 % talk about natural transition
 % less known about seperations and reattachment but assume these are valid
-
 % 3. unable to handle turbulent reattachment
 % 4. does not account for surface roughness
 
+\begin{itemize}
+    \item The software is only valid for 2D infinite length wings. This neglects the effects of wing tip vortices and 3D effects.
+    \item The software is only valid for subsonic flow conditions and does not account for compressibility effects. This limits the software to low speed applications.
+    \item The discrete panel method used can lead to numerical errors and instabilities that are unphysical.
+    \item The software assumes that the empirical relations used for laminar separation and turbulent reattachment are valid. However turbulent reattachment is not implemented which can occur some rare flow conditions.
+    \item The boundary layer solver assumes a smooth aerofoil surface 
+\end{itemize}
 
 \section{Topology Optimization}
 
@@ -612,8 +629,9 @@ This was done by smoothing the top surface to decrease pressure gradients.
     \caption{Performance of design iterations 21-23 and their upper surface boundary layer profiles}
 \end{figure}
 
-Result of changes TODO
-Improvement over m21 still there but transition occurring on adverse p grad slightly earlier. 
+
+
+These changes showed a improvement over mark 21 still there but transition occurring on adverse p grad slightly earlier. 
 
 Marks 24 and 25 consisted of more aggressive changes which ended up creating a suction at the start which performs poorly.
 
@@ -650,7 +668,7 @@ This was found to be due to a stronger adverse pressure gradient at the trailing
 
 Mark 29 featured reduction in curvature at the trailing edge, which delayed transition but produced regions of initially larger, then smaller adverse pressure gradients.
 This caused earlier turbulent separation but reduced turbulent boundary layer growth after separation to reach a smaller final momentum thickness, and hence drag.
-Another marginal improvement was seen in the final design mark 30 
+Another marginal improvement was seen in the final design mark 31. 
 
 \begin{figure}[H]
     \begin{subfigure}{0.54\textwidth}
@@ -670,6 +688,23 @@ Another marginal improvement was seen in the final design mark 30
 
 \section{Extensions}
 
+A function was created to calculate the relative change in lift to drag ratio for 0.1\% change in each control point y position.
+Figure \ref{fig:ctrl_sensitivity} shows the sensitivity of the control points for our designed aerofoils at their operating Reynolds numbers and $\alpha = 5^\circ$.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{figures/ctrl_sensitivity.eps}
+    \caption{Control point sensitivity analysis. Red indicates version 23 at $Re = 20\times10^6$ and blue indicates mark 31 at $Re = 0.5\times10^6$}
+    \label{fig:ctrl_sensitivity}
+\end{figure}
+
+This shows that the most sensitive control points are close to the trailing edge.
+A 0.1\% increase in the y position of the first upper surface control point from the trailing edge caused the lift to drag ratio to change by ten-fold.
+This is unintuitive as it would be expected that the most sensitive control points should be upstream of the boundary layer.
+However, the trailing edge applies the Kutta condition which determines the position of the stagnation point, 
+which can significantly affect the pressure distribution and boundary layer behaviour.
+Its also important to note that the spline control points are highly sensitive and so a relative tolerance of 0.1\% would give a much higher relative tolerance in the surface shape.
+
 \subsection{Vectorized methods}
 
 \begin{figure}[H]
@@ -678,7 +713,6 @@ Another marginal improvement was seen in the final design mark 30
     \caption{Computation time for NACA 0012 airfoil for varying number of panels, low and high Reynolds numbers, vectorized and loop algorithms at $\alpha = 5^\circ$}
     \label{fig:RePanelVec_times}
 \end{figure}
-
 
 \subsection{Bezier Spline Optimization}
 
@@ -689,6 +723,14 @@ Additional constraints were partially implemented such as minimum thickness due 
 
 It was interesting to note that for many manually selected initial conditions, the optimizer would converge to local maximum lift to drag ratios.
 The optimizer was run for a large number of random initial conditions and a global maximum was found at a lift to drag ratio of.
+
+\subsection{Manufacturability}
+
+The aerospace industry is highly regulated, and known for high precision manufacturing.
+However, the designs chosen by the software can be extremely sensitive, and so even minor deviations in the manufacturing process could lead to decreased performance.
+
+The software does not account for aeroelastic effects such as wing bending and twisting.
+Additional constraints were partially implemented such as minimum thickness due to the integrated lift bending moment of trailing edge.
 
 
 \begin{thebibliography}{9}
