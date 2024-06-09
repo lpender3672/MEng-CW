@@ -138,13 +138,6 @@ If $m > 0.09$, then the laminar boundary layer seperates and is treated as turbu
 
 \section{Software Performance}
 
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.6\textwidth]{figures/RePanelVec_times.eps}
-    \caption{Computation time for NACA 0012 airfoil for varying number of panels, low and high Reynolds numbers, vectorized and loop algorithms at $\alpha = 5^\circ$}
-    \label{fig:airfoil}
-\end{figure}
-
 
 \begin{figure}[H]
     \centering
@@ -189,6 +182,15 @@ The calculated lift and drag coefficients are very sensitive to control point po
 
 A Naca 0012 airfoil is used as a starting point to gain insight into the effect of changing the airfoil shape on performance.
 
+\subsection{Objective}
+
+The objective is to maximize the lift to drag ratio of the airfoil at a range of angles of attack.
+It is important to consider a range of angles of attack for the airfoil for robust performance.
+This is especially important for 3D wings as it ensures that tip stall is less likely for twist distrubtions from lifting line theory.
+
+Two Reynolds numbers are considered, $Re = 20\times10^6$ and $Re = 5\times10^5$
+
+
 \subsection{High Reynolds Number}
 
 The first changes made to the initial NACA 0012 airfoil were increasing curvature of the top surface.
@@ -229,7 +231,7 @@ the area enclosed by the profile was decreased overall.
 A thinner version 5 produced a lift coefficient 11\% lower than the initial NACA 0012 airfoil.
 
 Changes were then made to upper surface to ensure its convex to prevent adverse pressure gradients and increase area enclosed by the suction peak.
-This can be seen in figure \ref{fig:v9_geometry} and the performance in figure \ref{fig:v9_lod}.
+This can be seen in figure \ref{fig:v9_geometry} and the performance in figure \ref{fig:v9_lad}.
 
 \begin{figure}[H]
     \centering
@@ -293,7 +295,7 @@ The lower surface was flattened to remove the adverse pressure gradient and incr
     \end{subfigure}
     \begin{subfigure}{0.49\textwidth}
         \centering
-        \includegraphics[width=1.1\textwidth, center]{figures/hiRe_lowerprofile_14_a7.eps}
+        \includegraphics[width=1.15\textwidth, center]{figures/hiRe_lowerprofile_14_a7.eps}
         \label{fig:v14_lprofile}
     \end{subfigure}
     \caption{Upper and lower surface pressure coefficient and momentum thickness profiles for $\alpha = 7^\circ$}
@@ -334,6 +336,20 @@ Trying to extend concavity further we increased drag as transition occurred earl
     \caption{Performance of design iterations 14-17 and their upper surface boundary layer profiles}
 \end{figure}
 
+Changes to extend the concavity closer to the leading edge saw reductions in drag for V15 and V16.
+V17 extended the concavity further but also increased the curvature and introduced a bump with adverse pressure gradient causing early transition and increased drag.
+This causes natural transition to occur much later as a favourable pressure gradient was maintained for longer.
+The increased curvature also increases pressure coefficient on the lower surface, increasing the lift.
+
+Versions 14 and 16 featured another sudden change in drag, this time a decrease at lower angles of attack.
+This was found to be due to a higher stagnation point above the leading edge, which meant that the flow had to turn more sharply around the leading edge.
+This caused the boundary layer to transition close to the leading edge and hence the drag to decrease.
+This size of the jump was reduced and moved to lower angles of attack by decreasing the curvature of the lower surface near the leading edge.
+
+The best design achieves so far is V16 with a maximum lift to drag ratio of 160.
+The next aim was to remove the bump on the lower surface that caused a region of adverse pressure gradient
+which caused early transition and increased drag in V17.
+
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.8\textwidth]{figures/hiRe_geometry_21.eps}
@@ -351,14 +367,135 @@ Trying to extend concavity further we increased drag as transition occurred earl
     \end{subfigure}
     \begin{subfigure}{0.54\textwidth}
         \centering
-        \includegraphics[width=0.6\textwidth]{figures/hiRe_upperprofile_21_a7.eps}
+        \includegraphics[width=0.99\textwidth]{figures/hiRe_upperprofile_21_a7.eps}
         \caption{Pressure coefficient and momentum thickness profiles for $\alpha = 7^\circ$}
         \label{fig:v21_uprofile}
     \end{subfigure}
     \caption{Performance of design iterations 14-17 and their upper surface boundary layer profiles}
 \end{figure}
 
+In V20 design the path length of the top surface increased as we moved it up slightly.
+This resulted in increased lift and drag.
+The increased length caused the momentum thickness to grow more, increasing drag.
+The suction peak widened and gave more area and so produced more lift.
+
+V21. The curvature of the leading edge was increased which means that the flow can turn around with a smaller adverse pressure gradient.
+This means higher angle of attacks can be reached, with lower stagnation points before the corner of the leading edge is sharp enough to cause early transition.
+This is demonstrated by the jump in drag occurring at higher AoA.
+
+
 \subsection{Low Reynolds Number}
+
+
+
+\begin{figure}[H]
+    \begin{subfigure}{0.54\textwidth}
+        \centering
+        \includegraphics[width=1.2\textwidth, center]{figures/loRe_geometry_12.eps}
+        \caption{Airfoil Geometry}
+        \label{fig:m12_geometry}
+    \end{subfigure}
+    \begin{subfigure}{0.45\textwidth}
+        \centering
+        \includegraphics[width=1.2\textwidth, center]{figures/loRe_lod_12.eps}
+        \caption{Drag polar and lift to drag ratio against angle of attack}
+        \label{fig:m12_lod}
+    \end{subfigure}
+    \caption{}
+\end{figure}
+
+\begin{figure}[H]
+    \begin{subfigure}{0.49\textwidth}
+        \centering
+        \includegraphics[width=1.1\textwidth, center]{figures/loRe_upperprofile_12_a5.eps}
+        \caption{}
+        \label{fig:m12_uprofile}
+    \end{subfigure}
+    \begin{subfigure}{0.49\textwidth}
+        \centering
+        \includegraphics[width=1.15\textwidth, center]{figures/loRe_lowerprofile_12_a5.eps}
+        \caption{}
+        \label{fig:m12_lprofile}
+    \end{subfigure}
+    \caption{Upper and lower surface pressure coefficient and momentum thickness profiles for $\alpha = 5^\circ$}
+\end{figure}
+
+Laminar seperation and turbulent reattachment was found to occur on the lower surface for initial designs.
+Designs with this front seperation bubble forced transition to turbulent flow early instead of laminar seperation at the end.
+Seperation at the end of the foil where boundary layer is thicker caused a significant growth in the boundary layer and hence drag.
+Additionally forcing the boundary layer to be turbulent means improved tolerance of adverse pressure gradients and so higher pressure coefficients may be reached.
+This was exploited in Marks 9 and 12 where the lower surface was made more concave to increase lift at the cost of increased drag.
+
+An attempt was made to move the seperation bubble further back by decreasing the curvature of the bump and adverse pressure gradient behind the bump.
+
+\begin{figure}[H]
+    \begin{subfigure}{0.54\textwidth}
+        \centering
+        \includegraphics[width=1.2\textwidth, center]{figures/loRe_geometry_16.eps}
+        \caption{Airfoil Geometry}
+        \label{fig:m16_geometry}
+    \end{subfigure}
+    \begin{subfigure}{0.45\textwidth}
+        \centering
+        \includegraphics[width=1.2\textwidth, center]{figures/loRe_lod_16.eps}
+        \caption{Drag polar and lift to drag ratio against angle of attack}
+        \label{fig:m16_lod}
+    \end{subfigure}
+    \caption{}
+\end{figure}
+
+\begin{figure}[H]
+    \begin{subfigure}{0.49\textwidth}
+        \centering
+        \includegraphics[width=1.1\textwidth, center]{figures/loRe_upperprofile_16_a5.eps}
+        \caption{}
+        \label{fig:m16_uprofile}
+    \end{subfigure}
+    \begin{subfigure}{0.49\textwidth}
+        \centering
+        \includegraphics[width=1.15\textwidth, center]{figures/loRe_lowerprofile_16_a5.eps}
+        \caption{}
+        \label{fig:m16_lprofile}
+    \end{subfigure}
+    \caption{Upper and lower surface pressure coefficient and momentum thickness profiles for $\alpha = 5^\circ$}
+\end{figure}
+
+The lift slightly increased and the drag significantly decreased.
+This removed the front seperation bubble, similar to Mark 5 of figure \ref{fig:m12_lprofile} with separation occuring near trailing edge.
+However the drag was much lower than Mark 5 due to reduced adverse pressure gradient from reduced curvature at the trailing edge.
+This was found to significantly increase the lift to drag ratio suggesting that the bubble, although it gave better performance than the original NACA0012, was not an optimal aerofoil.
+
+Changes made to marks 13, 15 and 16 were done to push the seperation bubble further back and reduce the adverse pressure gradients to reduce drag.
+This involved increasing radius of curvature of the bump and 
+were shaped to be even thicker aerofoils to achieve a larger curve radius which successfully pushed back the separation bubble, at the cost of increased length for boundary layer growth.
+These changes were found to be very sensitive and so it may not be possible to push the upper surface separation point as far back as the lower surface.
+
+M18 and M19 were shaped to be even thicker aerofoils to achieve a larger curve radius which successfully pushed back the separation bubble, at the cost of increased length for boundary layer growth. This still provided a marginal improvement in drag but not enough to be further considered.
+
+
+
+
+\section{Extensions}
+
+\subsection{Vectorized methods}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{figures/RePanelVec_times.eps}
+    \caption{Computation time for NACA 0012 airfoil for varying number of panels, low and high Reynolds numbers, vectorized and loop algorithms at $\alpha = 5^\circ$}
+    \label{fig:RePanelVec_times}
+\end{figure}
+
+
+\subsection{Bezier Spline Optimization}
+
+Instead of manually changing the control points, a Bezier spline can be used to paramaterize the airfoil shape.
+The x values of the control points were chosen to be equally spaced along the chord length, and the y values were to be optimised for.
+There is a single constraint that the airfoil must not self-intersect.
+Additional constraints were partially implemented such as minimum thickness due to the integrated lift bending moment of trailing edge.
+
+It was interesting to note that for many manually selected initial conditions, the optimizer would converge to local maximum lift to drag ratios.
+The optimizer was run for a large number of random initial conditions and a global maximum was found at a lift to drag ratio of.
 
 
 \end{document}
