@@ -69,7 +69,7 @@
 
 \subsection{Purpose}
 
-A critical aspect of aircraft design is the development of high-efficiency aerofoils, which can significantly enhance the overall performance of the aircraft.
+The development of high-efficiency aerofoils, can significantly improve the overall performance of an aircraft.
 Traditionally, aerofoil design has relied heavily on experimental wind tunnel testing, which is time-consuming and expensive.
 The purpose of this project is to develop a software tool that enables rapid design and analysis of aerofoils, reducing the reliance on experimental testing.
 The Breguet range equation, which calculates the range of an aircraft, directly depends on the lift to drag ratio of the wing:
@@ -256,13 +256,14 @@ After turbulent separation, it is assumed that the shape factor remains unchange
 
 \section{Software Performance}
 
-
 \begin{figure}
     \centering
     \includegraphics[width=0.8\textwidth]{figures/0012_streamlines.eps}
     \caption{Streamline plot of the flow around a NACA0012 aerofoil at $Re = 3\times10^6$ and $\alpha = 5^\circ$}
     \label{fig:0012_streamlines}
 \end{figure}
+
+Figure \ref{fig:0012_streamlines} visualizes the position of the stagnation point, and the upper surface flow around the leading edge.
 
 
 \subsection{Comparison with Experimental Data}
@@ -301,6 +302,19 @@ After turbulent separation, it is assumed that the shape factor remains unchange
     \caption{Experimetnal and calculated performance at $Re = 3\times10^6$ for the NACA4412 aerofoil \cite{theory_wing_sections}}
 \end{figure}
 
+Figures \ref{fig:0012_lift_validation} and \ref{fig:4412_lift_validation} show that the lift coefficient is well predicted by the software.
+The lift starts to deviate at higher angles of attack as the flow separates, which is not accounted for in the lift calculation.
+The drag coefficient calculation, does take into account boundary layer effects and so shows strong agreement in figure \ref{fig:0012_drag_validation}.
+At negative angles of attack, the drag coefficient is overpredicted for the NACA0012.
+This may be due to actual separation occuring later on the bottom surface than predicted by the software.
+This could be caused by cumulative errors in the lookup tables used for the shape factors.
+
+The drag coefficient for the NACA4412 shows some agreement at low lift coefficients and angles of attack in figure \ref{fig:4412_drag_validation}.
+However, at higher angles of attack the drag coefficient is significantly underpredicted.
+This is thought to be due to form drag, which is not accounted for in the software.
+The form drag on the NACA4412 is likely higher than the NACA0012 due to the increased camber.
+
+
 \subsection{Discussion of limitations}
 
 % 1. is only for 2D infinite length wings
@@ -313,10 +327,11 @@ After turbulent separation, it is assumed that the shape factor remains unchange
 
 \begin{itemize}
     \item The software is only valid for 2D infinite length wings. This neglects the effects of wing tip vortices and 3D effects.
+    \item The invicid panel method is decoupled from the boundary layer solver which can lead to errors for separated or thick boundary layers.
     \item The software is only valid for subsonic flow conditions and does not account for compressibility effects. This limits the software to low speed applications.
     \item The discrete panel method used can lead to numerical errors and instabilities that are unphysical.
-    \item The software assumes that the empirical relations used for laminar separation and turbulent reattachment are valid. However turbulent reattachment is not implemented which can occur some rare flow conditions.
-    \item The boundary layer solver assumes a smooth aerofoil surface 
+    \item The software assumes that the empirical relations used for laminar separation and turbulent reattachment are valid. However reattachment after turbulent separation is not implemented which can occur some rare flow conditions.
+    \item The boundary layer solver assumes a smooth aerofoil surface.
 \end{itemize}
 
 Speed is also a limitation of the software.
@@ -341,8 +356,11 @@ The objective is to maximize the lift to drag ratio of the Aerofoil at a range o
 It is important to consider a range of angles of attack for the Aerofoil for robust performance.
 This is especially important for 3D wings as it ensures that tip stall is less likely for twist distrubtions from lifting line theory.
 
-Two Reynolds numbers are considered, $Re = 20\times10^6$ and $Re = 5\times10^5$
-
+Two Reynolds numbers are considered:
+\begin{itemize}
+    \item A higher speed typical of a commercial airliner at cruise: $Re = 20\times10^6$
+    \item A low speed condition of a glider or light aircraft: $Re = 5\times10^5$
+\end{itemize}
 
 \subsection{High Reynolds Number}
 
@@ -404,10 +422,10 @@ This can be seen in figure \ref{fig:v9_geometry} and the performance in figure \
     \begin{subfigure}{0.54\textwidth}
         \centering
         \includegraphics[width=0.99\textwidth]{figures/hiRe_upperprofile_9_a3.eps}
-        \caption{Pressure coefficient and momentum thickness profiles for $\alpha = 3^\circ$}
+        \caption{Pressure coefficient and momentum thickness profiles at $\alpha = 3^\circ$}
         \label{fig:v9_uprofile}
     \end{subfigure}
-    \caption{Performance of design iterations 6-9 and their upper surface boundary layer profiles}
+    \caption{Performance of design versions 6-9 and their upper surface boundary layer profiles}
 \end{figure}
 
 This change shows a higher lift achieved as the low pressure coefficient is maintained by the convex upper surface.
@@ -437,7 +455,7 @@ The lower surface was flattened to remove the adverse pressure gradient and incr
         \caption{Drag polar and lift to drag ratio against angle of attack}
         \label{fig:v14_lod}
     \end{subfigure}
-    \caption{}
+    \caption{Geometry and performance of design versions 10-14}
 \end{figure}
 
 \begin{figure}[H]
@@ -453,7 +471,7 @@ The lower surface was flattened to remove the adverse pressure gradient and incr
         \caption{}
         \label{fig:v14_lprofile}
     \end{subfigure}
-    \caption{Upper and lower surface pressure coefficient and momentum thickness profiles for $\alpha = 7^\circ$}
+    \caption{Upper and lower surface pressure coefficient and momentum thickness profiles of design versions 10-14}
 \end{figure}
 
 Increasing pressure on the bottom surface and delayed transition can be seen for versions 13 and 14 in figure \ref{fig:v14_lprofile}.
@@ -487,7 +505,7 @@ This causes a larger adverse pressure gradient at the end of the aerofoil but th
         \caption{Pressure coefficient and momentum thickness profiles for $\alpha = 7^\circ$}
         \label{fig:v17_lprofile}
     \end{subfigure}
-    \caption{Performance of design iterations 14-17 and their upper surface boundary layer profiles}
+    \caption{Performance of design versions 14-17 and their upper surface boundary layer profiles}
 \end{figure}
 
 Changes to extend the concavity closer to the leading edge saw reductions in drag for V15 and V16.
@@ -525,7 +543,7 @@ which caused early transition and increased drag in V17.
         \caption{Pressure coefficient and momentum thickness profiles for $\alpha = 7^\circ$}
         \label{fig:v21_uprofile}
     \end{subfigure}
-    \caption{Performance of design iterations 14-17 and their upper surface boundary layer profiles}
+    \caption{Performance of design versions 14-17 and their upper surface boundary layer profiles}
 \end{figure}
 
 Version 20 increased the path length of the top surface by curving the top surface around more.
@@ -554,7 +572,7 @@ This is demonstrated by the jump in drag occurring at higher AoA.
         \caption{Drag polar and lift to drag ratio against angle of attack}
         \label{fig:m12_lod}
     \end{subfigure}
-    \caption{}
+    \caption{Geometry and performance of design marks 9-12}
 \end{figure}
 
 \begin{figure}[H]
@@ -570,7 +588,7 @@ This is demonstrated by the jump in drag occurring at higher AoA.
         \caption{}
         \label{fig:m12_lprofile}
     \end{subfigure}
-    \caption{Upper and lower surface pressure coefficient and momentum thickness profiles for $\alpha = 5^\circ$}
+    \caption{Upper and lower surface pressure coefficient and momentum thickness profiles of design marks 9-12 at $\alpha = 5^\circ$}
 \end{figure}
 
 Laminar seperation and turbulent reattachment was found to occur on the lower surface for initial designs.
@@ -594,7 +612,7 @@ An attempt was made to move the seperation bubble further back by decreasing the
         \caption{Drag polar and lift to drag ratio against angle of attack}
         \label{fig:m16_lod}
     \end{subfigure}
-    \caption{}
+    \caption{Geometry and performance of design marks 13-16}
 \end{figure}
 
 \begin{figure}[H]
@@ -610,7 +628,7 @@ An attempt was made to move the seperation bubble further back by decreasing the
         \caption{}
         \label{fig:m16_lprofile}
     \end{subfigure}
-    \caption{Upper and lower surface pressure coefficient and momentum thickness profiles for $\alpha = 5^\circ$}
+    \caption{Upper and lower surface pressure coefficient and momentum thickness profiles of design marks 13-16 at $\alpha = 5^\circ$}
 \end{figure}
 
 The lift slightly increased and the drag significantly decreased.
@@ -676,7 +694,7 @@ This was done by smoothing the top surface to decrease pressure gradients.
         \caption{Pressure coefficient and momentum thickness profiles for $\alpha = 7^\circ$}
         \label{fig:m23_uprofile}
     \end{subfigure}
-    \caption{Performance of design iterations 21-23 and their upper surface boundary layer profiles}
+    \caption{Performance of design marks 21-23 and their upper surface boundary layer profiles}
 \end{figure}
 
 
@@ -714,11 +732,10 @@ Changes were then focused on continuing the curvature further towards the traili
         \caption{Pressure coefficient and momentum thickness profiles for $\alpha = 7^\circ$}
         \label{fig:m29_uprofile}
     \end{subfigure}
-    \caption{Performance of design iterations 22-29 and their upper surface boundary layer profiles}
+    \caption{Performance of design marks 22-29 and their upper surface boundary layer profiles}
 \end{figure}
 
-Mark 26 
-This reduced the pressure on the top surface significantly increasing lift.
+Mark 26 showed a reduction in the pressure on the top surface, significantly increasing lift.
 Mark 28 shows that the laminar separation bubble was pushed so far back that natural transition occurs instead.
 This was expected to significantly reduce the drag, however, turbulent separation was now occurring sooner which increased the drag.
 This was found to be due to a stronger adverse pressure gradient at the trailing edge.
@@ -743,6 +760,26 @@ Another marginal improvement was seen in the final design mark 31.
     \caption{Aerofoil Geomtry, Drag polar and lift to drag ratio against angle of attack}
 \end{figure}
 
+\subsection{Aerodynamic Characteristics of Selected Designs}
+
+\begin{figure}[H]
+    \begin{subfigure}{0.49\textwidth}
+        \centering
+        \includegraphics[width=1\textwidth, center]{figures/v23_movements.eps}
+        \caption{High Reynolds number design}
+        \label{fig:hiRe_lod}
+        \end{subfigure}
+    \begin{subfigure}{0.49\textwidth}
+        \centering
+        \includegraphics[width=1\textwidth, center]{figures/m31_movements.eps}
+        \caption{Low Reynolds number design}
+        \label{fig:loRe_lod}
+    \end{subfigure}
+    \caption{Surface pressure coefficient profiles for varying angles of attack}
+\end{figure}
+
+The final designs for the high and low Reynolds number cases are shown in figures \ref{fig:v23_geometry} and \ref{fig:m31_geometry} respectively.
+
 \section{Extensions}
 
 \subsection{Vectorized methods}
@@ -753,6 +790,11 @@ Another marginal improvement was seen in the final design mark 31.
     \caption{Computation time for NACA 0012 Aerofoil for varying number of panels, low and high Reynolds numbers, vectorized and loop algorithms at $\alpha = 5^\circ$}
     \label{fig:RePanelVec_times}
 \end{figure}
+
+Increasing the number of panels significantly slows down the computation time of the software.
+Vector methods also significantly reduce the computation time for larger numbers of panels.
+The higher reynolds number case was typically slower than the low reynolds number case due to the increased number of turbulent
+boundary layer calculations required.
 
 \subsection{Bezier Spline Optimization}
 
@@ -799,7 +841,7 @@ Figure \ref{fig:ctrl_sensitivity} shows the sensitivity of the control points fo
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.8\textwidth]{figures/ctrl_sensitivity.eps}
+    \includegraphics[width=0.6\textwidth]{figures/ctrl_sensitivity.eps}
     \caption{Control point sensitivity analysis. Red indicates version 23 at $Re = 20\times10^6$ and blue indicates mark 31 at $Re = 0.5\times10^6$}
     \label{fig:ctrl_sensitivity}
 \end{figure}
@@ -811,6 +853,17 @@ However, the trailing edge applies the Kutta condition which determines the posi
 which can significantly affect the pressure distribution and boundary layer behaviour.
 Its also important to note that the spline control points are highly sensitive and so a relative tolerance of 0.1\% would give a much higher relative tolerance in the surface shape.
 
+\section{Conclusion}
+
+Theory discussed was implemented in a software tool to rapidly design and analyse 2D aerofoil sections.
+The tool consists of an invicid panel method and a boundary layer solver to calculate lift and drag coefficients.
+The software was validated against experimental data and found to be accurate for small ranges of angles of attack of the NACA0012 and NACA4412 aerofoils.
+Limitations of the software were discussed, including the assumption of 2D subsonic flow, and the innaccuracies of .
+High-efficiency aerofoils were designed for high ($Re = 20\times10^6$) and low ($Re = 0.5\times10^6$) Reynolds numbers by manually adjusting the positions of spline control points.
+For the high Reynolds number case, a maximum lift-to-drag ratio of $\sim 185$ was achieved by creating a highly cambered aerofoil with a convex lower surface to maintain a favorable pressure gradient and delay transition.
+For the low Reynolds number case, a maximum lift-to-drag ratio of $\sim 125$ was achieved by carefully shaping the upper surface to control the positions of laminar separation bubbles.
+Attempts were made to automate the design process using a Bezier spline parameterization and an optimizer, but this was found to converge to local maxima with suboptimal performance compared to the manual designs.
+A sensitivity analysis showed that the aerofoil performance is highly sensitive to the position of the spline control points near the trailing edge, which could pose challenges for manufacturing.
 
 \begin{thebibliography}{9}
     \bibitem{handout}
