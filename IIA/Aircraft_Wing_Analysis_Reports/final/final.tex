@@ -60,7 +60,7 @@
 
 \begin{document}
 
-\title{SA1: Wing Analysis Final Report}
+\title{SA1: Aircraft Wing Analysis Final Report}
 \author{lwp26}
 \date{June 2024}
 \maketitle 
@@ -69,8 +69,17 @@
 
 \subsection{Purpose}
 
-Something about the use of software to rapidly design aerofoils instead of experimental wind tunnel testing.
-Importance of aerospace industry and the need for high efficiency aerofoils.
+A critical aspect of aircraft design is the development of high-efficiency aerofoils, which can significantly enhance the overall performance of the aircraft.
+Traditionally, aerofoil design has relied heavily on experimental wind tunnel testing, which is time-consuming and expensive.
+The purpose of this project is to develop a software tool that enables rapid design and analysis of aerofoils, reducing the reliance on experimental testing.
+The Breguet range equation, which calculates the range of an aircraft, directly depends on the lift to drag ratio of the wing:
+
+\begin{equation}
+S = \frac{U}{g}\frac{L/D}{\text{sfc}} \log \left( \frac{W_\text{start}}{W_\text{end}} \right)
+\end{equation}
+
+where $S$ is the range, $U$ is the flight velocity, $g$ is the acceleration due to gravity, $\text{sfc}$ is the specific fuel consumption of the engine, and $W_\text{start}$ and $W_\text{end}$ are the initial and final weights of the aircraft, respectively.
+A higher lift to drag ratio also results in a lower fuel burn rate and so reduced operating costs and emissions.
 
 \subsection{Objectives}
 
@@ -247,6 +256,15 @@ After turbulent separation, it is assumed that the shape factor remains unchange
 
 \section{Software Performance}
 
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.8\textwidth]{figures/0012_streamlines.eps}
+    \caption{Streamline plot of the flow around a NACA0012 aerofoil at $Re = 3\times10^6$ and $\alpha = 5^\circ$}
+    \label{fig:0012_streamlines}
+\end{figure}
+
+
 \subsection{Comparison with Experimental Data}
 
 \begin{figure}[H]
@@ -300,6 +318,13 @@ After turbulent separation, it is assumed that the shape factor remains unchange
     \item The software assumes that the empirical relations used for laminar separation and turbulent reattachment are valid. However turbulent reattachment is not implemented which can occur some rare flow conditions.
     \item The boundary layer solver assumes a smooth aerofoil surface 
 \end{itemize}
+
+Speed is also a limitation of the software.
+The boundary layer solver is the most computationally expensive part of the software.
+This is due to the explicit Runge-Kutta (4,5) ODE solver used to solve the boundary layer equations at each panel point.
+An improvement to speed would come if fewer panels were used, which could potentially be done without a loss in accuracy if the panels were positioned more efficiently.
+This would involve dynamically allocating more panels to regions of high curvature and high pressure gradients, where resolution is needed for accurate results.
+
 
 \section{Topology Optimization}
 
@@ -491,7 +516,7 @@ which caused early transition and increased drag in V17.
     \begin{subfigure}{0.45\textwidth}
         \centering
         \includegraphics[width=1.2\textwidth, center]{figures/hiRe_lod_21.eps}
-        \caption{Aerofoil}
+        \caption{Drag polar and lift to drag ratio against angle of attack}
         \label{fig:v21_lod}
     \end{subfigure}
     \begin{subfigure}{0.54\textwidth}
@@ -503,12 +528,11 @@ which caused early transition and increased drag in V17.
     \caption{Performance of design iterations 14-17 and their upper surface boundary layer profiles}
 \end{figure}
 
-In V20 design the path length of the top surface increased as we moved it up slightly.
-This resulted in increased lift and drag.
-The increased length caused the momentum thickness to grow more, increasing drag.
-The suction peak widened and gave more area and so produced more lift.
+Version 20 increased the path length of the top surface by curving the top surface around more.
+Figure \ref{fig:v21_uprofile} shows the widened and shifted suction peak with higher enclosed area, explaining the increased lift.
+The increased path length allows the momentum thickness profile to grow more, increasing drag.
 
-V21. The curvature of the leading edge was increased which means that the flow can turn around with a smaller adverse pressure gradient.
+In version 21, the curvature of the leading edge was increased which means that the flow can turn around with a smaller adverse pressure gradient.
 This means higher angle of attacks can be reached, with lower stagnation points before the corner of the leading edge is sharp enough to cause early transition.
 This is demonstrated by the jump in drag occurring at higher AoA.
 
@@ -602,7 +626,7 @@ These changes were found to be very sensitive and so it may not be possible to p
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.8\textwidth]{figures/loRe_geometry_20.eps}
-    \caption{Aerofoil}
+    \caption{Aerofoil Geometry}
     \label{fig:m20_geometry}
 \end{figure}
 
@@ -624,7 +648,6 @@ These changes were found to be very sensitive and so it may not be possible to p
 
 Design marks 18 and 19 were shaped to be even thicker aerofoils to achieve a larger curve radius which successfully pushed back the separation bubble, at the cost of increased length for boundary layer growth.
 This still provided a marginal improvement in drag but not enough to be further considered.
-
 Mark 20 had reduced lower surface curvature close to the trailing edge in attempt to reduce the adverse pressure gradient and move seperation point further back.
 This change only increased the gradient upstream and so resulted in loss of lift and increased drag.
 
@@ -673,7 +696,7 @@ Changes were then focused on continuing the curvature further towards the traili
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.8\textwidth]{figures/loRe_geometry_29.eps}
-    \caption{Aerofoil}
+    \caption{Aerofoil Geometry}
     \label{fig:m29_geometry}
 \end{figure}
 
@@ -682,7 +705,7 @@ Changes were then focused on continuing the curvature further towards the traili
     \begin{subfigure}{0.45\textwidth}
         \centering
         \includegraphics[width=1.2\textwidth, center]{figures/loRe_lod_29.eps}
-        \caption{Aerofoil}
+        \caption{Drag polar and lift to drag ratio against angle of attack}
         \label{fig:m29_lod}
     \end{subfigure}
     \begin{subfigure}{0.54\textwidth}
@@ -717,10 +740,59 @@ Another marginal improvement was seen in the final design mark 31.
         \caption{Drag polar and lift to drag ratio against angle of attack}
         \label{fig:m31_lod}
     \end{subfigure}
-    \caption{}
+    \caption{Aerofoil Geomtry, Drag polar and lift to drag ratio against angle of attack}
 \end{figure}
 
 \section{Extensions}
+
+\subsection{Vectorized methods}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{figures/RePanelVec_times.eps}
+    \caption{Computation time for NACA 0012 Aerofoil for varying number of panels, low and high Reynolds numbers, vectorized and loop algorithms at $\alpha = 5^\circ$}
+    \label{fig:RePanelVec_times}
+\end{figure}
+
+\subsection{Bezier Spline Optimization}
+
+Instead of manually changing the control points, a Bezier spline can be used to paramaterize the Aerofoil shape.
+The x values of the control points were chosen to be equally spaced along the chord length, and the y values were to be optimised for.
+There is a single constraint that the Aerofoil must not self-intersect.
+An additional structural constraints was partially implemented in the form of a minimum thickness due to the integrated lift bending moment of trailing edge.
+However, this was not fully implemented and so the optimizer would often produce aerofoils with very thin trailing edges.
+
+The optimizer would often converge to local maxima with high lift but poor drag performance.
+Attempts to run over a large number of random initial control point heights to find a global maximum was not successful.
+Despite reducing the number of panels to 200, the computation time was still too high to run a large number of iterations.
+
+The local maximum L/D ratios for the high and low Reynolds number cases at $\alpha = 5^\circ$ were 167 and 93.2.
+This is worse than the manually designed aerofoils in their efficient ranges of alpha of 185 and 125 respectively.
+Another interesting result was that the lift was significantly higher than the manually designed aerofoils, but the drag was also significantly higher.
+This suggests that the optimizer was not able to find a good compromise between lift and drag.
+A reason for this is that the lift changes more continuously and so is quickly maximised to a high value where
+the drag cannot be reduced without significantly reducing the lift, which the optimizer did not seem to do.
+
+\begin{figure}[H]
+    \begin{subfigure}{0.54\textwidth}
+        \centering
+        \includegraphics[width=1\textwidth, center]{figures/optimised_geometry.eps}
+        \caption{Aerofoil Geometry}
+        \label{fig:opt_geometry}
+    \end{subfigure}
+    \begin{subfigure}{0.45\textwidth}
+        \centering
+        \includegraphics[width=1.2\textwidth, center]{figures/optimised_lad.eps}
+        \caption{Lift and drag coefficients against angle of attack}
+        \label{fig:opt_lad}
+    \end{subfigure}
+    \caption{Comparison of manual and computer optimised aerofoil geometry, lift and drag coefficients against angle of attack}
+\end{figure}
+
+\subsection{Manufacturability}
+
+The aerospace industry is highly regulated, and known for high precision manufacturing.
+However, the designs chosen by the software can be extremely sensitive, and so even minor deviations in the manufacturing process could lead to decreased performance.
 
 A function was created to calculate the relative change in lift to drag ratio for 0.1\% change in each control point y position.
 Figure \ref{fig:ctrl_sensitivity} shows the sensitivity of the control points for our designed aerofoils at their operating Reynolds numbers and $\alpha = 5^\circ$.
@@ -738,33 +810,6 @@ This is unintuitive as it would be expected that the most sensitive control poin
 However, the trailing edge applies the Kutta condition which determines the position of the stagnation point, 
 which can significantly affect the pressure distribution and boundary layer behaviour.
 Its also important to note that the spline control points are highly sensitive and so a relative tolerance of 0.1\% would give a much higher relative tolerance in the surface shape.
-
-\subsection{Vectorized methods}
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.6\textwidth]{figures/RePanelVec_times.eps}
-    \caption{Computation time for NACA 0012 Aerofoil for varying number of panels, low and high Reynolds numbers, vectorized and loop algorithms at $\alpha = 5^\circ$}
-    \label{fig:RePanelVec_times}
-\end{figure}
-
-\subsection{Bezier Spline Optimization}
-
-Instead of manually changing the control points, a Bezier spline can be used to paramaterize the Aerofoil shape.
-The x values of the control points were chosen to be equally spaced along the chord length, and the y values were to be optimised for.
-There is a single constraint that the Aerofoil must not self-intersect.
-Additional constraints were partially implemented such as minimum thickness due to the integrated lift bending moment of trailing edge.
-
-It was interesting to note that for many manually selected initial conditions, the optimizer would converge to local maximum lift to drag ratios.
-The optimizer was run for a large number of random initial conditions and a global maximum was found at a lift to drag ratio of.
-
-\subsection{Manufacturability}
-
-The aerospace industry is highly regulated, and known for high precision manufacturing.
-However, the designs chosen by the software can be extremely sensitive, and so even minor deviations in the manufacturing process could lead to decreased performance.
-
-The software does not account for aeroelastic effects such as wing bending and twisting.
-Additional constraints were partially implemented such as minimum thickness due to the integrated lift bending moment of trailing edge.
 
 
 \begin{thebibliography}{9}
