@@ -9,31 +9,6 @@ import re
 from matplotlib import pyplot as plt
 import numpy as np
 
-os.environ["QT_AUTO_SCREEN_SCALE_FACTOR"] = "0"
-absp = 'IIB/4A7/transonic_wing/'
-
-with open(absp + '/secrets.json') as f:
-    secrets = json.load(f)
-    shifted_pwd = secrets['password']
-
-pwd = ''
-for s in shifted_pwd:
-    pwd += chr(ord(s) - 1)
-
-intermediate_hostname = 'gate.eng.cam.ac.uk'
-teaching_hostname = 'ts-access'
-username = "lwp26"
-
-
-
-window = gw.getWindowsWithTitle("Airfoil")[0]
-
-if window:
-    window.activate()
-    print("Window found")
-
-time.sleep(1)
-
 
 
 class Result():
@@ -186,55 +161,87 @@ class AirfoilApp():
         return out
 
 
-intermediate_client = paramiko.SSHClient()
-intermediate_client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-intermediate_client.connect(intermediate_hostname, username=username, password=pwd)
+class DPO_Session():
 
-intermediate_transport = intermediate_client.get_transport()
-intermediate_session = intermediate_transport.open_session()
-#intermediate_session.request_x11()
+    def __init__(self, username, pwd):
 
-transport = intermediate_client.get_transport()
-dest_addr = (teaching_hostname, 22)
-src_addr = (intermediate_hostname, 22)
-channel = transport.open_channel("direct-tcpip", dest_addr, src_addr)
+        intermediate_hostname = 'gate.eng.cam.ac.uk'
+        teaching_hostname = 'ts-access'
+        username = "lwp26"
 
-teaching_client = paramiko.SSHClient()
-teaching_client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-teaching_client.connect(teaching_hostname, username=username, password=pwd, sock=channel)
+        intermediate_client = paramiko.SSHClient()
+        intermediate_client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+        intermediate_client.connect(intermediate_hostname, username=username, password=pwd)
 
-teaching_transport = teaching_client.get_transport()
-teaching_session = teaching_transport.open_session()
-#teaching_session.request_x11()
+        intermediate_transport = intermediate_client.get_transport()
+        intermediate_session = intermediate_transport.open_session()
+        #intermediate_session.request_x11()
 
+        transport = intermediate_client.get_transport()
+        dest_addr = (teaching_hostname, 22)
+        src_addr = (intermediate_hostname, 22)
+        channel = transport.open_channel("direct-tcpip", dest_addr, src_addr)
+
+        teaching_client = paramiko.SSHClient()
+        teaching_client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+        teaching_client.connect(teaching_hostname, username=username, password=pwd, sock=channel)
+
+        teaching_transport = teaching_client.get_transport()
+        teaching_session = teaching_transport.open_session()
+        #teaching_session.request_x11()
+
+        self.teaching_client = teaching_client
+        self.intermediate_client = intermediate_client
+
+def __del__(self):
+    self.teaching_client.close()
+    self.intermediate_client.close()
 
 # Parsing flags
-App = AirfoilApp(teaching_client, window)
 
-alphas = np.linspace(0, 3, 5)
-cs = ['r', 'g', 'b', 'y', 'k']
+if __name__ == "__main__":
 
-plt.gca().invert_yaxis()
-i = 0
+    try:
+        window = gw.getWindowsWithTitle("Airfoil")[0]
+        window.activate()
+    except IndexError:
+        raise Exception("Window not found")
 
-for alpha in alphas:
-    res = App.run(0.75, alpha)
-    if res is None:
-        continue
+    time.sleep(1)
 
-    plt.plot(res.x_upper, res.cp_upper, label=f"$\\alpha$ = {res.Alpha}, M={res.M}", color=cs[i])
-    plt.plot(res.x_lower, res.cp_lower, color=cs[i])
+    # Setup SSH
+    absp = 'IIB/4A7/transonic_wing/'
+    with open(absp + '/secrets.json') as f:
+        secrets = json.load(f)
+        shifted_pwd = secrets['password']
+    pwd = ''
+    for s in shifted_pwd:
+        pwd += chr(ord(s) - 1)
 
-    i += 1
+    sesh = DPO_Session('lwp26', pwd)
 
-# set x axis flipped
+    # Create the AirfoilApp
+    App = AirfoilApp(sesh.teaching_client, window)
 
+    alphas = np.linspace(0, 3, 5)
+    cs = ['r', 'g', 'b', 'y', 'k']
 
-plt.grid()
-plt.legend()
-plt.show()
+    plt.gca().invert_yaxis()
+    i = 0
 
-# Read each line and parse accordingly
+    for alpha in alphas:
+        res = App.run(0.75, alpha)
+        if res is None:
+            continue
 
-teaching_client.close()
-intermediate_client.close()
+        plt.plot(res.x_upper, res.cp_upper, label=f"$\\alpha$ = {res.Alpha}, M={res.M}", color=cs[i])
+        plt.plot(res.x_lower, res.cp_lower, color=cs[i])
+
+        i += 1
+
+    plt.grid()
+    plt.legend()
+    plt.show()
+
+    del sesh
+    print("Session closed")
