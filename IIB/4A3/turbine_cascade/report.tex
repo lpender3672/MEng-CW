@@ -20,6 +20,11 @@
 \usepackage{mathrsfs}
 \usepackage{savetrees}
 
+\usepackage{titlesec}
+
+\titleformat{\subsubsection}
+  {\normalfont\selectfont}{\thesubsubsection}{1em}{}
+
 \usetikzlibrary{calc}
 \usetikzlibrary{angles,quotes} % for pic
 \usetikzlibrary{patterns,snakes}
@@ -119,37 +124,66 @@
     \label{fig:yaw_plot}
 \end{figure}
 
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{figures/quiver_plot.eps}
+    \caption{quiver plot}
+    \label{fig:quiver_plot}
+\end{figure}
+
+
 \section{Discussion}
 
 \subsection{General}
 
-\subsubsection{}
-Assume isentropic flow to estimate the change of density from the measurements of
-upstream and downstream static pressure. Can the flow be regarded as incompressible?
+\subsubsection{ Assume isentropic flow to estimate the change of density from the measurements of
+upstream and downstream static pressure. Can the flow be regarded as incompressible?}
 
 \begin{equation}
     \frac{P}{\rho^\gamma} = \text{const}
 \end{equation}
 
-\subsubsection{}
-Using the data you have acquired, evaluate the following quantities at the first
-measurement point in your traverse, which should be in the freestream between the wakes
+Upsteam of cascade, $P_{0in} = 105.1$ KPa , $P_{in} = 104.8$ KPa \\
+Downstream of cascade,  $P_a = 102.8$ KPa , $\rho = 1.16$ kg/m3
 
-\subsubsection{}
-the inlet velocity to the cascade,
+For clarity we will use the subscript 1 to denote upsteam of the cascade and 2 to denote downstream of the cascade.
+To calculate the density upstream of the cascade, $\rho_1$, we will assume the isentropic relation.
 
-\subsubsection{}
-the exit velocity,
+\begin{equation}
+    \rho_1 = \rho_2 \left( \frac{P_1}{P_2} \right)^\frac{1}{\gamma}
+\end{equation}
+Which gives $\rho_1 = 1.176$ kg/m3.
 
-\subsubsection{}
-the difference between the inlet and exit static pressures.
+This means that the density change is 1.4\% which is likely of similar order to the error in the measurements.
+Hence, the flow can and will be regarded as incompressible from this point on. %REVISIT
+
+\subsubsection{Using the data you have acquired, evaluate the following quantities at the first
+measurement point in your traverse, which should be in the freestream between the wakes?}
+
+\subsubsection{the inlet velocity to the cascade,}
+$P_{01} = P_1 + \frac{1}{2} \rho V_{1}^2$
+Where $V_1$ is the inlet velocity to the cascade and the only unknown.\\
+This is found to be $V_1 = 22.7$ m/s.
+
+\subsubsection{the exit velocity,}
+Between the wakes, the flow is assumed to be isentropic and so $P_{01} = P_{02}$.
+The pressure here is $P_a$ as the flow is exiting to the atmosphere.
+$P_{02} = P_a + \frac{1}{2} \rho V_{2}^2$
+Where $V_2$ is the exit velocity from the cascade and the only unknown.\\
+This is found to be $V_2 = 62.97$ m/s.
+
+\subsubsection{the difference between the inlet and exit static pressures.}
+
+Difference between inlet and exit static pressures is $P_1 - P_a = 2.0$ KPa
 
 Explain why the velocity rises and the static pressure falls across the cascade.
 
-\subsection{Exit Traverse}
-\subsubsection{}
+The flow is turned through an angle to a smaller area, which by mass conservation, must increase the velocity.
+In the free stream, this is done isentropically and so the static pressure must fall to conserve energy.
 
-The script shows a series of graphs showing the normalised variation of the quantities
+\subsection{Exit Traverse}
+\subsubsection{The script shows a series of graphs showing the normalised variation of the quantities
+}
 
 \begin{align*}
     \text{Stagnationg pressure loss} \quad & \frac{P_{01} - P_{02}}{P_{01} - P_{2,\text{av}}} \\
@@ -167,25 +201,57 @@ $P_{1,\text{av}}$ is the average of five cascade inlet endwall static pressure t
 $P_{2,\text{av}}$ is the average exit pressure from the cascade, in this experiment it is equal to the
 atmospheric pressure
 
-PART IIB - Module 4A3 Turbine Cascade Aerodynamics
-8
+
 Explain why we use $(P_{01} - P_{2,\text{av}})$ as the denominator for the first two quantities above in
 preference to $(P_{01} - P_{1,\text{av}})$ or $(P_{02} - P_{2,\text{av}})$?
+
+$P_{01}$ remains constant across the cascade, and $P_{2,\text{av}}$ is the exit static pressure averaged over the cascade.
+This provides a constant reference for the normalisation of the quantities.
+$ P_{02} \le P_{01} $ and $P_{02} > P_{2,\text{av}}$  % REVISIT
+
 
 Comment on the shape of all the curves and the magnitude of any variations. Explain the origin
 of the important features
 
-\subsubsection{}
-The probe is used to measure the flow angle via the yaw coefficient defined as
+Figure \ref{fig:wake_plot} shows the variation of the quantities defined above, in their respective order, across a single blade section.
+The traverse covers a whole blade pitch, starting below in the free stream and moving up through the blades wake and into the free stream above the blade.
+
+The first graph shows the stagnation pressure loss coefficient, which is observed to be near zero far from the blade, in the free stream.
+This reaffirms our assumption that the flow behaves isentropically in the free stream.
+However, in the wake of the blade we see it rise sharply to a peak of about 0.15.
+The width of this peak is about 30\% of the pitch of the blade.
+Perhaps the most interesting observation is that the center of the wake is offset about 5\% of the pitch from the trailing edge location.
+
+The second graph showing static pressure 
+The measurements in the wake can be seen to be noisy, which could indicate unsteady boundary layer interactions.
+However, on further inspection it is $P_1$ that is noisy, which means what? % REVISIT
+% graph dips down either side in the free stream, suggesting P2 is higher here than in the middle.
+% This doesnt make sense though as the velocity in free steam is higher
+% need to investigate this further
+
+The third graph shows the exit velocity over the isentropic free stream velocity.
+This is seen to be near unity in the free stream, as expected.
+In the wake, the velocity is seen to drop to about 92\% of the free steam isentropic value.
+
+This is due to the boundary layer separation and the formation of the wake.
+
+The final graph shows the exit yaw angle.
+
+
+
+
+\subsubsection{The probe is used to measure the flow angle via the yaw coefficient defined as
+}
+
 \begin{equation}
     C_\text{yaw} = \frac{P_\text{left} - P_\text{right}}{P_0 - P}
 \end{equation}
 Explain how the initial calibration of the probe is used to determine the flow angle across the
 pitch of the passage using the yaw coefficient. Over what range is the calibration valid?
 
-\subsubsection{}
-Besides the plots, the script also calculates various average quantities that are printed
-to screen. One of these is the mass averaged stagnation pressure loss coefficient as defined by
+\subsubsection{Besides the plots, the script also calculates various average quantities that are printed
+to screen. One of these is the mass averaged stagnation pressure loss coefficient as defined by}
+
 % bibliography
 
 \begin{equation}
@@ -195,9 +261,9 @@ to screen. One of these is the mass averaged stagnation pressure loss coefficien
 Explain how mass averaging is used and in where it is appropriate to apply this treatment of
 data reduction
 
-\subsubsection{}
-Use a control volume analysis and the average values from the exit traverse to determine
+\subsubsection{Use a control volume analysis and the average values from the exit traverse to determine
 the axial and tangential force on a blade. Hence, evaluate the force coefficients
+}
 
 \begin{equation}
     Z_x = \frac{F_x}{0.5 \rho_2 V_2^2 h C_x} \quad \& \quad Z_y = \frac{F_y}{0.5 \rho_2 V_2^2 h C_x}
@@ -207,8 +273,8 @@ where $h$ is the span of the blade and $C_x$ is the axial chord. Comment on the 
 of $Z_x$ and $Z_y$. How would your answers change if the traverse plane were moved further
 downstream? What role do viscous forces on the blades play in your analysis?
 
-\subsubsection{}
-The script evaluates the average pitchwise exit flow angle using the relationship
+\subsubsection{The script evaluates the average pitchwise exit flow angle using the relationship
+}
 \begin{equation}
     \tan (\overline{\alpha}_2) = \frac{\text{y momentum at 2}}{\text{x momentum at 2}} = \frac{\rho V_{x,2}V_{y,2}}{\rho V_{x,2}^2}
 \end{equation}
@@ -221,8 +287,8 @@ measured value of $\alpha_2$ the throat o, and the pitch s as
 Compare your measurements and the value given by this equation. Comment on any
 differences.
 
-\subsubsection{}
-The axial velocity ratio of the cascade is determined from the equation
+\subsubsection{The axial velocity ratio of the cascade is determined from the equation
+}
 \begin{equation}
     AVR = \frac{\overline{V_{x,2}}}{V_{x,1}} = \frac{1}{s V_{x,1}} \int_{-s/2}^{s/2} V_{x,2} \, dy
 \end{equation}
@@ -235,9 +301,8 @@ differences to unity you observe and, if not, explain what else may be responsib
 \subsection{Blade Surface Pressure Distribution}
 
 The same script will assist you with the reduction of the static pressure data.
-\subsubsection{}
-The script evaluates the static pressure coefficient $C_p$ and the isentropic velocity for
-each of the pressure tappings on the blade surface. The coefficient $C_p$ is defined as
+\subsubsection{The script evaluates the static pressure coefficient $C_p$ and the isentropic velocity for
+each of the pressure tappings on the blade surface. The coefficient $C_p$ is defined as}
 
 \begin{equation}
     C_p = \frac{P_{01} - P}{P_{01} - P_2}
@@ -259,10 +324,10 @@ design condition has been obtained using a boundary element CFD code. This solve
 equation for potential flow through the cascade. The prediction for the design condition is
 reproduced by the script for comparison with the experimental data.
 
-\subsubsection{}
-Diffusion factors are often used in turbine design to quantify flow deceleration. It is
+\subsubsection{Diffusion factors are often used in turbine design to quantify flow deceleration. It is
 reasoned that profile losses in a turbine primarily depend on the amount of diffusion on the
 suction surface. Hence, the most commonly used 'local' diffusion factor is defined as
+}
 
 \begin{equation}
     D = \frac{V_\text{max} - V_2}{V_\text{max}}
@@ -272,27 +337,26 @@ $V_\text{max}$ is the maximum suction surface velocity and
 $V_2$ is the exit velocity. Calculate the
 diffusion factor, D, from your cascade measurements.
 
-\subsubsection{}
-On the plot of the velocity distribution, indicate the location of any separation lines seen
-in the flow visualisation.
+\subsubsection{On the plot of the velocity distribution, indicate the location of any separation lines seen
+in the flow visualisation.}
 
-\subsubsection{}
-Find the fraction by which the surface velocity has decreased from the maximum value
+
+\subsubsection{Find the fraction by which the surface velocity has decreased from the maximum value
 to the separation point. For a laminar boundary layer, this is typically 5-8%. For a turbulent
 boundary layer, it is much more. What state is the boundary layer in at the trailing edge, laminar
-or turbulent, separated or attached?
+or turbulent, separated or attached?}
 
-\subsubsection{}
-Comment on any differences between the measured and predicted velocity
-distributions.
 
-\subsubsection{}
-The script also integrates your measured pressure distribution to determine the pressure
+\subsubsection{Comment on any differences between the measured and predicted velocity
+distributions.}
+
+
+\subsubsection{The script also integrates your measured pressure distribution to determine the pressure
 blade force per unit span in the y-direction and x-direction. It then evaluates the force
 coefficients $Z_x$ and $Z_y$ and these are printed to screen.
-
 Compare the pressure blade force coefficients with the values indicated by the results of your
-exit traverse and comment on any discrepancy.
+exit traverse and comment on any discrepancy.}
+
 
 \subsection{Effect of Reynolds number}
 
@@ -305,15 +369,15 @@ The script shows how the profile loss of the cascade varies with Reynolds number
 Mach number of 0.8. These results were obtained when the same cascade hardware was tested
 in the high-speed variable density tunnel at the Whittle Laboratory.
 
-\subsubsection{}
-Compare your measurements with the other values. What do you conclude about the
-effect of Mach number?
+\subsubsection{Compare your measurements with the other values. What do you conclude about the
+effect of Mach number?}
 
-\subsubsection{}
-Figure 3 shows the results of flow visualisation experiments at high and low Reynolds
+
+\subsubsection{Figure 3 shows the results of flow visualisation experiments at high and low Reynolds
 numbers. The effect of Reynolds number on the behaviour of the boundary layer can be seen
 near the trailing edge. Suggest reasons for the shape of the relationship between loss and
-Reynolds number that you plotted.
+Reynolds number that you plotted.}
+
 
 
 \subsection{Effect of Mach number}
@@ -322,7 +386,6 @@ values of the nominal exit Mach number (M2 = 0.39 to 0.75). Comment on the varia
 diffusion factor with Mach number. Would these blades be more suitable for high or low Mach
 numbers?
 
-\textbf{A:}
 
 \begin{thebibliography}{9}
 

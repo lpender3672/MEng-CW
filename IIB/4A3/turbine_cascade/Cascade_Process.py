@@ -24,6 +24,7 @@ import numpy as np
 import matplotlib.pyplot as plt 
 import mat73
 import scipy.interpolate as interp
+from matplotlib.patches import FancyArrow
 
 plt.rcParams["text.usetex"] = True
 plt.rcParams["font.family"] = "serif"
@@ -86,7 +87,7 @@ def exit_traverse(e,N,b):
     # Static pressure coefficient
     P_1 = np.mean(e['P_wake'][:,N['dsa']['P_1']],axis=1)
     P_2 = e['P_wake'][:,N['probe']['P']]
-    t['Cp'] = (P_1 - P_2) / (Po_1 - P_2_av) 
+    t['Cp'] = (P_1 - P_2) / (Po_1 - P_2_av)
 
     # Velocity ratio
     t['V2_V2s'] = ((Po_2 - P_2) / (Po_1 - P_2))**0.5
@@ -94,6 +95,10 @@ def exit_traverse(e,N,b):
 
     # Calculate non-dimensional pitch
     t['y_s'] = e['y_wake'] / b['s'] 
+
+    #plt.plot(t['y_s'], P_2)
+    #plt.show()
+    #exit()
 
     # Yaw coefficient from probe side holes
     P_l = e['P_ang'][:,N['probe']['P_l']]
@@ -164,8 +169,110 @@ def exit_traverse(e,N,b):
         % (t['Fx,m,1'],t['Fx,m,2'],t['Fx,p,1'],t['Fx,p,2']))
     print('Fy,m,1 = %4.1f , Fy,m,2 = %4.1f\n\n' 
         % (0.0,t['Fy,m,2']))
+    
+    # create new plot
+    h['quiver'], axq = plt.subplots(nrows=1, ncols=2, figsize=(12,6),num='Exit Quiver');
+    gs = h['quiver'].add_gridspec(1, 2, width_ratios=[1, 2])
+
+    # Plot the blade geometry
+    xys = np.array(e['xy_ps'])
+    maxy = np.max(xys[:,1])
+    
+    axq[0] = plot_cascade(axq[0], e)
+    axq[1] = plot_cascade(axq[1], e)
+    
+    #axq.axis('equal')
+    # plot quiver plot of velocity vectors
+    Cx = 30.323
+    top = Cx * maxy
+    yvals = reduce_dataset(e['y_wake'])
+
+    vs = reduce_dataset(t['V_2'])
+    alphas = reduce_dataset(t['alpha_2'])
+
+    vs_scaled = vs - 0.9 * np.min(vs)
+    vxs_scaled = vs_scaled * np.cos(np.deg2rad(alphas))
+    vys_scaled = vs_scaled * np.sin(np.deg2rad(alphas))
+    dalpha = alphas - 71.24
+
+    xq = Cx * np.ones(yvals.shape)
+    q1 = axq[0].quiver(xq, top + yvals - 15, vxs_scaled, vys_scaled, dalpha, angles='xy', scale_units='xy', scale=1, cmap = 'jet')
+    q2 = axq[1].quiver(xq, top + yvals - 15, vxs_scaled, vys_scaled, dalpha, angles='xy', scale_units='xy', scale=1, cmap = 'jet', label='Scaled, Offset Velocity Vectors')
+    # add colourbar with velocity scale with label
+    h['quiver'].colorbar(q2, label=r'$\alpha - 74.24$ / $^\circ$')
+
+    # plot lines at 71.24 degrees at several heights
+    heights = yvals
+    for height in heights:
+        x = np.array([0, 100])
+        y = np.tan(np.deg2rad(71.24)) * x + top + height - 15
+        axq[1].plot(Cx + x, y, 'k--', linewidth=0.5, alpha=0.5)
+
+
+    axq[0].set_xlim([-5, Cx + 5])
+    axq[0].axis('equal')
+
+    # set ylim
+    xbounds = [Cx - 5, Cx + 5]
+    ybounds = [top - 20, top + 30]
+
+    axq[1].set_xlim(xbounds)
+    axq[1].set_ylim(ybounds)
+    # draw rectangle on axq[0] shoinw the region of axq[1]
+    rect = plt.Rectangle((xbounds[0], ybounds[0]), xbounds[1] - xbounds[0], ybounds[1] - ybounds[0], edgecolor='g', facecolor='none', label='Right Plot Region')
+    axq[0].add_patch(rect)
+
+    axq[1].set_xlabel('x / mm')
+    axq[1].set_ylabel('y / mm')
+    
+
+    h['quiver'].tight_layout()
+    # add legend
+    axq[0].legend()
+    axq[1].legend(loc='upper left')
 
     return(t,h)
+
+def reduce_dataset(arr):
+    n = arr.shape[0]
+
+    first4 = arr[0:3]
+    middle_sample = arr[4:n-4:4]
+    last4 = arr[n-4:n]
+
+    return np.concatenate((first4, middle_sample, last4))
+
+def plot_cascade(ax, e):
+    # Plot the cascade geometry
+
+    pos = [0,0]
+    ax = plot_blade(ax,e, pos)
+    pos = [0,-30]
+    ax = plot_blade(ax,e, pos)
+    pos = [0,30]
+    ax = plot_blade(ax,e, pos)
+
+    ax = plot_surfaces(ax, e, [0,0])
+
+    return ax
+
+def plot_surfaces(ax, e, pos):
+    Cx = 30.323 # mm
+    # Plot the suction surface
+    
+    xyp =  pos + Cx * np.array(e['xy_ps'])
+    xys = pos + Cx * np.array(e['xy_ss'])
+    # append the last pressure surface point to the suction surface
+    xys = np.append(xys, [xyp[-1,:]], axis=0)
+    xyp[:,1] = xyp[:,1] - 30
+    # concate the two arrays but reverse the second one
+    # offset all points by pos
+
+    # plot the blade as closed plot
+    ax.plot(xys[:,0],xys[:,1],'b-', label='Suction Surface')
+    ax.plot(xyp[:,0],xyp[:,1],'r-', label='Pressure Surface')
+
+    return(ax)
 
 
 def lift_distribution(e,N,t,b):
@@ -205,7 +312,7 @@ def lift_distribution(e,N,t,b):
     ax.legend()
 
     # Calculate diffusion factor
-    V_max = np.max(s['Vs_V2s']); V_2 = t['V2_V2s_av']
+    V_max = np.nanmax(s['Vs_V2s']); V_2 = t['V2_V2s_av']
     s['D'] = (V_max - V_2) / V_max 
 
     # Integrate the pressures to determine force coefficients 
@@ -318,6 +425,22 @@ def gen_cols():
 
     return(cols)
 
+def plot_blade(ax,e, pos):
+
+    # Plot the suction surface
+    xys = np.array(e['xy_ss'])
+    xyp =  np.array(e['xy_ps'])
+    # concate the two arrays but reverse the second one
+    all_xy = np.concatenate((xys,xyp[::-1,:]),axis=0)
+    # offset all points by pos
+    Cx = 30.323 # mm
+    all_xy = Cx * all_xy + np.array(pos)
+    
+    # plot the blade as closed plot
+    ax.plot(all_xy[:,0],all_xy[:,1],'k-')
+    ax.fill(all_xy[:,0],all_xy[:,1],color='grey',alpha=0.5)
+
+    return(ax)
 
 def set_axes(ax,xlab,ylab):
     # Format axes
