@@ -100,6 +100,13 @@
 
 \begin{figure}[H]
     \centering
+    \includegraphics[width=0.8\textwidth]{figures/yaw_plot.eps}
+    \caption{yaw plot}
+    \label{fig:yaw_plot}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
     \includegraphics[width=0.8\textwidth]{figures/lift_plot.eps}
     \caption{lift plot}
     \label{fig:lift_plot}
@@ -115,13 +122,6 @@
     \includegraphics[width=0.8\textwidth]{figures/reynolds_plot.eps}
     \caption{reynolds plot}
     \label{fig:reynolds_plot}
-\end{figure}
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.8\textwidth]{figures/yaw_plot.eps}
-    \caption{yaw plot}
-    \label{fig:yaw_plot}
 \end{figure}
 
 \begin{figure}[H]
@@ -236,8 +236,10 @@ In the wake, the velocity is seen to drop to about 92\% of the free steam isentr
 This is due to the boundary layer separation and the formation of the wake.
 
 The final graph shows the exit yaw angle.
-
-
+This initially starts, in the free stream, about 1 degree below the metal blade angle $\chi_2$.
+Close to the suction surface, the flow angle increases to higher than metal blade angle.
+This then reduces down to a value similar to the metal blade angle at a height similar to the wake peak.
+Then, above the wake the flow angle again is higher than the metal blade angle, before decreasing to value seen in the free steam.
 
 
 \subsubsection{The probe is used to measure the flow angle via the yaw coefficient defined as
@@ -248,6 +250,12 @@ The final graph shows the exit yaw angle.
 \end{equation}
 Explain how the initial calibration of the probe is used to determine the flow angle across the
 pitch of the passage using the yaw coefficient. Over what range is the calibration valid?
+
+The pressures $P_\text{left}$ and $P_\text{right}$ stagnate the components of velocity normal to them.?? % REVISIT
+The difference in these pressures  produce a term proportional to $\rho V^2 \sin \delta$, which when divided by the dynamic pressure gives the yaw coefficient.
+For small angles the yaw coefficient will be proportional to the angle of the flow which can be seen in the calibration plot \ref{fig:yaw_plot}.
+The calibration constant is found by placing it at known angles, $\pm 2^\circ$ to the flow in the free stream.
+Then small angles of the flow can be determined by the yaw coefficient.
 
 \subsubsection{Besides the plots, the script also calculates various average quantities that are printed
 to screen. One of these is the mass averaged stagnation pressure loss coefficient as defined by}
