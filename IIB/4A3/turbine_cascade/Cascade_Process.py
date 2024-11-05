@@ -155,6 +155,9 @@ def exit_traverse(e,N,b):
 
     # Axial velocity ratio
     t['AVR'] = np.trapz(t['ro'] * Vx_2,x=e['y_wake']) / np.trapz(t['ro'] * V_1,x=e['y_wake'])
+    t['AVR_hd'] = np.trapz(Vx_2 / V_1,x=e['y_wake']) / b['s']
+
+    print(f"AVR calculated using equation in handout:", t['AVR_hd'])
 
     # Plot averaged quantities
     ax[0].plot(np.array([0,1]),np.ones(2) * t['Yp_av'],'-',color=cols[2,:])
@@ -209,8 +212,8 @@ def exit_traverse(e,N,b):
         axq[1].plot(Cx + x, y, 'k--', linewidth=0.5, alpha=0.5)
 
 
-    axq[0].set_xlim([-5, Cx + 5])
-    axq[0].axis('equal')
+    axq[0].set_xlim([-20, Cx + 20])
+    axq[0].set_aspect('equal')
 
     # set ylim
     xbounds = [Cx - 5, Cx + 5]
@@ -222,6 +225,8 @@ def exit_traverse(e,N,b):
     rect = plt.Rectangle((xbounds[0], ybounds[0]), xbounds[1] - xbounds[0], ybounds[1] - ybounds[0], edgecolor='g', facecolor='none', label='Right Plot Region')
     axq[0].add_patch(rect)
 
+    axq[0].set_xlabel('x / mm')
+    axq[0].set_ylabel('y / mm')
     axq[1].set_xlabel('x / mm')
     axq[1].set_ylabel('y / mm')
     
@@ -254,6 +259,8 @@ def plot_cascade(ax, e):
 
     ax = plot_surfaces(ax, e, [0,0])
 
+    ax = plot_control_volume(ax, e, [0,0])
+
     return ax
 
 def plot_surfaces(ax, e, pos):
@@ -273,6 +280,39 @@ def plot_surfaces(ax, e, pos):
     ax.plot(xyp[:,0],xyp[:,1],'r-', label='Pressure Surface')
 
     return(ax)
+
+def plot_control_volume(ax, e, pos):
+    Cx = 30.323 # mm
+
+    xyp =  pos + Cx * np.array(e['xy_ps'])
+    xys = pos + Cx * np.array(e['xy_ss'])
+
+    xys = np.append(xys, [xyp[-1,:]], axis=0)
+
+    xs = xys[:,0]
+    ys = xys[:,1]
+    xp = xyp[:,0]
+    yp = xyp[:,1]
+
+    fs = interp.interp1d(xs, ys, kind='linear', fill_value='extrapolate')
+    fp = interp.interp1d(xp, yp, kind='linear', fill_value='extrapolate')
+    xlin = np.linspace(-2, Cx, 100)
+    ysuc = fs(xlin)
+    ypres = fp(xlin)
+    ycenter = (ysuc + ypres) / 2
+
+    y_cv_upper = ycenter + 15
+    y_cv_lower = ycenter - 15
+
+    # plot the control volume
+    ax.plot(xlin, y_cv_upper, 'k--', linewidth=1, alpha=1, label='Control Volume')
+    ax.plot([xlin[0],xlin[0]], [y_cv_upper[0], y_cv_lower[0]], 'k--', linewidth=1, alpha=1)
+    ax.plot(xlin, y_cv_lower, 'k--', linewidth=1, alpha=1)
+    ax.plot([xlin[-1], xlin[-1]], [y_cv_upper[-1], y_cv_lower[-1]], 'k--', linewidth=1, alpha=1)
+
+
+    return ax
+
 
 
 def lift_distribution(e,N,t,b):

@@ -127,7 +127,7 @@
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.8\textwidth]{figures/quiver_plot.eps}
-    \caption{quiver plot}
+    \caption{Quiver Plot of Measured Velocity Vectors. The lengths are offset to be $V-0.9V_\text{min}$}
     \label{fig:quiver_plot}
 \end{figure}
 
@@ -269,9 +269,23 @@ to screen. One of these is the mass averaged stagnation pressure loss coefficien
 Explain how mass averaging is used and in where it is appropriate to apply this treatment of
 data reduction
 
+The mass flow weighted average is used to obtain a more accurate representation of the overall flow from a non uniform flow field.
+Changes in flow properties such as energy and momentum are governed by the mass flow rate, making it the most appropriate quantity to average over.
+
+This averaged value was found to be $Y_{p,av} = 0.0247$
+
 \subsubsection{Use a control volume analysis and the average values from the exit traverse to determine
 the axial and tangential force on a blade. Hence, evaluate the force coefficients
 }
+The pressure and momentum forces on the blade are calculated from the steady flow momentum equation of the control volume in figure \ref{fig:quiver_plot}.
+
+\begin{equation}
+    F_x =  F_{x,m,2} - F_{x,m,1} + F_{x,p,1} - F_{x,p,2} \quad \& \quad F_y =  F_{y,m,2} - F_{y,m,1}
+\end{equation}
+
+The subscripts $m$ and $p$ denote the momentum and pressure forces respectively, and the subscripts 1 and 2 denote the inlet and exit of the control volume.
+There are no resulting pressure components in the y-direction due to infinite cascade symmetry.
+This gives values of $F_x = 59.784$ N and $F_y = 41.042$ N.
 
 \begin{equation}
     Z_x = \frac{F_x}{0.5 \rho_2 V_2^2 h C_x} \quad \& \quad Z_y = \frac{F_y}{0.5 \rho_2 V_2^2 h C_x}
@@ -281,30 +295,51 @@ where $h$ is the span of the blade and $C_x$ is the axial chord. Comment on the 
 of $Z_x$ and $Z_y$. How would your answers change if the traverse plane were moved further
 downstream? What role do viscous forces on the blades play in your analysis?
 
+Using the value of $V_2s = 62.97$ m/s, $C_x = 30.323$ mm and span $h=101.6$ mm gives $Z_x = 8.438$ and $Z_y = 5.793$.
+These force coefficients are of similar magnitude, with more axial force than tangential force.
+If the traverse plane were moved further downstream, more momentum mixing would occur and the quantities would be more similar.
+Viscous forces on the blades \dots
+
 \subsubsection{The script evaluates the average pitchwise exit flow angle using the relationship
 }
 \begin{equation}
-    \tan (\overline{\alpha}_2) = \frac{\text{y momentum at 2}}{\text{x momentum at 2}} = \frac{\rho V_{x,2}V_{y,2}}{\rho V_{x,2}^2}
+    \tan (\overline{\alpha}_2) = \frac{\text{y momentum at 2}}{\text{x momentum at 2}} = \frac{\rho V_{x,2}V_{y,2}}{\rho V_{x,2}^2} \label{eq:alpha2}
 \end{equation}
 The inviscid flow calculation predicts that the exit flow angle should be $71.6^\circ$. Compare the
-measured value of $\alpha_2$ the throat o, and the pitch s as
+measured value of $\overline{\alpha}_2$ with the predicted vaue. Comment on any differences.
 
+Measured $\overline{\alpha}_2 = 71.34^\circ$ which is a bit smaller than the value predicted by the inviscid flow calculation.
+% reasons for x momentum at 2 being higher for viscous flow than inviscid flow:
+% boundary layer growth restricting the inside flow area, increasing the velocity
+% 
+% reasons for y momentum at 2 being lower for viscous flow than inviscid flow:
+% 
+A simple one-dimensional analysis gives the approximate relationship between the exit flow angle $\alpha_2$, the throat $o$, and the pitch $s$ as
 \begin{equation}
     \cos (\overline{\alpha}_2) = \frac{o}{s}
 \end{equation}
 Compare your measurements and the value given by this equation. Comment on any
 differences.
+\begin{equation}
+    \cos^{-1}\left( \frac{o}{s} \right) = 71.123^\circ
+\end{equation}
+The measured angle is much greater than the value predicted by this equation.
+This is because continues to turn after the throat.
 
 \subsubsection{The axial velocity ratio of the cascade is determined from the equation
 }
 \begin{equation}
-    AVR = \frac{\overline{V_{x,2}}}{V_{x,1}} = \frac{1}{s V_{x,1}} \int_{-s/2}^{s/2} V_{x,2} \, dy
+    \text{AVR} = \frac{\overline{V_{x,2}}}{V_{x,1}} = \frac{1}{s V_{x,1}} \int_{-s/2}^{s/2} V_{x,2} \, dy
 \end{equation}
 
 If the flow were truly two dimensional and truly incompressible, then the axial velocity ratio
 would be unity since, at mid-span, the mass flow per unit area at inlet would be the same as
 that at exit. Discuss whether density changes across the cascade are enough to describe any
 differences to unity you observe and, if not, explain what else may be responsible?
+
+AVR = $0.939$ which shows a 6.1\% reduction in the axial velocity.
+The reduction in density of 1.4\% means that, if we accounted for compressibility, the outlet axial velocity should actually be 
+
 
 \subsection{Blade Surface Pressure Distribution}
 
