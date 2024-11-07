@@ -199,7 +199,19 @@ def __del__(self):
 
 # Parsing flags
 
+def save_password():
+    # save password in secrets.json
+    pwd = input("Enter password: ")
+    shifted_pwd = ''
+    for s in pwd:
+        shifted_pwd += chr(ord(s) + 1)
+    
+    with open('secrets.json', 'w') as f:
+        json.dump({'password': shifted_pwd}, f)
+
 if __name__ == "__main__":
+    
+    #save_password()
 
     try:
         window = gw.getWindowsWithTitle("Airfoil")[0]
@@ -223,7 +235,7 @@ if __name__ == "__main__":
     # Create the AirfoilApp
     App = AirfoilApp(sesh.teaching_client, window)
 
-    alphas = np.linspace(0, 3, 5)
+    alphas = np.linspace(3, 6, 5)
     cs = ['r', 'g', 'b', 'y', 'k']
 
     plt.gca().invert_yaxis()
