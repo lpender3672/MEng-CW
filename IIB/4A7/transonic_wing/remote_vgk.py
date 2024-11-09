@@ -35,10 +35,11 @@ class Result():
         self.boundary_layer_data = boundary_layer_data
         self.shock_locations = shock_locations
 
-        self.cpte = self.cp[self.x == 1.0]
+        self.cpte = self.cp[self.x == 1.0][0]
         self.Hbar = boundary_layer_data['HBAR']
 
         self.buffeting = False
+        self.buffet_causes = []
 
 class AirfoilApp():
 
@@ -258,8 +259,39 @@ class AirfoilApp():
                 alphas = np.append(alphas, obj.alpha)
                 cps = np.append(cps, obj.cpte)
 
+        # sort by alpha
+        idx = np.argsort(alphas)
+        alphas = alphas[idx]
+        cps = cps[idx]
+
         return alphas, cps
 
+    def cpte_M(self, alpha, Re):
+        # get a list of cp vs M for a given alpha and Re
+        try:
+            with open(f'data/db_{self.foil}.pkl', "rb") as file:
+                loaded_objects = pickle.load(file)
+        except FileNotFoundError:
+            print("Warning: pickle file not found")
+            return None
+        
+        Ms = np.empty(0)
+        cps = np.empty(0)
+        
+        tol = 1e-4
+        for obj in loaded_objects:
+            if (np.isclose(obj.alpha, alpha, atol = tol) and 
+                np.isclose(obj.Re, Re, atol = tol)):
+                Ms = np.append(Ms, obj.M)
+                cps = np.append(cps, obj.cpte)
+
+        # sort by M
+        idx = np.argsort(Ms)
+        Ms = Ms[idx]
+        cps = cps[idx]
+
+        return Ms, cps
+    
     def check_result_saved(self, M, alpha, Re):
         # returns true or false if operating point is in lookup
 
@@ -276,7 +308,27 @@ class AirfoilApp():
                 np.isclose(lookup[i, 2], Re, atol = tol)):
                 return True
         
-        return False        
+        return False
+    
+    def delete_result(self, M, alpha, Re):
+        # delete a result from the pickle
+        try:
+            with open(f'data/db_{self.foil}.pkl', "rb") as file:
+                loaded_objects = pickle.load(file)
+        except FileNotFoundError:
+            print("Warning: pickle file not found")
+            return None
+        
+        tol = 1e-4
+        for i in range(len(loaded_objects)):
+            if (np.isclose(loaded_objects[i].M, M, atol = tol) and 
+                np.isclose(loaded_objects[i].alpha, alpha, atol = tol) and 
+                np.isclose(loaded_objects[i].Re, Re, atol = tol)):
+                del loaded_objects[i]
+                break
+        
+        with open(f'data/db_{self.foil}.pkl', "wb") as file:
+            pickle.dump(loaded_objects, file)
 
 class DPO_Session():
 
