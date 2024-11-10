@@ -277,7 +277,6 @@ Then small angles of the flow can be determined by the yaw coefficient.
 \subsubsection{Besides the plots, the script also calculates various average quantities that are printed
 to screen. One of these is the mass averaged stagnation pressure loss coefficient as defined by}
 
-% bibliography
 
 \begin{equation}
     Y_p = \frac{p_{01} - \overline{p_{02}}}{p_{01} - p_{2,av}} = \frac{\int_{-s/2}^{s/2} \rho_2 V_{x2} \frac{p_{01} - p_{02}}{p_{01} - p_2} \, dy}{\int_{-s/2}^{s/2} \rho_2 V_{x,2} \, dy}
@@ -327,9 +326,9 @@ measured value of $\overline{\alpha}_2$ with the predicted vaue. Comment on any 
 
 The angle obtained in our experiment, $\overline{\alpha}_2 = 71.34^\circ$ is 0.36\% smaller than the value predicted by the inviscid flow calculation.
 This small difference can cause significant change in $tan(\overline{\alpha}_2)$ and $1/cos(\overline{\alpha}_2)$, shifting away from the optimum design point.
-It is however, difficult to determine the cause of such a small difference.
-Along the traverse, $\alpha$ changes significantly over the span. In the suction surface side of the free stream, the angle is below the average, while on the pressure surface side of the free stream, the angle is above the average.
-There is a trough, of which the center is offset 0.05s above the pressure loss coefficient peak. The value at the bottom of the trough is the average.
+Accounting for this small difference is difficult as it could easily be of the same order as the error propagated from the combined measurements.
+However, a possible explaination could be that the viscous boundary layer growth restricts the flow area, increasing the x momentum at 2.
+
 
 % reasons for x momentum at 2 being higher for viscous flow than inviscid flow:
 % boundary layer growth restricting the inside flow area, increasing the velocity
