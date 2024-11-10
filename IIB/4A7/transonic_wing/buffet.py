@@ -43,6 +43,9 @@ def mach_numbers_at_shocks(res):
 
 def get_difference_in_shock_entry_mach_number_to_1_2(res):
     mup, _ = mach_numbers_at_shocks(res)
+    if len(mup) == 0:
+        return -np.inf
+    
     return np.max(mup) - 1.2
 
 
@@ -62,8 +65,9 @@ def get_min_distance_between_mach_lines(res):
     return np.max(dmachs)   
 
 def get_difference_delta_cpte_above_threshold(res, cpte_plateau):
-    # TODO: Implement
-    raise NotImplementedError
+    
+    return (-res.cpte) - (-cpte_plateau) - 0.04
+    # minus sign because the y axis is inverted
 
 def buffet_classification(res, cpte_plateau):
 
@@ -73,5 +77,8 @@ def buffet_classification(res, cpte_plateau):
         get_min_distance_between_mach_lines(res),
         get_difference_delta_cpte_above_threshold(res, cpte_plateau)
     ]
+
+    if np.any(np.array(res.buffet_causes) > 0):
+        res.buffeting = True
 
     return res
