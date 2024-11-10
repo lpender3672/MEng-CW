@@ -148,6 +148,12 @@
     \label{fig:quiver_plot}
 \end{figure}
 
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{figures/surface_vis.png}
+    \caption{Oil suction surface flow visualisation at Reynolds number of $10^6$ on the left, and $10^5$ on the right.}
+    \label{fig:surface_vis}
+\end{figure}
 
 \section{Discussion}
 
@@ -328,6 +334,7 @@ The angle obtained in our experiment, $\overline{\alpha}_2 = 71.34^\circ$ is 0.3
 This small difference can cause significant change in $tan(\overline{\alpha}_2)$ and $1/cos(\overline{\alpha}_2)$, shifting away from the optimum design point.
 Accounting for this small difference is difficult as it could easily be of the same order as the error propagated from the combined measurements.
 However, a possible explaination could be that the viscous boundary layer growth restricts the flow area, increasing the x momentum at 2.
+% check if this is correct
 
 
 % reasons for x momentum at 2 being higher for viscous flow than inviscid flow:
@@ -365,6 +372,9 @@ This means that there must be other factors at play.
 A possible cause for this could be due to changes in flow area due to thinning of the boundary layer at the end walls, compared to the thicker boundary layer at the entrance to the cascade.
 The boundary layer thins at higher speed and so the flow area increases, causing the velocity to decrease.
 
+The flow visualisations in figure \ref{fig:surface_vis} show a wedge at the edge of the blade, which grows along the chord as the flow moves downstream.
+This wedge could be the boundary layer, which is actually thicker at the exit than at the entrace, and so 
+
 \subsection{Blade Surface Pressure Distribution}
 
 The same script will assist you with the reduction of the static pressure data.
@@ -386,7 +396,7 @@ $V_{2s}$ so that the ratio is defined as
 \end{equation}
 Mark the pressure and suction surfaces and any regions of adverse pressure gradient.
 
-The adverse pressure gradients are shown on figure \ref{fig:lift_plot}.
+The suction and pressure surfaces, as well as regions of adverse pressure gradient are shown in the legend of figure \ref{fig:lift_plot}.
 
 A prediction of the isentropic blade-surface velocity distribution with the cascade at its
 design condition has been obtained using a boundary element CFD code. This solves the
@@ -409,16 +419,26 @@ diffusion factor, D, from your cascade measurements.
 \subsubsection{On the plot of the velocity distribution, indicate the location of any separation lines seen
 in the flow visualisation.}
 
+Figure \ref{fig:lift_plot} includes an annotation to the suction surface at about $x/c \approx 0.8$ where seperation is observed on figure \ref{fig:surface_vis}.
 
 \subsubsection{Find the fraction by which the surface velocity has decreased from the maximum value
 to the separation point. For a laminar boundary layer, this is typically 5-8\%. For a turbulent
 boundary layer, it is much more. What state is the boundary layer in at the trailing edge, laminar
 or turbulent, separated or attached?}
 
+The measured pressure distribution shows no evidence of seperation and so seperates at the trailing edge.
+This is because the region of adverse pressure gradient does not deviate more than 2\% from the invicid solution.
+If the flow did seperate, the seperation bubble should show a deviation from the inviscid solution. [?] % REVISIT
+From this, the reduction in velocity from the suction peak to the trailing edge is 13.7\%, indicating a turbulent boundary layer.
+
 
 \subsubsection{Comment on any differences between the measured and predicted velocity
 distributions.}
 
+The predicted velocity near the trailing edge shows an instability
+The measured velocity on the suction surface is less than the value predicted by the inviscid flow calculation.
+
+% discuss this section more and consider boundary layer growth
 
 \subsubsection{The script also integrates your measured pressure distribution to determine the pressure
 blade force per unit span in the y-direction and x-direction. It then evaluates the force
@@ -426,6 +446,8 @@ coefficients $Z_x$ and $Z_y$ and these are printed to screen.
 Compare the pressure blade force coefficients with the values indicated by the results of your
 exit traverse and comment on any discrepancy.}
 
+The force coefficients are determined by the pressure distributions to be $Z_x = 0.866$ and $Z_y = 0.568$.
+This is a different order of magnitude. % REVISIT
 
 \subsection{Effect of Reynolds number}
 
@@ -442,7 +464,7 @@ in the high-speed variable density tunnel at the Whittle Laboratory.
 effect of Mach number?}
 
 
-\subsubsection{Figure 3 shows the results of flow visualisation experiments at high and low Reynolds
+\subsubsection{Figure \ref{fig:surface_vis} shows the results of flow visualisation experiments at high and low Reynolds
 numbers. The effect of Reynolds number on the behaviour of the boundary layer can be seen
 near the trailing edge. Suggest reasons for the shape of the relationship between loss and
 Reynolds number that you plotted.}
@@ -454,6 +476,8 @@ The script shows surface isentropic Mach number distributions for this cascade a
 values of the nominal exit Mach number (M2 = 0.39 to 0.75). Comment on the variation of
 diffusion factor with Mach number. Would these blades be more suitable for high or low Mach
 numbers?
+
+% large discussion
 
 
 \begin{thebibliography}{9}
