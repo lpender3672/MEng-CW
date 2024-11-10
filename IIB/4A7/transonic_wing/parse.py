@@ -9,6 +9,8 @@ def check_converged(content):
     for line in content.splitlines():
         if "ITERATIVE PROCEDURE HAS DIVERGED" in line:
             return False
+        elif "ARRAY OVERFLOW" in line:
+            return False
 
     return True
 

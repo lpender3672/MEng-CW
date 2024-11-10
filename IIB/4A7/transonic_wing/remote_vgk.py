@@ -18,6 +18,10 @@ from parse import (
     load_surface_data
     )
 
+from buffet import (
+    buffet_classification
+)
+
 
 class Result():
     def __init__(self, variables, surface_data, boundary_layer_data, shock_locations):
@@ -66,6 +70,8 @@ class AirfoilApp():
         self.reynolds_input_loc = (x + 290, y + h * 0.776)
         self.run_loc = (x + w * 0.75, y + h * 0.9)
 
+        self.cpte_plateau_history = {}
+
         
 
     def run(self, M, alpha, Re):
@@ -93,7 +99,11 @@ class AirfoilApp():
         # sleep
         # get results
 
-        return self.load_result_remote()
+        res = self.load_result_remote()
+
+        self.save_result_locally(res)
+
+        return res
 
     def set_M(self):
         # set in window
@@ -184,8 +194,6 @@ class AirfoilApp():
         # end sesh
         remote_file.close()
         sftp_client.close()
-
-        self.save_result_locally(out)
 
         return out
     
@@ -330,6 +338,141 @@ class AirfoilApp():
         
         with open(f'data/db_{self.foil}.pkl', "wb") as file:
             pickle.dump(loaded_objects, file)
+    
+    def get_plateau_cpte(self, M, Re = 10):
+        # this function used to be called in a loop so attempts to speed it up by storing results
+        # were done but the actual reading and writing of the pickle file is slow
+        # the function classify_buffeting contains the loop now so only one read and write is done
+
+        tol = 1e-4
+
+        for key, item in self.cpte_plateau_history.items():
+            if (np.isclose(key[0], M, atol = tol) and 
+                np.isclose(key[1], Re, atol = tol)):
+                return item
+
+        # get a list of cp vs alpha for a given M and Re
+        try:
+            with open(f'data/db_{self.foil}.pkl', "rb") as file:
+                loaded_objects = pickle.load(file)
+        except FileNotFoundError:
+            print("Warning: pickle file not found")
+            return None
+    
+        objs = []
+        
+        for obj in loaded_objects:
+            if (np.isclose(obj.M, M, atol = tol) and 
+                np.isclose(obj.Re, Re, atol = tol)):
+                objs.append(obj)
+
+        if len(objs) < 2:
+            print("Warning: not enough data points to find plateau")
+            return None
+
+        # sort by alpha
+        objs = sorted(objs, key=lambda x: x.alpha)
+
+        # look through ascending alpha and determine where upper surface shock changes from 2 to 1
+        passed_two_shocks = False
+        idx = 0
+        for obj in objs:
+            num_upper_shocks = len(obj.shock_locations['upper_shock_locations'])
+            if num_upper_shocks >= 2:
+                passed_two_shocks = True
+            if passed_two_shocks and num_upper_shocks < 2:
+                break
+            idx += 1
+        else:
+            self.cpte_plateau_history[(M, Re)] = None
+            return None
+            
+        out =  (objs[idx].alpha, objs[idx].cpte, objs[idx-1].alpha, objs[idx-1].cpte)
+        self.cpte_plateau_history[(M, Re)] = out
+        return out
+    
+    def classify_buffeting(self):
+        # loads all results and classifies them as buffeting or not
+        # accuracy increases with more data points
+        # computational time also increases with more data points
+
+        self.cpte_plateau_history = {}
+        tol = 1e-4
+
+        try:
+            with open(f'data/db_{self.foil}.pkl', "rb") as file:
+                loaded_results = pickle.load(file)
+        except FileNotFoundError:
+            print("Warning: pickle file not found")
+            return False
+        
+        for i, res in enumerate(loaded_results):
+
+            for key, item in self.cpte_plateau_history.items():
+                if (np.isclose(key[0], res.M, atol = tol) and 
+                    np.isclose(key[1], res.Re, atol = tol)):
+                    plateau = item
+                    break
+            else:
+                
+                M_values = np.array([obj.M for obj in loaded_results])
+                Re_values = np.array([obj.Re for obj in loaded_results])
+
+                mask = np.isclose(M_values, res.M, atol=tol) & np.isclose(Re_values, res.Re, atol=tol)
+                filtered_results = [loaded_results[j] for j in np.where(mask)[0]]
+                sorted_results = sorted(filtered_results, key=lambda x: x.alpha)
+
+                # look through ascending alpha and determine where upper surface shock changes from 2 to 1
+                passed_two_shocks = False
+                j = 0
+                for obj in sorted_results:
+                    num_upper_shocks = len(obj.shock_locations['upper_shock_locations'])
+                    if num_upper_shocks >= 2:
+                        passed_two_shocks = True
+                    if passed_two_shocks and num_upper_shocks < 2:
+                        break
+                    j += 1
+                else:
+                    self.cpte_plateau_history[(res.M, res.Re)] = None
+                    continue # the main loop because no plateau was found
+
+                plateau =  (sorted_results[j].alpha,
+                            sorted_results[j].cpte,
+                            sorted_results[j-1].alpha,
+                            sorted_results[j-1].cpte)
+                
+                print(res.M, plateau[1])
+            # plateau is now set
+            if plateau is None:
+                continue
+
+            loaded_results[i] = buffet_classification(res, plateau[1])
+        
+        with open(f'data/db_{self.foil}.pkl', "wb") as file:
+            pickle.dump(loaded_results, file)
+
+    
+    def __iter__(self):
+        # yield all results
+        try:
+            with open(f'data/db_{self.foil}.pkl', "rb") as file:
+                loaded_objects = pickle.load(file)
+        except FileNotFoundError:
+            print("Warning: pickle file not found")
+            return None
+        
+        for obj in loaded_objects:
+            yield obj
+        
+    def __len__(self):
+        try:
+            with open(f'data/db_{self.foil}.pkl', "rb") as file:
+                loaded_objects = pickle.load(file)
+        except FileNotFoundError:
+            print("Warning: pickle file not found")
+            return 0
+        
+        return len(loaded_objects)
 
 class DPO_Session():
 
