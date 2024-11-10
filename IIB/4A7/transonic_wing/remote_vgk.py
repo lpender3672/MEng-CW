@@ -32,6 +32,7 @@ class Result():
         self.x = surface_data[:, 1]
         self.z = surface_data[:, 2]
         self.cp = surface_data[:, 3]
+        self.p_over_p0 = surface_data[:, 4]
         self.boundary_layer_data = boundary_layer_data
         self.shock_locations = shock_locations
 
