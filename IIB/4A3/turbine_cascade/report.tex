@@ -85,11 +85,28 @@
 \section{Introduction}
 %-----------------------------------------------------------------------------------------
 
+\subsection{Objectives}
+\begin{itemize}
+    \item Determine the loss of stagnation pressure and the rate of
+    change of momentum of the air through a turbine
+    cascade by traversing the flow at exit
+    \item Compare the rate of change of momentum of the air with
+    the pressure force on a blade as obtained from the
+    measurement of the static pressure distribution around it
+    \item Examine the limitations of the measurements in the light
+    of calculations and correlations.
+\end{itemize}
 
-\section{Method}
+\subsection{Setup}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.8\textwidth]{figures/tappings_and_yawtube.png}
+    \caption{Pressure tapping locations on the blade and and schematic of the yaw tube.}
+    \label{fig:setup}
+\end{figure}
 
 \section{Results}
-
 
 \begin{figure}[H]
     \centering
@@ -100,33 +117,33 @@
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.8\textwidth]{figures/yaw_plot.eps}
+    \includegraphics[width=0.8\textwidth]{figures/yaw_plot.png}
     \caption{yaw plot}
     \label{fig:yaw_plot}
 \end{figure}
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.8\textwidth]{figures/lift_plot.eps}
+    \includegraphics[width=0.8\textwidth]{figures/lift_plot.png}
     \caption{lift plot}
     \label{fig:lift_plot}
 \end{figure}
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.8\textwidth]{figures/mach_plot.eps}
+    \includegraphics[width=0.8\textwidth]{figures/mach_plot.png}
     \caption{mach plot}
     \label{fig:mach_plot}
 \end{figure}
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.8\textwidth]{figures/reynolds_plot.eps}
+    \includegraphics[width=0.8\textwidth]{figures/reynolds_plot.png}
     \caption{reynolds plot}
     \label{fig:reynolds_plot}
 \end{figure}
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.8\textwidth]{figures/quiver_plot.eps}
+    \includegraphics[width=0.8\textwidth]{figures/quiver_plot.png}
     \caption{Quiver Plot of Measured Velocity Vectors. The lengths are offset to be $V-0.9V_\text{min}$}
     \label{fig:quiver_plot}
 \end{figure}
@@ -308,7 +325,12 @@ Viscous forces on the blades \dots
 The inviscid flow calculation predicts that the exit flow angle should be $71.6^\circ$. Compare the
 measured value of $\overline{\alpha}_2$ with the predicted vaue. Comment on any differences.
 
-Measured $\overline{\alpha}_2 = 71.34^\circ$ which is a bit smaller than the value predicted by the inviscid flow calculation.
+The angle obtained in our experiment, $\overline{\alpha}_2 = 71.34^\circ$ is 0.36\% smaller than the value predicted by the inviscid flow calculation.
+This small difference can cause significant change in $tan(\overline{\alpha}_2)$ and $1/cos(\overline{\alpha}_2)$, shifting away from the optimum design point.
+It is however, difficult to determine the cause of such a small difference.
+Along the traverse, $\alpha$ changes significantly over the span. In the suction surface side of the free stream, the angle is below the average, while on the pressure surface side of the free stream, the angle is above the average.
+There is a trough, of which the center is offset 0.05s above the pressure loss coefficient peak. The value at the bottom of the trough is the average.
+
 % reasons for x momentum at 2 being higher for viscous flow than inviscid flow:
 % boundary layer growth restricting the inside flow area, increasing the velocity
 % 
@@ -339,7 +361,8 @@ that at exit. Discuss whether density changes across the cascade are enough to d
 differences to unity you observe and, if not, explain what else may be responsible?
 
 AVR = $0.939$ which shows a 6.1\% reduction in the axial velocity.
-The reduction in density of 1.4\% means that, if we accounted for compressibility, the outlet axial velocity should actually be 
+The reduction in density of 1.4\% means that, if we account for compressibility, the outlet axial velocity should actually be higher than the inlet.
+This means that there must be 
 
 
 \subsection{Blade Surface Pressure Distribution}
@@ -362,6 +385,8 @@ $V_{2s}$ so that the ratio is defined as
     \frac{V_s}{V_{2s}} = \sqrt{\frac{P_{01} - P}{P_{01} - P_{2,av}}} = \sqrt{C_p}
 \end{equation}
 Mark the pressure and suction surfaces and any regions of adverse pressure gradient.
+
+The adverse pressure gradients are shown on figure \ref{fig:lift_plot}.
 
 A prediction of the isentropic blade-surface velocity distribution with the cascade at its
 design condition has been obtained using a boundary element CFD code. This solves the

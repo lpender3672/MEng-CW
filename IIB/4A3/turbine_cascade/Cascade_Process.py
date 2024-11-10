@@ -202,7 +202,7 @@ def exit_traverse(e,N,b):
     q1 = axq[0].quiver(xq, top + yvals - 15, vxs_scaled, vys_scaled, dalpha, angles='xy', scale_units='xy', scale=1, cmap = 'jet')
     q2 = axq[1].quiver(xq, top + yvals - 15, vxs_scaled, vys_scaled, dalpha, angles='xy', scale_units='xy', scale=1, cmap = 'jet', label='Scaled, Offset Velocity Vectors')
     # add colourbar with velocity scale with label
-    h['quiver'].colorbar(q2, label=r'$\alpha - 74.24$ / $^\circ$')
+    h['quiver'].colorbar(q2, label=r'$\alpha - 71.24$ / $^\circ$')
 
     # plot lines at 71.24 degrees at several heights
     heights = yvals
@@ -333,6 +333,7 @@ def lift_distribution(e,N,t,b):
 
     # Concatenate the SS and PS measurements in a single complete loop
     iss = N['h2o']['Pss']; ips = N['h2o']['Pps'];
+    leng = e['xy_ss'].shape[0]
     P = np.concatenate((e['P_h2o'][iss],np.flip(e['P_h2o'][ips]),
         np.expand_dims(e['P_h2o'][iss][0],axis=0)))
 
@@ -346,6 +347,20 @@ def lift_distribution(e,N,t,b):
 
     # Isentropic velocity ratio
     s['Vs_V2s'] = s['Cp']**0.5
+
+    # this is absolutely grim but not much worse than james' cryptic dictionary keys
+    arr = np.array(s['Vs_V2s'])[:leng+1]
+    yvals = arr[np.gradient(arr) < 0.005]
+    xval = s['xy'][:leng+1,0][np.gradient(arr, edge_order=1) < 0.005]
+    ax.fill_between(xval, yvals-0.02, yvals + 0.02, color='red', alpha=0.2, label='Adverse Pressure Gradient')
+
+    arr2 = np.array(s['Vs_V2s'])[:leng-1:-1]
+    yvals = arr2[np.gradient(arr2) > 0.01]
+    xyarr = s['xy'][:leng-1:-1,0]
+    xval = xyarr[np.gradient(arr2, edge_order=1) > 0.01]
+    ax.fill_between(xval, yvals-0.02, yvals + 0.012, color='red', alpha=0.2)
+
+    # plot regions of adverse pressure gradient
 
     # Plot the measured velocity distribution
     ax.plot(s['xy'][:,0],s['Vs_V2s'],'.-',color=cols[0,:],label='Measured')
@@ -513,7 +528,7 @@ def main():
     N = channels(e['N'])
 
     # Initialise plotting variables
-    dpi = 400; ext = '.eps';
+    dpi = 400; ext = '.png';
 
     # 1 - General calculations
     general(e,N)

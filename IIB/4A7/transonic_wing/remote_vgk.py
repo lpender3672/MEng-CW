@@ -199,19 +199,20 @@ def __del__(self):
 
 # Parsing flags
 
-def save_password():
+def save_password(path):
     # save password in secrets.json
     pwd = input("Enter password: ")
     shifted_pwd = ''
     for s in pwd:
         shifted_pwd += chr(ord(s) + 1)
     
-    with open('secrets.json', 'w') as f:
+    with open(path + 'secrets.json', 'w') as f:
         json.dump({'password': shifted_pwd}, f)
 
 if __name__ == "__main__":
     
-    #save_password()
+    absp = 'IIB/4A7/transonic_wing/'
+    #save_password(asbp)
 
     try:
         window = gw.getWindowsWithTitle("Airfoil")[0]
@@ -222,7 +223,6 @@ if __name__ == "__main__":
     time.sleep(1)
 
     # Setup SSH
-    absp = 'IIB/4A7/transonic_wing/'
     with open(absp + '/secrets.json') as f:
         secrets = json.load(f)
         shifted_pwd = secrets['password']
