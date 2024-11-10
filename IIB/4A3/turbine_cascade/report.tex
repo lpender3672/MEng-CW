@@ -315,7 +315,7 @@ downstream? What role do viscous forces on the blades play in your analysis?
 Using the value of $V_2s = 62.97$ m/s, $C_x = 30.323$ mm and span $h=101.6$ mm gives $Z_x = 8.438$ and $Z_y = 5.793$.
 These force coefficients are of similar magnitude, with more axial force than tangential force.
 If the traverse plane were moved further downstream, more momentum mixing would occur and the quantities would be more similar.
-Viscous forces on the blades \dots
+Viscous forces on the blades are inlcuded in the momentum forces, and so the viscous forces play a role in the analysis.
 
 \subsubsection{The script evaluates the average pitchwise exit flow angle using the relationship
 }
@@ -362,8 +362,9 @@ differences to unity you observe and, if not, explain what else may be responsib
 
 AVR = $0.939$ which shows a 6.1\% reduction in the axial velocity.
 The reduction in density of 1.4\% means that, if we account for compressibility, the outlet axial velocity should actually be higher than the inlet.
-This means that there must be 
-
+This means that there must be other factors at play.
+A possible cause for this could be due to changes in flow area due to thinning of the boundary layer at the end walls, compared to the thicker boundary layer at the entrance to the cascade.
+The boundary layer thins at higher speed and so the flow area increases, causing the velocity to decrease.
 
 \subsection{Blade Surface Pressure Distribution}
 
@@ -411,7 +412,7 @@ in the flow visualisation.}
 
 
 \subsubsection{Find the fraction by which the surface velocity has decreased from the maximum value
-to the separation point. For a laminar boundary layer, this is typically 5-8%. For a turbulent
+to the separation point. For a laminar boundary layer, this is typically 5-8\%. For a turbulent
 boundary layer, it is much more. What state is the boundary layer in at the trailing edge, laminar
 or turbulent, separated or attached?}
 
