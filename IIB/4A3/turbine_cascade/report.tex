@@ -307,17 +307,17 @@ The pressure and momentum forces on the blade are calculated from the steady flo
 
 The subscripts $m$ and $p$ denote the momentum and pressure forces respectively, and the subscripts 1 and 2 denote the inlet and exit of the control volume.
 There are no resulting pressure components in the y-direction due to infinite cascade symmetry.
-This gives values of $F_x = 59.784$ N and $F_y = 41.042$ N.
+This gives values of $F_x = 59.784$ N/m and $F_y = 41.042$ N/m.
 
 \begin{equation}
-    Z_x = \frac{F_x}{0.5 \rho_2 V_2^2 h C_x} \quad \& \quad Z_y = \frac{F_y}{0.5 \rho_2 V_2^2 h C_x}
+    Z_x = \frac{F_x}{0.5 \rho_2 V_2^2 C_x} \quad \& \quad Z_y = \frac{F_y}{0.5 \rho_2 V_2^2 C_x}
 \end{equation}
 
 where $h$ is the span of the blade and $C_x$ is the axial chord. Comment on the relative magnitudes
 of $Z_x$ and $Z_y$. How would your answers change if the traverse plane were moved further
 downstream? What role do viscous forces on the blades play in your analysis?
 
-Using the value of $V_2s = 62.97$ m/s, $C_x = 30.323$ mm and span $h=101.6$ mm gives $Z_x = 8.438$ and $Z_y = 5.793$.
+Using the value of $V_2s = 62.97$ m/s, $C_x = 30.323$ mm and span $h=101.6$ mm gives $Z_x = 0.8573$ and $Z_y = 0.5886$.
 These force coefficients are of similar magnitude, with more axial force than tangential force.
 If the traverse plane were moved further downstream, more momentum mixing would occur and the quantities would be more similar.
 Viscous forces on the blades are inlcuded in the momentum forces, and so the viscous forces play a role in the analysis.
@@ -372,8 +372,10 @@ This means that there must be other factors at play.
 A possible cause for this could be due to changes in flow area due to thinning of the boundary layer at the end walls, compared to the thicker boundary layer at the entrance to the cascade.
 The boundary layer thins at higher speed and so the flow area increases, causing the velocity to decrease.
 
-The flow visualisations in figure \ref{fig:surface_vis} show a wedge at the edge of the blade, which grows along the chord as the flow moves downstream.
-This wedge could be the boundary layer, which is actually thicker at the exit than at the entrace, and so 
+The flow visualisations in figure \ref{fig:surface_vis} show a wedge at the endwall of the blade, which grows along the chord as the flow moves downstream.
+This was initially thought to be due to boundary layer growth, which would disprove the above explaination.
+However, further reading suggested that this wedge is the result of a vortex formed due to endwall boundary layer seperation close to the leading edge \cite{losses}.
+%Endwall boundary layer seperation would also cause the flow area at the entrance to decrease, increasing the axial velocity at inlet, decreasing the AVR.
 
 \subsection{Blade Surface Pressure Distribution}
 
@@ -426,17 +428,22 @@ to the separation point. For a laminar boundary layer, this is typically 5-8\%. 
 boundary layer, it is much more. What state is the boundary layer in at the trailing edge, laminar
 or turbulent, separated or attached?}
 
-The measured pressure distribution shows no evidence of seperation and so seperates at the trailing edge.
+The measured pressure distribution shows no evidence of seperation and so remains attached until the trailing edge.
 This is because the region of adverse pressure gradient does not deviate more than 2\% from the invicid solution.
-If the flow did seperate, the seperation bubble should show a deviation from the inviscid solution. [?] % REVISIT
+If the flow did seperate, a seperation bubble would appear as a flatter region of constant pressure, slightly above the inviscid solution, as seen in figure \ref{fig:flat_cp_bubble}. % REVISIT
 From this, the reduction in velocity from the suction peak to the trailing edge is 13.7\%, indicating a turbulent boundary layer.
 
 
 \subsubsection{Comment on any differences between the measured and predicted velocity
 distributions.}
 
-The predicted velocity near the trailing edge shows an instability
-The measured velocity on the suction surface is less than the value predicted by the inviscid flow calculation.
+The predicted velocity near the trailing edge shows a clear unphysical instability.
+The measured velocities on the suction surface, up until the suction peak, is slighly below the predicted.
+Near the leading edge, the error in measured velocity increases further.
+The predicted velocity is based on 6 pressure transducers, the chord-wise locations of which are not known.
+If pressure tappings are placed in regions of high curvature, such as near the leading-edge, 
+small errors in the location of the tappings can cause a very different velocity distribution to be predicted.
+(errors in the location of the tappings are typically of higher order than the error in the pressure measurements themselves)
 
 % discuss this section more and consider boundary layer growth
 
@@ -447,7 +454,9 @@ Compare the pressure blade force coefficients with the values indicated by the r
 exit traverse and comment on any discrepancy.}
 
 The force coefficients are determined by the pressure distributions to be $Z_x = 0.866$ and $Z_y = 0.568$.
-This is a different order of magnitude. % REVISIT
+These values obtained from normal pressure distribution exclude viscous shear forces.
+The difference therefor is due to the viscous forces on the blade.
+This means the viscous force coefficients are $Z_x = -0.0087$ and $Z_y = 0.0206$.
 
 \subsection{Effect of Reynolds number}
 
@@ -463,13 +472,17 @@ in the high-speed variable density tunnel at the Whittle Laboratory.
 \subsubsection{Compare your measurements with the other values. What do you conclude about the
 effect of Mach number?}
 
+From the data, the loss coefficient can be observed to vary with both the Reynolds and Mach numbers.
+For the same Reynolds number, the loss coefficient at Mach 0.8 is ~30\% higher than our cascade measurement at Mach 0.18.
+Increased loss coefficient is likely due to regions of transonic flow forming shocks and increasing the losses in stagnation pressure.
 
 \subsubsection{Figure \ref{fig:surface_vis} shows the results of flow visualisation experiments at high and low Reynolds
 numbers. The effect of Reynolds number on the behaviour of the boundary layer can be seen
 near the trailing edge. Suggest reasons for the shape of the relationship between loss and
 Reynolds number that you plotted.}
 
-
+Increasing the Reynolds number delays the transition to turbulence, which reduces the distance over which the boundary layer grows.
+This means that the wake is smaller, reducing the loss coefficient. % REVISIT
 
 \subsection{Effect of Mach number}
 The script shows surface isentropic Mach number distributions for this cascade at different
@@ -478,6 +491,16 @@ diffusion factor with Mach number. Would these blades be more suitable for high 
 numbers?
 
 % large discussion
+% CALC using python because
+
+\section{Appendix}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.8\textwidth]{figures/flat_cp_bubble.jpg}
+    \caption{Pressure distribution with seperation bubble \cite{separation}}
+    \label{fig:flat_cp_bubble}
+\end{figure}
 
 
 \begin{thebibliography}{9}
@@ -489,6 +512,15 @@ numbers?
   University of Cambridge,
   October 2024.
 
+  \bibitem{losses}
+  J. D. Denton (1993).
+  \emph{Loss Mechanisms in Turbomachines}
+  May, 1993 
+
+  \bibitem{separation}
+  John M. Russell
+  \emph{LENGTH AND BURSTING OF SEPARATION BUBBLES: A PHYSICAL INTERPRETATION}
+  1979
 \end{thebibliography}
 
 \end{document}
