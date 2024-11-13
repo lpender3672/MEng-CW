@@ -461,6 +461,16 @@ def mach_number(s,t,b):
     # Isentropic surface Mach distribution
     s['Ms'] = s['Vs'] / (s['ga'] * s['R'] * s['T'])**0.5 
 
+    for i in range(b['M'].shape[1]):
+        Mmax = np.max(b['M'][:,i])
+
+        # get M where b['x'] is 1.0
+        idx = np.where( np.isclose(b['x'][:,i], 1.0, atol = 0.001))[0]
+        Mte = np.mean(b['M'][idx,i])
+        D = (Mmax - Mte) / Mmax
+
+        print(f'for blade with max mach {Mte} D = {D}')
+
     # Plot the current test
     ax.plot(s['xy'][:,0],s['Ms'],'.-',
         color=cols[0,:],label='4A3 Tunnel')

@@ -68,7 +68,7 @@
 
 \title{}
 \author{lwp26}
-\date{October 2024}
+\date{November 2024}
 \maketitle 
 
 \iffalse
@@ -99,7 +99,7 @@
 
 \subsection{Setup}
 
-\begin{figure}
+\begin{figure}[H]
     \centering
     \includegraphics[width=0.8\textwidth]{figures/tappings_and_yawtube.png}
     \caption{Pressure tapping locations on the blade and and schematic of the yaw tube.}
@@ -110,41 +110,41 @@
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.6\textwidth]{figures/wake_plot.eps}
-    \caption{wake plot}
+    \includegraphics[width=0.6\textwidth]{figures/wake_plot.png}
+    \caption{Exit traverse plot of stagnation pressure loss, static pressure, exit velocity over isentropic velocity, and exit yaw angle over a single blade pitch.}
     \label{fig:wake_plot}
 \end{figure}
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.8\textwidth]{figures/yaw_plot.png}
-    \caption{yaw plot}
+    \caption{Yaw calibration plot}
     \label{fig:yaw_plot}
 \end{figure}
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.8\textwidth]{figures/lift_plot.png}
-    \caption{lift plot}
+    \caption{Measured and Invicid Velocity ratio distributions on pressure and suction surfaces.}
     \label{fig:lift_plot}
 \end{figure}
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.8\textwidth]{figures/mach_plot.png}
-    \caption{mach plot}
+    \caption{Mach number distributions at various operating conditions.}
     \label{fig:mach_plot}
 \end{figure}
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.8\textwidth]{figures/reynolds_plot.png}
-    \caption{reynolds plot}
+    \caption{Loss coefficient for various operating Mach and Reynolds numbers.}
     \label{fig:reynolds_plot}
 \end{figure}
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.8\textwidth]{figures/quiver_plot.png}
-    \caption{Quiver Plot of Measured Velocity Vectors. The lengths are offset to be $V-0.9V_\text{min}$}
+    \caption{Quiver Plot of Measured Velocity Vectors. The lengths are offset and scaled using $(V-0.9V_\text{min})/1000$}
     \label{fig:quiver_plot}
 \end{figure}
 
@@ -167,7 +167,7 @@ upstream and downstream static pressure. Can the flow be regarded as incompressi
 \end{equation}
 
 Upsteam of cascade, $P_{0in} = 105.1$ KPa , $P_{in} = 104.8$ KPa \\
-Downstream of cascade,  $P_a = 102.8$ KPa , $\rho = 1.16$ kg/m3
+Downstream of cascade,  $P_2 = P_a = 102.8$ KPa , $\rho_2 = 1.16$ kg/m3
 
 For clarity we will use the subscript 1 to denote upsteam of the cascade and 2 to denote downstream of the cascade.
 To calculate the density upstream of the cascade, $\rho_1$, we will assume the isentropic relation.
@@ -178,7 +178,7 @@ To calculate the density upstream of the cascade, $\rho_1$, we will assume the i
 Which gives $\rho_1 = 1.176$ kg/m3.
 
 This means that the density change is 1.4\% which is likely of similar order to the error in the measurements.
-Hence, the flow can and will be regarded as incompressible from this point on. %REVISIT
+Hence, the flow can and will be regarded as incompressible from this point on.
 
 \subsubsection{Using the data you have acquired, evaluate the following quantities at the first
 measurement point in your traverse, which should be in the freestream between the wakes?}
@@ -219,7 +219,7 @@ across one pitch of the flow behind the blades. Note that the denominators as we
 numerators in the coefficient correspond to measurements taken at the same time as the probe
 pressures are taken. This minimises the effects of small changes in tunnel speed upon the data.
 
-$P_{1,\text{av}}$ is the average of five cascade inlet endwall static pressure tappings shown in Fig. ?
+$P_{1,\text{av}}$ is the average of five cascade inlet endwall static pressure tappings shown in Fig. \ref{fig:setup}
 
 $P_{2,\text{av}}$ is the average exit pressure from the cascade, in this experiment it is equal to the
 atmospheric pressure
@@ -228,9 +228,10 @@ atmospheric pressure
 Explain why we use $(P_{01} - P_{2,\text{av}})$ as the denominator for the first two quantities above in
 preference to $(P_{01} - P_{1,\text{av}})$ or $(P_{02} - P_{2,\text{av}})$?
 
-$P_{01}$ remains constant across the cascade, and $P_{2,\text{av}}$ is the exit static pressure averaged over the cascade.
-This provides a constant reference for the normalisation of the quantities.
-$ P_{02} \le P_{01} $ and $P_{02} > P_{2,\text{av}}$  % REVISIT
+The quantity $P_{01}$ can be easily measured, remains constant across the cascade and importantly, for weak shocks, is equal to $P_{02}$ in the free stream.
+The quantity $P_{2,\text{av}}$ is also a constant exit static pressure averaged over the cascade.
+This provides a constant reference for the normalisation of the quantities at exit.
+$ P_{02} \le P_{01} $ and $P_{02} > P_{2,\text{av}}$ 
 
 
 Comment on the shape of all the curves and the magnitude of any variations. Explain the origin
@@ -242,12 +243,13 @@ The traverse covers a whole blade pitch, starting below in the free stream and m
 The first graph shows the stagnation pressure loss coefficient, which is observed to be near zero far from the blade, in the free stream.
 This reaffirms our assumption that the flow behaves isentropically in the free stream.
 However, in the wake of the blade we see it rise sharply to a peak of about 0.15.
-The width of this peak is about 30\% of the pitch of the blade.
-Perhaps the most interesting observation is that the center of the wake is offset about 5\% of the pitch from the trailing edge location.
+The width of this peak is about 30\% of the pitch of the blade. This rise is due to viscous losses in the boundary layer of the blade.
+The center of the wake is about 5\% higher pitch from the trailing edge location.
+This could be aligned with the trailing edge, but from high turning and a clearence between the static sensor and trailing edge means that the traverse plane is further back, and so the wake is seen to be higher.
 
 The second graph showing static pressure 
 The measurements in the wake can be seen to be noisy, which could indicate unsteady boundary layer interactions.
-However, on further inspection it is $P_1$ that is noisy, which means what? % REVISIT
+However, on further inspection it is $P_1$ that is noisy which could be a result of the complex 3D edge wall boundary layer interactions \cite{losses}.
 % graph dips down either side in the free stream, suggesting P2 is higher here than in the middle.
 % This doesnt make sense though as the velocity in free steam is higher
 % need to investigate this further
@@ -255,7 +257,6 @@ However, on further inspection it is $P_1$ that is noisy, which means what? % RE
 The third graph shows the exit velocity over the isentropic free stream velocity.
 This is seen to be near unity in the free stream, as expected.
 In the wake, the velocity is seen to drop to about 92\% of the free steam isentropic value.
-
 This is due to the boundary layer separation and the formation of the wake.
 
 The final graph shows the exit yaw angle.
@@ -263,7 +264,15 @@ This initially starts, in the free stream, about 1 degree below the metal blade 
 Close to the suction surface, the flow angle increases to higher than metal blade angle.
 This then reduces down to a value similar to the metal blade angle at a height similar to the wake peak.
 Then, above the wake the flow angle again is higher than the metal blade angle, before decreasing to value seen in the free steam.
+Perhaps an easier visualisation which can also explain the position of the wake peak is shown in figure \ref{fig:quiver_plot}.
+The increased yaw close to the suction surface also indicates that the wake location is above that of the trailing edge.
 
+Figure \ref{fig:example_traverse} shows a typical variation in the flow outlet angle for a turbine blade cascade of reduced flow turning.
+The graphs x axis is flipped compared to our figure \ref{fig:wake_plot}, however it still shows an initial decrease in flow angle leading up to the suction surface.
+The angle then only starts increasing at a distance closer to the wake than our observations and then peaks on the other side of the wake.
+This typical variation then gradually decreases, staying positive, to the free stream value in the mid-pitch.
+This is a significant difference to our observed sudden trough in flow angle at $y/s = 0.6$, slightly behind the wake, which may suggest our flow is separated.
+Further data gathered on the surface pressure distribution shows no evidence of separation so the cause for this trough was not determined.
 
 \subsubsection{The probe is used to measure the flow angle via the yaw coefficient defined as
 }
@@ -274,8 +283,11 @@ Then, above the wake the flow angle again is higher than the metal blade angle, 
 Explain how the initial calibration of the probe is used to determine the flow angle across the
 pitch of the passage using the yaw coefficient. Over what range is the calibration valid?
 
-The pressures $P_\text{left}$ and $P_\text{right}$ stagnate the components of velocity normal to them.?? % REVISIT
-The difference in these pressures  produce a term proportional to $\rho V^2 \sin \delta$, which when divided by the dynamic pressure gives the yaw coefficient.
+If we assume probes $P_\text{left}$ and $P_\text{right}$ stagnate components of velocity normal to them.
+Then the yaw coefficient is proportional to $\sin^2(45 + \delta) - \sin^2(45 - \delta)$ where $\delta$ is the flow angle reletive to the probe.
+This is equivilent to $\sin(2\delta)$, which for small deviations is proportional to the $2\delta$.
+The actual gradient of the yaw coefficient is found to be 2.51, which is close to 2, showing our assumption that the flow normal is completely stagnated is crude but valid.
+
 For small angles the yaw coefficient will be proportional to the angle of the flow which can be seen in the calibration plot \ref{fig:yaw_plot}.
 The calibration constant is found by placing it at known angles, $\pm 2^\circ$ to the flow in the free stream.
 Then small angles of the flow can be determined by the yaw coefficient.
@@ -302,12 +314,12 @@ the axial and tangential force on a blade. Hence, evaluate the force coefficient
 The pressure and momentum forces on the blade are calculated from the steady flow momentum equation of the control volume in figure \ref{fig:quiver_plot}.
 
 \begin{equation}
-    F_x =  F_{x,m,2} - F_{x,m,1} + F_{x,p,1} - F_{x,p,2} \quad \& \quad F_y =  F_{y,m,2} - F_{y,m,1}
+    F_x =   - (F_{x,m,2} - F_{x,m,1}) + F_{x,p,1} - F_{x,p,2} \quad \& \quad F_y = - (F_{y,m,2} - F_{y,m,1}) 
 \end{equation}
 
 The subscripts $m$ and $p$ denote the momentum and pressure forces respectively, and the subscripts 1 and 2 denote the inlet and exit of the control volume.
 There are no resulting pressure components in the y-direction due to infinite cascade symmetry.
-This gives values of $F_x = 59.784$ N/m and $F_y = 41.042$ N/m.
+This gives values of $F_x = 63.500$ N/m and $F_y = -41.042$ N/m in per unit span length $h$.
 
 \begin{equation}
     Z_x = \frac{F_x}{0.5 \rho_2 V_2^2 C_x} \quad \& \quad Z_y = \frac{F_y}{0.5 \rho_2 V_2^2 C_x}
@@ -317,7 +329,7 @@ where $h$ is the span of the blade and $C_x$ is the axial chord. Comment on the 
 of $Z_x$ and $Z_y$. How would your answers change if the traverse plane were moved further
 downstream? What role do viscous forces on the blades play in your analysis?
 
-Using the value of $V_2s = 62.97$ m/s, $C_x = 30.323$ mm and span $h=101.6$ mm gives $Z_x = 0.8573$ and $Z_y = 0.5886$.
+Using the values of $V_{2s} = 62.97$ m/s and $C_x = 30.323$ mm gives $Z_x = 0.9106$ and $Z_y = 0.5885$.
 These force coefficients are of similar magnitude, with more axial force than tangential force.
 If the traverse plane were moved further downstream, more momentum mixing would occur and the quantities would be more similar.
 Viscous forces on the blades are inlcuded in the momentum forces, and so the viscous forces play a role in the analysis.
@@ -333,9 +345,6 @@ measured value of $\overline{\alpha}_2$ with the predicted vaue. Comment on any 
 The angle obtained in our experiment, $\overline{\alpha}_2 = 71.34^\circ$ is 0.36\% smaller than the value predicted by the inviscid flow calculation.
 This small difference can cause significant change in $tan(\overline{\alpha}_2)$ and $1/cos(\overline{\alpha}_2)$, shifting away from the optimum design point.
 Accounting for this small difference is difficult as it could easily be of the same order as the error propagated from the combined measurements.
-However, a possible explaination could be that the viscous boundary layer growth restricts the flow area, increasing the x momentum at 2.
-% check if this is correct
-
 
 % reasons for x momentum at 2 being higher for viscous flow than inviscid flow:
 % boundary layer growth restricting the inside flow area, increasing the velocity
@@ -430,7 +439,7 @@ or turbulent, separated or attached?}
 
 The measured pressure distribution shows no evidence of seperation and so remains attached until the trailing edge.
 This is because the region of adverse pressure gradient does not deviate more than 2\% from the invicid solution.
-If the flow did seperate, a seperation bubble would appear as a flatter region of constant pressure, slightly above the inviscid solution, as seen in figure \ref{fig:flat_cp_bubble}. % REVISIT
+If the flow did seperate, a seperation bubble would appear as a flatter region of constant pressure, slightly above the inviscid solution, as seen in figure \ref{fig:flat_cp_bubble}.
 From this, the reduction in velocity from the suction peak to the trailing edge is 13.7\%, indicating a turbulent boundary layer.
 
 
@@ -445,8 +454,6 @@ If pressure tappings are placed in regions of high curvature, such as near the l
 small errors in the location of the tappings can cause a very different velocity distribution to be predicted.
 (errors in the location of the tappings are typically of higher order than the error in the pressure measurements themselves)
 
-% discuss this section more and consider boundary layer growth
-
 \subsubsection{The script also integrates your measured pressure distribution to determine the pressure
 blade force per unit span in the y-direction and x-direction. It then evaluates the force
 coefficients $Z_x$ and $Z_y$ and these are printed to screen.
@@ -456,7 +463,10 @@ exit traverse and comment on any discrepancy.}
 The force coefficients are determined by the pressure distributions to be $Z_x = 0.866$ and $Z_y = 0.568$.
 These values obtained from normal pressure distribution exclude viscous shear forces.
 The difference therefor is due to the viscous forces on the blade.
-This means the viscous force coefficients are $Z_x = -0.0087$ and $Z_y = 0.0206$.
+This means the viscous force coefficients are $Z_x = 0.0446$ and $Z_y = 0.0206$.
+From taking the arctan of the ratio of the viscous force coefficients, an angular direction of $-24.8^\circ$ is found.
+This does not appear to match the metal blade angle over which the viscous shear force should be acting.
+The reason for this discrepancy is not clear.
 
 \subsection{Effect of Reynolds number}
 
@@ -474,15 +484,20 @@ effect of Mach number?}
 
 From the data, the loss coefficient can be observed to vary with both the Reynolds and Mach numbers.
 For the same Reynolds number, the loss coefficient at Mach 0.8 is ~30\% higher than our cascade measurement at Mach 0.18.
-Increased loss coefficient is likely due to regions of transonic flow forming shocks and increasing the losses in stagnation pressure.
+This could be due to a higher diffusion factor at higher Mach numbers, causing earlier seperation and a larger wake.
+Increased loss coefficient can also be due to regions of transonic flow forming shocks.
 
 \subsubsection{Figure \ref{fig:surface_vis} shows the results of flow visualisation experiments at high and low Reynolds
 numbers. The effect of Reynolds number on the behaviour of the boundary layer can be seen
 near the trailing edge. Suggest reasons for the shape of the relationship between loss and
 Reynolds number that you plotted.}
 
-Increasing the Reynolds number delays the transition to turbulence, which reduces the distance over which the boundary layer grows.
-This means that the wake is smaller, reducing the loss coefficient. % REVISIT
+Increasing the Reynolds number causes transition to turbulence to occur earlier, which increases the distance on the suction surface over which the turbulent boundary layer grows.
+However, the turbulent boundary layer is more resistant to separation in the region of adverse pressure gradient.
+The left part of the plot, showing a decreasing loss coefficient with increasing Reynolds number, is thought to be due to the wake decreasing in size, as seperation occurs later along the suction surface.
+This would decrease the amount of viscous mixing occuring inside the wake, decreasing the loss coefficient.
+The plateau region is thought to be due to where the flow is attached, but earlier transition results in more boundary layer growth, and so the wake is larger in size, slightly increasing the loss coefficient.
+
 
 \subsection{Effect of Mach number}
 The script shows surface isentropic Mach number distributions for this cascade at different
@@ -490,15 +505,28 @@ values of the nominal exit Mach number (M2 = 0.39 to 0.75). Comment on the varia
 diffusion factor with Mach number. Would these blades be more suitable for high or low Mach
 numbers?
 
+Nominal exit Mach number 0.392 has a diffusion factor of 0.1425,
+The run with exit Mach number 0.571 has a diffusion factor of 0.1476,
+Finally, the run with exit Mach number 0.729 has a diffusion factor of 0.1848.
+High diffusion factors indicate a region of more severe adverse pressure gradient and are prone to separation.
+This means that the blades would be more suitable for low Mach numbers.
+This is also discussed from the plot \ref{fig:reynolds_plot} where seperation is thought to occur at low Reynolds numbers operating at high Mach numbers.
 % large discussion
-% CALC using python because
+% CALC using python because 
 
 \section{Appendix}
 
-\begin{figure}
+\begin{figure}[H]
     \centering
-    \includegraphics[width=0.8\textwidth]{figures/flat_cp_bubble.jpg}
-    \caption{Pressure distribution with seperation bubble \cite{separation}}
+    \includegraphics[width=0.4\textwidth]{figures/example_traverse.jpg}
+    \caption{Annotated sample plot of inlet and outlet stagnation pressures and fluid outlet angle \cite{fluidmech}.}
+    \label{fig:example_traverse}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{figures/flat_cp_bubble.jpg}
+    \caption{Pressure distribution with seperation bubble \cite{separation}.}
     \label{fig:flat_cp_bubble}
 \end{figure}
 
@@ -516,6 +544,11 @@ numbers?
   J. D. Denton (1993).
   \emph{Loss Mechanisms in Turbomachines}
   May, 1993 
+
+  \bibitem{fluidmech}
+  S. L. Dixon
+  \emph{Fluid Mechanics, Thermodynamics of Turbomachinery, FOURTH EDITION}
+  1998
 
   \bibitem{separation}
   John M. Russell
