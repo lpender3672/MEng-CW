@@ -25,20 +25,70 @@
 
 \begin{document}
 
-\title{GA3: Heat Exchanger Interim Report}
+\title{4A7 Transonic Wing Design}
 \author{lwp26}
 \date{May 2024}
 \maketitle
 
 \section{Introduction}
 
+
+The development of high-efficiency aerofoils, can significantly improve the overall performance of an aircraft.
+The Breguet range equation, which calculates the range of an aircraft, directly depends on the flight speed and lift to drag ratio of the wing:
+
+\begin{equation}
+S = \frac{U}{g}\frac{L/D}{\text{sfc}} \log \left( \frac{W_\text{start}}{W_\text{end}} \right)
+\end{equation}
+
+where $S$ is the range, $U$ is the flight velocity, $g$ is the acceleration due to gravity, $\text{sfc}$ is the specific fuel consumption of the engine, and $W_\text{start}$ and $W_\text{end}$ are the initial and final weights of the aircraft, respectively.
+This shows increasing flight speed and lift to drag ratio will increase the range of the aircraft.
+
+\section{Maximum Lift, Minimum Drag}
+
+Previous work in subsonic airfoil design showed the importance of the boundary layer growth on the viscous drag of the wing.
+Adjustments were made to surface curvature, changing pressure gradients in effort to delay transition and separation, minimising boundary layer growth \cite{SA1_report}.
+
+The difficulty with transonic airfoil design is that there is an additional source of drag, known as wave drag, which is caused by the formation of shock waves on the wing surface.
+
+
+
+The designed airfoil cross-section is shown in Figure \ref{fig:airfoil}.
+
+
+% reference SA1 wing analysis report
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.99\textwidth]{figures/airfoil.png}
+    \caption{Aerofoil cross-section}
+    \label{fig:airfoil}
+\end{figure}
+
+\section{Buffet Line}
+
+Buffet is complex unstable interaction between the shockwaves and boundary layers and can produce large amplitude pressure fluctuations on the wing surface.
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{figures/buffet_classification.png}
+    \caption{Buffet factors at a range of Mach numbers and lift coefficients}
+    \label{fig:buffet_classification}
+\end{figure}
+
 \begin{thebibliography}{9}
 
     %Endres, SC, Sandrock, C, Focke, WW (2018) “A simplicial homology algorithm for lipschitz optimisation”, Journal of Global Optimization.
+
+      \bibitem{SA1_report}
+      L. W. Pender
+      \emph{SA1 Wing Analysis Final Report}
+      University of Cambridge,
+      2024.
     
       \bibitem{handout}
-      J. V. Taylor and J. C. Massey
-      \emph{GA3 Heat Exchanger Handout}
+      J. Jarret
+      \emph{4A7 Transonic Wing Design Handout}
       University of Cambridge,
       2024.
     

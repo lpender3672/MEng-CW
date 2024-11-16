@@ -46,12 +46,12 @@ def get_difference_in_shock_entry_mach_number_to_1_2(res):
     if len(mup) == 0:
         return -np.inf
     
-    return np.max(mup) - 1.2
+    return (np.max(mup) - 1.2) / 1.2
 
 
 def get_difference_between_Hbar_te_and_2_2(res):
     Hbar_te = res.boundary_layer_data['HBAR']
-    return Hbar_te - 2.2
+    return (Hbar_te - 2.2) / 2.2
 
 def get_min_distance_between_mach_lines(res):
 
@@ -62,12 +62,14 @@ def get_min_distance_between_mach_lines(res):
     machs = mach_from_p_over_p0(res.p_over_p0)
     dmachs = machs - lin_mach
 
-    return np.max(dmachs)   
+    idxmax = np.argmax(dmachs)
+    return dmachs[idxmax] / np.abs(lin_mach[idxmax])
 
 def get_difference_delta_cpte_above_threshold(res, cpte_plateau):
-    
-    return (-res.cpte) - (-cpte_plateau) - 0.04
+    threshold = 0.04
+    absdiff = (-res.cpte) - (-cpte_plateau) - threshold
     # minus sign because the y axis is inverted
+    return absdiff / threshold
 
 def buffet_classification(res, cpte_plateau):
 

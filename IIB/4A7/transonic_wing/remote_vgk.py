@@ -441,7 +441,7 @@ class AirfoilApp():
                             sorted_results[j-1].alpha,
                             sorted_results[j-1].cpte)
                 
-                print(res.M, plateau[1])
+                #print(res.M, plateau[1])
             # plateau is now set
             if plateau is None:
                 continue
