@@ -348,22 +348,38 @@ def lift_distribution(e,N,t,b):
     # Isentropic velocity ratio
     s['Vs_V2s'] = s['Cp']**0.5
 
+    arr_ss = np.array(s['Vs_V2s'])[:leng+1]
+    xvals_ss = s['xy'][:leng+1,0]
+    ax.plot(xvals_ss,arr_ss,'.-',color=cols[0,:],label='Measured Suction Surface')
+
+    arr_ps = np.array(s['Vs_V2s'])[:leng-1:-1]
+    xvals_ps = s['xy'][:leng-1:-1,0]
+    ax.plot(xvals_ps,arr_ps,'.-',color=cols[3,:],label='Measured Pressure Surface')
+
     # this is absolutely grim but not much worse than james' cryptic dictionary keys
-    arr = np.array(s['Vs_V2s'])[:leng+1]
-    yvals = arr[np.gradient(arr) < 0.005]
-    xval = s['xy'][:leng+1,0][np.gradient(arr, edge_order=1) < 0.005]
-    ax.fill_between(xval, yvals-0.02, yvals + 0.02, color='red', alpha=0.2, label='Adverse Pressure Gradient')
+    arr_pg = np.array(s['Vs_V2s'])[:leng+1]
+    yvals_pg = arr_pg[np.gradient(arr_pg) < 0.005]
+    xvals_pg = s['xy'][:leng+1,0][np.gradient(arr_pg, edge_order=1) < 0.005]
+    ax.fill_between(xvals_pg, yvals_pg-0.02, yvals_pg + 0.02, color='red', alpha=0.3, label='Adverse Pressure Gradient')
 
     arr2 = np.array(s['Vs_V2s'])[:leng-1:-1]
     yvals = arr2[np.gradient(arr2) > 0.01]
     xyarr = s['xy'][:leng-1:-1,0]
     xval = xyarr[np.gradient(arr2, edge_order=1) > 0.01]
-    ax.fill_between(xval, yvals-0.02, yvals + 0.012, color='red', alpha=0.2)
+    #ax.fill_between(xval, yvals-0.02, yvals + 0.012, color='red', alpha=0.2)
+
+    idx = np.argmin(np.abs(xvals_ss - 0.8))
+    ax.annotate('Flow Visualization\nSeparation Point', 
+                (xvals_ss[idx], arr_ss[idx]), 
+                xytext=(0.6, 0.6), 
+                textcoords='axes fraction', 
+                arrowprops=dict(facecolor='black', arrowstyle='->'),
+                fontsize=12, ha='center'
+                )
 
     # plot regions of adverse pressure gradient
 
     # Plot the measured velocity distribution
-    ax.plot(s['xy'][:,0],s['Vs_V2s'],'.-',color=cols[0,:],label='Measured')
     ax.legend()
 
     # Calculate diffusion factor
@@ -444,6 +460,16 @@ def mach_number(s,t,b):
 
     # Isentropic surface Mach distribution
     s['Ms'] = s['Vs'] / (s['ga'] * s['R'] * s['T'])**0.5 
+
+    for i in range(b['M'].shape[1]):
+        Mmax = np.max(b['M'][:,i])
+
+        # get M where b['x'] is 1.0
+        idx = np.where( np.isclose(b['x'][:,i], 1.0, atol = 0.001))[0]
+        Mte = np.mean(b['M'][idx,i])
+        D = (Mmax - Mte) / Mmax
+
+        print(f'for blade with max mach {Mte} D = {D}')
 
     # Plot the current test
     ax.plot(s['xy'][:,0],s['Ms'],'.-',
