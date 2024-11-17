@@ -50,7 +50,18 @@ Adjustments were made to surface curvature, changing pressure gradients in effor
 
 The difficulty with transonic airfoil design is that there is an additional source of drag, known as wave drag, which is caused by the formation of shock waves on the wing surface.
 
+% the curvature of the top surface was increased and decreased in certain places
+% a high amount of curvature at the leading edge provides rapid expansion to the suction peak, maximising lift here.
+% the first spline point had to be negative to ensure no spline inflection point
 
+% a very small amount of curvature is maintained around the top surface to prevent further expansion in the supersonic region,
+% and to allow the reflected expansion lines to compress the flow, reducing the shock strength.
+% more flat and concave curvatures were tested increased end curvature, increasing back pressure and caused a two shocks to form
+
+% after the region of small curvature, just behind where the shock is located at operating conditions, there is high curvature to return to the surface back to the trailing edge.
+
+% at the end of the upper surface, there is some concave geometry which produces downforce. 
+% this is bad for lift, 
 
 The designed airfoil cross-section is shown in Figure \ref{fig:airfoil}.
 

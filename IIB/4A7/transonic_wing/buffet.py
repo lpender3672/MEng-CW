@@ -17,6 +17,11 @@ def mach_from_p_over_p0(p_over_p0):
     return np.sqrt((p_over_p0 ** (- (gamma - 1) / gamma) - 1) * 2 / (gamma - 1))
 
 
+def cpstar_from_mach(mach):
+    gamma = 1.4
+    return ((1 + 0.5 * (gamma - 1))**(-gamma / (gamma - 1)) - (1 + 0.5 * (gamma - 1) * mach**2)**(- gamma / (gamma - 1)))/(0.5 * gamma * mach**2 * (1 + 0.5 * (gamma - 1) * mach**2)**(- gamma / (gamma - 1)))
+
+
 def mach_numbers_at_shocks(res):
 
     upsh = res.shock_locations['upper_shock_locations']
