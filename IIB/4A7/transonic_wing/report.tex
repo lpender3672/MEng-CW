@@ -1,4 +1,4 @@
-\documentclass{article}
+\documentclass[11pt]{article}
 
 \usepackage[utf8]{inputenc}
 
@@ -11,6 +11,7 @@
 \usepackage{hyperref}
 \usepackage{tikz}
 \usepackage{layout}
+\usepackage{wrapfig}
 
 \usepackage[margin=1in]{geometry}
 \usepackage{listings}
@@ -70,14 +71,33 @@ The designed airfoil cross-section is shown in Figure \ref{fig:airfoil}.
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.99\textwidth]{figures/airfoil.png}
+    \includegraphics[width=0.6\textwidth]{figures/airfoil.png}
     \caption{Aerofoil cross-section}
     \label{fig:airfoil}
 \end{figure}
 
+
+\begin{figure}
+    \centering
+    \begin{subfigure}[t]{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/cd_vs_mach.png}
+        \caption{Drag coefficient vs Mach number}
+        \label{fig:pressure_distribution}
+    \end{subfigure}
+    \begin{subfigure}[t]{0.54\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/cp_vs_xc_machs.png}
+        \caption{Pressure coefficient distribution for different Mach numbers}
+        \label{fig:mach_distribution}
+    \end{subfigure}
+\end{figure}
+
+
 \section{Buffet Line}
 
 Buffet is complex unstable interaction between the shockwaves and boundary layers and can produce large amplitude pressure fluctuations on the wing surface.
+This can be damaging to the aircraft structure and cause a loss of control [?].
 
 There are various measures to detect the onset of buffet
 \begin{itemize}
