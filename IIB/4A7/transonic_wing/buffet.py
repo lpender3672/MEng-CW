@@ -58,10 +58,11 @@ def get_difference_between_Hbar_te_and_2_2(res):
     Hbar_te = res.boundary_layer_data['HBAR']
     return (Hbar_te - 2.2) / 2.2
 
+def f(x):
+    return 1.5 + (1.2 - 1.5) / 1 * x
+
 def get_min_distance_between_mach_lines(res):
 
-    def f(x):
-        return 1.5 + (1.2 - 1.5) / 1 * x
     
     lin_mach = f(res.x)
     machs = mach_from_p_over_p0(res.p_over_p0)
