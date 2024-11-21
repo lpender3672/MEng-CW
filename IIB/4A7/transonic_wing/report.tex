@@ -33,8 +33,7 @@
 
 \section{Introduction}
 
-
-The development of high-efficiency transonic aerofoils, can significantly improve the overall performance of an aircraft.
+The development of high-efficiency transonic aerofoils can significantly enhance an aircraft's performance, particularly by enabling optimized flight at higher speeds and altitudes.
 The Breguet range equation, which calculates the range of an aircraft, directly depends on the flight speed and lift to drag ratio of the wing:
 
 \begin{equation}
@@ -50,7 +49,7 @@ Adjustments were made to surface curvature, changing pressure gradients in effor
 Transonic aerofoil design is more complex than subsonic design due to the formation of shock waves on the wing surface.
 Additional lift is obtained by maximising suction peak and area of supersonic flow, however there is an additional source of wave drag that increases with shock strength.
 The general goal of our design process therefore was to delay the position and strength of the shock wave.
-However, this location and strength were observed to be highly sensitive to the geometry, which is likely due to small changes to Prantle Meyer
+The shock location and strength were observed to be highly sensitive to the geometry, which is likely due to small changes in Prantle Meyer
 expansion fan angles causing large changes in the position of reflected compression lines from the constant pressure boundary.
 These expansion angles are also dependent on local geometry and local Mach number, causing a chaotic design space.
 
@@ -82,7 +81,7 @@ This causes downforce, which is poor for lift and comes as a result of the thick
 Examples of target upper $C_p$ distributions are shown in reference \cite{esdu} and consist of one with no shock, and one with a weak shock.
 These typically consist of a region of rapid acceleration over 3\% of the chord, followed by a small smooth rounded peak to a long linear region of gradual compression.
 The section behind has a much greater rate of compression by weak shock or compression fan.
-Results from the program VGKD where geometry is optimised to closely match target upper surface pressure distributions demonstrate this is feasible.
+Results from the program VGKD where geometry is optimised to closely match target upper surface pressure distributions demonstrate this is feasible \cite{esdu}.
 The pressure distribution achieved by our design differs from this ideal in the nonlinear compression region, and has earlier and stronger shock formation.
 Off design point, the adverse pressure gradients in the nonlinear compression region form shocks, then reaccelerate the flow in the favourable pressure gradient region and shock again.
 This can be fixed by reducing curvate at these locations but may require a more sensitive change in spline control points.
@@ -208,7 +207,7 @@ Its important to note that this is still accurate for swept wings as the Mach nu
 The contours show regions of constant performance metric and the buffet line is shown in pink.
 Without the $C_d$ term, the graph would have asymptote contours increasing diagonally, however the inclusion of drag
 causes a significant drop in performance metric at high Mach numbers and lift coefficients.
-One optimal regions for our aerofoil is shown to be close to our design point, with another at slightly lower Mach and angle of attack.
+One optimal region for our aerofoil is shown to be close to our design point, with another at slightly lower Mach and angle of attack.
 This means we do not necessarily have to lie close to the buffet line to achieve our high performance metric, however some aircraft designers
 may prioritise payload capacity, or flight speed over range, and so may choose to operate closer to this line.
 
