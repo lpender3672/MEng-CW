@@ -1,0 +1,95 @@
+
+% here we go agane
+
+\documentclass{article}
+
+\usepackage[utf8]{inputenc}
+
+\usepackage{amsmath, bm}
+\usepackage{graphicx}
+\usepackage{amssymb}
+\usepackage{float}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{hyperref}
+\usepackage{tikz}
+\usepackage{layout}
+\usepackage{wrapfig}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{color, colortbl}
+\usepackage{textgreek}
+\usepackage{mathrsfs}
+\usepackage{savetrees}
+
+% 12 pt font
+\renewcommand{\normalsize}{\fontsize{12pt}{\baselineskip}\selectfont}
+
+\begin{document}
+
+\title{4A7 Report \\ Climate Impact of Contrail Avoidance}
+\author{lwp26}
+\date{December 2024}
+\maketitle
+
+\section{Introduction}
+% evaluate the net climate impact of contrail avoidance
+
+\subsection{Cases}
+
+\begin{itemize}
+    \item Baseline case, contrail avoidance with current aircraft fleet
+    \item If the aircraft fleet is assumed to instead be fueled by liquified natural gas (LNG), which you can approximate as methane
+    \item If the gas turbines powering the fleet have a higher thermal efficiency (by an amount of your choosing) 
+\end{itemize}
+
+\section{Models}
+% a list of all referenced models used in the report
+% full description of model assumptions, limitations, and validation
+
+% model of impact of contrails on climate
+
+% require: fuel penalty associated with avoidance
+%    meteorological conditions, aircraft type, altitude, and time of day
+%    optimal routing and control strategies
+
+% for additional cases may require different fuel consumption models
+% but also the climate impact of sourcing methane from natural gas
+
+\section{Results}
+% tables and figures of results
+
+\section{Discussion}
+% discussion of results whatever they look like
+
+\section{Conclusion}
+
+
+\begin{thebibliography}{9}
+
+    \bibitem{handout}
+    J. Jarret
+    \emph{4A7 Transonic Wing Design Handout}
+    University of Cambridge,
+    2024.
+
+    \bibitem{SA1_report}
+    L. W. Pender
+    \emph{SA1 Wing Analysis Final Report}
+    University of Cambridge,
+    2024.
+
+    \bibitem{lagentrainment}
+    Green J E, Weeks D J and Brooman J W F,
+    \emph{Prediction of turbulent boundary-layers and wakes in compressible flow by a lag-entrainment method.}
+    ARC
+
+    \bibitem{esdu}
+    ESDU 99032
+    \emph{VGK Method for Two-Dimensional Aerofoil Sections. Part 5. Design to Specified Upper Surface Distribution}
+  
+\end{thebibliography}
+
+\end{document}
