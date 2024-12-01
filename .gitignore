@@ -1,6 +1,7 @@
 # Misc Files
 
 boundary_layers.zip
+cache/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
