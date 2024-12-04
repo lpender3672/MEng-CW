@@ -56,6 +56,59 @@
 
 \section{Simplified Model}
 
+\subsection{Emissions}
+
+The radiative forcing due to emissions of greenhouse gases due to additional fuel burn from contrail avoidance can be estimated using the following simplified method.
+
+In literature common units for carbon coming into or going out of the atmosphere is billions of tons of carbon per year ($\text{GtCyr}^{-1}$)
+denoted $E(t)$, at the time $t$ in years. The carbon content of the atmosphere in units of billions of metric tons of carbon is denoted $C(t)$.
+The current year is denoted $t=0$.
+Measurements of E(t) and C(t) show that only roughly half of carbon emissions stay in the atmosphere, the rest is absorbed by the ocean and biosphere \cite{co2_modelling}.
+This empirical observation is captured by the \emph{Constant Airborne Fraction Model}:
+
+\begin{equation}
+    \frac{dC}{dt} = k \left( E(t) - \frac{C(t)-C_\text{pre}}{\tau}\right)
+\end{equation}
+
+Where $k \approxeq 0.5$, $\tau \approxeq 200 $ years and $C_\text{pre} \approxeq 600$ GtC.
+
+Radiative forcing can be estimated using relations by G. Myhre \cite{rf_greenhouse}.
+
+\begin{equation}
+    \text{RF}_{\text{CO}_2} = 5.35 \ln \left( \frac{C}{C_0} \right), \quad \text{RF}_{\text{CH}_4} = 0.036 \left( \sqrt{M}-\sqrt{M_0} \right)
+\end{equation}
+For $N_2O$ the radiative forcing is given by:
+\begin{eqnarray}
+    \text{RF}_{\text{N}_2\text{O}} = 0.12(\sqrt{N} - \sqrt{N_0}) - (f(M_0,N) - f(M,N_0)) \\
+    f(M, N) = 0.47 \ln\left[1 + 2.01 \times 10^{-5} (MN)^{0.75} + 5.31 \times 10^{-15} M (MN)^{1.52}\right]
+\end{eqnarray}
+Where contrentrations for M and N are in ppb.
+
+\subsection{Contrails}
+
+
+\subsection{Temperature response}
+
+These radiative forcing values provide an instantaneous metric for climate impact of emissions, however
+the temperature response is a cumulative effect of radiative forcing over time
+
+\begin{align}
+    C_1 \frac{dT_1}{dt} &= \text{RF} - \lambda(T - T_0) - k_m(T_1 - T_2) \\
+    C_2 \frac{dT_2}{dt} &= k_m(T_1 - T_2)
+\end{align}
+
+\begin{equation}
+    \text{AGWP} = \int_0^T \text{RF}(t) dt
+\end{equation}
+\begin{equation}
+    \text{AGTP} = \int_0^T \Delta T(t) dt
+\end{equation}
+
+\subsection{Adaption for LNG fuel and higher thermal efficiency}
+
+\subsection{Assumptions and Limitations}
+
+
 
 \section{Complex Model}
 % a list of all referenced models used in the report
@@ -81,17 +134,17 @@
 
 \begin{thebibliography}{9}
 
-    \bibitem{handout}
-    J. Jarret
-    \emph{4A7 Transonic Wing Design Handout}
-    University of Cambridge,
-    2024.
 
-    \bibitem{SA1_report}
-    L. W. Pender
-    \emph{SA1 Wing Analysis Final Report}
-    University of Cambridge,
-    2024.
+    \bibitem{co2_modelling}
+    R. H. Socolow and S. H. Lam
+    \emph{Good enough tools for global warming policy making}
+    Department of Mechanical and Aerospace Engineering, Princeton University,
+    Princeton, NJ 08544, USA
+
+    \bibitem{rf_greenhouse}
+    G. Myhre et al.
+    \emph{New estimates of radiative forcing due to well mixed greenhouse gases}
+    Geophysical Research Letters, Vol. 25, No. 14, 1998
 
     \bibitem{lagentrainment}
     Green J E, Weeks D J and Brooman J W F,
