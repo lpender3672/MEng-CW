@@ -2,6 +2,8 @@
 import matplotlib.pyplot as plt
 import numpy as np
 
+# import filters from scipy
+import scipy.signal as signal
 
 # load data
 
@@ -16,9 +18,19 @@ acc_total = np.sqrt(accx**2 + accy**2 + accz**2)
 
 fig, ax = plt.subplots(1, 1, figsize=(8, 4))
 
-ax.plot(time, accx, label="x")
-ax.plot(time, accy, label="y")
-ax.plot(time, accz, label="z")
+#ax.plot(time, accx, label="x")
+#ax.plot(time, accy, label="y")
+#ax.plot(time, accz, label="z")
+
+accxf = signal.savgol_filter(accx, 51, 3)
+accyf = signal.savgol_filter(accy, 51, 3)
+acczf = signal.savgol_filter(accz, 51, 3)
+
+ax.plot(time, accxf, label="x filtered")
+ax.plot(time, accyf, label="y filtered")
+ax.plot(time, acczf, label="z filtered")
+
+
 ax.set_xlabel("Time [s]")
 ax.set_ylabel("Acceleration [m/s^2]")
 
