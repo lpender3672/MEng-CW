@@ -14,7 +14,7 @@ dt = 1
 time = np.arange(0, time_steps * dt, dt)
 
 E = np.zeros(time_steps)
-E[100:200] = 30 # Gt C / year for 100 years
+E[100:200] = 37.4 * 0.025 # Gt C / year for 100 years
 
 C = np.zeros(time_steps)
 C[0] = C_pre
@@ -46,8 +46,8 @@ for t in range(1, time_steps):
     T[t] = T[t - 1] + CdT_dt * dt / heat_capacity
 
 
-AGWP = np.trapezoid(forcing_array - initial_forcing, time)
-AGTP = np.trapezoid(T[:, 0] - T_base, time)
+AGWP = np.trapz(forcing_array - initial_forcing, time)
+AGTP = np.trapz(T[:, 0] - T_base, time)
 
 print(f"AGWP: {AGWP}")
 print(f"AGTP: {AGTP}")
