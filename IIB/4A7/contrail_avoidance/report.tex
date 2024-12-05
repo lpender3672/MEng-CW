@@ -31,7 +31,7 @@
 \begin{document}
 
 \title{4A7 Report \\ Climate Impact of Contrail Avoidance}
-\author{lwp26}
+\author{5739G}
 \date{December 2024}
 \maketitle
 
@@ -86,23 +86,28 @@ Where contrentrations for M and N are in ppb.
 
 \subsection{Contrails}
 
+The radiative forcing due to contrails is extrapolated from the work of D.S. Lee et al. \cite{contrail_radiative_forcing}.
 
 \subsection{Temperature response}
 
 These radiative forcing values provide an instantaneous metric for climate impact of emissions, however
-the temperature response is a cumulative effect of radiative forcing over time
+the temperature response is a cumulative effect of radiative forcing over time.
+This can simply be modelled by two heat reservoirs, one for the atmosphere and one for the ocean.
+The temperature of the atmosphere $T_1$ and the temperature of the ocean $T_2$ are then given by the following equations.
 
 \begin{align}
     C_1 \frac{dT_1}{dt} &= \text{RF} - \lambda(T - T_0) - k_m(T_1 - T_2) \\
     C_2 \frac{dT_2}{dt} &= k_m(T_1 - T_2)
 \end{align}
 
-\begin{equation}
-    \text{AGWP} = \int_0^T \text{RF}(t) dt
-\end{equation}
-\begin{equation}
-    \text{AGTP} = \int_0^T \Delta T(t) dt
-\end{equation}
+Where $\lambda$ is the climate sensitivity parameter, $T_0$ is the pre-industrial temperature, $k_m$ is the heat exchange coefficient between the atmosphere and the ocean, and $C_1$ and $C_2$ are the heat capacities of the atmosphere and ocean respectively.
+
+AGWP can quantify cumulative radiative forcing.
+AGTP can quantify the cumulative impact of increased temperatures such as changes in ecosystems and sea levels.
+\begin{align}
+    \text{AGWP} &= \int_0^T \text{RF}(t) dt \\
+    \text{AGTP} &= \int_0^T \Delta T(t) dt
+\end{align}
 
 \subsection{Adaption for LNG fuel and higher thermal efficiency}
 
@@ -145,6 +150,11 @@ the temperature response is a cumulative effect of radiative forcing over time
     G. Myhre et al.
     \emph{New estimates of radiative forcing due to well mixed greenhouse gases}
     Geophysical Research Letters, Vol. 25, No. 14, 1998
+
+    \bibitem{contrail_radiative_forcing}
+    D. S. Lee et al.
+    \emph{The contribution of global aviation to anthropogenic climate forcing for 2000 to 2018}
+    Atmospheric Environment, 2020
 
     \bibitem{lagentrainment}
     Green J E, Weeks D J and Brooman J W F,

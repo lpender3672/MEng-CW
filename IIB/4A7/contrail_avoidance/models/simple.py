@@ -28,6 +28,7 @@ lambda_sens = 1
 k_mix = 1000
 
 initial_forcing = radiative_forcing(C[0])
+forcing_array = np.zeros(time_steps)
 
 for t in range(1, time_steps):
 
@@ -35,6 +36,7 @@ for t in range(1, time_steps):
     C[t] = C[t - 1] + dC_dt * dt
 
     forcing = radiative_forcing(C[t])
+    forcing_array[t] = forcing
 
     CdT_dt = np.zeros(2)
 
@@ -43,7 +45,12 @@ for t in range(1, time_steps):
 
     T[t] = T[t - 1] + CdT_dt * dt / heat_capacity
 
- 
+
+AGWP = np.trapezoid(forcing_array - initial_forcing, time)
+AGTP = np.trapezoid(T[:, 0] - T_base, time)
+
+print(f"AGWP: {AGWP}")
+print(f"AGTP: {AGTP}")
 # plot
 
 fig, ax = plt.subplots(1, 1, figsize=(8, 4))
@@ -59,9 +66,9 @@ plt.show()
 
 fig, ax = plt.subplots(1, 1, figsize=(8, 4))
 
-ax.plot(time, C, label="Carbon")
+ax.plot(time, forcing_array, label="Carbon")
 
 ax.set_xlabel("Time [years]")
-ax.set_ylabel("Carbon [Gt C]")
+ax.set_ylabel("Ft [W/m^2]")
 
 plt.show()
