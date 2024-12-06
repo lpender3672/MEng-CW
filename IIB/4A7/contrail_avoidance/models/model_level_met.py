@@ -117,6 +117,10 @@ cocip = Cocip(
 cocip_pred = cocip.eval(fleet)
 contrail = cocip.contrail
 
+# get radiative forcing
+print(contrail)
+print(contrail["rf_net"].sum())
+
 for flight in flights:
     flight.plot(ax=ax, color="white", linewidth = 0.5, alpha = 0.5)
 
