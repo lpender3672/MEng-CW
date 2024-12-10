@@ -2,6 +2,7 @@
 import pandas as pd
 import numpy as np
 
+import matplotlib.pyplot as plt
 # load pd from txt
 
 adf = pd.read_csv("IIB/4A7/contrail_avoidance/data/aircraft.txt", delimiter="\t")
@@ -37,8 +38,27 @@ fdf['Mapped AC Type'] = fdf['AC Type'].map(stupid_fucking_mapping)
 
 merged_df = fdf.merge(adf, left_on='Mapped AC Type', right_on='ICAO', how='left')
 
-merged_df.to_csv("fuel_burn_results.csv", index=False)
-
+#merged_df.to_csv("fuel_burn_results.csv", index=False)
 unmatched = merged_df[merged_df['ICAO'].isnull()]
-
 print(unmatched['AC Type'].unique())
+
+matched = merged_df[merged_df['ICAO'].notnull()]
+
+correction_ratio = fdf['Actual Distance Flown (nm)'].sum() / matched['Actual Distance Flown (nm)'].sum()
+
+
+flight_fuels_kg = matched['Fuel Burn'] * matched['Actual Distance Flown (nm)'] * NM_TO_KM
+total_mass_fuel = correction_ratio * flight_fuels_kg.sum()
+
+print(f"Total mass kerosine burned: {total_mass_fuel * 12 * 1e-12} Gt")
+
+kerosine_emissions_factor = 3.15
+
+print(f"CO2 emissions {kerosine_emissions_factor * total_mass_fuel * 12 * 1e-12} Gt")
+
+sorted_df = fdf.sort_values('Actual Distance Flown (nm)').head()
+# create bar chat of top 10 
+fig, ax = plt.subplots()
+ax.bar(np.arange(0, 5, 1), sorted_df['Actual Distance Flown (nm)'], sorted_df['Mapped AC Type'])
+
+plt.show()
