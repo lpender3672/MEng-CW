@@ -64,7 +64,7 @@ def plot_model(years = 25):
     E[:25 * 100] = 37.4 * np.linspace(1, 0, 25 * 100) # Gt C / year for 100 years
     time, C, T = run_model(E, years, additional_forcing)
 
-    fig, ax = plt.subplots(1, 2, figsize=(8, 4))
+    fig, ax = plt.subplots(1, 2, figsize=(10, 4))
 
     ax[0].plot(time, T[:, 0]-273.15, label=f"Shallow ocean reservoir")
     ax[0].plot(time, T[:, 1]-273.15, label=f"Deep ocean reservoir")
@@ -97,7 +97,7 @@ def methane_as_fuel_plot(fig, ax, years, additional_fuel = 0.01):
 
     P = 26500 # 33000ft
     cp = 1001 # J/kgK at 33000 ft
-    eta = 0.72
+    eta = 0.5
     epsilon = 0.622
 
     G_kerosine = P * EI_H2O_kerosine * cp / (epsilon * LCV_kerosine * (1-eta))
@@ -108,10 +108,10 @@ def methane_as_fuel_plot(fig, ax, years, additional_fuel = 0.01):
     base_forcing = 57.4e-3
     additional_forcing = base_forcing * G_methane / G_kerosine
 
-    E[:] = 37.4 # Gt C / year for 100 years
+    E[:] = 37.4 + 0.31 * (EI_CO2_methane / EI_CO2_kerosine - 1)# Gt C / year for 100 years
     _, C_norm_methane, T_norm_methane = run_model(E, years, additional_forcing)
 
-    E[:] = 37.4 + additional_fuel * 0.31 * EI_CO2_methane / EI_CO2_kerosine  # Gt C / year for 100 years
+    E[:] = E[:] = 37.4 + 0.31 * ((1 + additional_fuel) * EI_CO2_methane / EI_CO2_kerosine - 1)  # Gt C / year for 100 years
     time, C_avod_methane, T_avod_methane = run_model(E, years, 0)
 
     T = T_avod_methane - T_norm_methane
@@ -178,8 +178,8 @@ def higher_thermal_efficiency_plot(fig, ax, years, additional_fuel = 0.01):
 
     P = 26500 # 33000ft
     cp = 1001 # J/kgK at 33000 ft
-    eta_HI = 0.75
-    eta_LO = 0.72
+    eta_HI = 0.52
+    eta_LO = 0.5
     epsilon = 0.622
 
     G_HI = P * EI_H2O_kerosine * cp / (epsilon * LCV_kerosine * (1-eta_HI))
@@ -192,10 +192,10 @@ def higher_thermal_efficiency_plot(fig, ax, years, additional_fuel = 0.01):
     base_forcing = 57.4e-3
     additional_forcing = base_forcing * G_HI / G_LO
 
-    E[:] = 37.4 # Gt C / year for 100 years
+    E[:] = 37.4 + 0.31 * (eta_LO / eta_HI - 1) # Gt C / year for 100 years
     _, C_norm_eff, T_norm_eff = run_model(E, years, additional_forcing)
 
-    E[:] = 37.4 + additional_fuel * 0.31  # Gt C / year for 100 years
+    E[:] = 37.4 + 0.31 * ((1 + additional_fuel) * eta_LO / eta_HI - 1)  # Gt C / year for 100 years
     time, C_avod_eff, T_avod_eff = run_model(E, years, 0)
 
     T = T_avod_eff - T_norm_eff
@@ -203,7 +203,7 @@ def higher_thermal_efficiency_plot(fig, ax, years, additional_fuel = 0.01):
 
     #fig, ax = plt.subplots(1, 2, figsize=(8, 4))
 
-    ax[0].plot(time, T[:, 0], label='High $\eta$')
+    ax[0].plot(time, T[:, 0], label='Higher $\eta$')
     
     ax[0].set_xlabel("Time [years]")
     ax[0].set_ylabel("$(T_{1,avd} - T_{1,dr})$ $[^oC]$")
@@ -217,6 +217,82 @@ def higher_thermal_efficiency_plot(fig, ax, years, additional_fuel = 0.01):
 
     return fig, ax
 
+
+def comparison_of_methane_and_efficiency_plot(fig, ax, years):
+
+    LCV_kerosine = 43e6 # J/kg
+    LCV_methane = 50e6
+
+    EI_H2O_kerosine = 1.29
+    EI_H2O_methane = 2.25
+
+    EI_CO2_methane = 2.75
+    EI_CO2_kerosine = 3.15
+
+    P = 26500 # 33000ft
+    cp = 1001 # J/kgK at 33000 ft
+    eta_HI = 0.52
+    eta_LO = 0.5
+    eta = eta_LO
+    epsilon = 0.622
+
+    G_HI = P * EI_H2O_kerosine * cp / (epsilon * LCV_kerosine * (1-eta_HI))
+    G_LO = P * EI_H2O_kerosine * cp / (epsilon * LCV_kerosine * (1-eta_LO))
+
+    E = np.zeros(100 * years)
+
+    print(G_HI / G_LO)
+
+    base_forcing = 57.4e-3
+    additional_forcing = base_forcing * G_HI / G_LO
+
+    E[:] = 37.4 + 0.31 * (eta_LO / eta_HI - 1) # Gt C / year for 100 years
+    _, C_norm_eff, T_norm_eff = run_model(E, years, 0)
+
+    additional_forcing = 57.4e-3
+    E[:] = 37.4 # Gt C / year for 100 years
+    _, C_norm, T_norm = run_model(E, years, 0)
+
+    G_kerosine = P * EI_H2O_kerosine * cp / (epsilon * LCV_kerosine * (1-eta))
+    G_methane = P * EI_H2O_methane * cp / (epsilon * LCV_methane * (1-eta))
+
+    E = np.zeros(100 * years)
+
+    base_forcing = 57.4e-3
+    additional_forcing = base_forcing * G_methane / G_kerosine
+
+    E[:] = 37.4 + 0.31 * (EI_CO2_methane / EI_CO2_kerosine - 1)# Gt C / year for 100 years
+    time, C_norm_methane, T_norm_methane = run_model(E, years, 0)
+
+    T0 = 273.15
+
+    #ax[0].plot(time, T_norm -T0, label='kerosine')
+    ax[0].plot(time, T_norm_methane[:,0] - T_norm[:,0], label='Methane fuel')
+    ax[0].plot(time, T_norm_eff[:,0] - T_norm[:,0], label='Higher $\eta$')
+
+    ax[0].set_ylabel("$(T_{1,case} - T_{1,base})$ $[^oC]$")
+    ax[0].set_xlabel("Time [years]")
+
+    ax[1].plot(time, (C_norm_methane - C_norm) / 2.1)
+    ax[1].plot(time, (C_norm_eff - C_norm) / 2.1)
+
+    ax[1].set_ylabel("$C_{case}-C_{base}$ [ppm]")
+    ax[1].set_xlabel("Time [years]")
+
+
+    fig.tight_layout()
+
+    return fig, ax
+
+fig, ax = plot_model(25)
+
+fig, ax = plt.subplots(1, 2, figsize=(10, 4))
+fig, ax = comparison_of_methane_and_efficiency_plot(fig, ax, 25)
+ax[0].legend()
+ax[0].grid()
+ax[1].grid()
+
+fig.savefig('IIB/4A7/contrail_avoidance/figures/case_comparison.png', dpi=300)
 
 fig, ax = plt.subplots(1, 2, figsize=(10, 4))
 

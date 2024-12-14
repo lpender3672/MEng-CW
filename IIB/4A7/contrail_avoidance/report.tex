@@ -37,6 +37,8 @@
 
 \section{Introduction}
 % evaluate the net climate impact of contrail avoidance
+Understanding the role of aviation on climate impact is vital as it plays a significant contribution to global warming.
+Simple models can provide insight into large scale effects on climate and will be used here to analyse the effectiveness of contrail avoidance. 
 
 \section{Objectives}
 
@@ -49,7 +51,7 @@
 \subsection{Cases}
 
 \begin{itemize}
-    \item Baseline case, contrail avoidance with current aircraft fleet
+    \item Baseline case, contrail avoidance with current aircraft fleet.
     \item If the aircraft fleet is assumed to instead be fueled by liquified natural gas (LNG), which is taken to be methane
     \item If the gas turbines powering the fleet have a higher thermal efficiency (by an amount of your choosing) 
 \end{itemize}
@@ -64,9 +66,10 @@ The kerosene fuel burned by aircraft contains a mixture of alkanes of varying ca
 The combustion of each of these alkanes can be weighted by concentration to obtain an overall
 emissions index of 3.15 in units mass of $CO_2$ per mass of kerosene fuel burned.
 To get the total mass of fuel burn its required to know the flight paths and fuel burn rates for all aircraft.
-This simply wasn't possible for all aircraft and times and so a months commercial flights dataset from EUROCONTROL [?] was used with a smaller list of aircraft fuel burn rates (kg/km) from wikipedia [?].
+This simply wasn't possible for all aircraft and times and so a months commercial flights dataset from EUROCONTROL [?] was used with a smaller list of aircraft cruise fuel burn rates (kg/km) from wikipedia [?].
 A correction factor was used to extrapolate the mass of fuel burned for unknown aircraft which was the ratio of total distance flown by all aircraft to aircraft of known fuel burn rate.
 The CO2 emissions from flight was then estimated to be 0.31 Gt/Year.
+Avoidance will come at a cost of an additional 1\% fuel consumption, compared to direct flight passing through the contrails.
 
 The radiative forcing due to aircraft emissions of greenhouse gases can be estimated using the following simplified method.
 In literature common units for carbon coming into or going out of the atmosphere is billions of tons of carbon per year ($\text{GtCyr}^{-1}$)
@@ -85,12 +88,14 @@ Radiative forcing can be estimated using a relation by G. Myhre \cite{rf_greenho
 This term adds a nonlinearity to the system of equations and is the reason for solving them numerically.
 
 \begin{equation}
-    \text{RF}_{\text{CO}_2} = 5.35 \ln \left( \frac{C}{C_0} \right)
+    \text{RF}_{\text{CO}_2} = 5.35 \ln \left( \frac{C}{C_0} \right) \label{eq:rfco2}
 \end{equation}
+
+Additional net radiative forcing due to NOx emissions is estimated by D.S. Lee et al. at $17.5mW/m^2$
 
 \subsection{Contrails}
 
-The radiative forcing due to contrails is extrapolated from the work of D.S. Lee et al. \cite{contrail_radiative_forcing}.
+The radiative forcing due to contrails is also taken from the work of D.S. Lee et al. \cite{contrail_radiative_forcing}.
 An effective radiative forcing is taken as 57.4 mWm$^{-2}$.
 
 
@@ -111,20 +116,22 @@ The values of these are set in table \ref{tab:temp_model_params}.
 
 \begin{table}[H]
     \centering
-    \begin{tabular}{ccc}
+    \begin{tabular}{cccc}
         \hline
-        Parameter & Value & Unit \\
+        Parameter & Value & Unit & Source\\
         \hline
-        $T_0$ & 288 & $^\circ K$ \\
-        $\lambda$ & 1.0 & $W/m^2K$ \\
-        $k_m$ & 1.0 & $W/m^2K$ \\
-        $C_1$ & $7.4\times 10^{22}$ & J/K \\
-        $C_2$ & $5.3\times 10^{24}$ & J/K \\
+        $T_0$ & 288 & $^\circ K$ & \\
+        $\lambda$ & 1.0 & $W/m^2K$ & \\
+        $k_m$ & 1.0 & $W/m^2K$ & \\
+        $C_1$ & $7.4\times 10^{22}$ & J/K & $\rho c_p A_o \cdot 50$  \\
+        $C_2$ & $5.3\times 10^{24}$ & J/K & $\rho c_p A_o \cdot (D_o - 50) \footnotemark $\\
         \hline
     \end{tabular}
     \caption{Temperature model parameters}
     \label{tab:temp_model_params}
 \end{table}
+
+\footnotetext{$A_o$ is area of earths oceans, $D_o$ is average ocean depth}
 
 AGWP can quantify cumulative radiative forcing.
 AGTP can quantify the cumulative impact of increased temperatures such as changes in ecosystems and sea levels.
@@ -141,7 +148,7 @@ This means a smaller emissions penalty of additional fuel consumption by avoidin
 
 The Schmidt-Appleman criterion predicts contrails form if the mixture of exhaust gases and ambient air
 transiently reaches or surpasses saturation with respect to liquid water.
-It can be shown that the gradient of the mixing line is proportional to the $H_2O$ emissions index (ratio of mass $H_2O$ released per kg fuel burned) and inversely proportional to $LCV$ \ref{eq:SAC_gradient}.
+It can be shown that the gradient of the mixing line is proportional to the $H_2O$ emissions index (ratio of mass $H_2O$ released per kg fuel burned) and inversely proportional to $LCV$ (Equation \ref{eq:SAC_gradient}).
 Methane has a slightly higher calorific value $LCV$ ($50MJ/kg$) than kerosine ($43MJ/kg$) however the water vapour emissions index of methane (2.25) is significantly higher than kerosine (1.29).
 By aligning this increased gradient to the saturation curve shows that contrails can form at higher temperatures.
 Hence, more contrails form and cause a larger net radiative forcing making their avoidance more important.
@@ -150,7 +157,7 @@ However, to estimate the increased radiative forcing, the previous value by D.S.
 of mixing line gradients.
 
 \begin{equation}
-    G = \frac{P EI_{H_2O} c_p}{\epsilon LCV (1-\eta)} \label{eq:SAC_gradient}
+    G = \frac{P \cdot EI_{H_2O} \cdot c_p}{\epsilon \cdot LCV \cdot (1-\eta)} \label{eq:SAC_gradient}
 \end{equation}
 
 Where P is static pressure, $c_p$ is specific heat capacity, $\epsilon = M_{H_2O}/M_{air} = 0.622$, $LCV$ is lower calorific value, and $\eta$ is thermal efficiency.
@@ -161,6 +168,8 @@ A higher thermal efficiency reduces amount of fuel required for a flight, reduci
 However, it also reduces the term $(1-\eta)$ which G is inversely proportional and so the SAC mixing curve gradient increases.
 Again this means that more contrails form and so avoidance may be more worthwhile for aircraft of higher thermal efficiency.
 
+An increase in thermal efficiency from 0.5 to 0.52 will be considered.
+This may seem very small but actually represents a significant advancement from current technology.
 To estimate the increased radiative forcing the same technique as before where the value by D.S. Lee et al. was multiplied by the ratio
 of mixing line gradients.
 
@@ -170,13 +179,22 @@ of mixing line gradients.
 Many assumptions and simplifications were made to perform the above analysis.
 The validity of these are discussed with reference to more advanced models.
 
-\subsubsection{Models}
+Emissions
+\begin{itemize}
+    \item Kersoine fuel is free of impurities and has an CO2 emissions index of 3.15
+    \item Emissions from production of fuel not considered but could be significant.
+    \item Flight data for the month of June 2020 can be extrapolated to future annual flights and will remain the same (ie no growth of aircraft fleet).
+    \item Fuel burn rate during takeoff, landing and other control sequences is equal to cruise.
+    \item Aircraft of unknown fuel burn rates have a similar average rate to the set of known aircraft.
+    \item Emissions from military and space agencies are small compared to civil flight.
+    \item The 'one tank model' by R. H. Socolow et al. is not accurate when C(t) is stabilized or nearly stabilized \cite{co2_modelling}.
+\end{itemize}
 
-The 
-A number of assumptions were made in the calculation of fuel burn
-Liquid natural gas only assumed to be methane
-
-\subsubsection{Values}
+Radiative forcing and temperature modelling.
+\begin{itemize}
+    \item The equation to calculate radiative forcing from CO2 concentration in the atmosphere is given by equation \ref{eq:rfco2}.
+    \item The radiative forcing for contrail formation scales with gradient of SAC mixing line gradient, G.
+\end{itemize}
 
 % a list of all referenced models used in the report
 % full description of model assumptions, limitations, and validation
@@ -197,21 +215,52 @@ Liquid natural gas only assumed to be methane
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.8\textwidth]{figures/model.png}
-    \caption{Model results for linearly decreasing emissions to net zero by 2050}
+    \caption{Model results for linearly decreasing CO2 emissions to 0 by 2050}
+    \label{fig:model}
 \end{figure}
-
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.9\textwidth]{figures/avoidance_comparison.png}
-    \caption{Impact of global contrail avoidance for the various cases}
+    \includegraphics[width=0.8\textwidth]{figures/case_comparison.png}
+    \caption{Impact for cases of different aircraft fleet fuel and efficiency compared to current fleet}
+    \label{fig:case_comparison}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{figures/avoidance_comparison.png}
+    \caption{Impact of global contrail avoidance for the various cases at 1\% additional fuel consumption. Shallow ocean reservoir on the left, and deep ocean on the right. Avoidance temperature difference is respective to same case.}
+    \label{fig:avoidance_comparison}
 \end{figure}
 
 
 \section{Discussion}
 % discussion of results whatever they look like
 
+Figure \ref{fig:model} shows a linear decreasing emissions to 0, below $E_{stable}$, and hence different to a Socolows wedge.
+The carbon concentration doesnt stabilize at this stationary point and so this models assumption is valid.
+As expected the shallow ocean temperature rises significantly more than the deep, $1.2^\circ C$.
+
+Figure \ref{fig:case_comparison} shows very small reductions in temperatures for different aircraft fleet with different fuel and higher efficiency.
+This shows that the benefit of reduced emissions is significantly reduced by the increased number of contrails formed.
+The methane fuel does make more of an impact than the 2\% increase in efficiency which is expected.
+
+Figure \ref{fig:avoidance_comparison} shows the impact of contrail avoidance for the different cases.
+It can be seen that contrail avoidance is most effective for aircraft using methane fuel.
+However, this is likely due to the fact that contrails produced by methane fuel occur at lower temperature and hence occur more often.
+This means that a larger than 1\% fuel consumption 
+
+Future work could involve using precise weather data with pycontrails to determine if a given flight path is worth avoiding.
+This could involve creating modified flight paths at different altitudes to high humidity/ low temperature regions.
+Additionally the Poll Schuman model could be used to more accurately predict fuel burn rates and emissions.
+However, in these more detailed, flight specific methods, accuracy is lost over large scales so the models presented here are still useful for large scale analysis.
+
 \section{Conclusion}
+
+This report evaluated the net climate impact of contrail avoidance under various scenarios, including the use of alternative fuels and improved thermal efficiency in aircraft engines.
+The simplified models, while constrained by assumptions and limitations, provided insights into the effectiveness of contrail avoidance for the different cases.
+Future work should integrate real-world weather data and advanced contrail modeling tools like pycontrails to develop specific flight paths for avoidance.
+Additionally, considering the full lifecycle emissions of fuels and their sourcing impacts could provide a more complete understanding of their climate impacts.
 
 \section{Appendix}
 
@@ -220,6 +269,13 @@ Liquid natural gas only assumed to be methane
     \includegraphics[width=0.7\textwidth]{figures/DSLee_ERFtable.jpg}
     \caption{Table of effective radiative forcing (ERF) in $mW/m^2$ by D.S.Lee et al. \cite{contrail_radiative_forcing}}
     \label{fig:rf_table}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.99\textwidth]{figures/contrail_map.png}
+    \caption{Map of contrails over US produced using CoCiP model provided in pycontrails library \cite{pycontrails}}
+    \label{fig:contrail_map}
 \end{figure}
 
 \begin{thebibliography}{9}
@@ -241,15 +297,11 @@ Liquid natural gas only assumed to be methane
     \emph{The contribution of global aviation to anthropogenic climate forcing for 2000 to 2018}
     Atmospheric Environment, 2020
 
-    \bibitem{lagentrainment}
-    Green J E, Weeks D J and Brooman J W F,
-    \emph{Prediction of turbulent boundary-layers and wakes in compressible flow by a lag-entrainment method.}
-    ARC
+    \bibitem{pycontrails}
+    Marc Shapiro et al.
+    \emph{pycontrails: Python library for modelling aviation climate impacts}
+    Version v0.54.3 Updated 21 November 2024
 
-    \bibitem{esdu}
-    ESDU 99032
-    \emph{VGK Method for Two-Dimensional Aerofoil Sections. Part 5. Design to Specified Upper Surface Distribution}
-  
 \end{thebibliography}
 
 \end{document}
