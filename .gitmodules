@@ -7,3 +7,12 @@
 [submodule "IA/Mars_Lander"]
 	path = IA/Mars_Lander
 	url = https://github.com/lpender3672/IA_Mars_Lander.git
+[submodule "shell_tube"]
+	path = IIA/shell_tube_heat_exchanger
+	url = https://github.com/lpender3672/shell_tube_heat_exchanger.git
+[submodule "wing_analysis"]
+	path = IIA/wing_analysis
+	url = https://github.com/lpender3672/wing_analysis.git
+[submodule "IIB/4A2-CFD"]
+	path = IIB/4A2-CFD
+	url = https://github.com/lpender3672/4A2-CFD.git
