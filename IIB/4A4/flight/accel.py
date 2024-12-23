@@ -7,7 +7,7 @@ import scipy.signal as signal
 
 # load data
 
-data = np.loadtxt("IIB/4A4/data/acceleration_2024-12-05_12-36-30.csv", skiprows=1, delimiter=',')
+data = np.loadtxt("IIB/4A4/flight/data/acceleration_2024-12-05_12-36-30.csv", skiprows=1, delimiter=',')
 
 time = data[:, 0]
 accx, accy, accz = data[:, 1], data[:, 2], data[:, 3]
