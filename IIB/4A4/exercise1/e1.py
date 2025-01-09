@@ -78,8 +78,8 @@ def plot_Longitudinal_Static_Stability(ares, bres, aload, bload, afuel, bfuel):
     asrt = np.argsort(aCw)
     bsrt = np.argsort(bCw)
 
-    ax.plot(aCw[asrt], aelev[asrt], label='A')
-    ax.plot(bCw[bsrt], belev[bsrt], label='B')
+    ax.plot(aCw[asrt], aelev[asrt], "o-", label='A')
+    ax.plot(bCw[bsrt], belev[bsrt], "o-", label='B')
 
     ax.set_xlabel('$C_w$ [-]')
     ax.set_ylabel('$\eta$ [$^\circ$]')
@@ -121,8 +121,8 @@ def plot_Longitudinal_Static_Stability(ares, bres, aload, bload, afuel, bfuel):
     bbeta = bres['Elev tab angle deg'].to_numpy()
 
     fig, ax = plt.subplots()
-    ax.plot(aCw[asrt], abeta[asrt], label='A')
-    ax.plot(bCw[bsrt], bbeta[bsrt], label='B')
+    ax.plot(aCw[asrt], abeta[asrt], "o-", label='A')
+    ax.plot(bCw[bsrt], bbeta[bsrt], "o-", label='B')
 
     ax.set_xlabel(r'$C_w$ [-]')
     ax.set_ylabel(r'$\beta$ [$^\circ$]')
@@ -160,6 +160,162 @@ def plot_Longitudinal_Static_Stability(ares, bres, aload, bload, afuel, bfuel):
     fig.tight_layout()
     fig.savefig(wdir / 'Longitudinal_Static_Stability_4.png', dpi=300)
 
+def plot_Manoeuvre_Stability(ares, bres, aload, bload, afuel, bfuel):
+
+    V = 180 * ms_per_kt
+
+    cgA, smA = calc_cg(aload, afuel)
+    cgB, smB = calc_cg(bload, bfuel)
+
+
+    a_nu = ares['Elev deflection deg'].to_numpy()
+    b_nu = bres['Elev deflection deg'].to_numpy()
+    a_nz = (ares['(n+1)g'].to_numpy() - 1 ) * 1
+    b_nz = (bres['(n+1)g'].to_numpy() - 1 ) * 1
+
+    asrt = np.argsort(a_nu)
+    bsrt = np.argsort(b_nu)
+
+    fig, ax = plt.subplots()
+
+    ax.plot(a_nz[asrt], a_nu[asrt], "o-", label='A')
+    ax.plot(b_nz[bsrt], b_nu[bsrt], "o-", label='B')
+
+    ax.set_xlabel(r'$n_z$ [g]')
+    ax.set_ylabel(r'$\nu$ [$^\circ$]')
+
+    ax.legend()
+    ax.grid()
+    fig.tight_layout()
+    fig.savefig(wdir / 'Manoeuvre_Stability_1.png', dpi=300)
+
+    A_dnu_dn = np.gradient(a_nu[asrt], a_nz[asrt])
+    B_dnu_dn = np.gradient(b_nu[bsrt], b_nz[bsrt])
+
+    fig, ax = plt.subplots()
+
+    Aymean = np.mean(A_dnu_dn)
+    Bymean = np.mean(B_dnu_dn)
+
+    ax.errorbar(cgA, Aymean, yerr=np.std(A_dnu_dn), fmt='o', label='A')
+    ax.errorbar(cgB, Bymean, yerr=np.std(B_dnu_dn), fmt='o', label='B')
+
+    x = np.linspace(20, 100, 200)
+    y = Aymean + (x - cgA) * (Bymean - Aymean) / (cgB - cgA)
+
+    ax.plot(x, y, label='Extrapolated', linestyle='--')
+
+    # calc x at y = 0
+    x0 = cgA - Aymean * (cgB - cgA) / (Bymean - Aymean)
+    x0lab = '$x_{NP}/c = '+ f'{x0:.3f}' +'$'
+    ax.vlines(x0, y.max(), y.min(), label= x0lab, linestyle='-', color='r')
+
+    ax.set_xlabel(r'$x_{cg}/c$ [-]')
+    ax.set_ylabel(r'$d\nu/dn_z$ [$^\circ$]')
+    ax.legend()
+    ax.grid()
+    fig.tight_layout()
+    fig.savefig(wdir / 'Manoeuvre_Stability_2.png', dpi=300)
+
+    a_f = ares['Stick force N'].to_numpy() #/ (0.5 * rho0 * V ** 2 * Sw)
+    b_f = bres['Stick force N'].to_numpy() #/ (0.5 * rho0 * V ** 2 * Sw)
+
+    fig, ax = plt.subplots()
+    # f vs nz
+    ax.plot(a_nz[asrt], a_f[asrt], "o-", label='A')
+    ax.plot(b_nz[bsrt], b_f[bsrt], "o-", label='B')
+
+    ax.set_xlabel(r'$n_z$ [g]')
+    ax.set_ylabel(r'$P_\eta$ [N]')
+
+    ax.legend()
+    ax.grid()
+    fig.tight_layout()
+    fig.savefig(wdir / 'Manoeuvre_Stability_3.png', dpi=300)
+
+    A_df_dn = np.gradient(a_f[asrt], a_nz[asrt])
+    B_df_dn = np.gradient(b_f[bsrt], b_nz[bsrt])
+
+    fig, ax = plt.subplots()
+
+    Aymean = np.mean(A_df_dn)
+    Bymean = np.mean(B_df_dn)
+
+    ax.errorbar(cgA, Aymean, yerr=np.std(A_df_dn), fmt='o', label='A')
+    ax.errorbar(cgB, Bymean, yerr=np.std(B_df_dn), fmt='o', label='B')
+
+    x = np.linspace(20, 260, 200)
+    y = Aymean + (x - cgA) * (Bymean - Aymean) / (cgB - cgA)
+
+    ax.plot(x, y, label='Extrapolated', linestyle='--')
+
+    # calc x at y = 0
+    x0 = cgA - Aymean * (cgB - cgA) / (Bymean - Aymean)
+    x0lab = '$x_{NP}/c = '+ f'{x0:.3f}' +'$'
+    ax.vlines(x0, y.max(), y.min(), label= x0lab, linestyle='-', color='r')
+
+    ax.set_xlabel(r'$x_{cg}/c$ [-]')
+    ax.set_ylabel(r'$dP_\eta/dn_z$ [N/g]')
+    ax.legend()
+    ax.grid()
+    fig.tight_layout()
+    fig.savefig(wdir / 'Manoeuvre_Stability_4.png', dpi=300)
+
+def plot_Lat_Directional_Static_Stability_SHSS(ares, bres, aload, bload):
+
+    fig, ax = plt.subplots()
+    a_roll = ares['Roll angle deg'].to_numpy()
+    b_roll = bres['Roll angle deg'].to_numpy()
+    a_sideslip = ares['Sideslip deg'].to_numpy()
+    b_sideslip = bres['Sideslip deg'].to_numpy()
+
+    # roll vs sideslip
+    asrt = np.argsort(a_sideslip)
+    bsrt = np.argsort(b_sideslip)
+
+    ax.plot(a_sideslip[asrt], a_roll[asrt], "o-", label='A')
+    ax.plot(b_sideslip[bsrt], b_roll[bsrt], "o-", label='B')
+
+    ax.set_xlabel(r'$\beta$ [$^\circ$]')
+    ax.set_ylabel(r'$\phi$ [$^\circ$]')
+
+    ax.legend()
+    ax.grid()
+    fig.tight_layout()
+    fig.savefig(wdir / 'Lat_Directional_Static_Stability_SHSS_1.png', dpi=300)
+
+    # plot rudder and aerilon angle against sideslip
+    fig, ax = plt.subplots()
+    a_aileron = ares['Aileron deg'].to_numpy()
+    b_aileron = bres['Aileron deg'].to_numpy()
+
+    a_rudder = ares['Rudder deg'].to_numpy()
+    b_rudder = bres['Rudder deg'].to_numpy()
+
+    ax.plot(a_sideslip[asrt], a_aileron[asrt], "o-", label='A')
+    ax.plot(b_sideslip[bsrt], b_aileron[bsrt], "o-", label='B')
+
+    ax.set_xlabel(r'$\beta$ [$^\circ$]')
+    ax.set_ylabel(r'$\delta_{ail}$ [$^\circ$]')
+
+    ax.legend()
+    ax.grid()
+
+    fig.tight_layout()
+    fig.savefig(wdir / 'Lat_Directional_Static_Stability_SHSS_2.png', dpi=300)
+
+    fig, ax = plt.subplots()
+    ax.plot(a_sideslip[asrt], a_rudder[asrt], "o-", label='A')
+    ax.plot(b_sideslip[bsrt], b_rudder[bsrt], "o-", label='B')
+
+    ax.set_xlabel(r'$\beta$ [$^\circ$]')
+    ax.set_ylabel(r'$\delta_{rud}$ [$^\circ$]')
+
+    ax.legend()
+    ax.grid()
+    fig.tight_layout()
+    fig.savefig(wdir / 'Lat_Directional_Static_Stability_SHSS_3.png', dpi=300)
+
 
 A_Longitudinal_Static_Stability_df = measurement_df.iloc[5:10, 0:3]
 A_Longitudinal_Static_Stability_fuel = measurement_df.iloc[10, 3]
@@ -180,11 +336,29 @@ B_Lat_Directional_Static_Stability_SHSS_df = measurement_df.iloc[30:37, 8:12]
 B_Lat_Directional_Static_Stability_SHSS_df.columns = ['Aileron deg', 'Roll angle deg', 'Sideslip deg', 'Rudder deg']
 
 
+"""
 plot_Longitudinal_Static_Stability(
     A_Longitudinal_Static_Stability_df, 
     B_Longitudinal_Static_Stability_df, 
     loadA, loadB, 
     A_Longitudinal_Static_Stability_fuel, 
-    B_Longitudinal_Static_Stability_fuel)
+    B_Longitudinal_Static_Stability_fuel
+    )
+
+plot_Manoeuvre_Stability(
+    A_Longitudinal_Manoeuvre_Stability_df, 
+    B_Longitudinal_Manoeuvre_Stability_df, 
+    loadA, loadB, 
+    A_Longitudinal_Manoeuvre_Stability_fuel, 
+    B_Longitudinal_Manoeuvre_Stability_fuel
+    )
+"""
+
+plot_Lat_Directional_Static_Stability_SHSS(
+    A_Lat_Directional_Static_Stability_SHSS_df, 
+    B_Lat_Directional_Static_Stability_SHSS_df, 
+    loadA, loadB
+    )
+
 
 plt.show()
