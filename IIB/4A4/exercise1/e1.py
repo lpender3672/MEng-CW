@@ -81,7 +81,7 @@ def plot_Longitudinal_Static_Stability(ares, bres, aload, bload, afuel, bfuel):
     ax.plot(aCw[asrt], aelev[asrt], label='A')
     ax.plot(bCw[bsrt], belev[bsrt], label='B')
 
-    ax.set_xlabel('$C_w$')
+    ax.set_xlabel('$C_w$ [-]')
     ax.set_ylabel('$\eta$ [$^\circ$]')
     ax.legend()
 
@@ -109,13 +109,56 @@ def plot_Longitudinal_Static_Stability(ares, bres, aload, bload, afuel, bfuel):
     x0lab = '$x_{NP}/c = '+ f'{x0:.3f}' +'$'
     ax.vlines(x0, y.max(), y.min(), label= x0lab, linestyle='-', color='r')
 
-    ax.set_xlabel('$x_{cg}/c$')
-    ax.set_ylabel('$d\eta/dC_w$')
+    ax.set_xlabel(r'$x_{cg}/c$ [-]')
+    ax.set_ylabel(r'$d\eta/dC_w$ [$^\circ$]')
 
     ax.legend()
     ax.grid()
     fig.tight_layout()
     fig.savefig(wdir / 'Longitudinal_Static_Stability_2.png', dpi=300)
+
+    abeta = ares['Elev tab angle deg'].to_numpy()
+    bbeta = bres['Elev tab angle deg'].to_numpy()
+
+    fig, ax = plt.subplots()
+    ax.plot(aCw[asrt], abeta[asrt], label='A')
+    ax.plot(bCw[bsrt], bbeta[bsrt], label='B')
+
+    ax.set_xlabel(r'$C_w$ [-]')
+    ax.set_ylabel(r'$\beta$ [$^\circ$]')
+    ax.legend()
+
+    ax.grid()
+    fig.tight_layout()
+    fig.savefig(wdir / 'Longitudinal_Static_Stability_3.png', dpi=300)
+
+    A_dbeta_dCw = np.gradient(abeta[asrt], aCw[asrt])
+    B_dbeta_dCw = np.gradient(bbeta[bsrt], bCw[bsrt])
+
+    fig, ax = plt.subplots()
+
+    Aymean = np.mean(A_dbeta_dCw)
+    Bymean = np.mean(B_dbeta_dCw)
+
+    ax.errorbar(cgA, Aymean, yerr=np.std(A_dbeta_dCw), fmt='o', label='A')
+    ax.errorbar(cgB, Bymean, yerr=np.std(B_dbeta_dCw), fmt='o', label='B')
+
+    x = np.linspace(20, 60, 100)
+    y = Aymean + (x - cgA) * (Bymean - Aymean) / (cgB - cgA)
+    ax.plot(x, y, label='Extrapolated', linestyle='--')
+
+    # calc x at y = 0
+    x0 = cgA - Aymean * (cgB - cgA) / (Bymean - Aymean)
+    x0lab = '$x_{NP}/c = '+ f'{x0:.3f}' +'$'
+    ax.vlines(x0, y.max(), y.min(), label= x0lab, linestyle='-', color='r')
+
+    ax.set_xlabel(r'$x_{cg}/c$ [-]')
+    ax.set_ylabel(r'$d\beta/dC_w$ [$^\circ$]')
+
+    ax.legend()
+    ax.grid()
+    fig.tight_layout()
+    fig.savefig(wdir / 'Longitudinal_Static_Stability_4.png', dpi=300)
 
 
 A_Longitudinal_Static_Stability_df = measurement_df.iloc[5:10, 0:3]
