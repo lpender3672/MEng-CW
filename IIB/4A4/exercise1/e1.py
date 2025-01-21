@@ -81,8 +81,8 @@ def plot_Longitudinal_Static_Stability(ares, bres, aload, bload, afuel, bfuel):
     ax.plot(aCw[asrt], aelev[asrt], "o-", label='A')
     ax.plot(bCw[bsrt], belev[bsrt], "o-", label='B')
 
-    ax.set_xlabel('$C_w$ [-]')
-    ax.set_ylabel('$\eta$ [$^\circ$]')
+    ax.set_xlabel(r'Weight coefficient $C_w$ [-]')
+    ax.set_ylabel(r'Elevator angle $\eta$ [$^\circ$]')
     ax.legend()
 
     ax.grid()
@@ -124,8 +124,8 @@ def plot_Longitudinal_Static_Stability(ares, bres, aload, bload, afuel, bfuel):
     ax.plot(aCw[asrt], abeta[asrt], "o-", label='A')
     ax.plot(bCw[bsrt], bbeta[bsrt], "o-", label='B')
 
-    ax.set_xlabel(r'$C_w$ [-]')
-    ax.set_ylabel(r'$\beta$ [$^\circ$]')
+    ax.set_xlabel(r'Weight coefficient $C_w$ [-]')
+    ax.set_ylabel(r'Trim tab deflection $\beta$ [$^\circ$]')
     ax.legend()
 
     ax.grid()
@@ -181,8 +181,8 @@ def plot_Manoeuvre_Stability(ares, bres, aload, bload, afuel, bfuel):
     ax.plot(a_nz[asrt], a_nu[asrt], "o-", label='A')
     ax.plot(b_nz[bsrt], b_nu[bsrt], "o-", label='B')
 
-    ax.set_xlabel(r'$n_z$ [g]')
-    ax.set_ylabel(r'$\nu$ [$^\circ$]')
+    ax.set_xlabel(r'Normal acceleration $n_z$ [g]')
+    ax.set_ylabel(r'Elevator deflection $\eta$ [$^\circ$]')
 
     ax.legend()
     ax.grid()
@@ -211,7 +211,7 @@ def plot_Manoeuvre_Stability(ares, bres, aload, bload, afuel, bfuel):
     ax.vlines(x0, y.max(), y.min(), label= x0lab, linestyle='-', color='r')
 
     ax.set_xlabel(r'$x_{cg}/c$ [-]')
-    ax.set_ylabel(r'$d\nu/dn_z$ [$^\circ$]')
+    ax.set_ylabel(r'$d\eta/dn_z$ [$^\circ$]')
     ax.legend()
     ax.grid()
     fig.tight_layout()
@@ -225,8 +225,8 @@ def plot_Manoeuvre_Stability(ares, bres, aload, bload, afuel, bfuel):
     ax.plot(a_nz[asrt], a_f[asrt], "o-", label='A')
     ax.plot(b_nz[bsrt], b_f[bsrt], "o-", label='B')
 
-    ax.set_xlabel(r'$n_z$ [g]')
-    ax.set_ylabel(r'$P_\eta$ [N]')
+    ax.set_xlabel(r'Normal acceleration $n_z$ [g]')
+    ax.set_ylabel(r'Stick force $P_\eta$ [N]')
 
     ax.legend()
     ax.grid()
@@ -276,8 +276,8 @@ def plot_Lat_Directional_Static_Stability_SHSS(ares, bres, aload, bload):
     ax.plot(a_sideslip[asrt], a_roll[asrt], "o-", label='A')
     ax.plot(b_sideslip[bsrt], b_roll[bsrt], "o-", label='B')
 
-    ax.set_xlabel(r'$\beta$ [$^\circ$]')
-    ax.set_ylabel(r'$\phi$ [$^\circ$]')
+    ax.set_xlabel(r'Sideslip angle $\beta$ [$^\circ$]')
+    ax.set_ylabel(r'Angle of bank $\phi$ [$^\circ$]')
 
     ax.legend()
     ax.grid()
@@ -295,8 +295,8 @@ def plot_Lat_Directional_Static_Stability_SHSS(ares, bres, aload, bload):
     ax.plot(a_sideslip[asrt], a_aileron[asrt], "o-", label='A')
     ax.plot(b_sideslip[bsrt], b_aileron[bsrt], "o-", label='B')
 
-    ax.set_xlabel(r'$\beta$ [$^\circ$]')
-    ax.set_ylabel(r'$\delta_{ail}$ [$^\circ$]')
+    ax.set_xlabel(r' Sideslip angle $\beta$ [$^\circ$]')
+    ax.set_ylabel(r' Aileron deflection $\delta_{ail}$ [$^\circ$]')
 
     ax.legend()
     ax.grid()
@@ -308,8 +308,8 @@ def plot_Lat_Directional_Static_Stability_SHSS(ares, bres, aload, bload):
     ax.plot(a_sideslip[asrt], a_rudder[asrt], "o-", label='A')
     ax.plot(b_sideslip[bsrt], b_rudder[bsrt], "o-", label='B')
 
-    ax.set_xlabel(r'$\beta$ [$^\circ$]')
-    ax.set_ylabel(r'$\delta_{rud}$ [$^\circ$]')
+    ax.set_xlabel(r' Sideslip angle $\beta$ [$^\circ$]')
+    ax.set_ylabel(r' Rudder deflection $\delta_{rud}$ [$^\circ$]')
 
     ax.legend()
     ax.grid()
@@ -317,48 +317,51 @@ def plot_Lat_Directional_Static_Stability_SHSS(ares, bres, aload, bload):
     fig.savefig(wdir / 'Lat_Directional_Static_Stability_SHSS_3.png', dpi=300)
 
 
-A_Longitudinal_Static_Stability_df = measurement_df.iloc[5:10, 0:3]
-A_Longitudinal_Static_Stability_fuel = measurement_df.iloc[10, 3]
-A_Longitudinal_Static_Stability_df.columns = ['Ve kt EAS', 'Elev deflection deg', 'Elev tab angle deg']
-A_Longitudinal_Manoeuvre_Stability_df = measurement_df.iloc[18:23, 0:3]
-A_Longitudinal_Manoeuvre_Stability_fuel = measurement_df.iloc[23, 3]
-A_Longitudinal_Manoeuvre_Stability_df.columns = ['Elev deflection deg', 'Stick force N', '(n+1)g']
-A_Lat_Directional_Static_Stability_SHSS_df = measurement_df.iloc[30:37, 0:4]
-A_Lat_Directional_Static_Stability_SHSS_df.columns = ['Aileron deg', 'Roll angle deg', 'Sideslip deg', 'Rudder deg']
+def main():
+        
+    A_Longitudinal_Static_Stability_df = measurement_df.iloc[5:10, 0:3]
+    A_Longitudinal_Static_Stability_fuel = measurement_df.iloc[10, 3]
+    A_Longitudinal_Static_Stability_df.columns = ['Ve kt EAS', 'Elev deflection deg', 'Elev tab angle deg']
+    A_Longitudinal_Manoeuvre_Stability_df = measurement_df.iloc[18:23, 0:3]
+    A_Longitudinal_Manoeuvre_Stability_fuel = measurement_df.iloc[23, 3]
+    A_Longitudinal_Manoeuvre_Stability_df.columns = ['Elev deflection deg', 'Stick force N', '(n+1)g']
+    A_Lat_Directional_Static_Stability_SHSS_df = measurement_df.iloc[30:37, 0:4]
+    A_Lat_Directional_Static_Stability_SHSS_df.columns = ['Aileron deg', 'Roll angle deg', 'Sideslip deg', 'Rudder deg']
 
-B_Longitudinal_Static_Stability_df = measurement_df.iloc[5:10, 8:11]
-B_Longitudinal_Static_Stability_fuel = measurement_df.iloc[10, 11]
-B_Longitudinal_Static_Stability_df.columns = ['Ve kt EAS', 'Elev deflection deg', 'Elev tab angle deg']
-B_Longitudinal_Manoeuvre_Stability_df = measurement_df.iloc[18:23, 8:11]
-B_Longitudinal_Manoeuvre_Stability_fuel = measurement_df.iloc[23, 11]
-B_Longitudinal_Manoeuvre_Stability_df.columns = ['Elev deflection deg', 'Stick force N', '(n+1)g']
-B_Lat_Directional_Static_Stability_SHSS_df = measurement_df.iloc[30:37, 8:12]
-B_Lat_Directional_Static_Stability_SHSS_df.columns = ['Aileron deg', 'Roll angle deg', 'Sideslip deg', 'Rudder deg']
-
-
-"""
-plot_Longitudinal_Static_Stability(
-    A_Longitudinal_Static_Stability_df, 
-    B_Longitudinal_Static_Stability_df, 
-    loadA, loadB, 
-    A_Longitudinal_Static_Stability_fuel, 
-    B_Longitudinal_Static_Stability_fuel
-    )
-
-plot_Manoeuvre_Stability(
-    A_Longitudinal_Manoeuvre_Stability_df, 
-    B_Longitudinal_Manoeuvre_Stability_df, 
-    loadA, loadB, 
-    A_Longitudinal_Manoeuvre_Stability_fuel, 
-    B_Longitudinal_Manoeuvre_Stability_fuel
-    )
-"""
-
-plot_Lat_Directional_Static_Stability_SHSS(
-    A_Lat_Directional_Static_Stability_SHSS_df, 
-    B_Lat_Directional_Static_Stability_SHSS_df, 
-    loadA, loadB
-    )
+    B_Longitudinal_Static_Stability_df = measurement_df.iloc[5:10, 8:11]
+    B_Longitudinal_Static_Stability_fuel = measurement_df.iloc[10, 11]
+    B_Longitudinal_Static_Stability_df.columns = ['Ve kt EAS', 'Elev deflection deg', 'Elev tab angle deg']
+    B_Longitudinal_Manoeuvre_Stability_df = measurement_df.iloc[18:23, 8:11]
+    B_Longitudinal_Manoeuvre_Stability_fuel = measurement_df.iloc[23, 11]
+    B_Longitudinal_Manoeuvre_Stability_df.columns = ['Elev deflection deg', 'Stick force N', '(n+1)g']
+    B_Lat_Directional_Static_Stability_SHSS_df = measurement_df.iloc[30:37, 8:12]
+    B_Lat_Directional_Static_Stability_SHSS_df.columns = ['Aileron deg', 'Roll angle deg', 'Sideslip deg', 'Rudder deg']
 
 
-plt.show()
+    plot_Longitudinal_Static_Stability(
+        A_Longitudinal_Static_Stability_df, 
+        B_Longitudinal_Static_Stability_df, 
+        loadA, loadB, 
+        A_Longitudinal_Static_Stability_fuel, 
+        B_Longitudinal_Static_Stability_fuel
+        )
+
+    plot_Manoeuvre_Stability(
+        A_Longitudinal_Manoeuvre_Stability_df, 
+        B_Longitudinal_Manoeuvre_Stability_df, 
+        loadA, loadB, 
+        A_Longitudinal_Manoeuvre_Stability_fuel, 
+        B_Longitudinal_Manoeuvre_Stability_fuel
+        )
+
+    plot_Lat_Directional_Static_Stability_SHSS(
+        A_Lat_Directional_Static_Stability_SHSS_df, 
+        B_Lat_Directional_Static_Stability_SHSS_df, 
+        loadA, loadB
+        )
+
+
+    plt.show()
+
+if __name__ == "__main__":
+    main()

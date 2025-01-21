@@ -71,10 +71,21 @@
 \date{January 2025}
 \maketitle
 
+\section{Introduction}
+
+The importance of the neutral point to the aircraft stability means that
+it needs to be measured in flight tests.
+However this cannot be done directly ...
 
 \section{Results}
 
 \subsection{Longitudinal Static Stability}
+\subsubsection{Stick fixed neutral point}
+
+Definition of the neutral point
+\begin{equation}
+    \frac{\partial C_w}{\partial \alpha} = - \frac{x_n}{c} \frac{dC_L}{d \alpha}
+\end{equation}
 
 \begin{figure}[H]
     \centering
@@ -88,6 +99,8 @@
     \caption{}
     \label{fig:Longitudinal_Static_Stability_2}
 \end{figure}
+
+\subsubsection{Stick free neutral point}
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.8\textwidth]{Longitudinal_Static_Stability_3.png}
@@ -102,7 +115,7 @@
 \end{figure}
 
 \subsection{Manoeuvre Stability}
-
+\subsubsection{Stick fixed manoeuvre point}
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.8\textwidth]{Manoeuvre_Stability_1.png}
@@ -115,6 +128,7 @@
     \caption{}
     \label{fig:Manoeuvre_Stability_2}
 \end{figure}
+\subsubsection{Stick free manoeuvre point}
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.8\textwidth]{Manoeuvre_Stability_3.png}
@@ -137,6 +151,7 @@
     \label{fig:Lat_Directional_Static_Stability_SHSS_1}
 \end{figure}
 
+\subsubsection{Stick fixed lateral directional stability}
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.8\textwidth]{Lat_Directional_Static_Stability_SHSS_2.png}
@@ -155,10 +170,9 @@
 \begin{thebibliography}{9}
 
   \bibitem{handout}
-  J. V. Taylor
-  \emph{Turbine Cascade Aerodynamics Handout}
-  University of Cambridge,
-  October 2024.
+  S. Place, A. Cooke
+  \emph{Flight Experimental Methods: Course Handbook}
+  Cranfield University,
 
 \end{thebibliography}
 
