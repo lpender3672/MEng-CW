@@ -63,13 +63,39 @@ def calc_cg(load_df, fuel_mass = 0):
 
     return cg, sm
 
+def print_cg_fuel_table(cgA, smA, Afuel, cgB, smB, Bfuel):
+    # Create a pandas DataFrame
+    data = {
+        "Fuel Mass (kg)": [Afuel, Bfuel],
+        "Center of Gravity (CG)": [cgA, cgB],
+        "System Mass (kg)": [smA, smB]
+    }
+
+    table = pd.DataFrame(data, index=["A", "B"])
+    table = table.round({
+        "Fuel Mass (kg)": 1,
+        "Center of Gravity (CG)": 3,
+        "System Mass (kg)": 1
+    })
+
+    print(table.to_latex(float_format="%.3f"))
+
 def plot_Longitudinal_Static_Stability(ares, bres, aload, bload, afuel, bfuel):
     
     cgA, smA = calc_cg(aload, afuel)
     cgB, smB = calc_cg(bload, bfuel)
 
+    #print_cg_fuel_table(cgA, smA, afuel, cgB, smB, bfuel)
+
+
     aCw = 2 * smA * g / (rho0 * (ares['Ve kt EAS'].to_numpy() * ms_per_kt) ** 2 * Sw )
     bCw = 2 * smB * g / (rho0 * (bres['Ve kt EAS'].to_numpy() * ms_per_kt) ** 2 * Sw )
+
+    ares['Weight Coefficient -'] = aCw
+    bres['Weight Coefficient -'] = bCw
+
+    #print(ares.to_latex(float_format="%.3f"))
+    #print(bres.to_latex(float_format="%.3f"))
 
     fig, ax = plt.subplots()
     aelev = ares['Elev deflection deg'].to_numpy()
@@ -167,11 +193,20 @@ def plot_Manoeuvre_Stability(ares, bres, aload, bload, afuel, bfuel):
     cgA, smA = calc_cg(aload, afuel)
     cgB, smB = calc_cg(bload, bfuel)
 
+    #print_cg_fuel_table(cgA, smA, afuel, cgB, smB, bfuel)
 
     a_nu = ares['Elev deflection deg'].to_numpy()
     b_nu = bres['Elev deflection deg'].to_numpy()
     a_nz = (ares['(n+1)g'].to_numpy() - 1 ) * 1
     b_nz = (bres['(n+1)g'].to_numpy() - 1 ) * 1
+
+    ares['Normal acceleration g'] = a_nz
+    bres['Normal acceleration g'] = b_nz
+
+
+    #print(ares.to_latex(float_format="%.3f"))
+    #print(bres.to_latex(float_format="%.3f"))
+
 
     asrt = np.argsort(a_nu)
     bsrt = np.argsort(b_nu)
@@ -263,6 +298,9 @@ def plot_Manoeuvre_Stability(ares, bres, aload, bload, afuel, bfuel):
 
 def plot_Lat_Directional_Static_Stability_SHSS(ares, bres, aload, bload):
 
+    print(ares.to_latex(float_format="%.3f"))
+    print(bres.to_latex(float_format="%.3f"))
+
     fig, ax = plt.subplots()
     a_roll = ares['Roll angle deg'].to_numpy()
     b_roll = bres['Roll angle deg'].to_numpy()
@@ -336,7 +374,6 @@ def main():
     B_Longitudinal_Manoeuvre_Stability_df.columns = ['Elev deflection deg', 'Stick force N', '(n+1)g']
     B_Lat_Directional_Static_Stability_SHSS_df = measurement_df.iloc[30:37, 8:12]
     B_Lat_Directional_Static_Stability_SHSS_df.columns = ['Aileron deg', 'Roll angle deg', 'Sideslip deg', 'Rudder deg']
-
 
     plot_Longitudinal_Static_Stability(
         A_Longitudinal_Static_Stability_df, 
