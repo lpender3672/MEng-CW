@@ -1,0 +1,76 @@
+
+clear;
+
+
+SPPO = load("data_2024/SPPO.mat");
+Spiral = load("data_2024/Spiral.mat");
+RollSubs = load("data_2024/Roll-Subs.mat");
+Phugoid = load("data_2024/Phugoid.mat");
+DutchRoll = load("data_2024/Dutch-Roll.mat");
+
+
+figure;
+hold on;
+plot(SPPO.Time, SPPO.Ptchrt);
+plot(SPPO.Time, SPPO.Elevator);
+plot(SPPO.Time, SPPO.Alpha);
+xlabel('Time [s]');
+ylabel('');
+legend('Pitch rate [\circ/s]', 'Elevator angle [\circ]', 'AoA [\circ]')
+hold off;
+grid on;
+print('figures\SPO', '-dpng', '-r600');
+
+figure;
+hold on;
+plot(DutchRoll.Time, DutchRoll.Rollang);
+plot(DutchRoll.Time, DutchRoll.Rudder);
+plot(DutchRoll.Time, DutchRoll.Rollrt);
+xlabel('Time [s]');
+ylabel('');
+legend('Roll Angle [\circ]', 'Rudder angle [\circ]', 'Roll rate [\circ/s]')
+hold off;
+grid on;
+print('figures\DutchRoll', '-dpng', '-r600');
+
+figure;
+hold on;
+plot(Phugoid.Time, Phugoid.Ptchang);
+plot(Phugoid.Time, Phugoid.Elevator);
+xlabel('Time [s]');
+ylabel('');
+legend('Pitch angle [\circ]', 'Elevator angle [\circ]');
+hold off;
+grid on;
+
+print('figures\Phugoid', '-dpng', '-r600');
+
+
+figure;
+hold on;
+plot(Spiral.Time, Spiral.Rollang);
+plot(Spiral.Time, Spiral.Aileron);
+plot(Spiral.Time, Spiral.Rollrt);
+
+xlabel('Time [s]');
+ylabel('');
+legend('Roll angle [\circ]', 'Aileron angle [\circ]','Roll rate [\circ/s]');
+hold off;
+grid on;
+
+print('figures\Spiral', '-dpng', '-r600');
+
+
+figure;
+hold on;
+plot(Spiral.Time, Spiral.Rollang);
+
+xlabel('Time [s]');
+ylabel('');
+legend('Roll angle [\circ]', 'Aileron angle [\circ]','Roll rate [\circ/s]');
+hold off;
+grid on;
+
+print('figures\Spiral', '-dpng', '-r600');
+
+

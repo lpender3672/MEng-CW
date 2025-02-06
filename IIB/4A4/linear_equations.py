@@ -89,6 +89,24 @@ def fourth_order_longitudinal():
     check = A * state_vector + B * input_vector
     assert (check - state_vector_dot).simplify() is None
 
+    print(sp.latex(A))
+    print(sp.latex(state_vector))
+    print(sp.latex(B))
+    print(sp.latex(input_vector))
+
+    # find eigenvalues of A
+    eigvals = A.eigenvals()
+    for key, item in eigvals.items():
+        try:
+            print(key.simplify())
+        except:
+            pass
+        try:
+            print(item.simplify())
+        except:
+            pass
+
+
     return A, B, C
 
 def example_substitution_to_ss(A, B, C):
