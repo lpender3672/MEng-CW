@@ -53,9 +53,26 @@ plot(Spiral.Time, Spiral.Rollang);
 plot(Spiral.Time, Spiral.Aileron);
 plot(Spiral.Time, Spiral.Rollrt);
 
+window = 10 < RollSubs.Time & RollSubs.Time < 30;
+SPw_time = Spiral.Time(window);
+SPw_offset = SPw_time(1);
+SPw_time = SPw_time - SPw_offset;
+SPw_rollang = Spiral.Rollang(window);
+
+fitType = fittype('a + b * exp(c * x)', 'independent', 'x', 'coefficients', {'a', 'b', 'c'});
+startPoints = [1, 1, 0.1];
+[spiralFit, spiral_gof] = fit(SPw_time, SPw_rollang, fitType, 'StartPoint', startPoints);
+
+a = spiralFit.a;
+b = spiralFit.b;
+c = spiralFit.c;
+equationText = sprintf('y = %.2f + %.2f \\cdot exp(%.2f \\cdot (t-%.2f))', a, b, c, SPw_offset);
+plot(Spiral.Time, spiralFit(Spiral.Time - SPw_offset));
+ylim([-10,70]);
+
 xlabel('Time [s]');
 ylabel('');
-legend('Roll angle [\circ]', 'Aileron angle [\circ]','Roll rate [\circ/s]');
+legend('Roll angle [\circ]', 'Aileron angle [\circ]','Roll rate [\circ/s]', equationText, 'Location', 'northwest');
 hold off;
 grid on;
 
@@ -81,9 +98,28 @@ plot(RollSubs.Time, RollSubs.Rollang);
 plot(RollSubs.Time, RollSubs.Aileron);
 plot(RollSubs.Time, RollSubs.Rollrt);
 
+
+window = 10.2 < RollSubs.Time & RollSubs.Time < 12;
+RSw_time = RollSubs.Time(window);
+RSw_offset = RSw_time(1);
+RSw_time = RSw_time - RSw_offset;
+RSw_rollang = RollSubs.Rollang(window);
+RSw_rollrt = RollSubs.Rollrt(window);
+
+fitType = fittype('a - b * exp(-c * x)', 'independent', 'x', 'coefficients', {'a', 'b', 'c'});
+[rollsFit, rolls_gof] = fit(RSw_time, RSw_rollang, fitType, 'StartPoint', startPoints);
+
+a = rollsFit.a;
+b = rollsFit.b;
+c = rollsFit.c;
+equationText = sprintf('y = %.2f + %.2f \\cdot exp(%.2f \\cdot (t-%.2f))', a, b, c, RSw_offset);
+
+plot(RollSubs.Time, rollsFit(RollSubs.Time - RSw_offset));
+ylim([-40,35]);
+
 xlabel('Time [s]');
 ylabel('');
-legend('Roll angle [\circ]', 'Aileron angle [\circ]','Roll rate [\circ/s]');
+legend('Roll angle [\circ]', 'Aileron angle [\circ]','Roll rate [\circ/s]', equationText, 'Location', 'southwest');
 hold off;
 grid on;
    
@@ -91,27 +127,20 @@ print('figures\RollSubs_window', '-dpng', '-r600');
 
 %% Roll subsiding window
 
-window = 10 < RollSubs.Time & RollSubs.Time < 13;
-RSw_time = RollSubs.Time(window);
-RSw_rollang = RollSubs.Rollang(window);
-RSw_rollrt = RollSubs.Rollrt(window);
-
 figure;
 hold on;
 plot(RSw_time, RSw_rollang);
+plot(rollsFit); 
 xlabel('Time [s]');
 ylabel('Roll angle [\circ]');
 hold off;
 grid on;
+
+legend('Raw data', equationText);
  
 print('figures\RollSubs_window', '-dpng', '-r600');
 
 %% Roll subsiding window log
-
-window = 10 < RollSubs.Time & RollSubs.Time < 13;
-RSw_time = RollSubs.Time(window);
-RSw_rollang = RollSubs.Rollang(window);
-RSw_rollrt = RollSubs.Rollrt(window);
     
 figure;
 hold on;
