@@ -123,7 +123,7 @@ legend('Roll angle [\circ]', 'Aileron angle [\circ]','Roll rate [\circ/s]', equa
 hold off;
 grid on;
    
-print('figures\RollSubs_window', '-dpng', '-r600');
+print('figures\RollSubs', '-dpng', '-r600');
 
 %% Roll subsiding window
 
