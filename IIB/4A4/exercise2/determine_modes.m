@@ -59,14 +59,14 @@ SPw_offset = SPw_time(1);
 SPw_time = SPw_time - SPw_offset;
 SPw_rollang = Spiral.Rollang(window);
 
-fitType = fittype('a + b * exp(c * x)', 'independent', 'x', 'coefficients', {'a', 'b', 'c'});
-startPoints = [1, 1, 0.1];
+fitType = fittype('b * exp(c * x)', 'independent', 'x', 'coefficients', {'b', 'c'});
+startPoints = [1, 0.1];
 [spiralFit, spiral_gof] = fit(SPw_time, SPw_rollang, fitType, 'StartPoint', startPoints);
 
-a = spiralFit.a;
+%a = spiralFit.a;
 b = spiralFit.b;
 c = spiralFit.c;
-equationText = sprintf('y = %.2f + %.2f \\cdot exp(%.2f \\cdot (t-%.2f))', a, b, c, SPw_offset);
+equationText = sprintf('y = %.2f \\cdot exp(%.3f \\cdot (t-%.2f))', b, c, SPw_offset);
 plot(Spiral.Time, spiralFit(Spiral.Time - SPw_offset));
 ylim([-10,70]);
 
@@ -112,7 +112,7 @@ fitType = fittype('a - b * exp(-c * x)', 'independent', 'x', 'coefficients', {'a
 a = rollsFit.a;
 b = rollsFit.b;
 c = rollsFit.c;
-equationText = sprintf('y = %.2f + %.2f \\cdot exp(%.2f \\cdot (t-%.2f))', a, b, c, RSw_offset);
+equationText = sprintf('y = %.2f + %.2f \\cdot exp(%.3f \\cdot (t-%.2f))', a, b, c, RSw_offset);
 
 plot(RollSubs.Time, rollsFit(RollSubs.Time - RSw_offset));
 ylim([-40,35]);
