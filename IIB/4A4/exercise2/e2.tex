@@ -20,7 +20,6 @@
 \usepackage{color, colortbl}
 \usepackage{textgreek}
 \usepackage{mathrsfs}
-\usepackage{savetrees}
 \usepackage{booktabs}
 
 \usepackage{titlesec}
@@ -110,6 +109,24 @@ Which is in the state space form $\dot{\mathbf{x}} = \mathbf{Ax+Bu}$
   \label{fig:spo}
 \end{figure}
 
+This short period oscillation is highly damped and so is harder to obtain accurate modal characteristics.
+The unforced part of the response, shown anotated in figure \ref{fig:spo} is matched to a decaying sine-wave shown in equation \ref{eq:spoeq}.
+\begin{equation}
+  y = Ae^{-\zeta\omega_{n}(t - t_{0})}\sin(\omega_{d}(t - t_{0})) + B
+\end{equation}
+Where
+\begin{equation}
+  \omega_{d} = \omega_{n}\sqrt{1 - \zeta^{2}}
+\end{equation}
+From the graph $t_0 = 1.625$, $B=-0.54$ and $\omega_d = 2\pi/1.56 = 4.03$.
+The damping ratio is then a function of the phase of the first peak, $\psi_m = 0.56\omega_d$.
+\begin{equation}
+  \tan(\psi_m) = \frac{\sqrt(1-\zeta^2)}{\zeta}
+\end{equation}
+Rearranging and taking positive root gives $\zeta= 0.77$.
+Then using the amplitude $y(t=t_0 + 0.56) = -3.47$ we can solve for $A$.
+
+
 \begin{figure}[H]
   \centering
   \includegraphics[width=0.8\textwidth]{figures/Spiral.png}
@@ -126,7 +143,7 @@ The region of interest was chosen for its little control input and small deviati
   \label{fig:spiral_log}
 \end{figure}
 
-Manual curve fitting was attempted by plotting the $\log(r - r_0)$ against $t$ to obtain the time constant,
+Manual curve fitting was attempted by plotting $\log(\texttt{Rollang} - \texttt{Rollang}(1))$ against $\texttt{Time}$ to obtain the time constant,
 This however was difficult because...
 
 
