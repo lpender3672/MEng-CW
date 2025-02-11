@@ -95,12 +95,25 @@ Which is in the state space form $\dot{\mathbf{x}} = \mathbf{Ax+Bu}$
   \label{fig:phugoid}
 \end{figure}
 
+The transient peak ratios calculated from figure \ref{fig:dutchroll} are 0.812, 0.841.
+This gives an average of 0.827, which using figure \ref{fig:tpr_to_zeta}, corresponds to a damping ratio of 0.06.
+The average period is 51.42 which is used to find the natural frequency using equation \ref{eq:tpr_freq}.
+\begin{equation}
+  \omega_n = \frac{2 \pi}{T\sqrt{1 - \zeta^2}}
+  \label{eq:tpr_freq}
+\end{equation}
+
 \begin{figure}[H]
   \centering
   \includegraphics[width=0.8\textwidth]{figures/anDutchRoll.jpg}
   \caption{}
   \label{fig:dutchroll}
 \end{figure}
+
+The transient peak ratios calculated from figure \ref{fig:dutchroll} are 0.719, 0.648, 0.542.
+This gives an average of 0.695, corresponding to a damping ratio of $\zeta = 0.12$.
+The natural frequency is then found using the equation \ref{eq:tpr_freq} with $T=4.16$ from figure \ref{fig:dutchroll}
+This is then calculated to be $\omega_n = 1.52$ rad/s
 
 \begin{figure}[H]
   \centering
@@ -113,19 +126,19 @@ This short period oscillation is highly damped and so is harder to obtain accura
 The unforced part of the response, shown anotated in figure \ref{fig:spo} is matched to a decaying sine-wave shown in equation \ref{eq:spoeq}.
 \begin{equation}
   y = Ae^{-\zeta\omega_{n}(t - t_{0})}\sin(\omega_{d}(t - t_{0})) + B
+  \label{eq:spoeq}
 \end{equation}
 Where
 \begin{equation}
   \omega_{d} = \omega_{n}\sqrt{1 - \zeta^{2}}
 \end{equation}
-From the graph $t_0 = 1.625$, $B=-0.54$ and $\omega_d = 2\pi/1.56 = 4.03$.
+From the graph $t_0 = 1.625$, $B=-0.54$ and $\omega_d = \pi/1.56 = 2.014$.
 The damping ratio is then a function of the phase of the first peak, $\psi_m = 0.56\omega_d$.
 \begin{equation}
-  \tan(\psi_m) = \frac{\sqrt(1-\zeta^2)}{\zeta}
+  \tan(\psi_m) = \frac{\sqrt{1-\zeta^2}}{\zeta}
 \end{equation}
-Rearranging and taking positive root gives $\zeta= 0.77$.
-Then using the amplitude $y(t=t_0 + 0.56) = -3.47$ we can solve for $A$.
-
+Rearranging and taking positive root gives $\zeta= 0.4286$.
+Then using the amplitude $y(t=t_0 + 0.56) = -3.47$ we could solve for $A$ but this isnt required.
 
 \begin{figure}[H]
   \centering
@@ -146,6 +159,24 @@ The region of interest was chosen for its little control input and small deviati
 Manual curve fitting was attempted by plotting $\log(\texttt{Rollang} - \texttt{Rollang}(1))$ against $\texttt{Time}$ to obtain the time constant,
 This however was difficult because...
 
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\textwidth]{figures/RollSubs.png}
+  \caption{}
+  \label{fig:rollsubs}
+\end{figure}
+
+Oscillatory modes
+
+
+\section{Appendix}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.6\textwidth]{figures/tpr_zeta.png}
+  \caption{Damping ratio from transient peak ratio (TPR) \cite{?}}
+  \label{fig:tpr_to_zeta}
+\end{figure}
 
 \begin{thebibliography}{9}
 

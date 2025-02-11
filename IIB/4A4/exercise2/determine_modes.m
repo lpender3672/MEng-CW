@@ -107,6 +107,7 @@ RSw_rollang = RollSubs.Rollang(window);
 RSw_rollrt = RollSubs.Rollrt(window);
 
 fitType = fittype('a - b * exp(-c * x)', 'independent', 'x', 'coefficients', {'a', 'b', 'c'});
+startPoints = [1, 1, 0.1];
 [rollsFit, rolls_gof] = fit(RSw_time, RSw_rollang, fitType, 'StartPoint', startPoints);
 
 a = rollsFit.a;
