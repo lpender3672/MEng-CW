@@ -1,0 +1,156 @@
+\documentclass{article}
+
+\usepackage[utf8]{inputenc}
+
+\usepackage{amsmath, bm}
+\usepackage{graphicx}
+\usepackage{amssymb}
+\usepackage{float}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{hyperref}
+\usepackage{tikz}
+\usepackage{pgfgantt}
+\usepackage{layout}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{color, colortbl}
+\usepackage{textgreek}
+\usepackage{mathrsfs}
+\usepackage{savetrees}
+
+\usetikzlibrary{calc}
+\usetikzlibrary{angles,quotes} % for pic
+\usetikzlibrary{patterns,snakes}
+\usetikzlibrary{arrows}
+\usetikzlibrary{shapes.geometric, arrows}
+\tikzset{>=latex} % for LaTeX arrow head
+
+\setlength{\parskip}{\baselineskip}%
+\setlength{\parindent}{0pt}%
+\linespread{0.9}
+
+
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2
+}
+\tikzset{
+    cg/.style={
+        draw,
+        circle,
+        thick,
+        minimum size=0.2cm, % Adjust the size of the circle
+        inner sep=0,      % Remove extra padding
+        append after command={
+            \pgfextra{
+                \draw[thick] (\tikzlastnode.south) -- (\tikzlastnode.north);
+                \draw[thick] (\tikzlastnode.west) -- (\tikzlastnode.east);
+            }
+        }
+    }
+}
+
+\lstset{style=mystyle}
+
+\tikzstyle{startstop} = [rectangle, rounded corners, minimum width=3cm, minimum height=1cm,text centered, draw=black, fill=red!30]
+\tikzstyle{process} = [rectangle, minimum width=3cm, minimum height=1cm, text centered, draw=black, fill=orange!30]
+\tikzstyle{decision} = [diamond, minimum width=3cm, minimum height=1cm, text centered, draw=black, fill=green!30]
+\tikzstyle{io} = [trapezium, trapezium left angle=70, trapezium right angle=110, minimum width=3cm, minimum height=1cm, text centered, draw=black, fill=blue!30]
+\tikzstyle{arrow} = [thick,->,>=stealth]
+
+\begin{document}
+\immediate\write18{py mergebib.py}
+
+\title{4F2 Robust and Nonlinear control}
+\author{5735G}
+\date{Feburary 2025}
+\maketitle 
+
+\begin{center}
+    \textbf{Summary}
+    I dont know what to do for this
+\end{center}
+
+%-----------------------------------------------------------------------------------------
+\section{Motivation}
+%-----------------------------------------------------------------------------------------
+pass
+
+\section{Theoretical framework}
+
+\section{Application to problem}
+
+The dynamics of 
+
+\begin{equation}
+    m\ddot{y} + c_v \dot{y} + c_p y = c_p u
+\end{equation}
+
+\begin{table}[h]
+    \centering
+    \begin{tabular}{c|ll|l}
+
+        Variable & Value & Uncertainty & Description \\
+        \hline
+        $m$ & 1.0 & $\pm0$ & link inertia \\
+        $c_v$ & 1.0 & $\pm 0.1$ & mechanical dissipation \\
+        $c_p$ & 1.0 & $\pm 0.075$ & represents spring stiffness \\
+    \end{tabular}
+    \caption{System variables}
+    \label{tab:example}
+\end{table}
+
+
+\begin{thebibliography}{9}
+
+    %Endres, SC, Sandrock, C, Focke, WW (2018) “A simplicial homology algorithm for lipschitz optimisation”, Journal of Global Optimization.
+    
+      \bibitem{handout}
+      J. V. Taylor and J. C. Massey
+      \emph{GA3 Heat Exchanger Handout}
+      University of Cambridge,
+      2024.
+    
+      \bibitem{HeatTransfer}
+      Holman J. P.
+      \emph{Heat Transfer. 10th ed.}
+      McGraw-Hill,
+      2010.
+    
+      \bibitem{HE_design}
+      Sadik Kakac, Hongtan Liu, Anchasa Pramuanjaroenkij,
+      \emph{Heat Exchangers: Selection, Rating, and Thermal Design, Third Edition}
+      CRC Press,
+      2012.
+    
+      \bibitem{SHGO}
+      Endres, SC, Sandrock, C, Focke, WW,
+      \emph{A Simplicial Homology Algorithm for Lipschitz Optimisation},
+      Journal of Global Optimization,
+      2018.
+    
+\end{thebibliography}
+
+\end{document}
