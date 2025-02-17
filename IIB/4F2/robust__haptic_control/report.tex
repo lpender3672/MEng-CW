@@ -89,7 +89,7 @@
 \maketitle 
 
 \begin{center}
-    \textbf{Summary}
+    \textbf{Summary} \\
     I dont know what to do for this
 \end{center}
 
@@ -100,9 +100,51 @@ pass
 
 \section{Theoretical framework}
 
+\begin{figure}[H]
+    \centering
+    \begin{tikzpicture}[auto, node distance=2cm, >=latex]
+
+        % Define nodes
+        \node [draw, minimum width=3cm, minimum height=2cm] (P) {};
+        \node [draw, minimum width=1cm, minimum height=1cm, above=1cm of P] (Delta) {$\Delta$};
+        \node [draw, minimum width=1cm, minimum height=1cm, below=1cm of P] (K) {$K$};
+    
+        % Inputs and outputs
+        \node [left=2cm of P] (e) {$e$};
+        \node [right=2cm of P] (d) {$d$};
+        \node [left=1.5cm of Delta] (z) {$z$};
+        \node [right=1.5cm of Delta] (w) {$w$};
+        \node [left=1.5cm of K] (y) {$y$};
+        \node [right=1.5cm of K] (u) {$u$};
+
+        \node [above=0.1cm of P.south east] (pse) {};
+        \node [above=0.1cm of P.south west] (psw) {};
+        \node [below=0.1cm of P.north east] (pne) {};
+        \node [below=0.1cm of P.north west] (pnw) {};
+        
+        % Draw arrows
+        \draw[->] (e) -- (P.west);
+        \draw[->] (P.east) -- (d);
+        \draw[->] (z) -- (Delta.west);
+        \draw[->] (Delta.east) -- (w);
+        \draw[->] (w) |- (pne);
+        \draw[->] (pnw) -| (z);
+        \draw[->] (psw) -| (y);
+        \draw[->] (y) -- (K.west);
+        \draw[->] (K.east) -- (u);
+        \draw[->] (u) |- (pse);
+
+        \node [above=1.2cm of e] (l1) {};
+        \node [above=1.2cm of d] (l2) {};
+
+        \draw[dashed] (l1) -- (l2);
+    
+    \end{tikzpicture}
+\end{figure}
+
 \section{Application to problem}
 
-The dynamics of 
+The dynamics of a soft link robot can be described by the following equation of motion:
 
 \begin{equation}
     m\ddot{y} + c_v \dot{y} + c_p y = c_p u
@@ -111,16 +153,60 @@ The dynamics of
 \begin{table}[h]
     \centering
     \begin{tabular}{c|ll|l}
-
         Variable & Value & Uncertainty & Description \\
         \hline
-        $m$ & 1.0 & $\pm0$ & link inertia \\
+        $m$ & 1.0 & $\pm0$ & link mass \\
         $c_v$ & 1.0 & $\pm 0.1$ & mechanical dissipation \\
         $c_p$ & 1.0 & $\pm 0.075$ & represents spring stiffness \\
     \end{tabular}
     \caption{System variables}
     \label{tab:example}
 \end{table}
+
+The state space representation of the system is:
+
+\begin{align}
+    \frac{d}{dt} \begin{bmatrix}
+        x \\
+        \dot{x}
+    \end{bmatrix} &= \begin{bmatrix}
+        0 & 1 \\
+        -\frac{c_p}{m} & -\frac{c_v}{m}
+    \end{bmatrix} \begin{bmatrix}
+        x \\
+        \dot{x}
+    \end{bmatrix} + \begin{bmatrix}
+        0 \\
+        \frac{c_p}{m}
+    \end{bmatrix} u \\
+    y &= \begin{bmatrix}
+        1 & 0
+    \end{bmatrix} \begin{bmatrix}
+        x \\
+        \dot{x}
+    \end{bmatrix} + 0u
+\end{align}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{figures/bode_G.png}
+    \caption{}
+    \label{fig:bode_G}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{figures/nyquist_G.png}
+    \caption{}
+    \label{fig:nyquist_G}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{figures/rlocus_G.png}
+    \caption{}
+    \label{fig:rlocus_G}
+\end{figure}
 
 
 \begin{thebibliography}{9}
