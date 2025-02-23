@@ -98,49 +98,6 @@
 %-----------------------------------------------------------------------------------------
 pass
 
-\section{Theoretical framework}
-
-\begin{figure}[H]
-    \centering
-    \begin{tikzpicture}[auto, node distance=2cm, >=latex]
-
-        % Define nodes
-        \node [draw, minimum width=3cm, minimum height=2cm] (P) {};
-        \node [draw, minimum width=1cm, minimum height=1cm, above=1cm of P] (Delta) {$\Delta$};
-        \node [draw, minimum width=1cm, minimum height=1cm, below=1cm of P] (K) {$K$};
-    
-        % Inputs and outputs
-        \node [left=2cm of P] (e) {$e$};
-        \node [right=2cm of P] (d) {$d$};
-        \node [left=1.5cm of Delta] (z) {$z$};
-        \node [right=1.5cm of Delta] (w) {$w$};
-        \node [left=1.5cm of K] (y) {$y$};
-        \node [right=1.5cm of K] (u) {$u$};
-
-        \node [above=0.1cm of P.south east] (pse) {};
-        \node [above=0.1cm of P.south west] (psw) {};
-        \node [below=0.1cm of P.north east] (pne) {};
-        \node [below=0.1cm of P.north west] (pnw) {};
-        
-        % Draw arrows
-        \draw[->] (e) -- (P.west);
-        \draw[->] (P.east) -- (d);
-        \draw[->] (z) -- (Delta.west);
-        \draw[->] (Delta.east) -- (w);
-        \draw[->] (w) |- (pne);
-        \draw[->] (pnw) -| (z);
-        \draw[->] (psw) -| (y);
-        \draw[->] (y) -- (K.west);
-        \draw[->] (K.east) -- (u);
-        \draw[->] (u) |- (pse);
-
-        \node [above=1.2cm of e] (l1) {};
-        \node [above=1.2cm of d] (l2) {};
-
-        \draw[dashed] (l1) -- (l2);
-    
-    \end{tikzpicture}
-\end{figure}
 
 \section{Application to problem}
 
@@ -163,7 +120,7 @@ The dynamics of a soft link robot can be described by the following equation of 
     \label{tab:example}
 \end{table}
 
-The state space representation of the system is:
+The state space representation of the system in the form $\dot{x} = Ax + Bu$ and $y = Cx + Du$ is given by:
 
 \begin{align}
     \frac{d}{dt} \begin{bmatrix}
@@ -187,12 +144,14 @@ The state space representation of the system is:
     \end{bmatrix} + 0u
 \end{align}
 
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.6\textwidth]{figures/rlocus_G.png}
-    \caption{}
-    \label{fig:rlocus_G}
-\end{figure}
+The characteristic open and closed loop equations are given by $\det(sI - A) = 0$ and $\det(sI - (A-BKC)) = 0$.
+
+\begin{align}
+    s^2 + \frac{c_v}{m}s + \frac{c_p}{m} &= 0 \\
+    s^2 + \frac{c_v}{m}s + (1+k)\frac{c_p}{m} &= 0
+\end{align}
+The Routh-Hurwitz criterion for second order characteristic polynomial states that the system is stable if all coefficients are positive.
+This shows that the open loop is always stable, but the closed loop system is only stable if $k > -1$.
 
 \begin{figure}[H]
     \centering
@@ -207,6 +166,45 @@ The state space representation of the system is:
     \caption{}
     \label{fig:nyquist_G}
 \end{figure}
+
+\section{Tracking performance}
+
+
+The error transfer function of the closed loop is found by evaluating $E(s) = 1/(1+kG(s))$.
+For the steady state error to a step response is found by $\frac{1}{s} \cdot E(s)$ and the final value theorem.
+\begin{equation}
+    \lim_{t \to \infty} e(t) = \lim_{s \to 0} \left( \frac{s}{s} \cdot \frac{\frac{c_p}{m}s^2 + \frac{c_v}{m}s + \frac{c_p}{m}}{s^2 + \frac{c_v}{m}s + (1+k)\frac{c_p}{m}} \right) = \frac{1}{1+k}
+\end{equation}
+Therefore as $k \to \infty$, the steady state error goes to zero.
+This error is also independent of parameters and so should not be affected by uncertainty.
+
+However the damping ratio and frequency are strongly affected by these parameters.
+\begin{equation}
+    s = \sigma \pm j\omega = -\frac{c_v}{2m} \pm j \frac{1}{2} \sqrt{4(1+k)\frac{c_p}{m} - \left(\frac{c_v}{m}\right)^2}
+\end{equation}
+\begin{equation}
+    \zeta = \frac{-\sigma }{ \sqrt{\sigma^2 + \omega^2}}
+\end{equation}
+To gain insight into how parametric uncertainty impacts the system response uncertainty must be propagated as follows:
+\begin{equation}
+    \delta \omega = \frac{\partial \omega}{\partial c_p} \delta c_p + \frac{\partial \omega}{\partial c_v} \delta c_v \quad \delta \zeta = \frac{\partial \zeta}{\partial c_p} \delta c_p + \frac{\partial \zeta}{\partial c_v} \delta c_v
+\end{equation}
+The derivatives can be found analytically and are shown plotted against $k$ at otherwise nominal values in figure \ref{fig:u_propagation}.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{figures/u_propagation.png}
+    \caption{}
+    \label{fig:u_propagation}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{figures/rlocus_G.png}
+    \caption{}
+    \label{fig:rlocus_G}
+\end{figure}
+
 
 \begin{thebibliography}{9}
 
