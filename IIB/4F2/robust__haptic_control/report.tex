@@ -117,7 +117,7 @@ The dynamics of a soft link robot can be described by the following equation of 
         $c_p$ & 1.0 & $\pm 0.075$ & represents spring stiffness \\
     \end{tabular}
     \caption{System variables}
-    \label{tab:example}
+    \label{tab:parameters}
 \end{table}
 
 The state space representation of the system in the form $\dot{x} = Ax + Bu$ and $y = Cx + Du$ is given by:
@@ -167,6 +167,8 @@ This shows that the open loop is always stable, but the closed loop system is on
     \label{fig:nyquist_G}
 \end{figure}
 
+From the Nyquist plot in figure \ref{fig:nyquist_G} the gain margin is infinite and the phase margin is 90 degrees.
+
 \section{Tracking performance}
 
 
@@ -185,6 +187,32 @@ However the damping ratio and frequency are strongly affected by these parameter
 \begin{equation}
     \zeta = \frac{-\sigma }{ \sqrt{\sigma^2 + \omega^2}}
 \end{equation}
+
+The poles natural frequency is then shown to increase with k, which decreases the damping ratio.
+This is also shown graphically on the root locus plot in figure \ref{fig:rlocus_G}.
+As $k$ increases, the poles move away from the real axis and the angle between pole and imaginary axis ($\arcsin(\zeta)$) decreases.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{figures/rlocus_G.png}
+    \caption{}
+    \label{fig:rlocus_G}
+\end{figure}
+
+Figure \ref{fig:rlocus_G} shows the root locus plot for the nominal system for positive values of $k$.
+The plot also shows the region of possible pole locations for the parametric uncertainty given in table \ref{tab:parameters}.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{figures/sensitivities.png}
+    \caption{}
+    \label{fig:sensitivities}
+\end{figure}
+
+Figure \ref{fig:sensitivities} shows the sensitivity and complementary sensitivity response plot for disturbance and reference inputs.
+High frequency reference signals are attenuated more by smaller values of $k$. Similarly, high frequency disturbances are amplified less at smaller values of $k$.
+At low frequency and small values of k, the sensitivity is higher than the complementary sensitivity which is not desirable.
+
 To gain insight into how parametric uncertainty impacts the system response uncertainty must be propagated as follows:
 \begin{equation}
     \delta \omega = \frac{\partial \omega}{\partial c_p} \delta c_p + \frac{\partial \omega}{\partial c_v} \delta c_v \quad \delta \zeta = \frac{\partial \zeta}{\partial c_p} \delta c_p + \frac{\partial \zeta}{\partial c_v} \delta c_v
@@ -197,14 +225,9 @@ The derivatives can be found analytically and are shown plotted against $k$ at o
     \caption{}
     \label{fig:u_propagation}
 \end{figure}
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.6\textwidth]{figures/rlocus_G.png}
-    \caption{}
-    \label{fig:rlocus_G}
-\end{figure}
-
+Figure \ref{fig:u_propagation} shows how the uncertainty in response parameters changes with $k$.
+Small changes in damping ratio due to the parametric uncertainty become less pronounced as $k$ increases.
+However, the component of uncertainty in the frequency due to the stiffness coefficient, $c_p$, is shown to increase with $k$.
 
 \begin{thebibliography}{9}
 
