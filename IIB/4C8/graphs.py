@@ -19,10 +19,10 @@ circumference = 3.4 / 12 # 12 v / (v / m) = m
 eff_R = 1e3 * circumference / (2 * np.pi)
 drum_R = 74 / 2 * 1e-3
 g = 9.81
-print(" effective tyre rolling radius R = ", R, "mm")
+print(" effective tyre rolling radius R = ", eff_R, "mm")
 
 X = T * g * eff_R / drum_R
-Z = W * g * 1/1 # TODO: measure lever arm ratios
+Z = W * g * (735-465)/(900-735)
 
 # separate W into 5kg and 3kg
 
