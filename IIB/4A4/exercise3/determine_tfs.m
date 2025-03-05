@@ -19,8 +19,8 @@ DutchRoll = load("data_2024/Dutch-Roll.mat");
 %omega_dut_n = 1.519;
 %Tspiral = 42.6;
 %Trollsubs = 0.2495;
-elev_to_pitchrate_freq_cutoff = 20;
-elevator_to_normal_freq_cutoff = 6;
+elev_to_pitchrate_freq_cutoff = 10;
+elevator_to_normal_freq_cutoff = 7;
 rudder_to_yawrate_freq_cutoff = 3;
 aileron_to_rollrate_freq_cutoff = 9;
 
