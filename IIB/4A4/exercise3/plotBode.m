@@ -1,6 +1,13 @@
-function [num,xfeqf] = plotBode(omega, H, den, freq_cutoff, order)
+function [num,xfeqf] = plotBode(omega, H, den, freq_cutoff, order, yLabelMag, yLabelPhase)
 
-    [num,xfeqf]= fitxf(omega, H, den, freq_cutoff, order);
+    if nargin < 6 || isempty(yLabelMag)
+        yLabelMag = 'Magnitude (dB)';
+    end
+    if nargin < 7 || isempty(yLabelPhase)
+        yLabelPhase = 'Phase (deg)';
+    end
+
+    [num,xfeqf] = fitxf(omega, H, den, freq_cutoff, order);
 
     magnitude_dB = 20*log10(abs(H));
     phase_deg = angle(H) * (180/pi);
@@ -14,9 +21,8 @@ function [num,xfeqf] = plotBode(omega, H, den, freq_cutoff, order)
     semilogx(omega, fit_magnitude_dB, 'LineWidth', 1);
     hold off;
     grid on;
-    xlabel('Frequency (rad/s)');
-    ylabel('Magnitude (dB)');
-    title('Bode Plot - Magnitude');
+    ylabel(yLabelMag, 'Interpreter', 'latex', 'FontSize', 14);
+    %title('Bode Plot - Magnitude');
 
     subplot(2,1,2);
     hold on;
@@ -24,7 +30,7 @@ function [num,xfeqf] = plotBode(omega, H, den, freq_cutoff, order)
     semilogx(omega, fit_phase_deg, 'LineWidth', 1);
     hold off;
     grid on;
-    xlabel('Frequency (rad/s)');
-    ylabel('Phase (deg)');
-    title('Bode Plot - Phase');
+    xlabel('Frequency (rad/s)', 'Interpreter', 'latex', 'FontSize', 14);
+    ylabel(yLabelPhase, 'Interpreter', 'latex', 'FontSize', 14);
+    %title('Bode Plot - Phase');
 end
