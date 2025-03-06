@@ -22,7 +22,13 @@ g = 9.81
 print(" effective tyre rolling radius R = ", eff_R, "mm")
 
 X = T * g * eff_R / drum_R
-Z = W * g * (735-465)/(900-735)
+
+Llever = 27
+Lweel = 15.8
+droll = 12.4
+
+Z = W * g * 
+#(735-465)/(900-735)
 
 # separate W into 5kg and 3kg
 
