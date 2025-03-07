@@ -232,6 +232,16 @@ However, the component of uncertainty in the frequency due to the stiffness coef
 
 \subsection{Bound on perturbed plant}
 
+The perturbed plant can be written as $G_p(s) = G(s) + \Delta G(s)$ where $\Delta G(s)$ is the additive perturbation.
+This can be rearranged and the perturbed plants parameters can include absolute uncertainty $\Delta_p$ and $\Delta_v$.
+\begin{equation}
+    \Delta = \frac{s\left(\Delta_p c_v - \Delta_v c_p + \Delta_p m s\right)}
+    {\left(m s^2 + c_v s + c_p\right)\left(\Delta_p + c_p + \Delta_v s + c_v s + m s^2\right)}    
+    \label{eq:analytical_delta}
+\end{equation}
+Generally, the maximum value of $\Delta$ for a given frequency could occur at any combination parameter uncertainties.
+For this case however, it was found that $\Delta_p = -0.1$ and $\Delta_v = 0.075$ is close to the maximum value of $\Delta$ for a wide range of frequencies.
+
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.6\textwidth]{figures/1_tight_bound.png}
@@ -240,12 +250,13 @@ However, the component of uncertainty in the frequency due to the stiffness coef
 \end{figure}
 
 Figure \ref{fig:bode_Gp} shows the bode plot of bounds on the additive perturbation from the nominal plant.
+The analytical bound is shown as a reference and was found using equation \ref{eq:analytical_delta} with $\Delta_p = 0.1$ and $\Delta_v = 0.075$
 
 It was decided that a very small additional bound would be added above the tight bound to guarantee robustness within the confidence interval in the parameter sampling.
 The robustness bound was increased further at lower frequencies, which were felt to be more important in the application of soft robotics.
 
 \begin{equation}
-    b(s) = \frac{0.139*s + 0.16*s^2}{1.55*s + 2.15*s^2 + 1.95*s^3 + s^4 + 0.346}
+    b(s) = \frac{0.16s^2 + 0.139s}{s^4 + 1.95s^3 + 2.15s^2 + 1.55s + 0.346}
 \end{equation}
 
 \subsection{Weight design}
@@ -297,6 +308,29 @@ From the equations of motion, the transfer matrix is given by:
 Where $\alpha = (\tau s + 1)^2$ and $\tau = 0.05$.
 
 \subsubsection{Linear Matrix Inequalities (LMIs) for bounded gain}
+
+To obtain the LMIs the system is first restacked into \texttt{[z; y]}, a format preferred by MATLAB.
+Then from the equations below
+\begin{equation}
+    \begin{bmatrix}
+        z \\
+        y
+    \end{bmatrix} = \begin{bmatrix}
+        Cz \\
+        Cy
+    \end{bmatrix} x + \begin{bmatrix}
+        D_{zw} & D_{zu} \\
+        D_{yw} & D_{yu}
+    \end{bmatrix} \begin{bmatrix}
+        w \\
+        u
+    \end{bmatrix} \quad \text{and} \quad \dot{x} = Ax + \begin{bmatrix}
+        B_w & B_u \\
+    \end{bmatrix} \begin{bmatrix}
+        w \\
+        u
+    \end{bmatrix}
+\end{equation}
 
 The LMIs shown in fig \ref{fig:bounded_lmi} were used to find a controller with the gain from $w$ to $z$ constrained to be less than 0.1.
 %you may want to relax the weighting function W (s) in a reasoned way to achieve feasibility (explain your choice)
