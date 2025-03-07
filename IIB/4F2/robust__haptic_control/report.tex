@@ -16,6 +16,7 @@
 \usepackage{listings}
 \usepackage{xcolor}
 \usepackage[margin=1in]{geometry}
+\usepackage{savetrees}
 
 % Custom subsection numbering
 \renewcommand{\thesubsection}{\roman{subsection})}
@@ -156,17 +157,21 @@ This shows that the open loop is always stable, but the closed loop system is on
 
 \begin{figure}[H] % TODO: subfigure
     \centering
-    \includegraphics[width=0.6\textwidth]{figures/bode_G.png}
+    \begin{subfigure}{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/bode_G.png}
+        \caption{}
+        \label{fig:bode_G}
+    \end{subfigure}
+    \begin{subfigure}{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/nyquist_G.png}
+        \caption{}
+        \label{fig:nyquist_G}
+    \end{subfigure}
     \caption{}
-    \label{fig:bode_G}
 \end{figure}
 
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.6\textwidth]{figures/nyquist_G.png}
-    \caption{}
-    \label{fig:nyquist_G}
-\end{figure}
 
 From the Nyquist plot in figure \ref{fig:nyquist_G} the gain margin is infinite and the phase margin is 90 degrees.
 
@@ -257,9 +262,36 @@ The robustness bound was increased further at lower frequencies, which were felt
 
 \begin{equation}
     b(s) = \frac{0.16s^2 + 0.139s}{s^4 + 1.95s^3 + 2.15s^2 + 1.55s + 0.346}
+    \label{eq:bound1}
 \end{equation}
 
 \subsection{Weight design}
+
+\begin{equation}
+    \begin{Vmatrix}
+        W_1 S \\
+        W_2 KS \\
+        W_3 T
+    \end{Vmatrix}_\infty \le 1 \implies
+    \begin{cases}
+        ||S||_\infty \le |1/W_1| \\
+        ||KS||_\infty \le |1/W_2| \\
+        ||T||_\infty \le |1/W_3|
+    \end{cases}
+\end{equation}
+
+\subsubsection{Closed loop tracking error below -40dB at frequencies lower than $\omega_1=6\pi$ rad/s \label{pnt:tracking}}
+
+The tracking error from $r$ to $e$ is given by $e = r - y = (1 - KS)r = Sr$. Therefore a weight function $W_1(s)$ of +40dB below the frequency $\omega_1 = 6\pi$ rad/s is required to satisfy \ref{pnt:tracking}.
+This was done using the MATLAB command \texttt{makeweight(100, 6*pi, 0.9);}
+
+\subsubsection{robust stability for additive dynamic uncertainties defined by equation \ref{eq:bound1} \label{pnt:robust}}
+
+It isnt known what to do for this
+
+\subsubsection{Disturbance attenuation from sensor noise to ouput of -40dB above the frequency $\omega_2 = 500\pi$ rad/s \label{pnt:disturbance}}
+
+The output y is also affected by sensor noise $y = T(r - d)$ and so a weight function $W_3(s)$ of -40dB above the frequency $\omega_2 = 500\pi$ rad/s is required to satisfy \ref{pnt:disturbance}.
 
 \subsection{Controller Synthesis}
 
@@ -338,14 +370,16 @@ The fourth order low pass weighting function was found to achieve a feasible sol
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.6\textwidth]{figures/K_g_step.png}
-    \caption{}
-\end{figure}
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.6\textwidth]{figures/K_g_bode.png}
-    \caption{}
+    \begin{subfigure}{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/K_g_step.png}
+        \caption{}
+    \end{subfigure}    
+    \begin{subfigure}{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/K_g_bode.png}
+        \caption{}
+    \end{subfigure}
 \end{figure}
 
 \subsubsection{Uncertain feedback}
@@ -354,7 +388,13 @@ The fourth order low pass weighting function was found to achieve a feasible sol
     \centering
     \includegraphics[width=0.6\textwidth]{figures/structured_singular_values.png}
     \caption{}
+    \label{fig:structured_singular_values}
 \end{figure}
+
+Figure \ref{fig:structured_singular_values} shows the \textit{structured singular value} for the uncertain feedback system.
+This \textit{structured singular value} $\mu$ is the smallest $\gamma$ for which this stability condition holds \cite{matlab_robustmu}.
+$1/\mu$ is the largest uncertainty level $1/\gamma$ for which the system of uncertain feedback is stable.
+
 
 \subsection{Passivity-based design}
 
@@ -392,7 +432,7 @@ The transfer matrix is given by:
 \end{equation}
 Where $\alpha = (\tau s + 1)^2$ as before and $\beta = 1 - 1/\alpha$.
 
-\subsubsection{Transfer matrix for passive arrangement}
+\subsubsection{Transfer matrix for passive arrangement} 
 
 \subsubsection{LMIs for passivity and bounded gain}
 
@@ -471,28 +511,16 @@ Where $\alpha = (\tau s + 1)^2$ as before and $\beta = 1 - 1/\alpha$.
     %Endres, SC, Sandrock, C, Focke, WW (2018) “A simplicial homology algorithm for lipschitz optimisation”, Journal of Global Optimization.
     
       \bibitem{handout}
-      J. V. Taylor and J. C. Massey
-      \emph{GA3 Heat Exchanger Handout}
+      F. Forni, R, Sepulchre
+      \emph{4F2, Robust and Nonlinear Control: Coursework 1}
       University of Cambridge,
-      2024.
+      2025.
     
-      \bibitem{HeatTransfer}
-      Holman J. P.
-      \emph{Heat Transfer. 10th ed.}
-      McGraw-Hill,
-      2010.
-    
-      \bibitem{HE_design}
-      Sadik Kakac, Hongtan Liu, Anchasa Pramuanjaroenkij,
-      \emph{Heat Exchangers: Selection, Rating, and Thermal Design, Third Edition}
-      CRC Press,
-      2012.
-    
-      \bibitem{SHGO}
-      Endres, SC, Sandrock, C, Focke, WW,
-      \emph{A Simplicial Homology Algorithm for Lipschitz Optimisation},
-      Journal of Global Optimization,
-      2018.
+      \bibitem{matlab_robustmu}
+      MATLAB
+      \emph{Robust Performance Measure for Mu Synthesis}
+      \texttt{https://uk.mathworks.com/help/robust/ug/measures-of-robust-performance.html}
+
     
 \end{thebibliography}
 
