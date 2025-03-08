@@ -96,7 +96,10 @@
 
 \begin{center}
     \textbf{Summary} \\
-    I dont know what to do for this
+    This report details the design of a controller for a soft robot and haptic interface.
+    Uncertain parameters are considered in the definition of a bound and the design of weight functions for $H_\infty$ controller synthesis.
+    Linear Matrix Inequalities (LMIs) are used to find a controller that meets tracking performance, and passivity requirements.
+    The tradeoff between performance and robustness is discussed.
 \end{center}
 
 \section{Collaborative robot}
@@ -287,18 +290,73 @@ This was done using the MATLAB command \texttt{makeweight(100, 6*pi, 0.9);}
 
 \subsubsection{robust stability for additive dynamic uncertainties defined by equation \ref{eq:bound1} \label{pnt:robust}}
 
-It isnt known what to do for this
+Robust stability for additive dynamic uncertainty is satisfied by $||CS\Delta||_\infty < 1$.
+Where C is a form of controller that is not well understood.
+Progress may be made by considering the sensitivity only $||S\Delta||_\infty < 1$.
+This then gives the weight $W_1(s) = 1/b(s)$ where $|\Delta(j\omega)| \le |b(j\omega)|$.
+However, the requirement of stable and proper weight $W_1$ imposes constraints on $b(s)$ that we want to be as tight of a bound as possible.
+A great deal of effort was put into finding proper weight functions $W_1(s)$ that were both tight and stable bound on the additive uncertainty.
+However, the best feasible bound found was a constant equal to the peak sampled bound in figure \ref{fig:bode_G} at -14.2 dB.
+
 
 \subsubsection{Disturbance attenuation from sensor noise to ouput of -40dB above the frequency $\omega_2 = 500\pi$ rad/s \label{pnt:disturbance}}
 
 The output y is also affected by sensor noise $y = T(r - d)$ and so a weight function $W_3(s)$ of -40dB above the frequency $\omega_2 = 500\pi$ rad/s is required to satisfy \ref{pnt:disturbance}.
-
 \subsection{Controller Synthesis}
 
 \subsubsection{The $H_\infty$ controller $K_N(s)$ that meets tracking performance and disturbance rejection}
 
+Figure \ref{fig:K_N_bode} shows the bode plot magnitudes of open loop plant, controller, weights and closed loop sensitivity functions.
+The sensitivity function can be seen to satisfy \ref{pnt:tracking} staying below -40dB below $\omega_1 = 6\pi$ rad/s.
+The complementary sensitivity function falls sharply before $\omega_2 = 500\pi$ rad/s, satisfying \ref{pnt:disturbance}.
+The weight functions and derived controller are also shown as a reference.
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/K_N_bode.png}
+        \caption{}
+        \label{fig:K_N_bode}
+    \end{subfigure}
+    \begin{subfigure}{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/K_N_step.png}
+        \caption{}
+        \label{fig:K_N_step}
+    \end{subfigure}
+\end{figure}
+
+The step response of the soft robot is shown in figure \ref{fig:K_N_step} and shows a highly damped but fast, taking $<0.1$s to settle.
+No steady state error is observed and due to the high damping no overshoot is seen.
+
 \subsubsection{The $H_\infty$ controller $K_R(s)$ that meets also meets robustness requirements}
 
+The tracking performance weight $W_1$ was simply adjusted to a * \texttt{makeweight(100/a, 6*pi, 0.99);} where $a = 10^{+14.2/20}$ where 14.2 was the value obtained by the peak sampled bound in figure \ref{fig:bode_G}.
+A proper, tight and stable transfer function W1 to satisfy \ref{pnt:robust} was not found and so a constant was used as a bound.
+
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/K_R_bode.png}
+        \caption{}
+        \label{fig:K_g_bode}
+    \end{subfigure}
+    \begin{subfigure}{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/K_R_step.png}
+        \caption{}
+        \label{fig:K_g_step}
+    \end{subfigure}
+    \caption{}
+\end{figure}
+
+Figure \ref{fig:K_g_bode} shows reduced tracking performance with the increased robustness which is expected from the tradeoffs.
+The reduction in performance is significant however, and indicates that a tighter bound should be found for improved performance.
+Figure \ref{fig:K_g_step} shows the robust closed loop step responses for the uncertainty sampled parameters.
+Stability can be observed but performance is poor with steady state error and overshoot in some cases.
 \section{Haptic Interface}
 
 \subsection{ $H_\infty$ control design}
@@ -366,20 +424,22 @@ Then from the equations below
 
 The LMIs shown in fig \ref{fig:bounded_lmi} were used to find a controller with the gain from $w$ to $z$ constrained to be less than 0.1.
 %you may want to relax the weighting function W (s) in a reasoned way to achieve feasibility (explain your choice)
-The fourth order low pass weighting function was found to achieve a feasible solution without being relaxed.
+The fourth order low pass weighting function was found to achieve a feasible solution without being relaxed which may indicate a that further performance could be achieved.
+The line provided in reference material \cite{lecture} \texttt{minimise{gamma}} was found to fail to converge and so the inequality on gain $\gamma \le 0.1$ was used instead.
 
 \begin{figure}[H]
     \centering
     \begin{subfigure}{0.45\textwidth}
         \centering
         \includegraphics[width=\textwidth]{figures/K_g_step.png}
-        \caption{}
+        \caption{Step response.}
     \end{subfigure}    
     \begin{subfigure}{0.45\textwidth}
         \centering
         \includegraphics[width=\textwidth]{figures/K_g_bode.png}
-        \caption{}
+        \caption{Bode frequency response}
     \end{subfigure}
+    \caption{Responses of closed loop system with gain bounded controller $K_g$}
 \end{figure}
 
 \subsubsection{Uncertain feedback}
@@ -394,7 +454,8 @@ The fourth order low pass weighting function was found to achieve a feasible sol
 Figure \ref{fig:structured_singular_values} shows the \textit{structured singular value} for the uncertain feedback system.
 This \textit{structured singular value} $\mu$ is the smallest $\gamma$ for which this stability condition holds \cite{matlab_robustmu}.
 $1/\mu$ is the largest uncertainty level $1/\gamma$ for which the system of uncertain feedback is stable.
-
+Matlab solves this problem by finding upper and lower bounds which in figure \ref{fig:structured_singular_values} are shown to be on top of each other and so the largest uncertainty bound is found.
+This shows that higher frequencies are more sensitive to the feedback uncertainty.
 
 \subsection{Passivity-based design}
 
@@ -420,6 +481,8 @@ For the passive arrangement the inputs and outputs are given by:
     \end{bmatrix}
 \end{equation}
 
+\subsubsection{Transfer matrix for passive arrangement} 
+
 The transfer matrix is given by:
 \begin{equation}
     G_P = 
@@ -432,24 +495,41 @@ The transfer matrix is given by:
 \end{equation}
 Where $\alpha = (\tau s + 1)^2$ as before and $\beta = 1 - 1/\alpha$.
 
-\subsubsection{Transfer matrix for passive arrangement} 
-
 \subsubsection{LMIs for passivity and bounded gain}
+
+The LMIs to ensure passivity and bounded gain are shown in fig \ref{fig:bounded_passive_lmi}.
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.6\textwidth]{figures/K_p_sigma.png}
-    \caption{}
+    \begin{subfigure}{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/K_p_sigma.png}
+        \caption{}
+        \label{fig:K_p_sigma}
+    \end{subfigure}    
+    \begin{subfigure}{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/K_p_passive.png}
+        \caption{}
+        \label{fig:K_p_passive}
+    \end{subfigure}
+    \caption{Singular value plot and passivity index of passive closed loop controller}
 \end{figure}
+
+Figure \ref{fig:K_p_sigma} shows the singular values of the passive controller.
+The difference between minimum and maximum singular values is greater than 100dB, which indicates a significant difference in the system's response to different input directions.
+This suggests that the system may be highly sensitive to certain inputs while being relatively insensitive to others.
+Figure \ref{fig:K_p_passive} shows a frequency region of increased and decreased passivity index.
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.6\textwidth]{figures/K_p_step.png}
-    \caption{}
+    \caption{Step response of the passive controller}
 \end{figure}
 
 \subsection{Comparison $H_\infty$ and passivity-based control}
 
+This section was not completed due to time constraints.
 % choose simulation!!!
 
 \section{Appendix}
@@ -464,8 +544,9 @@ Where $\alpha = (\tau s + 1)^2$ as before and $\beta = 1 - 1/\alpha$.
             variable gama
 
             LMI1 = Y >= 0
+
+            % bounded gain LMI
             LMI2 = gama <= 0.1
-            
             LMI3 = [ (Y*A' + A*Y + Z'*Bu' + Bu*Z),   (Y*C' + Z'*D_u'),          Bw;
                     (C*Y + D_u*Z),  -gama*eye(2),      D_w';
                     Bw',            D_w,                -gama*eye(2) ] <= 0;
@@ -491,11 +572,11 @@ Where $\alpha = (\tau s + 1)^2$ as before and $\beta = 1 - 1/\alpha$.
             LMI2 = gama <= 0.1
             
             % gain LMI
-            %
             LMI3 = [ (Y*A' + A*Y + Z'*Bu' + Bu*Z),   (Y*Cz' + Z'*Dzu'),          Bw;
                     (Cz*Y + Dzu*Z),  -gama*eye(2),      Dzw';
                     Bw',            Dzw,                -gama*eye(2) ] <= 0;
             
+            % passivity LMI
             LMI4 = epsilon >= 0
             LMI5 = [ Y*A' + A*Y + Bu*Z + Z'*Bu', Bw - Y*Cy' - Z'*Dyu';
                     Bw' - Cy*Y-Dyu*Z,   -2*epsilon*eye(2) - (Dyw + Dyw')] <= 0
@@ -513,6 +594,12 @@ Where $\alpha = (\tau s + 1)^2$ as before and $\beta = 1 - 1/\alpha$.
       \bibitem{handout}
       F. Forni, R, Sepulchre
       \emph{4F2, Robust and Nonlinear Control: Coursework 1}
+      University of Cambridge,
+      2025.
+
+      \bibitem{lecture}
+      F. Forni
+      \emph{4F2, Robust and Nonlinear Control: Handout 6}
       University of Cambridge,
       2025.
     
