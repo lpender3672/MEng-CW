@@ -27,7 +27,7 @@ Llever = 27
 Lweel = 15.8
 droll = 12.4
 
-Z = W * g * 
+Z = W * g * Llever / Lweel
 #(735-465)/(900-735)
 
 # separate W into 5kg and 3kg
