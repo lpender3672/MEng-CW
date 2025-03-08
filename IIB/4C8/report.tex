@@ -86,22 +86,38 @@
 
 \subsection{Setup}
 
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.8\textwidth]{Calibration/linearity.png}
-    \caption{Loss coefficient for various operating Mach and Reynolds numbers.}
-    \label{fig:force_linearity}
-\end{figure}
-
 \section{LATERAL CREEP}
 
 \subsection{\textbf{Transducer Calibration}}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{Calibration/linearity.png}
+    \caption{Lateral force transducer voltage calibration.}
+    \label{fig:force_linearity}
+\end{figure}
 
 \begin{center}
     \textbf{Comment on the accuracy and linearity of the side force transducer}
 \end{center}
 
+The side force transducer consists of strain gauages in a Wheatstone bridge.
+It is assumed that the location of strain gauges and the bridge configuration is setup to only measure the side force and not be affected by transverse forces.
+This was not verified in the experiment as calibation was only done by applying known side forces.
+
+The calibation line in figure \ref{fig:force_linearity} shows a strong linear relationship in the range of forces considered with an $r$ value of -0.9944.
+The 95\% confidence interval for the linear fit is shown in the shaded region of the figure.
+The uncertainty in forces is negligible and for voltage collected at 2 d.p. $\pm 0.005 V$ is also small.
+This indicates both good accuracy and linearity of the transducer.
+
 \subsection{\textbf{Effect Of Speed On Side Force}}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{4.2/force_distances.png}
+    \caption{Lateral force vs. distance at $\delta = 5^\circ$ for different rolling speeds.}
+    \label{fig:lateral_force_distance_speed}
+\end{figure}
 
 \begin{center}
     \textbf{Comment on the influence of rolling speed on the average steady state lateral forces
@@ -109,6 +125,13 @@
 \end{center}
 
 \subsection{\textbf{Effect of Normal Load on Steady State Side Force}}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{4.3/Yss_vs_tandelta.png}
+    \caption{Lateral force vs. tangent of steer angle.}
+    \label{fig:lateral_force_distance_speed}
+\end{figure}
 
 \begin{center}
     \textbf{What causes the microslip?}
@@ -149,6 +172,13 @@
 \end{equation}
 
 \subsection{\textbf{Combined Lateral and Longitudinal Creep}}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{5.3/XvsY.png}
+    \caption{}
+    \label{fig:lateral_force_vs_longitudinal_force}
+\end{figure}
 
 \begin{center}
     \textbf{Comment on the comparison between theory and experiment.}
