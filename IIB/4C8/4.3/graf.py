@@ -56,6 +56,24 @@ fig, ax = plt.subplots()
 
 tandels = np.tan(np.deg2rad(dels))
 
+# 2nd batch of collected data
+second_batch = np.loadtxt('IIB/4C8/lateral.csv', delimiter=',', skiprows=1)
+sbatc3 = second_batch[:16, :]
+sbatc5 = second_batch[16:, :]
+extra_dels = np.array([2.5, 7.5, 12.5])
+extra_tandels = np.tan(np.deg2rad(extra_dels))
+extra_Y_ss3 = np.interp(extra_tandels, np.abs(sbatc3[:,3]), sbatc3[:,7])
+extra_Y_ss5 = np.interp(extra_tandels, np.abs(sbatc5[:,3]), sbatc5[:,7])
+# augment the data
+tandels = np.concatenate((tandels, extra_tandels))
+i_Y_ss = np.concatenate((i_Y_ss, extra_Y_ss3))
+iii_Y_ss = np.concatenate((iii_Y_ss, extra_Y_ss5))
+# sort by tan(delta)
+sort_idx = np.argsort(tandels)
+tandels = tandels[sort_idx]
+i_Y_ss = i_Y_ss[sort_idx]
+iii_Y_ss = iii_Y_ss[sort_idx]
+
 ax.plot(tandels, i_Y_ss, 'o-', label='W=3kg')
 ax.plot(tandels, iii_Y_ss, 'o-', label='W=5kg')
 ax.grid()
