@@ -35,10 +35,10 @@ Z5 = Z[3]
 # separate W into 5kg and 3kg
 
 plt.plot(
-    xi[W == 3], X[W == 3]/Z3, 'o-', label=f'Z = {Z3:.1f} N'
+    xi[W == 3], X[W == 3], 'o-', label=f'Z = {Z3:.1f} N'
 )
 plt.plot(
-    xi[W == 5], X[W == 5]/Z5,'o-', label=f'Z = {Z5:.1f} N'
+    xi[W == 5], X[W == 5],'o-', label=f'Z = {Z5:.1f} N'
 )
 # linear fit:
 C11_3, intercept3 = np.polyfit(xi[W == 3], X[W == 3], 1)
