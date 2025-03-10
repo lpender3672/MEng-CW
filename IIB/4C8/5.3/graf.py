@@ -18,8 +18,10 @@ drum_R = 74 / 2 * 1e-3
 g = 9.81
 
 droll = 12.4
+Llever = 27
+Lweel = 15.8
 
-xvals = tvals * g * eff_R / drum_R
+xvals = tvals * g * drum_R / eff_R
 
 i_data = [None] * len(tvals)
 v_data = [None] * len(tvals)
@@ -71,13 +73,31 @@ for i, delta in enumerate(tvals):
     
 # plot X v Y
 
+xi = np.linspace(0, 1, 200)
+mu = 0.7
+C22 = 244.3
+alpha5 = np.tan(np.deg2rad(5))
+alpha15 = np.tan(np.deg2rad(15))
+
+Z3 = 3 * g * Llever / Lweel
+muZ = mu * Z3
+xi0 = muZ / (4 * C22)
+
+X5 = muZ * alpha5 / np.sqrt(xi**2 + alpha5**2) * (1 - xi0/(2*np.sqrt(xi**2 + alpha5**2)))
+X15 = muZ * alpha15 / np.sqrt(xi**2 + alpha15**2) * (1 - xi0/(2*np.sqrt(xi**2 + alpha15**2)))
+
+Y5 = muZ * xi / np.sqrt(xi**2 + alpha5**2) * (1 - xi0/(2*np.sqrt(xi**2 + alpha5**2)))
+Y15 = muZ * xi / np.sqrt(xi**2 + alpha15**2) * (1 - xi0/(2*np.sqrt(xi**2 + alpha15**2)))
+
 fig, ax = plt.subplots()
 
-ax.plot(xvals, i_Y_ss, 'o-', label='d=5cm')
-ax.plot(xvals, v_Y_ss, 'o-', label='d=15cm')
+ax.plot(xvals, i_Y_ss, 'o-', label='$\delta=5\circ$')
+ax.plot(X5, Y5, label='$\delta=5\circ$ theoretical')
+ax.plot(xvals, v_Y_ss, 'o-', label='$\delta=15\circ$')
+ax.plot(X15, Y15, label='$\delta=15\circ$ theoretical')
 
 ax.set_xlabel('X (N)')
-ax.set_ylabel('Y_ss (N)')
+ax.set_ylabel('Y (N)')
 
 ax.legend()
 ax.grid()

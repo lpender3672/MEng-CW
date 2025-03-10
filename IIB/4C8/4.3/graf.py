@@ -9,6 +9,10 @@ xcal = 12
 slope = -104.935
 intercept = -0.664
 
+Llever = 27
+Lweel = 15.8
+g = 9.81
+
 i_Y_ss = [0, 0, 0]
 iii_Y_ss = [0, 0, 0]
 
@@ -33,6 +37,9 @@ for i, delta in enumerate(dels):
     i_Y_ss[i] = peak2peak(i_data[i])
     iii_Y_ss[i] = peak2peak(iii_data[i])
 
+
+Z3 = 3 * g * Llever / Lweel
+Z5 = 5 * g * Llever / Lweel
 
 fig, ax = plt.subplots(len(dels), 2, figsize=(10, 15))
 
@@ -74,17 +81,23 @@ tandels = tandels[sort_idx]
 i_Y_ss = i_Y_ss[sort_idx]
 iii_Y_ss = iii_Y_ss[sort_idx]
 
-ax.plot(tandels, i_Y_ss, 'o-', label='W=3kg')
-ax.plot(tandels, iii_Y_ss, 'o-', label='W=5kg')
+def plot_lin_fit(ax, xtofit, ytofit, lstyle = "-", label = ""):
+    m, c = np.polyfit(xtofit, ytofit, 1)
+    xlims = ax.get_xlim()
+    x = np.linspace(*xlims, 100)
+    flabl = f'{label} ('+'$C_{22}='+f'{m:.1f})$'
+    ax.plot(x, m*x + c, lstyle, label=flabl)
+
+npts = 3
+ax.plot(tandels, i_Y_ss, 'o-', label=f'Z={Z3:.1f} measured')
+plot_lin_fit(ax, tandels[:npts], i_Y_ss[:npts], '--', label=f'Z={Z3:.1f} fit')
+ax.plot(tandels, iii_Y_ss, 'o-', label=f'Z={Z5:.1f} measured')
+plot_lin_fit(ax, tandels[:npts], iii_Y_ss[:npts], '--', label=f'Z={Z5:.1f} fit')
+
 ax.grid()
 ax.set_xlabel('$tan(\delta)$ [-]')
-ax.set_ylabel('$Y_{SS}$ [-]')
+ax.set_ylabel('$Y_{SS}$ [N]')
 ax.legend()
-
-C22_3 = (i_Y_ss[1] - i_Y_ss[0])/(tandels[1] - tandels[0])
-C22_5 = (iii_Y_ss[1] - iii_Y_ss[0])/(tandels[1] - tandels[0])
-
-print(f'C22 = {C22_5:.3f} N')
 
 fig.savefig('IIB/4C8/4.3/Yss_vs_tandelta.png', dpi=300)
 plt.show()

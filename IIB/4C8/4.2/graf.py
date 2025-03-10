@@ -35,6 +35,21 @@ plt.plot(speed3_dat[:, 0]/ xcal, slope * speed3_dat[:, 1] + intercept, label='Sp
 plt.plot(speed5_dat[:, 0]/ xcal, slope * speed5_dat[:, 1] + intercept, label='Speed 5')
 plt.plot(speed7_dat[:, 0]/ xcal, slope * speed7_dat[:, 1] + intercept, label='Speed 7')
 
+# print the avg force
+f1 = slope * speed1_dat[:, 1] + intercept
+f3 = slope * speed3_dat[:, 1] + intercept
+f5 = slope * speed5_dat[:, 1] + intercept
+f7 = slope * speed7_dat[:, 1] + intercept
+d1 = speed1_dat[:, 0] / xcal
+d3 = speed3_dat[:, 0] / xcal
+d5 = speed5_dat[:, 0] / xcal
+d7 = speed7_dat[:, 0] / xcal
+
+print(f'Avg force for speed 1: {np.mean(f1[(start < d1) & (d1 < end)]):.2f} N')
+print(f'Avg force for speed 3: {np.mean(f3[(start < d3) & (d3 < end)]):.2f} N')
+print(f'Avg force for speed 5: {np.mean(f5[(start < d5) & (d5 < end)]):.2f} N')
+print(f'Avg force for speed 7: {np.mean(f7[(start < d7) & (d7 < 0.4)]):.2f} N')
+
 plt.xlabel('Distance (m)')
 plt.ylabel('Lateral Force (N)')
 plt.legend()
