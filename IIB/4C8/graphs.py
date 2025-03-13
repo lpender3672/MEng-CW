@@ -33,21 +33,20 @@ Z5 = Z[3]
 
 C22 = 244.3
 
-def f3(xi, mu, offset):
+def f3(xi, mu, offset=0):
     muZ = mu * Z3
     return muZ * (1 - muZ / (4 * C22 * xi)) + offset
 
-def f5(xi, mu, offset):
+def f5(xi, mu, offset=0):
     muZ = mu * Z5
     return muZ * (1 - muZ / (4 * C22 * xi)) + offset
 
-popt3, _ = curve_fit(f3, xi[W == 3], X[W == 3], p0=[0.7, 0])
-popt5, _ = curve_fit(f5, xi[W == 5], X[W == 5], p0=[0.7, 0])
+popt3, _ = curve_fit(f3, xi[W == 3], X[W == 3], p0=[3, 10])
+popt5, _ = curve_fit(f5, xi[W == 5], X[W == 5], p0=[3, 10])
 mu3 = popt3[0]
 mu5 = popt5[0]
 
 # separate W into 5kg and 3kg
-
 
 fig,ax = plt.subplots()
 

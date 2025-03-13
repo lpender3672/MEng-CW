@@ -73,8 +73,8 @@ for i, delta in enumerate(tvals):
     
 # plot X v Y
 
-xi = np.linspace(0, 1, 200)
-mu = 0.7
+xi = np.logspace(-2, 0, 200)
+mu = 0.58
 C22 = 244.3
 alpha5 = np.tan(np.deg2rad(5))
 alpha15 = np.tan(np.deg2rad(15))
@@ -89,17 +89,42 @@ X15 = muZ * alpha15 / np.sqrt(xi**2 + alpha15**2) * (1 - xi0/(2*np.sqrt(xi**2 + 
 Y5 = muZ * xi / np.sqrt(xi**2 + alpha5**2) * (1 - xi0/(2*np.sqrt(xi**2 + alpha5**2)))
 Y15 = muZ * xi / np.sqrt(xi**2 + alpha15**2) * (1 - xi0/(2*np.sqrt(xi**2 + alpha15**2)))
 
+alphas = np.logspace(-2, 2, 200)
+
+ALP, XI = np.meshgrid(alphas, xi)
+
+# plot contours of constant xi and alpha
+Xs = muZ * ALP / np.sqrt(XI**2 + ALP**2) * (1 - xi0/(2*np.sqrt(XI**2 + ALP**2)))
+Ys = muZ * XI / np.sqrt(XI**2 + ALP**2) * (1 - xi0/(2*np.sqrt(XI**2 + ALP**2)))
+
+
+
 fig, ax = plt.subplots()
 
-ax.plot(xvals, i_Y_ss, 'o-', label='$\delta=5\circ$')
-ax.plot(X5, Y5, label='$\delta=5\circ$ theoretical')
-ax.plot(xvals, v_Y_ss, 'o-', label='$\delta=15\circ$')
-ax.plot(X15, Y15, label='$\delta=15\circ$ theoretical')
+# plot the contours
+xi_levels = xi[::20]
+contour_xi = ax.contour(Xs, Ys, XI, levels=xi_levels, colors='gray', linewidths=1, label='Constant $\\xi$')
+ax.clabel(contour_xi, inline=True, fontsize=8, fmt='%1.2f', inline_spacing=0)
+alpha_levels = alphas[::20]
+contour_alp = ax.contour(Xs, Ys, ALP, levels=alpha_levels, colors='gray', linewidths=1, linestyles='dashed', label='Constant $\\alpha$')
+ax.clabel(contour_alp, inline=True, fontsize=8, fmt='%1.2f', inline_spacing=0)
+
+p1 = ax.plot(xvals, i_Y_ss, 'o-', label='$\delta=5\circ$')
+p2 = ax.plot(X5, Y5, label='$\delta=5\circ$ theoretical')
+p3 = ax.plot(xvals, v_Y_ss, 'o-', label='$\delta=15\circ$')
+p4 = ax.plot(X15, Y15, label='$\delta=15\circ$ theoretical')
 
 ax.set_xlabel('X (N)')
 ax.set_ylabel('Y (N)')
 
-ax.legend()
+ax.set_xlim(0, ax.get_xlim()[1])
+ax.set_ylim(0, ax.get_ylim()[1])
+
+import matplotlib.lines as mlines
+xi_legend = mlines.Line2D([], [], color='gray', linewidth=1, label='Constant $\\xi$')
+alpha_legend = mlines.Line2D([], [], color='gray', linewidth=1, linestyle='dashed', label='Constant $\\alpha$')
+
+ax.legend(handles=[xi_legend, alpha_legend, p1[0], p2[0], p3[0], p4[0]])
 ax.grid()
 
 fig.savefig('IIB/4C8/5.3/XvsY.png', dpi=300)

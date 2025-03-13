@@ -66,7 +66,7 @@
 
 \begin{document}
 
-\title{}
+\title{4C8: Model Tyre Tests}
 \author{lwp26}
 \date{November 2024}
 \maketitle 
@@ -84,7 +84,33 @@
 
 \subsection{Objectives}
 
+\begin{itemize}
+    \item A static tyre and rolling road test rig will be calibrated and tested to verify invariance of forces with speed to allow manual movements of the road surface.
+    \item The normal load on the tyre will be varied to understand its impact on the steady state lateral force.
+    \item The longitudinal creepage of the tyre will be measured by applying a torque at 0 steer angle.
+    \item The combined lateral and longitudinal creepage of the tyre will be measured by applying varying torques at two steer angles.
+    \item These combined results will be compared to theoretical models obtained by the individual creep experiments.
+\end{itemize}
+
 \subsection{Setup}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{photos/setup.png}
+    \caption{The experimental setup.}
+    \label{fig:setup}
+\end{figure}
+
+The normal force Z is applied by a mass on a lever arm and is calculated using the equation below.
+\begin{equation}
+    Z = W * \frac{r_{\text{lever}}}{r_{\text{wheel}}}
+\end{equation}
+The longitudinal force X is applied by wire wound around a drum and is calculated using the equation below.
+\begin{equation}
+    X = T * \frac{r_{\text{drum}}}{r_{\text{wheel}}}
+\end{equation}
+The effective radius of the wheel varies on the normal force, as the wheel deforms more under higher loads.
+This radius was measured by measuring the distance the unyawed wheel travelled with no load applied which can be seen in section \ref{no_load_creep}.
 
 \section{LATERAL CREEP}
 
@@ -126,7 +152,7 @@ This indicates both good accuracy and linearity of the transducer.
 
 Figure \ref{fig:lateral_force_distance_speed} shows the sampled lateral force at different rolling speeds as a function of distance.
 The motors speed settings \texttt{[1,3,5,7]} at fixed sample rate correspond to a number of samples to cover the full length of track \texttt{[469,134,84,83]}.
-The respective average lateral forces are \texttt{9.31, 10.12, 10.68, 11.73}.
+The respective average lateral forces are \texttt{[9.31, 10.12, 10.68, 11.73]}.
 This shows for a ~250\% increase in speed, the average lateral force increases only 8.7\%.
 Speed 7 shows an increased distance to the end of the track which may indicate that the rotary encoder slipped upon the sudden deceleration of the track.
 More interestingly at speed 7, a significant drop in lateral force towards the end of the track is observed.
@@ -187,6 +213,8 @@ This is due to the increased steer angle requiring more deformation of the tyre 
 It then follows that the more microslip that occurs, the further the lateral force deviates below the linear regime as a larger area reaches the frictional limit.
 % probably worth explaining why it still increases?
 
+The initial gradient $C_{22}$ appears to increase slightly with normal load which is discussed in the next section.
+
 \begin{center}
     \textbf{At which normal load is the tyre nearest to sliding for large
     $ \alpha $ ? Why? How is the
@@ -194,11 +222,21 @@ It then follows that the more microslip that occurs, the further the lateral for
     $ \alpha $ affected by the normal load?}
 \end{center}
 
-Not sure about this one.
+The tyre with a smaller normal load will slide at a smaller steer angle than the higher normal force.
+This is because with a smaller normal load the friction limit is reduced and so the peak lateral force occurs at a lower steer angle.
+In the brush model, and for microslip occuring strictly in the lateral direction, the peak lateral force would occur when microslip occurs over the entire contact area.
+However, in a more realistic model the difference between static and dynamic friction causes the peak lateral force to occur microslip occurs over only a portion of the contact area.
+
+The gradient of the initial linear range should not be affected by the normal load as the tyre should be in the linear elastic regime.
+However, the reduced gradient of the smaller normal load tyre does indicate that more microslip is present and so its closer to sliding.
 
 \section{LONGITUDINAL CREEP}
 
-\subsection{\textbf{No Load Creep}}
+\subsection{\textbf{No Load Creep} \label{no_load_creep}}
+
+A no load creep test is performed at each normal load to determine the effective rolling radius of the tyre.
+This will change with normal load as the tyre deforms more under higher loads.
+For Z = 50.3 N, the effective radius is 45.1 mm and for Z = 83.8 N, the effective radius is 44.7 mm.
 
 \subsection{\textbf{Creep with an Applied Torque}}
 
@@ -216,11 +254,12 @@ Not sure about this one.
     vs. ξ graph.}
 \end{center}
 
-\begin{equation}
-    \xi = \frac{\Delta x}{x} 
-     = \frac{x_{2} - x_{1}}
-            {\bigl(x_{\max} - x_{1}\bigr) + \bigl(x_{\max} - x_{2}\bigr)}.
-\end{equation}
+The longitudinal deformation shown in figure \ref{fig:longitudinal_force_vs_creepage} shows strong linearity at both normal forces measured.
+Its important to note that higher creep values were not possible to be measured due to the mass applying the torque reaching the floor during the slip.
+The different normal forces have very different gradients with $C_{11}|_{Z=50.3} = 149.7$ N and $C_{11}|_{Z=83.8} = 389.2$ N.
+This shows that longitudinal creep coefficient $C_{11}$ increases with the normal force $Z$.
+
+Comparing this to the lateral deformation, 
 
 \subsection{\textbf{Combined Lateral and Longitudinal Creep}}
 
@@ -237,29 +276,30 @@ Not sure about this one.
 
 \section{Appendix}
 
+The longitudinal creepage is calculated using the equation below
+\begin{equation}
+    \xi = \frac{\Delta x}{x} 
+     = \frac{x_{2} - x_{1}}
+            {\bigl(x_{\max} - x_{1}\bigr) + \bigl(x_{\max} - x_{2}\bigr)}.
+\end{equation}
+
+The nonlinear model longitudinal and lateral forces are given using the equations below \cite{handout}.
+\begin{align}
+Y &= \mu Z \,\frac{\alpha}{\sqrt{\xi^2 + \alpha^2}}
+\left[\,1 - \frac{\xi_0}{2\,\sqrt{\xi^2 + \alpha^2}}\,\right] \\
+    X &= \mu Z \,\frac{\xi}{\sqrt{\xi^2 + \alpha^2}}
+    \left[\,1 - \frac{\xi_0}{2\,\sqrt{\xi^2 + \alpha^2}}\,\right]
+\end{align}
+
 \begin{thebibliography}{9}
 
 
   \bibitem{handout}
-  J. V. Taylor
-  \emph{Turbine Cascade Aerodynamics Handout}
+  X. Na
+  \emph{LABORATORY EXPERIMENT: MODEL TYRE TESTS}
   University of Cambridge,
-  October 2024.
+  Feburary 2025.
 
-  \bibitem{losses}
-  J. D. Denton (1993).
-  \emph{Loss Mechanisms in Turbomachines}
-  May, 1993 
-
-  \bibitem{fluidmech}
-  S. L. Dixon
-  \emph{Fluid Mechanics, Thermodynamics of Turbomachinery, FOURTH EDITION}
-  1998
-
-  \bibitem{separation}
-  John M. Russell
-  \emph{LENGTH AND BURSTING OF SEPARATION BUBBLES: A PHYSICAL INTERPRETATION}
-  1979
 \end{thebibliography}
 
 \end{document}
