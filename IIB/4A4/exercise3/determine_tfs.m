@@ -148,14 +148,17 @@ print('exercise3\aileron_to_rollrate', '-dpng', '-r600');
 %% Final TFs
 syms s
 
+elev_to_pitchrate_num(end) = 0;
 elev_to_pitchrate_tf = poly2sym(elev_to_pitchrate_num, s) / poly2sym(longitudinal_den, s);
 elev_to_pitchrate_tf_tex = latex(vpa(elev_to_pitchrate_tf, 6))
 
+elevator_to_normal_num(end) = 0;
 elevator_to_normal_tf = poly2sym(elevator_to_normal_num, s) / poly2sym(longitudinal_den, s);
 elevator_to_normal_tf_tex = latex(vpa(elevator_to_normal_tf, 6))
 
 rudder_to_yawrate_tf = poly2sym(rudder_to_yawrate_num, s) / poly2sym(lateral_den, s);
 rudder_to_yawrate_tf_tex = latex(vpa(rudder_to_yawrate_tf, 6))
 
+aileron_to_rollrate_num(end) = 0;
 aileron_to_rollrate_tf = poly2sym(aileron_to_rollrate_num, s) / poly2sym(lateral_den, s);
 aileron_to_rollrate_tf_tex = latex(vpa(aileron_to_rollrate_tf, 6))
