@@ -31,11 +31,18 @@ xmin, xmax = 0.04, 0.3
 def peak2peak(data):
     mask = (xmin < data[:, 0]) & (data[:, 0] < xmax)
     dmx = np.gradient(data[:, 0])
-    return (np.mean(data[mask & (dmx > 0), 1]) - 
+    men = (np.mean(data[mask & (dmx > 0), 1]) - 
                 np.mean(data[mask & (dmx < 0), 1])) / 2
+    
+    std = (np.std(data[mask & (dmx > 0), 1]) +
+                np.std(data[mask & (dmx < 0), 1])) / 2
+    
+    return men, std
 
 i_Y_ss = [None] * len(tvals)
 v_Y_ss = [None] * len(tvals)
+u_i_Y_ss = [None] * len(tvals)
+u_v_Y_ss = [None] * len(tvals)
 
 xcal = 12
 slope = -104.935
@@ -51,8 +58,8 @@ for i, tval in enumerate(tvals):
     i_data[i][:, 1] = slope * i_data[i][:, 1] + intercept
     v_data[i][:, 1] = slope * v_data[i][:, 1] + intercept
 
-    i_Y_ss[i] = peak2peak(i_data[i])
-    v_Y_ss[i] = peak2peak(v_data[i])
+    i_Y_ss[i], u_i_Y_ss[i] = peak2peak(i_data[i])
+    v_Y_ss[i], u_v_Y_ss[i] = peak2peak(v_data[i])
 
 
 fig, ax = plt.subplots(len(tvals), 2, figsize=(10, 15))
@@ -109,9 +116,9 @@ alpha_levels = alphas[::20]
 contour_alp = ax.contour(Xs, Ys, ALP, levels=alpha_levels, colors='gray', linewidths=1, linestyles='dashed', label='Constant $\\alpha$')
 ax.clabel(contour_alp, inline=True, fontsize=8, fmt='%1.2f', inline_spacing=0)
 
-p1 = ax.plot(xvals, i_Y_ss, 'o-', label='$\delta=5\circ$')
+p1 = ax.errorbar(xvals, i_Y_ss, yerr=u_i_Y_ss, fmt='o-', label='$\delta=5\circ$')
 p2 = ax.plot(X5, Y5, label='$\delta=5\circ$ theoretical')
-p3 = ax.plot(xvals, v_Y_ss, 'o-', label='$\delta=15\circ$')
+p3 = ax.errorbar(xvals, v_Y_ss, yerr=u_v_Y_ss, fmt='o-', label='$\delta=15\circ$')
 p4 = ax.plot(X15, Y15, label='$\delta=15\circ$ theoretical')
 
 ax.set_xlabel('X (N)')

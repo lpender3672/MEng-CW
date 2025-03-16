@@ -15,14 +15,21 @@ g = 9.81
 
 i_Y_ss = [0, 0, 0]
 iii_Y_ss = [0, 0, 0]
+u_i_Y_ss = [0, 0, 0]
+u_iii_Y_ss = [0, 0, 0]
 
 xmin, xmax = 0.15, 0.8
 
 def peak2peak(data):
     mask = (xmin < data[:, 0]) & (data[:, 0] < xmax)
     dmx = np.gradient(data[:, 0])
-    return (np.mean(data[mask & (dmx > 0), 1]) - 
+    men = (np.mean(data[mask & (dmx > 0), 1]) - 
                 np.mean(data[mask & (dmx < 0), 1])) / 2
+    
+    std = (np.std(data[mask & (dmx > 0), 1]) +
+                np.std(data[mask & (dmx < 0), 1])) / 2
+    
+    return men, std
 
 for i, delta in enumerate(dels):
     i_data[i] = np.loadtxt(f'IIB/4C8/4.3/i_d={delta}.csv', delimiter=',')
@@ -34,8 +41,8 @@ for i, delta in enumerate(dels):
     i_data[i][:, 1] = slope * i_data[i][:, 1] + intercept
     iii_data[i][:, 1] = slope * iii_data[i][:, 1] + intercept
 
-    i_Y_ss[i] = peak2peak(i_data[i])
-    iii_Y_ss[i] = peak2peak(iii_data[i])
+    i_Y_ss[i], u_i_Y_ss[i] = peak2peak(i_data[i])
+    iii_Y_ss[i], u_iii_Y_ss[i] = peak2peak(iii_data[i])
 
 
 Z3 = 3 * g * Llever / Lweel
@@ -75,11 +82,17 @@ extra_Y_ss5 = np.interp(extra_tandels, np.abs(sbatc5[:,3]), sbatc5[:,7])
 tandels = np.concatenate((tandels, extra_tandels))
 i_Y_ss = np.concatenate((i_Y_ss, extra_Y_ss3))
 iii_Y_ss = np.concatenate((iii_Y_ss, extra_Y_ss5))
+
+u_i_Y_ss = np.concatenate((u_i_Y_ss, np.max(u_i_Y_ss) * np.ones(3)))
+u_iii_Y_ss = np.concatenate((u_iii_Y_ss, np.max(u_iii_Y_ss) * np.ones(3)))
+
 # sort by tan(delta)
 sort_idx = np.argsort(tandels)
 tandels = tandels[sort_idx]
 i_Y_ss = i_Y_ss[sort_idx]
 iii_Y_ss = iii_Y_ss[sort_idx]
+u_i_Y_ss = u_i_Y_ss[sort_idx]
+u_iii_Y_ss = u_iii_Y_ss[sort_idx]
 
 def plot_lin_fit(ax, xtofit, ytofit, lstyle = "-", label = ""):
     m, c = np.polyfit(xtofit, ytofit, 1)
@@ -89,9 +102,11 @@ def plot_lin_fit(ax, xtofit, ytofit, lstyle = "-", label = ""):
     ax.plot(x, m*x + c, lstyle, label=flabl)
 
 npts = 3
-ax.plot(tandels, i_Y_ss, 'o-', label=f'Z={Z3:.1f} measured')
+#ax.plot(tandels, i_Y_ss, 'o-', label=f'Z={Z3:.1f} measured')
+ax.errorbar(tandels, i_Y_ss, yerr=u_i_Y_ss, fmt='o-', label=f'Z={Z3:.1f} measured')
 plot_lin_fit(ax, tandels[:npts], i_Y_ss[:npts], '--', label=f'Z={Z3:.1f} fit')
-ax.plot(tandels, iii_Y_ss, 'o-', label=f'Z={Z5:.1f} measured')
+#ax.plot(tandels, iii_Y_ss, 'o-', label=f'Z={Z5:.1f} measured')
+ax.errorbar(tandels, iii_Y_ss, yerr=u_iii_Y_ss, fmt='o-', label=f'Z={Z5:.1f} measured')
 plot_lin_fit(ax, tandels[:npts], iii_Y_ss[:npts], '--', label=f'Z={Z5:.1f} fit')
 
 ax.grid()
