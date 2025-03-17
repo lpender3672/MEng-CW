@@ -115,4 +115,38 @@ ax.set_ylabel('$Y_{SS}$ [N]')
 ax.legend()
 
 fig.savefig('IIB/4C8/4.3/Yss_vs_tandelta.png', dpi=300)
+
+
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Magic Formula parameters (example values)
+B = 10.0
+C = 1.9
+D = 1.0
+E = 0.97
+
+# Generate a range of slip angles (in radians)
+delta = np.linspace(0, 0.3, 500)
+
+# --- Calculate slip angle alpha as tan(delta) ---
+alpha = np.tan(delta)
+
+# --- Pacejka Magic Formula for lateral force ---
+# F_y = D * sin( C * atan( B*alpha - E*(B*alpha - atan(B*alpha)) ) )
+Fy = D * np.sin(
+    C * np.arctan(
+        B * alpha - E * (B * alpha - np.arctan(B * alpha))
+    )
+)
+
+fig ,ax = plt.subplots()
+
+ax.plot(alpha, Fy, label="Lateral force vs. tan(delta)")
+ax.set_xlabel("tan(delta)")
+ax.set_ylabel("Lateral force F_y")
+ax.set_title("Magic Formula: Lateral Tire Force vs tan(Slip Angle)")
+ax.grid(True)
+ax.legend()
+
 plt.show()

@@ -80,15 +80,16 @@ for i, delta in enumerate(tvals):
     
 # plot X v Y
 
-xi = np.logspace(-2, 0, 200)
+xi = np.logspace(-2, 1, 200)
 mu = 0.96
-C22 = 188.3
+C22 = 244.3
+C11 = 200 #149.7
 alpha5 = np.tan(np.deg2rad(5))
 alpha15 = np.tan(np.deg2rad(15))
 
 Z3 = 3 * g * Llever / Lweel
 muZ = mu * Z3
-xi0 = muZ / (4 * C22)
+xi0 = muZ / (4 * C11)
 
 X5 = muZ * alpha5 / np.sqrt(xi**2 + alpha5**2) * (1 - xi0/(2*np.sqrt(xi**2 + alpha5**2)))
 X15 = muZ * alpha15 / np.sqrt(xi**2 + alpha15**2) * (1 - xi0/(2*np.sqrt(xi**2 + alpha15**2)))
@@ -134,7 +135,7 @@ alpha_legend = mlines.Line2D([], [], color='gray', linewidth=1, linestyle='dashe
 ax.legend(handles=[xi_legend, alpha_legend, p1[0], p2[0], p3[0], p4[0]])
 ax.grid()
 
-fig.savefig('IIB/4C8/5.3/XvsY.png', dpi=300)
+#fig.savefig('IIB/4C8/5.3/XvsY.png', dpi=300)
 
 plt.show()
 

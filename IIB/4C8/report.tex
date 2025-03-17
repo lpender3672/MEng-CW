@@ -36,7 +36,6 @@
 \setlength{\parindent}{0pt}%
 \linespread{0.9}
 
-
 \definecolor{codegreen}{rgb}{0,0.6,0}
 \definecolor{codegray}{rgb}{0.5,0.5,0.5}
 \definecolor{codepurple}{rgb}{0.58,0,0.82}
@@ -67,8 +66,8 @@
 \begin{document}
 
 \title{4C8: Model Tyre Tests}
-\author{lwp26}
-\date{November 2024}
+\author{5739G}
+\date{February 2025}
 \maketitle 
 
 \iffalse
@@ -86,7 +85,7 @@
 
 \begin{itemize}
     \item A static tyre and rolling road test rig will be calibrated and tested to verify invariance of forces with speed to allow manual movements of the road surface.
-    \item The normal load on the tyre will be varied to understand its impact on the steady state lateral force.
+    \item The normal load on the tyre will be varied to understand it's impact on the steady state lateral force.
     \item The longitudinal creepage of the tyre will be measured by applying a torque at 0 steer angle.
     \item The combined lateral and longitudinal creepage of the tyre will be measured by applying varying torques at two steer angles.
     \item These combined results will be compared to theoretical models obtained by the individual creep experiments.
@@ -127,11 +126,11 @@ This radius was measured by measuring the distance the unyawed wheel travelled w
     \textbf{Comment on the accuracy and linearity of the side force transducer}
 \end{center}
 
-The side force transducer consists of strain gauages in a Wheatstone bridge.
+The side force transducer consists of strain gauges in a Wheatstone bridge.
 It is assumed that the location of strain gauges and the bridge configuration is setup to only measure the side force and not be affected by transverse forces.
-This was not verified in the experiment as calibation was only done by applying known side forces.
+This was not verified in the experiment as calibration was only done by applying known side forces.
 
-The calibation line in figure \ref{fig:force_linearity} shows a strong linear relationship in the range of forces considered with an $r$ value of -0.9944.
+The calibration line in figure \ref{fig:force_linearity} shows a strong linear relationship in the range of forces considered with an $r$ value of -0.9944.
 The 95\% confidence interval for the linear fit is shown in the shaded region of the figure.
 The uncertainty in forces is negligible and for voltage collected at 2 d.p. $\pm 0.005 V$ is also small.
 This indicates both good accuracy and linearity of the transducer.
@@ -158,13 +157,19 @@ Speed 7 shows an increased distance to the end of the track which may indicate t
 More interestingly at speed 7, a significant drop in lateral force towards the end of the track is observed.
 The cause of this is not known.
 
+Additionally a frequency analysis was done on the lateral force data to investigate any periodic slip behaviour,
+however no significant harmonic components were found.
+
+The key result of this invariance to low speeds is that the road surface can be manually moved to accelerate the test process.
+It also allows the peak to peak force averaging of forwards and backwards motion to make use of our calibration for negative lateral forces.
+
 \subsection{\textbf{Effect of Normal Load on Steady State Side Force}}
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.8\textwidth]{4.3/Yss_vs_tandelta.png}
-    \caption{Lateral force vs. tangent of steer angle.}
-    \label{fig:Y_vs_alpha}
+    \caption{Steady state lateral force vs. lateral creep, or the tangent of steer angle.}
+    \label{fig:lateral_force_vs_alpha}
 \end{figure}
 
 \begin{figure}[H]
@@ -201,7 +206,11 @@ Microslip occurs where local frictional forces are insufficient to deform the ty
     the shape of the Y vs. $ \alpha $ graph}
 \end{center}
 
-Figure \ref{fig:Y_vs_alpha} shows a region of linearity between lateral force and steer angle before deviating at high steer angles.
+Figure \ref{fig:lateral_force_vs_alpha} shows the steady state lateral force vs steer angle for two different normal loads.
+This force is measured as half the peak to peak from sliding the road backwards and forwards.
+A peak is the averaged force over the central region of the track to avoid hysterisis effects at the ends. The standard deviation is also plotted as error bars.
+
+A region of linearity can be seen between steady state lateral force and steer angle before deviating at high steer angles.
 This loss of linearity is due to the onset of microslip.
 Figure \ref{fig:contact_photos} shows the contact area of the wheel at different steer angles and the deformed line of the tyre. % TODO: deformed line? centerline? clarify
 Figure \ref{fig:contact_5} shows the contact area at a low steer angle which from the bottom, or leading edge, has a line that follows the line on the road surface.
@@ -213,7 +222,9 @@ This is due to the increased steer angle requiring more deformation of the tyre 
 It then follows that the more microslip that occurs, the further the lateral force deviates below the linear regime as a larger area reaches the frictional limit.
 % probably worth explaining why it still increases?
 
-The initial gradient $C_{22}$ appears to increase slightly with normal load which is discussed in the next section.
+The initial gradient $C_{22}$ appears to increase slightly with normal load which may indicate that some points used in the linear fit are microslipping.
+This would be due to increased normal force increasing the frictional limit allowing larger local forces in regions that were previously microslipping.
+However, its also possible that the increased normal force causes an increase in contact area, increasing the lateral creep coefficient.
 
 \begin{center}
     \textbf{At which normal load is the tyre nearest to sliding for large
@@ -224,8 +235,8 @@ The initial gradient $C_{22}$ appears to increase slightly with normal load whic
 
 The tyre with a smaller normal load will slide at a smaller steer angle than the higher normal force.
 This is because with a smaller normal load the friction limit is reduced and so the peak lateral force occurs at a lower steer angle.
-In the brush model, and for microslip occuring strictly in the lateral direction, the peak lateral force would occur when microslip occurs over the entire contact area.
-However, in a more realistic model the difference between static and dynamic friction causes the peak lateral force to occur microslip occurs over only a portion of the contact area.
+In the brush model, and for microslip occurring strictly in the lateral direction, the peak lateral force would occur when microslip occurs over the entire contact area.
+However, in a more realistic model the difference between static and dynamic friction causes the peak lateral force to occur when microslip occurs over only a portion of the contact area.
 
 The gradient of the initial linear range should not be affected by the normal load as the tyre should be in the linear elastic regime.
 However, the reduced gradient of the smaller normal load tyre does indicate that more microslip is present and so its closer to sliding.
@@ -236,7 +247,7 @@ However, the reduced gradient of the smaller normal load tyre does indicate that
 
 A no load creep test is performed at each normal load to determine the effective rolling radius of the tyre.
 This will change with normal load as the tyre deforms more under higher loads.
-For Z = 50.3 N, the effective radius is 45.1 mm and for Z = 83.8 N, the effective radius is 44.7 mm.
+For Z = 50.3 N, the effective radius is 45.1 mm and for Z = 83.8 N, the effective radius was found to be 44.7 mm.
 
 \subsection{\textbf{Creep with an Applied Torque}}
 
@@ -257,22 +268,56 @@ For Z = 50.3 N, the effective radius is 45.1 mm and for Z = 83.8 N, the effectiv
 The longitudinal deformation shown in figure \ref{fig:longitudinal_force_vs_creepage} shows strong linearity at both normal forces measured.
 Its important to note that higher creep values were not possible to be measured due to the mass applying the torque reaching the floor during the slip.
 The different normal forces have very different gradients with $C_{11}|_{Z=50.3} = 149.7$ N and $C_{11}|_{Z=83.8} = 389.2$ N.
-This shows that longitudinal creep coefficient $C_{11}$ increases with the normal force $Z$.
+At $Z=50.3$ N, the longitudinal creep coefficient is 20\% smaller than the lateral, however at $Z=83.8$ N, the longitudinal coefficient is 59\% larger than the lateral.
+$C_{11}$ is shown to vary significantly more than $C_{22}$ with the normal force $Z$. 
 
-Comparing this to the lateral deformation, 
+Also shown in figure \ref{fig:longitudinal_force_vs_creepage} is the nonlinear fit of the data for $\delta = 0^\circ$.
+This means equation \ref{eq:xnonlin} reduces to:
+\begin{equation}
+    X = \mu Z \left[ 1 - \frac{\mu Z}{4\xi C}\right]
+\end{equation}
+These nonlinear fits show poor agreement with the data as the results collected appear to lie completely in the linear regime.
+Despite this, the nonlinear region was still attempted with a vertical offset to relax the constraints of the fit of the equation.
+This gave poor values for $mu$ with $\mu=0.578$ for $W=3kg$ and $\mu=0.385$ for $W=5kg$.
+Instead the value of $\mu$ was taken as twice the value at the final datapoint for the smaller normal force.
+This is likely to be close to the onset of nonlinearity and so a reasonable approximation.
+The justification for the factor of 2 comes from figure 1.7 in the lecture handout \cite{notes}.
+The result gives $\mu = 2*24.15/50.3 = 0.96$.
 
 \subsection{\textbf{Combined Lateral and Longitudinal Creep}}
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.8\textwidth]{5.3/XvsY.png}
-    \caption{}
+    \caption{Measured lateral force vs applied longitudinal force for two steer angles. Constant creep factor contours predicted by theory are shown.}
     \label{fig:lateral_force_vs_longitudinal_force}
 \end{figure}
 
 \begin{center}
     \textbf{Comment on the comparison between theory and experiment.}
 \end{center}
+
+Figure \ref{fig:lateral_force_vs_longitudinal_force} shows the measured lateral force vs applied longitudinal force for two steer angles.
+The constant creep factor contours are shown which are calculated using the equations \ref{eq:ynonlin} and \ref{eq:xnonlin} with the coefficients
+$C = C_{22} = 188.3$ N [\ref{fig:lateral_force_vs_alpha}] and $\mu = 0.96$ [\ref{fig:longitudinal_force_vs_creepage}].
+The theoretical lines for the same steer angles tested are also shown.
+Some agreement between theory and observation is shown in that increasing longitudinal force $X$ decreased the lateral force at both steer angles.
+However, its important to note that the uncertainty bars at the higher longitudinal force are significant.
+This is likely due to the reduced number of samples taken at high creep factors.
+
+However, the experimental data plotted for constant lateral creep factor (constant steer angle) appears to lie on contours of constant longitudinal creep factor.
+This likely originates from the overprediction of lateral forces in the theory compared to reality.
+
+\section{Conclusion}
+
+Calibration of the lateral-force transducer showed strong linearity and did not vary much with rolling speed.
+
+In the lateral direction, larger steer angles and smaller normal loads caused earlier microslip, leading to more noticeable nonlinearity.
+
+In the longitudinal direction, the force-slip relationship remained linear within the tested range, and higher normal loads produced a greater creep stiffness.
+
+The combined lateral and longitudinal creep tests showed little agreement with the theoretical model, overpredicting the lateral forces.
+This is thought to be due to a combination of factors, including poor parameter estimation and limitations of the brush model itself. 
 
 \section{Appendix}
 
@@ -283,20 +328,29 @@ The longitudinal creepage is calculated using the equation below
             {\bigl(x_{\max} - x_{1}\bigr) + \bigl(x_{\max} - x_{2}\bigr)}.
 \end{equation}
 
-The nonlinear model longitudinal and lateral forces are given using the equations below \cite{handout}.
+The brush model's nonlinear longitudinal and lateral forces are given using the equations below \cite{handout}.
 \begin{align}
 Y &= \mu Z \,\frac{\alpha}{\sqrt{\xi^2 + \alpha^2}}
-\left[\,1 - \frac{\xi_0}{2\,\sqrt{\xi^2 + \alpha^2}}\,\right] \\
+\left[\,1 - \frac{\xi_0}{2\,\sqrt{\xi^2 + \alpha^2}}\,\right] \label{eq:ynonlin} \\
     X &= \mu Z \,\frac{\xi}{\sqrt{\xi^2 + \alpha^2}}
-    \left[\,1 - \frac{\xi_0}{2\,\sqrt{\xi^2 + \alpha^2}}\,\right]
+    \left[\,1 - \frac{\xi_0}{2\,\sqrt{\xi^2 + \alpha^2}}\,\right] \label{eq:xnonlin}
 \end{align}
+With
+\begin{equation}
+    \xi_0 = \frac{\mu Z}{2C}
+\end{equation}
 
 \begin{thebibliography}{9}
-
 
   \bibitem{handout}
   X. Na
   \emph{LABORATORY EXPERIMENT: MODEL TYRE TESTS}
+  University of Cambridge,
+  Feburary 2025.
+
+  \bibitem{notes}
+  X. Na
+  \emph{4C8: Vehicle Dynamics Lecture notes 1}
   University of Cambridge,
   Feburary 2025.
 
