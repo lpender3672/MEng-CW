@@ -101,6 +101,12 @@ def plot_Longitudinal_Static_Stability(ares, bres, aload, bload, afuel, bfuel):
     aelev = ares['Elev deflection deg'].to_numpy()
     belev = bres['Elev deflection deg'].to_numpy()
 
+    # insert 3.6 degrees at Cw = 0
+    aCw = np.insert(aCw, 0, 0)
+    aelev = np.insert(aelev, 0, 3.6)
+    bCw = np.insert(bCw, 0, 0)
+    belev = np.insert(belev, 0, 3.6)
+
     asrt = np.argsort(aCw)
     bsrt = np.argsort(bCw)
 
@@ -145,6 +151,10 @@ def plot_Longitudinal_Static_Stability(ares, bres, aload, bload, afuel, bfuel):
 
     abeta = ares['Elev tab angle deg'].to_numpy()
     bbeta = bres['Elev tab angle deg'].to_numpy()
+
+    # insert beta = -1.8 at Cw = 0
+    abeta = np.insert(abeta, 0, -1.8)
+    bbeta = np.insert(bbeta, 0, -1.8)
 
     fig, ax = plt.subplots()
     ax.plot(aCw[asrt], abeta[asrt], "o-", label='A')
@@ -207,9 +217,14 @@ def plot_Manoeuvre_Stability(ares, bres, aload, bload, afuel, bfuel):
     #print(ares.to_latex(float_format="%.3f"))
     #print(bres.to_latex(float_format="%.3f"))
 
+    # add point 0,0
+    a_nz = np.insert(a_nz, 0, 0)
+    a_nu = np.insert(a_nu, 0, 0)
+    b_nz = np.insert(b_nz, 0, 0)
+    b_nu = np.insert(b_nu, 0, 0)
 
-    asrt = np.argsort(a_nu)
-    bsrt = np.argsort(b_nu)
+    asrt = np.argsort(a_nz)
+    bsrt = np.argsort(b_nz)
 
     fig, ax = plt.subplots()
 
@@ -257,8 +272,11 @@ def plot_Manoeuvre_Stability(ares, bres, aload, bload, afuel, bfuel):
 
     fig, ax = plt.subplots()
     # f vs nz
-    ax.plot(a_nz[asrt], a_f[asrt], "o-", label='A')
-    ax.plot(b_nz[bsrt], b_f[bsrt], "o-", label='B')
+    sasrt = asrt[1:] - 1
+    sbsrt = bsrt[1:] - 1
+
+    ax.plot(a_nz[asrt][1:], a_f[sasrt], "o-", label='A')
+    ax.plot(b_nz[bsrt][1:], b_f[sbsrt], "o-", label='B')
 
     ax.set_xlabel(r'Normal acceleration $n_z$ [g]')
     ax.set_ylabel(r'Stick force $P_\eta$ [N]')
@@ -268,8 +286,8 @@ def plot_Manoeuvre_Stability(ares, bres, aload, bload, afuel, bfuel):
     fig.tight_layout()
     fig.savefig(wdir / 'Manoeuvre_Stability_3.png', dpi=300)
 
-    A_df_dn = np.gradient(a_f[asrt], a_nz[asrt])
-    B_df_dn = np.gradient(b_f[bsrt], b_nz[bsrt])
+    A_df_dn = np.gradient(a_f[sasrt], a_nz[sasrt])
+    B_df_dn = np.gradient(b_f[sbsrt], b_nz[sbsrt])
 
     fig, ax = plt.subplots()
 
