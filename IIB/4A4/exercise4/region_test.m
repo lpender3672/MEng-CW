@@ -3,7 +3,7 @@
 %% 1) Define a sample transfer function for demonstration
 %    For instance: G(s) = (s+3)/(s*(s+2)*(s+1))
 
-G = tf(elev_to_pitchrate_num, longitudinal_den);
+G = tf([-2.637 -2.475 -0.0607, 0], longitudinal_den);
 figure('Color','w'); 
 rlocus(G);
 title('Root Locus with Damping Ratio and Natural Frequency Constraints');
