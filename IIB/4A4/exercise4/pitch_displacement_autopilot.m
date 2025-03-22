@@ -2,27 +2,98 @@
 close all;
 
 s = tf('s');
-elev_pitch_tf = - 1/s * tf([-2.637 -2.475 -0.0607, 0], longitudinal_den);
+
+elev_pitch_tf_bad = - 1/s * tf(elev_to_pitchrate_num, longitudinal_den);
+
+
+elev_pitch_tf = - 1/s * tf([-2.637 -2.475 -0.0607, 0], [1 1.6366 3.4115 0.07937 0.05112]);
 
 tau_e = 0.1;
 He = 1 / (tau_e * s + 1);
 
 T = 10;
 integrator = (1 + 1/(T*s));
-G = He * integrator * elev_pitch_tf;
+
+Gbad = He * elev_pitch_tf_bad;
+figure;
+rlocus(Gbad);
+sgrid([0.4, 0], [100, 1]);
+grid on;
+xlim([-1.2, 0.2])
+ylim([-5, 5])
+print('exercise4\figures\pitch_autopilot_locus_bad', '-dpng', '-r600');
+
+Gibad = He * integrator * elev_pitch_tf_bad;
+figure;
+rlocus(Gibad);
+sgrid([0.4, 0], [100, 1]);
+grid on;
+xlim([-1.2, 0.2])
+ylim([-5, 5])
+print('exercise4\figures\pitch_autopilot_locus_intbad', '-dpng', '-r600');
+Gi = He * integrator * elev_pitch_tf;
+
+%% uncompensated
+k = 0.11;
 
 figure;
-rlocus(G);
-sgrid([0.4], []);
+rlocus(Gi);
+sgrid([0.4, 0], [100, 1]);
+grid on;
+hold on;
+xlim([-1, 0.2])
+ylim([-5, 5])
+r = rlocus(Gi, k);
+h = plot(real(r), imag(r), 'v', 'MarkerSize', 5);
+legend(h, ['k = ' num2str(k)])
+hold off;
+print('exercise4\figures\pitch_autopilot_locus_Ti10', '-dpng', '-r600');
 
-k = 1.4;
-CL = feedback(k * integrator * G, 1);
+CL = feedback(k * Gi, 1);
 
 figure;
 hold on;
 step(CL);
 yline(1.1, '--', 'Overshoot limit');
-yline(0.95, '--', 'Subsequent Overshoot');
-
+yline(1.05, '--', 'Subsequent Overshoot');
+ylim([0, 1.2])
+grid on;
 hold off;
+print('exercise4\figures\pitch_autopilot_uncompensated_step', '-dpng', '-r600');
+
+[Y, T] = step(CL);
+disp(stepinfo(Y,T).RiseTime);
+print('exercise4\figures\pitch_autopilot_locus_compensated', '-dpng', '-r600');
+
+%% compensated
+alpha = 0.1;
+Tc = 1;
+lead_compensator = (Tc*s + 1) / (alpha * Tc * s + 1);
+k = 0.7;
+GIC = lead_compensator * He * integrator * elev_pitch_tf;
+figure;
+rlocus(GIC);
+sgrid([0.4, 0], [100, 1]);
+hold on;
+grid on;
+xlim([-2, 0.1])
+ylim([-6, 6])
+r = rlocus(GIC, k);
+h = plot(real(r), imag(r), 'v', 'MarkerSize', 5);
+legend(h, ['k = ' num2str(k)])
+hold off;
+print('exercise4\figures\pitch_autopilot_locus_compensated', '-dpng', '-r600');
+
+CLc = feedback(k * GIC, 1);
+
+figure;
+hold on;
+step(CLc);
+yline(1.1, '--', 'Overshoot limit');
+yline(1.05, '--', 'Subsequent Overshoot');
+ylim([0, 1.2])
+grid on;
+hold off;
+print('exercise4\figures\pitch_autopilot_compensated_step', '-dpng', '-r600');
+
 
