@@ -1,7 +1,10 @@
 % SRG plotting functions
 
-G = tf([1], [1 1 1])
+s = tf('s');
+G = -0.1 * 1/(1+2*s);
+nyquist(G)
 SRG_LTI(G)
+
 
 % Plots the SRG of an LTI transfer function by computing the convex hull in hyperbolic space, then transforming back.
 % The SRG is the blue line, the Nyquist diagram is the red dots.

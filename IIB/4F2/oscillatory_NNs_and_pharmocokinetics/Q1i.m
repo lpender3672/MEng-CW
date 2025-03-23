@@ -27,21 +27,20 @@ n = size(A0, 1)
 m = size(B, 2)
 
 cvx_begin sdp
-    variable Y(n,n) symmetric
-    variable Z(m,n)
-    variable epsilon
+    variable P(n,n) symmetric
     variable gama
     
     %minimise(gama)
-    minimise(epsilon) % otherwise makes very high
 
-    LMI1 = Y >= 0
-    LMI2 = gama <= 0.1
+    LMI1 = P >= 0
+    LMI2 = gama <= 2
     
     % gain LMI
     %
-    LMI3 = [ (Y*A' + A*Y + Z'*Bu' + Bu*Z),   (Y*Cz' + Z'*Dzu'),          Bw;
-            (Cz*Y + Dzu*Z),  -gama*eye(2),      Dzw';
-            Bw',            Dzw,                -gama*eye(2) ] <= 0;
+    LMI3 = [ A0'*P + P*A0 + C'*C, P*B;
+            B'*P, -gama^2 * eye(1)] <= 0;
     
+    LMI4 = [(A0+N)'*P + P*(A0+N) + C'*C, P*B;
+            B'*P, -gama^2*eye(1)] <= 0;
+        
 cvx_end

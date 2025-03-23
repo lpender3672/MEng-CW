@@ -1,0 +1,301 @@
+
+
+
+\documentclass{article}
+
+\usepackage{amsmath, bm}
+\usepackage{graphicx}
+\usepackage{amssymb}
+\usepackage{float}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{hyperref}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\usepackage{enumitem}
+\usepackage{hyperref}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage[margin=1in]{geometry}
+\usepackage{savetrees}
+\usepackage[american, EFvoltages, cuteinductors]{circuitikz}
+
+% Custom subsection numbering
+\renewcommand{\thesubsection}{\roman{subsection})}
+\renewcommand{\thesubsubsection}{\alph{subsubsection})}
+
+% Set depth for numbering and TOC
+\setcounter{secnumdepth}{3}
+\setcounter{tocdepth}{3}
+
+% Explicit formatting with indentation
+\usepackage{titlesec}
+
+% Indent subsection titles (Roman numerals)
+\titleformat{\subsection}
+  {\normalfont\normalsize\bfseries}
+  {\hspace{1.5em}\thesubsection}{1em}{}
+
+% Indent subsubsection further (nested under subsection)
+\titleformat{\subsubsection}
+  {\normalfont\normalsize\itshape}
+  {\hspace{2em}\thesubsubsection}{1em}{}
+
+\usetikzlibrary{calc}
+\usetikzlibrary{angles,quotes} % for pic
+\usetikzlibrary{patterns,snakes}
+\usetikzlibrary{arrows}
+\usetikzlibrary{shapes.geometric, arrows}
+\tikzset{>=latex} % for LaTeX arrow head
+
+\setlength{\parskip}{\baselineskip}%
+\setlength{\parindent}{0pt}%
+\linespread{0.9}
+
+
+\lstset{
+  language=Matlab,
+  basicstyle=\ttfamily\small,
+  keywordstyle=\color{blue}\bfseries,
+  commentstyle=\color{green!60!black},
+  stringstyle=\color{orange},
+  numbers=left,
+  numberstyle=\tiny\color{gray},
+  stepnumber=1,
+  numbersep=10pt,
+  breaklines=true,
+  backgroundcolor=\color{gray!10},
+  captionpos=b
+}
+\tikzset{
+    cg/.style={
+        draw,
+        circle,
+        thick,
+        minimum size=0.2cm, % Adjust the size of the circle
+        inner sep=0,      % Remove extra padding
+        append after command={
+            \pgfextra{
+                \draw[thick] (\tikzlastnode.south) -- (\tikzlastnode.north);
+                \draw[thick] (\tikzlastnode.west) -- (\tikzlastnode.east);
+            }
+        }
+    }
+}
+
+\tikzstyle{startstop} = [rectangle, rounded corners, minimum width=3cm, minimum height=1cm,text centered, draw=black, fill=red!30]
+\tikzstyle{process} = [rectangle, minimum width=3cm, minimum height=1cm, text centered, draw=black, fill=orange!30]
+\tikzstyle{decision} = [diamond, minimum width=3cm, minimum height=1cm, text centered, draw=black, fill=green!30]
+\tikzstyle{io} = [trapezium, trapezium left angle=70, trapezium right angle=110, minimum width=3cm, minimum height=1cm, text centered, draw=black, fill=blue!30]
+\tikzstyle{arrow} = [thick,->,>=stealth]
+
+\begin{document}
+
+\title{4F2 Robust and Nonlinear control}
+\author{5735G}
+\date{Feburary 2025}
+\maketitle 
+
+\begin{center}
+    \textbf{Summary} \\
+    
+\end{center}
+
+\section{Stable and oscillatory recurrent neural networks}
+
+\section{Pharmacokinetics and drug dosage}
+
+The drug concentration in two compartments are modelled by coupled differential equations:
+\begin{align}
+    V_1 \dot{c}_1 &= - \rho_1(c_1) - \alpha_{12}c_1 + w_1 \\
+    V_2 \dot{c}_2 &= - \rho_2(c_2) - \alpha_{21}c_2 + w_2
+\end{align}
+
+$w_i$ are exogenous inputs, $\rho_i()$ are degradation functions which each obey the incremental sector condition
+\begin{equation}
+    \lambda_i \leq \frac{\rho_i(x_2) - \rho_i(x_1)}{x_2 - x_1} \leq \mu_i \quad \forall x_1, x_2 \in \mathbb{R} \quad \text{ where } \quad 0 < \lambda_i \leq \mu_i
+\end{equation}
+Drug concentration in the body is modelled using the positive feedback interconnection of the two compartments given by the equations:
+\begin{align}
+    w_1 &= \alpha_{21} c_2 + u \\
+    w_2 &= \alpha_{12} c_1
+\end{align}
+where $u$ is an external drug dosage.
+\subsection{Scaled relative graphs}
+
+\subsubsection{Single compartment}
+
+For compartment $i$ the incremental form is given by
+\begin{equation}
+    w_i = V_i \dot{c}_i + \alpha_{i,3-i} c_i + \rho_i(c_i)
+\end{equation}
+This can be decomposed into a linear part $L(c_1)$ and a nonlinear part $N(c_1)$:
+The Scaled Relative Graph (SRG) from $w_1$ to $c_1$ is then derived by
+\begin{align}
+    w_1 &\in (L + N)(c_1) \\
+    \implies c_1 &\in (L + N)^{-1}(w_1) 
+\end{align}
+From the incremental sector condition, the SRG of the nonlinear part is a circle with center $[(\mu+\lambda)/2, 0]$ and radius $(\mu-\lambda)/2$.
+The SRG of $L$ is simply a line.
+\begin{align}
+    L &= \{ \alpha_{12} + j y : y \in \mathbb{R} \} \\
+    N &= \{ (\mu_1 + \lambda_1)/2 + z : |z| \leq (\mu_1 - \lambda_1)/2 \}
+\end{align}
+The SRG of the sum $L + N$ is the Minkowski sum of the SRGs of $L$ and $N$.
+\begin{equation}
+    L + N = \{ \alpha_{12} + (\mu_1 + \lambda_1)/2 + jy + z : y \in \mathbb{R}, |z| \leq (\mu_1 - \lambda_1)/2 \}
+\end{equation}
+This results in a region bounded by two lines which when inverted gives a circle between 0 and $1/(\alpha_{12} + \lambda_1)$.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.4\textwidth]{figures/componentSRGs.jpg}
+    \caption{Scaled Relative Graphs of sets L and N and their Minkowski sum}
+\end{figure}
+When inverted the resultant SRG is a larger circle between 0 and $1/(\lambda_1 + \alpha_{12})$ with a smaller circle removed from it between 0 and $1/(\mu_1 + \alpha_{12})$.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.4\textwidth]{figures/compartmentSRG.jpg}
+    \caption{Scaled Relative Graph of component 1}
+\end{figure}
+
+\subsubsection{Positive feedback interconnection}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.4\textwidth]{figures/feedback_components.jpg}
+    \caption{}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.4\textwidth]{figures/feedback_SRG.jpg}
+    \caption{Scaled Relative Graph of positive feedback interconnection}
+\end{figure}
+
+\subsection{Automatic drug doses}
+
+\subsubsection{Without sensor dynamics}
+
+\begin{equation}
+    u = k \text{ReLU}(r - y)
+\end{equation}
+\begin{equation}
+    \text{ReLU}(x) = \begin{cases}
+        x & \text{if } x > 0 \\
+        0 & \text{otherwise}
+    \end{cases}
+\end{equation}
+Which satisfies the incremental sector condition
+\begin{equation}
+    0 \leq k \frac{ReLU(x_1) - ReLU(x_2)}{x_1 - x_2} \leq k
+\end{equation}
+
+This means that the SRG of the controller can be represented by a disc between 0 and $k$.
+The closed loop then consists of a cascade of the controller and plant.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{figures/closed_loop.jpg}
+    \caption{Closed loop block diagram}
+\end{figure}
+The SRG of the combined controller and plant forms a cardioid shape seen below.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{figures/closed_loop_return_ratio.png}
+    \caption{Scaled Relative Graph of closed loop return ratio}
+    \label{fig:return_ratio_srg}
+\end{figure}
+
+For stability the Nonlinear Nyquist criterion is used.
+%The closed loop system is stable if the number of encirclements of $-1$ by $kG(e^{j\theta})$ for $\theta \in [-\pi, \pi]$ equals the number of open loop unstable poles.
+% should use the circle criterion.
+%For determining the range of $k$ for stability, the Circle Criterion is used.
+If $\text{SRG}(H_1^{-1})$ and -$\tau \text{SRG}(H_2)$ are separated by distance greater than $r_\text{min} > 0 \forall \tau \in [0,1]$.
+Then the feedback interconnection of $H_1$ and $H_2$ has fading memory and incremental gain bound of $1/r_\text{min}$.
+Considering $H_1$ as in figure \ref{fig:return_ratio_srg} and $H_2$ as 1 for $y=c_1$ means the distance from $H_1$ to the point $-\tau$.
+This can be seen to satisfy the nonlinear Nyquist criterion for $k \geq 0$.
+
+\subsubsection{With sensor dynamics}
+
+The sensor has a time constant associated with it.
+
+\begin{equation}
+    \tau_s \dot{y} = -y + c_1
+\end{equation}
+
+This can be represented as an additional first order lag in the $H_2$ feedback interconnection.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{figures/sensor_dynamics.jpg}
+    \caption{Block diagram of system with sensor dynamics}
+    \label{fig:sensor_dynamic_block}
+\end{figure}
+
+Both SRGs can be plot and the minimum distance $r_\text{min}$ between $H_1$ and $-\tau H_2 $ for $\tau \in [0,1]$ can be calculated.
+% TODO: find the right answer for this
+% somethings gone wrong earlier because for all tau>0 the SRGs overlap
+
+\section{Appendix}
+
+
+\begin{figure}[H]
+    \centering
+    \begin{lstlisting}
+        cvx_begin sdp
+            variable Y(n,n) symmetric
+            variable Z(m,n)
+            variable epsilon
+            variable gama
+            
+            %minimise(gama)
+            minimise(epsilon) % otherwise makes very high
+
+            LMI1 = Y >= 0
+            LMI2 = gama <= 0.1
+            
+            % gain LMI
+            LMI3 = [ (Y*A' + A*Y + Z'*Bu' + Bu*Z),   (Y*Cz' + Z'*Dzu'),          Bw;
+                    (Cz*Y + Dzu*Z),  -gama*eye(2),      Dzw';
+                    Bw',            Dzw,                -gama*eye(2) ] <= 0;
+            
+            % passivity LMI
+            LMI4 = epsilon >= 0
+            LMI5 = [ Y*A' + A*Y + Bu*Z + Z'*Bu', Bw - Y*Cy' - Z'*Dyu';
+                    Bw' - Cy*Y-Dyu*Z,   -2*epsilon*eye(2) - (Dyw + Dyw')] <= 0
+                
+        cvx_end
+    \end{lstlisting}
+    \caption{CVX code for bounded gain and passivity controller}
+    \label{fig:bounded_passive_lmi}
+\end{figure}
+
+\begin{thebibliography}{9}
+
+    %Endres, SC, Sandrock, C, Focke, WW (2018) “A simplicial homology algorithm for lipschitz optimisation”, Journal of Global Optimization.
+    
+      \bibitem{handout}
+      F. Forni, R, Sepulchre
+      \emph{4F2, Robust and Nonlinear Control: Coursework 1}
+      University of Cambridge,
+      2025.
+
+      \bibitem{lecture}
+      F. Forni
+      \emph{4F2, Robust and Nonlinear Control: Handout 6}
+      University of Cambridge,
+      2025.
+    
+      \bibitem{matlab_robustmu}
+      MATLAB
+      \emph{Robust Performance Measure for Mu Synthesis}
+      \texttt{https://uk.mathworks.com/help/robust/ug/measures-of-robust-performance.html}
+
+    
+\end{thebibliography}
+
+\end{document}
