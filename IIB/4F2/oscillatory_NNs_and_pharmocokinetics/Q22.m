@@ -29,6 +29,7 @@ plot(1.0, 0, 'b-o')
 text(1.05, 0.05, '$\frac{k}{\lambda_1+\alpha_{12}}$', 'Interpreter', 'latex', 'FontSize', 12);
 text(0.2, 0.05, '$k(\mu_1+\alpha_{12}-\frac{\alpha_{12}\alpha_{21}}{\lambda_2+\alpha_{21}})$', 'Interpreter', 'latex', 'FontSize', 12);
 grid on;
+hold off;
 xlim([-0.5, 1.5])
 ax = gca;  % Get current axes handle
 ax.XAxisLocation = 'origin';
@@ -37,5 +38,4 @@ set(gca, 'XTick', [], 'YTick', []);
 
 print(gcf, 'figures/closed_loop_return_ratio.png', '-dpng', '-r600');
 
-hold off;
 
