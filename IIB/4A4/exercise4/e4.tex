@@ -1,0 +1,436 @@
+
+\documentclass{article}
+
+\usepackage[utf8]{inputenc}
+
+\usepackage{amsmath, bm}
+\usepackage{graphicx}
+\usepackage{amssymb}
+\usepackage{float}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{hyperref}
+\usepackage{tikz}
+\usepackage{layout}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{color, colortbl}
+\usepackage{textgreek}
+\usepackage{mathrsfs}
+\usepackage{booktabs}
+
+\usepackage{titlesec}
+
+\titleformat{\subsubsection}
+  {\normalfont\selectfont}{\thesubsubsection}{1em}{}
+
+\usetikzlibrary{calc}
+\usetikzlibrary{angles,quotes} % for pic
+\usetikzlibrary{patterns,snakes}
+\usetikzlibrary{arrows}
+\tikzset{>=latex} % for LaTeX arrow head
+
+\setlength{\parskip}{\baselineskip}%
+\setlength{\parindent}{0pt}%
+\linespread{0.9}
+
+
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2
+}
+
+\lstset{style=mystyle}
+
+\tikzset{
+    block/.style = {draw, rectangle, 
+        minimum height=0.6cm, 
+        minimum width=1cm},
+    input/.style = {coordinate,node distance=2cm},
+    output/.style = {coordinate,node distance=2cm},
+    arrow/.style={draw, -latex,node distance=2cm},
+    pinstyle/.style = {pin edge={latex-, black,node distance=2cm}},
+    sum/.style = {draw, circle, node distance=1cm}
+}
+
+\begin{document}
+
+\title{4A4 Aircraft Stability and Control}
+\author{5739G}
+\date{March 2025}
+\maketitle
+
+\section{Introduction}
+
+
+
+\subsection{Objectives}
+
+\begin{itemize}
+    \item Understand Static and Dynamic stability of the SAAB 340B aircraft
+    \item Develop basic autopilot and augmented C* control systems to satisfy response requirements.
+    \item Establish a tradeoff between phugoid and SPO mode performance.
+\end{itemize}
+
+\section{Methodology}
+
+The following flight data was collected:
+\begin{itemize}
+    \item Control surface deflections $\delta_E, \delta_A, \delta_R$.
+    \item Applied control surfaces for elevator and rudder.
+    \item Angle of attack and angle of sideslip from pitot-static sensors.
+    \item Attitudes, body angular rates and translational accelerations from Ekinox D Inertial Management Unit.
+    \item Navigation data from GPS, IRS, VOR/DME and ILS.
+\end{itemize}
+
+\subsection{Static Stability}
+
+The analysis of static stability provides insight into natural frequencies and free modes of the aircraft.
+A few key results:
+
+First order approximations give
+Period of phugoid oscillation $T = \frac{\sqrt{2} \pi U}{g}$
+
+Static stability of phugoid and SPO requires pitching moment $(m)$ coefficient due to heave $(w)$ to be negative $(m_w < 0)$.
+
+
+\subsection{Dynamic Stability}
+
+
+To obtain the transfer function a frequency response analysis was performed on the collected data.
+This required applying a Hanning window to the finite data set to reduce spectral leakage of the following discrete Fourier transform.
+The transfer function was then obtained by dividing the Fourier transform of the output by the Fourier transform of the input.
+In theory, the valid range of frequencies is between 1/T and Nyquist frequency, where T is the total sample time.
+However, in practice a significant range of the spectrum data was discarded due to the presence of noise.
+Emphasis was placed on fitting the numerator of the transfer function close to natural frequencies which happen to be small \ref{tab:oscillatory_modes}.
+
+\section{Results}
+
+\subsection{Modal Analysis}
+
+\subsection{Transfer function fits}
+
+\begin{equation}
+    \frac{\theta}{\delta_E} =
+    \frac{-2.50716\,s^2-4.4486\,s+0.126421}{s^4+1.92846\,s^3+5.01771\,s^2+0.105566\,s+0.0789498}
+    \label{eq:pitch_elev}
+\end{equation}
+
+\begin{equation}
+    \frac{n_z}{\delta_E} =
+    -\frac{0.0211993\,s^4+0.0430083\,s^3+0.556474\,s^2+0.0532744\,s}{s^4+1.92846\,s^3+5.01771\,s^2+0.105566\,s+0.0789498}
+    \label{eq:naccel_elev}
+\end{equation}
+
+\begin{equation}
+    \frac{r}{\delta_R} =
+    -\frac{1.58358\,s^3+5.6549\,s^2+2.58149\,s-0.436239}{s^4+4.34934\,s^3+3.66988\,s^2+9.17156\,s-0.217374}
+    \label{eq:yaw_rud}
+\end{equation}
+
+\begin{equation}
+    \frac{\phi}{\delta_A} =
+    -\frac{4.65389\,s^2+2.82347\,s^1+11.0881}{s^4+4.34934\,s^3+3.66988\,s^2+9.17156\,s-0.217374}
+    \label{eq:roll_ail}
+\end{equation}
+
+
+\section{Control system design}
+
+The requirements for autopilot controlled flight are as follows:
+\begin{enumerate}
+    \renewcommand{\labelenumi}{\alph{enumi})}
+    \item Short period oscillation damping $\zeta_{SPO} > 0.4$ and natural frequency $\omega_{SPO} > 1$ rad/s.
+    \item Dutch roll stable. \label{req:DR}
+    \item Pitch and roll step response steady state error $< 2.5 \%$
+    \item Pitch and roll step response overshoot $< 10 \%$ and subsequent oscillations $5 \%$ of steady state.
+\end{enumerate}
+
+For the augmented C* control system, the following requirements were set:
+\begin{enumerate}
+    \renewcommand{\labelenumi}{\roman{enumi})}
+    \item Short period oscillation as before
+    \item Phugoid damping ratio $\zeta_{P} > 0.05$.
+    \item Dutch roll damping ratio $\zeta_{DR} > 0.4$ and natural frequency $\omega_{DR} > 1$ rad/s.
+    \item Roll Subsidence time constant $> 0.25$ s or if oscillatory, $\zeta_{RS} > 0.8$ and $\omega_{RS} > 1$ rad/s. \label{req:RS}
+    \item Spiral mode time to double in amplitude $>20$s or a time constant $>28.85$s.
+\end{enumerate}
+
+The actuators are modelled as a simple first order lag with respective time constants \texttt{[0.1, 0.05, 0.25]} for elevator, aileron and rudder respectively.
+
+The requirements for damping ratios and natural frequencies can be visualised on the root locus plot.
+The damping ratio of a second order pole, $z = \sigma \pm j\omega$ is given by
+\begin{equation}
+    \zeta = \frac{-\sigma}{\sqrt{\sigma^2 + \omega^2}} \quad \text{and} \quad \omega_n = \sqrt{\sigma^2 + \omega^2}
+\end{equation}
+And so a constant damping ratio exists as a line with constant angle $\arcsin(\zeta)$ to the imaginary axis and so the lower bound on the damping ratio means that points on the root locus must lie below this line.
+A constant natural frequency exists as a circle with radius equal to the natural frequency and so the lower bound on the natural frequency means that points on the root locus must outside this circle.
+
+\subsection{Pitch displacement autopilot}
+
+\begin{figure}[H]
+    \begin{center}
+        \begin{tikzpicture}[auto, node distance=2cm,>=latex']
+            \node [input, name=input] {};
+            \node [sum, right of=input, xshift=0.5cm] (sum) {$\Sigma$};
+            \node [block, right of=sum] (controller) {$k$};
+            \node [block, right of=controller] (actuator) {$\frac{1}{0.1s + 1}$};
+            \node [block, right of=actuator] (plant) {$\frac{\theta}{\delta_E}$};
+            \node [output, right of=plant] (output) {};
+            \node [block, below of=controller, yshift=1cm] (feedback) {$-1$};
+            
+            \draw [draw,->] (input) -- node {$r_\theta(s)$} (sum);
+            \draw [->] (sum) -- node {} (controller);
+            \draw [->] (controller) -- node {} (actuator);
+            \draw [->] (actuator) -- node {$\delta_E$} (plant);
+            \draw [->] (plant) -- node [name=y] {$\theta(s)$}(output);
+            \draw [-] (y) |- node [above,pos=0.79] {} (feedback);
+            \draw [->] (feedback) -| node {} (sum);
+        \end{tikzpicture}
+    \end{center}
+    \caption{Simple Proportional Controller with Feedback Loop}\label{fig}
+\end{figure}
+
+Applying finite value theorem to the closed loop error with step input gives
+\begin{equation}
+    \lim_{t \to \infty} e(t) = \lim_{s \to 0} s (r - \theta) = \lim_{s \to 0} \frac{1}{1+kH(s)G(s)} = \frac{K}{1+K} > 0.025
+\end{equation}
+For $G(s)$ as the fitted transfer function of elevator to pitch angle, and $H(s)$ as the first order elevator lag, the steady state error is given below.
+\begin{equation}
+    e_{ss} = \frac{0.07895}{0.07895 + 0.126421 k} < 0.025
+\end{equation}
+Which can be rearranged to give an lower bound on $k$ as $k > 24.36$.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{figures/pitch_autopilot_locus_bad.png}
+    \caption{Root locus of elevator servo and fitted pitch displacement transfer function.}
+    \label{fig:fitted_pitchrate_rlocus}
+\end{figure}
+
+Figure \ref{fig:fitted_pitchrate_rlocus} shows the root locus for the fitted elevator to pitch angle transfer function shown in equation \ref{eq:pitch_elev}.
+% TODO: explain the direction that the poles move as k increases and the tradeoff between SPO and phugoid damping.
+For gain values $k>3.27$ the SPO poles move to the right half plane and so the system is unstable meaning the proportional controller is insufficient to meet both SPO damping and steady state error requirements.
+
+The solution commonly used is to add an integrator to the controller which will completely eliminate steady state error.
+This means replacing $k$ with $k(1 + \frac{1}{T_i s})$ in the controller block.
+This will add a pole at $s=0$ and a zero at $s=-1/T_i$ to the root locus.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{figures/pitch_autopilot_locus_intbad.png}
+    \caption{Root locus of elevator servo and fitted pitch displacement transfer function with added integrator time constant $T_i = 10$.}
+    \label{fig:fitted_pitchrate_rlocus_int}
+\end{figure}
+
+Figure \ref{fig:fitted_pitchrate_rlocus_int} shows the fitted elevator to pitch angle root locus with an integrator time constant $T_i = 10$.
+As expected there is a zero at $s=-0.1$ and a pole at $s=0$.
+However the existance of the zero in the RHP and the new integrator pole at 0, right of the phugoid poles, causes the region on the real axis between the zero and pole to be on the root locus.
+This causes the closed loop to be unstable for all gain values.
+
+Comparison to representative transfer functions \cite{rep} shows the final term on the numerator of my fitted transfer function to have the opposite sign.
+It was then decided to use the representative transfer function for the elevator to pitch angle from this point onwards.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{figures/pitch_autopilot_locus_Ti10.png}
+    \caption{Root locus of elevator servo and representative pitch transfer function \cite{rep} with added integrator time constant $T_i = 10$.}
+    \label{fig:representative_pitchrate_rlocus_int}
+\end{figure}
+
+Figure \ref{fig:representative_pitchrate_rlocus_int} shows the root locus for the representative elevator to pitch angle transfer function.
+The pole can now be seen to lie in the LHP for all gain values and is stable.
+The SPO poles can be seen to only have a narrow window of gain values that satisfy the damping ratio requirement $k < 0.12$.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{figures/pitch_autopilot_uncompensated_step.png}
+    \caption{Step response of PI controlled pitch displacement with $k=0.11$ and $T_i = 10$.}
+    \label{fig:pitch_autopilot_uncompensated_step}
+\end{figure}
+
+Figure shows the step response for the PI controlled pitch displacement with $k=0.11$ and $T_i = 10$.
+While the response technically meets the requirements as it doesn't overshoot, a settling time of 226 seconds is far too slow in practice.
+A higher gain must be used but this decreases the SPO damping and so to meet the requirements and have a fast response a more complex controller must be used.
+
+To increase damping ratio, a component of derivative control is often used.
+More generally a phase lead compensator\dots
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{figures/pitch_autopilot_locus_compensated.png}
+    \caption{Step response of PI controlled pitch displacement with $k=0.11$ and $T_i = 10$.}
+    \label{fig:pitch_autopilot_compensated_locus}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{figures/pitch_autopilot_compensated_step.png}
+    \caption{Step response of PI controlled pitch displacement with $k=0.11$ and $T_i = 10$.}
+    \label{fig:pitch_autopilot_compensated_step}
+\end{figure}
+
+
+\subsubsection{Roll displacement autopilot}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{figures/roll_autopilot_locus_uncompensated.png}
+    \caption{Root locus of }
+    \label{fig:roll_autopilot_uncompensated_locus}
+\end{figure}
+
+The fitted roll displacement transfer function can be seen above in figure \ref{fig:roll_autopilot_uncompensated_locus}.
+The oscillatory dutch roll poles can be seen to move towards a pair of zeros within a small region of low damping.
+The only requirement for this though is stability which is satisfied for all gain values.
+The spiral mode pole is initially unstable, lying in the RHP, but moves to the LHP for gain values $k > 0.02$.
+Interestingly the spiral and roll subsidence poles merge and become a complex conjugate pair for $k > 0.85$.
+% TODO: physical interpretation of this?
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{figures/roll_autopilot_step_uncompensated.png}
+    \caption{}
+    \label{fig:roll_autopilot_step_uncompensated}
+\end{figure}
+
+Figure \ref{fig:roll_autopilot_step_uncompensated} shows the closed loop step responses for the gain values shown in figure \ref{fig:roll_autopilot_uncompensated_locus}.
+The requirement for the subsequent oscillations to be $5 \%$ of the steady state is more strict than the oscillatory mode damping ratio requirement $\zeta_{RS}<0.8$.
+The gain nearest to this damping limit is $k=1.24$ but the value of $k=0.75$ was found to satisfy the requirement whilst still having a fast response.
+The spiral and roll subsidence poles are non-oscillatory for this value but satisfy the relevent requirements \ref{req:RS}.
+
+
+\subsubsection{Augmented C* control system}
+
+% block diagram
+
+\begin{figure}[H]
+    \begin{center}
+        \begin{tikzpicture}[auto, node distance=2cm,>=latex']
+            \node [input, name=input] {};
+            \node [sum, right of=input, xshift=0.5cm] (sum1) {$\Sigma$};
+            \node [block, right of=sum1] (controller) {$k$};
+            \node [block, right of=controller] (actuator) {$\frac{1}{0.1s+1}$};
+            \node [block, above of=actuator] (transfer) {\small $s(12.4 + 1.65s)$};
+            \node [block, right of=actuator] (plant) {$\frac{n_z}{\delta_E}$};
+            \node [block, above of=plant, xshift=0.5cm] (plant2) {$\frac{\theta}{\delta_E}$};
+            \node [sum, right of=plant, xshift=1cm] (sum2) {$\Sigma$};
+            \node [output, right of=sum2] (output) {};
+            \node [block, below of=controller, yshift=1cm] (feedback) {$-1$};
+            \draw [draw,->] (input) -- node {$r_{c^*}(s)$} (sum1);
+            \draw [->] (sum1) -- node {} (controller);
+            \draw [->] (controller) -- node {} (actuator);
+            \draw [->] (actuator) -- node {$\delta_E$} (plant);
+            \draw [->] (actuator) -- node {$\delta_E$} (transfer);
+            \draw [->] (sum2) -- node [name=y] {$c^*(s)$}(output);
+            \draw [->] (y) |- node [above,pos=0.79] {} (feedback);
+            \draw [->] (feedback) -| node  {} (sum1);
+            \draw [->] (transfer) -- node {} (plant2);
+            \draw [->] (plant) -- node {} (sum2);
+            \draw [->] (plant2) -| node {} (sum2);
+        \end{tikzpicture}
+    \end{center}
+    \caption{C* closed loop}
+    \label{fig:cstar_diagram}
+\end{figure}
+
+\subsection{Summary of Modes}
+
+\begin{table}[H]
+  \centering
+  \begin{tabular}{lcc}
+      \toprule
+      Name & Damping factor & Natural frequency (rad/s) \\
+      \midrule
+      Phugoid & 0.06 & 0.126 \\
+      Dutch Roll & 0.12 & 1.52 \\
+      SPO & 0.429 & 2.23 \\
+      \bottomrule
+  \end{tabular}
+  \caption{Oscillatory Modes}
+    \label{tab:oscillatory_modes}
+\end{table}
+
+\begin{table}[H]
+  \centering
+  \begin{tabular}{lc}
+      \toprule
+      Name & Time constant (s) \\
+      \midrule
+      Spiral & 42.6* \\
+      Roll Subsidence & 0.2495* \\
+      \bottomrule
+  \end{tabular}
+  \caption{Non-Oscillatory Modes. *Representative mode parameters were used \cite{rep}.}
+  \label{tab:non_oscillatory_modes}
+\end{table}
+
+\subsection{Denominator Coefficients}
+
+The denominator cofficients were obtained from reconstructing poles from the previous modal analysis results \ref{tab:non_oscillatory_modes} \ref{tab:oscillatory_modes}.
+For oscillatory modes, the poles were reconstructed using the formula $s = -\zeta\omega_n \pm j\omega_n\sqrt{1-\zeta^2}$.
+For non-oscillatory modes the time constants were found to be significantly different to given representative mode parameters \cite{rep} and so the latter was used.
+Its also worth noting that the spiral mode is unstable and so the pole was placed in the right half plane $s = 1/42.6$.
+
+\section{Improvements}
+
+\begin{itemize}
+    \item Representation of multiple input multiple output systems for coupled dynamics would allow for more accurate control system design at the loss of simple root locus analysis. LQR or H-infinity control could be used.
+    \item Cross power spectral density analysis (Welch's method) would be significantly more robust to noise than the current method.
+    This would allow for more accurate numerators to be fit to experimental data.
+\end{itemize}
+
+
+\section{Conclusion}
+
+
+\section{Appendix}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{figures/step-characteristics.png}
+    \caption{Definition of step response characteristics \cite{matlab}.}
+    \label{fig:matlab_step_chics}
+\end{figure}
+
+\begin{thebibliography}{9}
+
+    \bibitem{handout}
+    S. Place, A. Cooke
+    \emph{Flight Experimental Methods: Course Handbook}
+    Cranfield University,
+
+    \bibitem{rep}
+    University of Cambridge
+    \emph{Representative Mode Parameters}
+
+    \bibitem{matlab}
+    MATLAB
+    \emph{Robust Performance Measure for Mu Synthesis}
+    \texttt{https://uk.mathworks.com/help/robust/ug/measures-of-robust-performance.html}
+
+\end{thebibliography}
+
+\end{document}
+

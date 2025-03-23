@@ -70,7 +70,7 @@ hold on;
 xline(elev_to_pitchrate_freq_cutoff);
 hold off;
 grid on;
-%print('exercise3\elev_to_pitchrate', '-dpng', '-r600');
+print('exercise3\elev_to_pitchrate', '-dpng', '-r600');
 
 %% elevator angle to normal acceleration at IRS location
 figure;
@@ -115,7 +115,7 @@ hold on;
 xline(rudder_to_yawrate_freq_cutoff);
 hold off;
 grid on;
-%print('exercise3\rudder_to_yawrate', '-dpng', '-r600');
+print('exercise3\rudder_to_yawrate', '-dpng', '-r600');
 
 %% aileron angle to roll angle RollSubs
 
@@ -142,7 +142,7 @@ hold on;
 xline(aileron_to_rollrate_freq_cutoff);
 hold off;
 grid on;
-%print('exercise3\aileron_to_rollrate', '-dpng', '-r600');
+print('exercise3\aileron_to_rollrate', '-dpng', '-r600');
 
 
 %% Final TFs
@@ -162,5 +162,3 @@ rudder_to_yawrate_tf_tex = latex(vpa(rudder_to_yawrate_tf, 6))
 aileron_to_rollrate_num(end) = 0;
 aileron_to_rollrate_tf = poly2sym(aileron_to_rollrate_num, s) / poly2sym(lateral_den, s);
 aileron_to_rollrate_tf_tex = latex(vpa(aileron_to_rollrate_tf, 6))
-
-%close all;
