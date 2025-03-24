@@ -254,7 +254,7 @@ It was then decided to use the representative transfer function for the elevator
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.8\textwidth]{figures/pitch_autopilot_locus_Ti10.png}
+    \includegraphics[width=0.8\textwidth]{figures/pitch_autopilot_locus_Ti.png}
     \caption{Root locus of elevator servo and representative pitch transfer function \cite{rep} with added integrator time constant $T_i = 10$.}
     \label{fig:representative_pitchrate_rlocus_int}
 \end{figure}
@@ -274,23 +274,40 @@ Figure shows the step response for the PI controlled pitch displacement with $k=
 While the response technically meets the requirements as it doesn't overshoot, a settling time of 226 seconds is far too slow in practice.
 A higher gain must be used but this decreases the SPO damping and so to meet the requirements and have a fast response a more complex controller must be used.
 
-To increase damping ratio, a component of derivative control is often used.
-More generally a phase lead compensator\dots
+To increase damping ratio, an additional component of derivative is often used.
+Another option is a more general form called a phase lead compensator.
+For the most simple controller, a derivative term was added to the controller block making it:
+\begin{equation}
+    k\left(1 + \frac{1}{T_i s} + T_d s\right)
+\end{equation}
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.8\textwidth]{figures/pitch_autopilot_locus_compensated.png}
-    \caption{Step response of PI controlled pitch displacement with $k=0.11$ and $T_i = 10$.}
+    \includegraphics[width=0.8\textwidth]{figures/pitch_autopilot_locus_TiTd.png}
+    \caption{Root locus of elevator servo and representative pitch transfer function \cite{rep} with added integrator and derivative terms of time constants $10$, $0.5$ respectively.}
     \label{fig:pitch_autopilot_compensated_locus}
 \end{figure}
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.8\textwidth]{figures/pitch_autopilot_compensated_step.png}
-    \caption{Step response of PI controlled pitch displacement with $k=0.11$ and $T_i = 10$.}
+    \caption{Step response of PID controller with $k=0.70$, $T_i = 10$ and $T_d = 0.5$.}
     \label{fig:pitch_autopilot_compensated_step}
 \end{figure}
 
+The most simple form of controller identified to meet the requirements was a PID controller, for which
+there exists many rule based autotuning methods \cite{autotune}.
+Three methods were peformed and their step responses can be seen in figure \ref{fig:pitch_autopilot_autotune_step} below.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{figures/pitch_autopilot_autotuning_comparison.png}
+    \caption{Step response of PID controlled pitch displacement with autotuned parameters.}
+    \label{fig:pitch_autopilot_autotune_step}
+\end{figure}
+
+% TODO: explain differences between the three methods
+% None of which met the overshoot requirement explain why.
 
 \subsubsection{Roll displacement autopilot}
 
@@ -425,10 +442,15 @@ Its also worth noting that the spiral mode is unstable and so the pole was place
     University of Cambridge
     \emph{Representative Mode Parameters}
 
+    \bibitem{autotune}
+    A. S. McCormack and K. R. Godfrey
+    \emph{Rule-Based Autotuning Based on Frequency Domain Identification}
+
     \bibitem{matlab}
     MATLAB
     \emph{Robust Performance Measure for Mu Synthesis}
     \texttt{https://uk.mathworks.com/help/robust/ug/measures-of-robust-performance.html}
+    
 
 \end{thebibliography}
 
