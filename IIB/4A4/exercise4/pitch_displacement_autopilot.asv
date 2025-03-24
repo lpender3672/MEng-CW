@@ -11,8 +11,8 @@ elev_pitch_tf = - 1/s * tf([-2.637 -2.475 -0.0607, 0], [1 1.6366 3.4115 0.07937 
 tau_e = 0.1;
 He = 1 / (tau_e * s + 1);
 
-Ti = 10;
-integrator = (1 + 1/(Ti*s));
+T = 10;
+integrator = (1 + 1/(T*s));
 
 Gbad = He * elev_pitch_tf_bad;
 figure;
@@ -47,7 +47,7 @@ r = rlocus(Gi, k);
 h = plot(real(r), imag(r), 'v', 'MarkerSize', 5);
 legend(h, ['k = ' num2str(k)])
 hold off;
-print('exercise4\figures\pitch_autopilot_locus_Ti', '-dpng', '-r600');
+print('exercise4\figures\pitch_autopilot_locus_Ti10', '-dpng', '-r600');
 
 CL = feedback(k * Gi, 1);
 
@@ -65,11 +65,10 @@ print('exercise4\figures\pitch_autopilot_uncompensated_step', '-dpng', '-r600');
 disp(stepinfo(Y,T).RiseTime);
 
 %% derivative controller
-k = 0.7;
-Td = 0.5;
+k = 0.11;
 
-integrator_derivative = (1 + 1/(Ti*s) + Td * s)
-Gid = He * integrator_derivative * elev_pitch_tf;
+integrator_derivative = []
+Gi = He * integrator * elev_pitch_tf;
 
 figure;
 rlocus(Gid);
@@ -78,13 +77,13 @@ grid on;
 hold on;
 xlim([-1, 0.2])
 ylim([-5, 5])
-r = rlocus(Gid, k);
+r = rlocus(Gi, k);
 h = plot(real(r), imag(r), 'v', 'MarkerSize', 5);
 legend(h, ['k = ' num2str(k)])
 hold off;
-print('exercise4\figures\pitch_autopilot_locus_TiTd', '-dpng', '-r600');
+print('exercise4\figures\pitch_autopilot_locus_Ti10', '-dpng', '-r600');
 
-CL = feedback(k * Gid, 1);
+CL = feedback(k * Gi, 1);
 
 figure;
 hold on;
@@ -94,7 +93,7 @@ yline(1.05, '--', 'Subsequent Overshoot');
 ylim([0, 1.2])
 grid on;
 hold off;
-print('exercise4\figures\pitch_autopilot_Ti10_Td01_step', '-dpng', '-r600');
+print('exercise4\figures\pitch_autopilot_uncompensated_step', '-dpng', '-r600');
 
 [Y, T] = step(CL);
 disp(stepinfo(Y,T).RiseTime);
