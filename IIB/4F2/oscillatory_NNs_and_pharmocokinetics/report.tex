@@ -105,6 +105,75 @@
 
 \section{Stable and oscillatory recurrent neural networks}
 
+\begin{equation}
+    \dot{x} = f(x) + B_u u + B_w w = \begin{bmatrix}
+        -10z_1 + 10y \\
+        -100z_2 + 100y \\
+        -y + \varphi(w_1z_1 + w_2z_2 + w_3y)
+    \end{bmatrix} + \begin{bmatrix}
+        0 \\ 0 \\ 1
+    \end{bmatrix} r
+\end{equation}
+
+\begin{equation}
+    y = \psi(x) + D_u u + D_w w = y
+\end{equation}
+
+The nonlinear activation function is defined as $\varphi(x) = \tanh(x)$ jacobians are defined as
+\begin{equation}
+    \partial f(x) = \begin{bmatrix}
+        -10 & 0 & 10 \\
+        0 & -100 & 100 \\
+        w_1 \varphi'(w^T x) & w_2 \varphi'(w^T x) & -1 + w_3 \varphi'(w^T x)
+    \end{bmatrix} \quad \text{ and } \quad \partial \psi(x) = \begin{bmatrix}
+        0 & 0 & 1
+    \end{bmatrix}
+\end{equation}
+
+The derivative $\varphi'$ acts like a sigmoid which satisfies the condition
+\begin{equation}
+    0 \leq \varphi'(x) \leq 1 \quad \forall x \in \mathbb{R}
+\end{equation}
+
+This allows us to define a complex hull which contains $\partial f(x)$:
+
+\begin{equation}
+    \partial f(x) \in \{ A_0 + sA_1 | s \in [0,1]\}
+\end{equation}
+
+This allows us to define two linear matrix inequalities (LMIs) to guarantee differential gain. 
+
+\begin{equation}
+    \left[
+    \begin{array}{cc}
+    A_i^T P + P A_i + 2\lambda P + \frac{1}{\gamma} \partial \varphi(x)^T \varphi(x) & PB \\
+    B^T P & -\gamma I
+    \end{array}
+    \right] \leq 0.
+\end{equation}
+
+The dissipativity LMI in matrix form is given by
+\begin{equation}    
+\left[
+\begin{array}{cc}
+\partial f(x)^T P + P \partial f(x) + 2\lambda P & PB - \partial \varphi(x)^T \\
+B^T P - \partial \varphi(x) & 0
+\end{array}
+\right] \leq 0.
+\end{equation}
+
+Feedback LMI:
+\begin{equation}
+    Y > 0, \quad
+    \left[
+    \begin{array}{ccc}
+    Y \partial f(x)^T + \partial f(x) Y + 2\lambda Y + Z^T B_u^T + B_u Z & B_w & Y \partial \varphi(x)^T + Z^T D_u \\
+    B_w^T & -\gamma I & D_w^T \\
+    \partial \varphi(x) Y + D_u Z & D_w & -\gamma I
+    \end{array}
+    \right] < 0.
+\end{equation}
+
 \section{Pharmacokinetics and drug dosage}
 
 The drug concentration in two compartments are modelled by coupled differential equations:

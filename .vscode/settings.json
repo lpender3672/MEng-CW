@@ -1,5 +1,6 @@
 {
     "cmake.configureEnvironment": {
         "PICO_SDK_PATH": "..\\..\\pico-sdk"
-    }
+    },
+    "cmake.sourceDirectory": "C:/Users/louis/source/repos/MEng-CW/IIB/4A2-CFD"
 }
