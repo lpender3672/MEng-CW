@@ -1,6 +1,6 @@
 
 
-function simulate_nonlinear_system(w1, w2, w3)
+function simulate_nonlinear_step(w1, w2, w3)
     
     tspan = [0 10];
     x0 = [0; 0; 0];
