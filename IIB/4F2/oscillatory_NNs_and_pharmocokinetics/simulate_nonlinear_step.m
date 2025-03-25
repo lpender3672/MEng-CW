@@ -1,6 +1,6 @@
 
 
-function simulate_nonlinear_step(w1, w2, w3)
+function [t, y_out] = simulate_nonlinear_step(w1, w2, w3)
     
     tspan = [0 10];
     x0 = [0; 0; 0];
@@ -10,7 +10,7 @@ function simulate_nonlinear_step(w1, w2, w3)
     y_out = x(:,3);
     
     figure;
-    plot(t, y_out, 'LineWidth', 2);
+    plot(t, y_out);
     xlabel('Time (s)');
     ylabel('y(t)');
     grid on;

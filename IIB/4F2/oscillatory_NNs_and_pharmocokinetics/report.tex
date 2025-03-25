@@ -20,7 +20,6 @@
 \usepackage{xcolor}
 \usepackage[margin=1in]{geometry}
 \usepackage{savetrees}
-\usepackage[american, EFvoltages, cuteinductors]{circuitikz}
 
 % Custom subsection numbering
 \renewcommand{\thesubsection}{\roman{subsection})}
@@ -130,6 +129,8 @@ The nonlinear activation function is defined as $\varphi(x) = \tanh(x)$ jacobian
     \end{bmatrix}
 \end{equation}
 
+\subsection{Weights to satisfy a bounded differential gain}
+
 The derivative $\varphi'$ acts like a sigmoid which satisfies the condition
 \begin{equation}
     0 \leq \varphi'(x) \leq 1 \quad \forall x \in \mathbb{R}
@@ -152,6 +153,23 @@ This allows us to define two linear matrix inequalities (LMIs) to guarantee diff
     \right] \leq 0.
 \end{equation}
 
+Values of $ w = \begin{bmatrix} 0.1 & 0.1 & 0.1 \end{bmatrix}^T $ were found to give a solution for P and hence satisfy the bounded differential gain condition.
+Unit step and harmonic reference signals were applied and the responses can be seen plotted below in figures \ref{fig:11_step} and \ref{fig:11_harmonic}.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{figures/11_harmonic_reference.png}
+    \caption{Response of system to unit step reference signals}
+    \label{fig:11_step}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{figures/11_harmonic_reference.png}
+    \caption{Harmonic reference signal and systems response}
+    \label{fig:11_harmonic}
+\end{figure}
+
 The dissipativity LMI in matrix form is given by
 \begin{equation}    
 \left[
@@ -161,6 +179,27 @@ B^T P - \partial \varphi(x) & 0
 \end{array}
 \right] \leq 0.
 \end{equation}
+
+\subsection{Weights for autonomous nonlinear oscillator}
+Neglecting the fast dynamics $w_2 = 0$, setting $w_3 = 25$ and taking $r = 0$ allows the
+use of phase portrait on the reduced system to understand the variation with $w_1$.
+\begin{equation}
+    \dot{y} = -y + \varphi(w_1z_1 + 25y) \quad 0.1 \dot{z_1} = -z_1 + y
+\end{equation}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{figures/equilibria_bifurcation.png}
+    \caption{Bifurcation of equilibria with varying $w_1$}
+    \label{fig:equilibria}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{figures/oscillator_phase_portrait.png}
+    \caption{Phase portrait of the autonomous nonlinear oscillator for $w_1 = 100$}
+    \label{fig:phase_portrait_w100}
+\end{figure}
 
 Feedback LMI:
 \begin{equation}

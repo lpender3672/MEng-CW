@@ -21,10 +21,21 @@ B = [0; 0; 1];
 C = [0, 0, 1];
 
 simulate_nonlinear_step(w1, w2, w3);
-simulate_nonlinear_harmonic(w1, w2, w3, 0.1, 1, 0);
 
-n = size(A0, 1)
-m = size(B, 2)
+print(gcf, 'figures/11_step_reference.png', '-dpng', '-r600');
+
+simulate_nonlinear_harmonic(w1, w2, w3, 1, pi, 0);
+hold on;
+t = linspace(0, 10, 100);
+plot(t, sin(pi * t))
+hold off;
+ylabel('Signal Amplitude')
+legend("y", "r")
+print(gcf, 'figures/11_harmonic_reference.png', '-dpng', '-r600');
+
+
+n = size(A0, 1);
+m = size(B, 2);
 
 gama = 2;
 lamda = 0.1;
