@@ -12,13 +12,43 @@ G = Gsubs * 1/(s+1);
 
 G
 
-w1 = 0.1;
-w2 = 0.1;
-w3 = 0.1;
+gama = 2;
+lamda = 0.1;
 
-A0 =[-10, 0, 10; 0, -100, 100; 0, 0, -1];
-B = [0; 0; 1];
+df =[-10, 0, 10; 0, -100, 100; 0, 0, -1];
+Bu = [0; 0; 1];
+Bw = [0; 0; 1];
 C = [0, 0, 1];
+Dw = [0];
+
+
+cvx_begin sdp
+    variable Y(3,3) symmetric
+    variable Z(1,3)
+    variable epsl
+    
+    minimise(epsl)
+
+    LMI1 = Y >= 0;
+    LMI2 = epsl >= 0;
+    
+    % gain LMI
+    LMI3 = [ Y*df'+df*Y + 2*lamda*Y + epsl*eye(3), Bw, Y*C';
+             Bw', -gama*eye(1), Dw';
+             C*Y, Dw, -gama*eye(1) ] <= 0;
+    
+    LMI4 = [ Y*df'+df*Y + 2*lamda*Y + epsl*eye(3) + Z'*Bu' + Bu*Z, Bw, Y*C';
+             Bw', -gama*eye(1), Dw';
+             C*Y, Dw, -gama*eye(1) ] <= 0;
+         
+cvx_end
+
+K = Z * inv(Y)
+
+
+w1 = K(1);
+w2 = K(2);
+w3 = K(3);
 
 simulate_nonlinear_step(w1, w2, w3);
 
@@ -33,14 +63,7 @@ ylabel('Signal Amplitude')
 legend("y", "r")
 print(gcf, 'figures/11_harmonic_reference.png', '-dpng', '-r600');
 
-
-n = size(A0, 1);
-m = size(B, 2);
-
-gama = 2;
-lamda = 0.1;
-
-
+%{
 
 for w1 = [0.1:0.1:0.1]
     for w2 = [0.1:0.1:0.1]
@@ -68,3 +91,4 @@ for w1 = [0.1:0.1:0.1]
         end
     end
 end
+%}

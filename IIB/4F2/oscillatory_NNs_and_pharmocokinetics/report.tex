@@ -105,29 +105,24 @@
 \section{Stable and oscillatory recurrent neural networks}
 
 \begin{equation}
-    \dot{x} = f(x) + B_u u + B_w w = \begin{bmatrix}
-        -10z_1 + 10y \\
-        -100z_2 + 100y \\
-        -y + \varphi(w_1z_1 + w_2z_2 + w_3y)
+    \dot{x} = Ax + f(u) + B_w w = \begin{bmatrix}
+        -10 & 0 & 10 \\
+        0 & -100 & 100 \\
+        0 & 0 & -1
+    \end{bmatrix} x + \begin{bmatrix}
+        0 \\ 0 \\ \varphi(u)
     \end{bmatrix} + \begin{bmatrix}
         0 \\ 0 \\ 1
     \end{bmatrix} r
 \end{equation}
 
 \begin{equation}
-    y = \psi(x) + D_u u + D_w w = y
+    y = Cx + D_u u + D_w w = y
 \end{equation}
 
+And the feedback interconnection $u = w x$ is used to form the closed loop system.
+
 The nonlinear activation function is defined as $\varphi(x) = \tanh(x)$ jacobians are defined as
-\begin{equation}
-    \partial f(x) = \begin{bmatrix}
-        -10 & 0 & 10 \\
-        0 & -100 & 100 \\
-        w_1 \varphi'(w^T x) & w_2 \varphi'(w^T x) & -1 + w_3 \varphi'(w^T x)
-    \end{bmatrix} \quad \text{ and } \quad \partial \psi(x) = \begin{bmatrix}
-        0 & 0 & 1
-    \end{bmatrix}
-\end{equation}
 
 \subsection{Weights to satisfy a bounded differential gain}
 
@@ -144,17 +139,29 @@ This allows us to define a complex hull which contains $\partial f(x)$:
 
 This allows us to define two linear matrix inequalities (LMIs) to guarantee differential gain. 
 
+\textit{p}-gain $\gamma$ \textbf{from} $w$ \textbf{to} $y$ with rate $\lambda \geq 0$: find $Y = Y^T$ with inertia $p$, $Z$, and $\varepsilon > 0$,
+
 \begin{equation}
     \left[
-    \begin{array}{cc}
-    A_i^T P + P A_i + 2\lambda P + \frac{1}{\gamma} \partial \varphi(x)^T \varphi(x) & PB \\
-    B^T P & -\gamma I
+    \begin{array}{ccc}
+    Y \partial f(x)^T + \partial f(x) Y + 2 \lambda Y + Z^T B_u^T + B_u Z + \varepsilon I & B_w & YC^T \\
+    B_w^T & -\gamma I & D_w^T \\
+    CY & D_w & -\gamma I
     \end{array}
-    \right] \leq 0.
+    \right] \leq 0
+\end{equation}
+\begin{equation}
+    \left[
+    \begin{array}{ccc}
+    Y \partial f(x)^T + \partial f(x) Y + 2 \lambda Y + \varepsilon I & B_w & YC^T \\
+    B_w^T & -\gamma I & D_w^T \\
+    CY & D_w & -\gamma I
+    \end{array}
+    \right] \leq 0
 \end{equation}
 
-Values of $ w = \begin{bmatrix} 0.1 & 0.1 & 0.1 \end{bmatrix}^T $ were found to give a solution for P and hence satisfy the bounded differential gain condition.
-Unit step and harmonic reference signals were applied and the responses can be seen plotted below in figures \ref{fig:11_step} and \ref{fig:11_harmonic}.
+Where the weights $W = ZY^{-1}$.
+
 
 \begin{figure}[H]
     \centering

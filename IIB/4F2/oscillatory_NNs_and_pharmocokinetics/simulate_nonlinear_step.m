@@ -2,7 +2,7 @@
 
 function [t, y_out] = simulate_nonlinear_step(w1, w2, w3)
     
-    tspan = [0 10];
+    tspan = [0 20];
     x0 = [0; 0; 0];
 
     [t, x] = ode45(@(t,x) q1ode(t, x, w1, w2, w3), tspan, x0);
