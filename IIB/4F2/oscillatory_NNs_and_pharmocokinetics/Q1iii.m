@@ -1,5 +1,5 @@
 
-
+close all;
 
 df = [-10, 0, 10;
       0, -100, 100;
@@ -32,9 +32,14 @@ cvx_begin sdp
             
 cvx_end
 
-if strcmp(cvx_status, 'Solved') && sum(sign(eig(Y))) == -1
-    disp('horay')
+
+if strcmp(cvx_status, 'Solved')
+    p = sum(eig(Y) < -1e-10);
 end
 K = Z / Y;
 
+disp(K)
+
 simulate_nonlinear_step(K(1), K(2), K(3));
+print(gcf, 'figures/13_oscillator_responses.png', '-dpng', '-r600');
+
