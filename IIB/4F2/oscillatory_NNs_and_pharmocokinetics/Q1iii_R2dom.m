@@ -78,3 +78,4 @@ xlabel('w1');
 ylabel('w2');
 title('2-Dominance Regions (1 = 2-dominant, 0 = not 2-dominant)');
 colorbar;
+

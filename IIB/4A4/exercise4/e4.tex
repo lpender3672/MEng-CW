@@ -129,6 +129,44 @@ Emphasis was placed on fitting the numerator of the transfer function close to n
 
 \subsection{Modal Analysis}
 
+
+\begin{table}[H]
+  \centering
+  \begin{tabular}{lcc}
+      \toprule
+      Name & Damping factor & Natural frequency (rad/s) \\
+      \midrule
+      Phugoid & 0.06 & 0.126 \\
+      Dutch Roll & 0.12 & 1.52 \\
+      SPO & 0.429 & 2.23 \\
+      \bottomrule
+  \end{tabular}
+  \caption{Oscillatory Modes}
+    \label{tab:oscillatory_modes}
+\end{table}
+
+\begin{table}[H]
+  \centering
+  \begin{tabular}{lc}
+      \toprule
+      Name & Time constant (s) \\
+      \midrule
+      Spiral & 42.6* \\
+      Roll Subsidence & 0.2495* \\
+      \bottomrule
+  \end{tabular}
+  \caption{Non-Oscillatory Modes. *Representative mode parameters were used \cite{rep}.}
+  \label{tab:non_oscillatory_modes}
+\end{table}
+
+\subsection{Denominator Coefficients}
+
+The denominator cofficients were obtained from reconstructing poles from the previous modal analysis results \ref{tab:non_oscillatory_modes} \ref{tab:oscillatory_modes}.
+For oscillatory modes, the poles were reconstructed using the formula $s = -\zeta\omega_n \pm j\omega_n\sqrt{1-\zeta^2}$.
+For non-oscillatory modes the time constants were found to be significantly different to given representative mode parameters \cite{rep} and so the latter was used.
+Its also worth noting that the spiral mode is unstable and so the pole was placed in the right half plane $s = 1/42.6$.
+
+
 \subsection{Transfer function fits}
 
 \begin{equation}
@@ -186,6 +224,7 @@ The damping ratio of a second order pole, $z = \sigma \pm j\omega$ is given by
 \end{equation}
 And so a constant damping ratio exists as a line with constant angle $\arcsin(\zeta)$ to the imaginary axis and so the lower bound on the damping ratio means that points on the root locus must lie below this line.
 A constant natural frequency exists as a circle with radius equal to the natural frequency and so the lower bound on the natural frequency means that points on the root locus must outside this circle.
+These lines and circles can be seen plotted on many of the root locus plots and will be referred to in the following sections.
 
 \subsection{Pitch displacement autopilot}
 
@@ -261,7 +300,7 @@ It was then decided to use the representative transfer function for the elevator
 
 Figure \ref{fig:representative_pitchrate_rlocus_int} shows the root locus for the representative elevator to pitch angle transfer function.
 The pole can now be seen to lie in the LHP for all gain values and is stable.
-The SPO poles can be seen to only have a narrow window of gain values that satisfy the damping ratio requirement $k < 0.12$.
+The SPO poles can be seen to only have a narrow window of gain values $k < 0.12$ that satisfy the damping ratio requirement shown by the dotted line.
 
 \begin{figure}[H]
     \centering
@@ -314,11 +353,11 @@ Three methods were peformed and their step responses can be seen in figure \ref{
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.8\textwidth]{figures/roll_autopilot_locus_uncompensated.png}
-    \caption{Root locus of }
+    \caption{Root locus of aileron servo and fitted roll displacement transfer function}
     \label{fig:roll_autopilot_uncompensated_locus}
 \end{figure}
 
-The fitted roll displacement transfer function can be seen above in figure \ref{fig:roll_autopilot_uncompensated_locus}.
+The root locus of fitted roll displacement transfer function can be seen above in figure \ref{fig:roll_autopilot_uncompensated_locus}.
 The oscillatory dutch roll poles can be seen to move towards a pair of zeros within a small region of low damping.
 The only requirement for this though is stability which is satisfied for all gain values.
 The spiral mode pole is initially unstable, lying in the RHP, but moves to the LHP for gain values $k > 0.02$.
@@ -340,6 +379,13 @@ The spiral and roll subsidence poles are non-oscillatory for this value but sati
 
 \subsubsection{Augmented C* control system}
 
+In a manoeuvre, the pilot aims to achieve a constant pitch rate which is equivilent to a constant normal acceleration.
+The $C^*$ quantity is defined as
+\begin{equation}
+    C^* = n_{zp} + 12.4q
+\end{equation}
+Where $n_{zp}$ is the normal acceleration of the pilot $n_{zp} = n_z + 1.65 \dot{q}$ with 1.65 representing the distance from the normal-acceleration measurement location to the pilot.
+
 % block diagram
 
 \begin{figure}[H]
@@ -360,7 +406,7 @@ The spiral and roll subsidence poles are non-oscillatory for this value but sati
             \draw [->] (controller) -- node {} (actuator);
             \draw [->] (actuator) -- node {$\delta_E$} (plant);
             \draw [->] (actuator) -- node {$\delta_E$} (transfer);
-            \draw [->] (sum2) -- node [name=y] {$c^*(s)$}(output);
+            \draw [->] (sum2) -- node [name=y] {$C^*(s)$}(output);
             \draw [->] (y) |- node [above,pos=0.79] {} (feedback);
             \draw [->] (feedback) -| node  {} (sum1);
             \draw [->] (transfer) -- node {} (plant2);
@@ -372,43 +418,40 @@ The spiral and roll subsidence poles are non-oscillatory for this value but sati
     \label{fig:cstar_diagram}
 \end{figure}
 
-\subsection{Summary of Modes}
+To ensure the same denominator has identical poles for both pitch and normal acceleration transfer functions, the normal acceleration transfer function was taken from the representative \cite{rep}.
 
-\begin{table}[H]
-  \centering
-  \begin{tabular}{lcc}
-      \toprule
-      Name & Damping factor & Natural frequency (rad/s) \\
-      \midrule
-      Phugoid & 0.06 & 0.126 \\
-      Dutch Roll & 0.12 & 1.52 \\
-      SPO & 0.429 & 2.23 \\
-      \bottomrule
-  \end{tabular}
-  \caption{Oscillatory Modes}
-    \label{tab:oscillatory_modes}
-\end{table}
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}{0.45\textwidth}
+        \centering
+        \includegraphics[width=0.99\textwidth]{figures/cstar_base_rlocus.png}
+    \end{subfigure}
+    \begin{subfigure}{0.45\textwidth}
+        \centering
+        \includegraphics[width=0.99\textwidth]{figures/cstar_base_rlocus_zoomed.png}
+    \end{subfigure}
+    \caption{Root locus of $C^*$ control system with simple proportional controller.}
+    \label{fig:cstar_base_rlocus}
+\end{figure}
 
-\begin{table}[H]
-  \centering
-  \begin{tabular}{lc}
-      \toprule
-      Name & Time constant (s) \\
-      \midrule
-      Spiral & 42.6* \\
-      Roll Subsidence & 0.2495* \\
-      \bottomrule
-  \end{tabular}
-  \caption{Non-Oscillatory Modes. *Representative mode parameters were used \cite{rep}.}
-  \label{tab:non_oscillatory_modes}
-\end{table}
+Figure \ref{fig:cstar_base_rlocus} shows the root locus of the $C^*$ control system with a simple proportional controller.
+The addition of normal and pitch transfer functions with the same denominator caused a small numerical error in the denominator coefficients
+which meant the same denominator could not be factored out.
+This had the effect of adding additional poles and zeros very close to eachother such that their ratio was close to 1.
+The order of operation to avoid this was to sum the numerators before dividing by the denominator.
 
-\subsection{Denominator Coefficients}
+\begin{center}
+     ( \texttt{rep\_elev\_norm\_num} $ + s(12.4 + 1.65s) \times $  \texttt{rep\_elev\_pitch\_num}) / \texttt{denominator};
+\end{center}
 
-The denominator cofficients were obtained from reconstructing poles from the previous modal analysis results \ref{tab:non_oscillatory_modes} \ref{tab:oscillatory_modes}.
-For oscillatory modes, the poles were reconstructed using the formula $s = -\zeta\omega_n \pm j\omega_n\sqrt{1-\zeta^2}$.
-For non-oscillatory modes the time constants were found to be significantly different to given representative mode parameters \cite{rep} and so the latter was used.
-Its also worth noting that the spiral mode is unstable and so the pole was placed in the right half plane $s = 1/42.6$.
+A gain of k=0.2 was found to fit the provided $C^*$ envelope, without any stability augmentation systems.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{figures/cstar_envelope_step.png}
+    \caption{Step response of $C^*$ control system with simple proportional controller.}
+    \label{fig:cstar_base_step}
+\end{figure}
 
 \section{Improvements}
 
@@ -423,6 +466,13 @@ Its also worth noting that the spiral mode is unstable and so the pole was place
 
 
 \section{Appendix}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.8\textwidth]{figures/numerical_errors.png}
+    \caption{Numerical errors from adding separate denominators}
+    \label{fig:matlab_numerical_errors}
+\end{figure}
 
 \begin{figure}[H]
     \centering

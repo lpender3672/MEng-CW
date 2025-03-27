@@ -22,6 +22,7 @@ k_lim = 3.81;
 T_lim = 2*pi / 3.4;
 
 figure;
+hold on;
 
 % classic Ziegler Nichols
 kc = 0.6 * k_lim;
@@ -30,7 +31,6 @@ Td = 0.125 * T_lim;
 K = kc * (1 + 1 / (Ti * s) + Td * s);
 step(feedback(K*G, 1));
 
-hold on;
 
 % some overshoot
 kc = 0.33 * k_lim;
@@ -46,14 +46,10 @@ Td = 0.33 * T_lim;
 K = kc * (1 + 1 / (Ti * s) + Td * s);
 step(feedback(K*G, 1))
 
-kc = 0.2 * k_lim;
-Ti = 0.5 * T_lim;
-Td = 0.33 * T_lim;
-K = kc * (1 + 1 / (Ti * s) + Td * s);
-step(feedback(K*G, 1))
-hold off;
+
 yline(1.1, '--', 'Overshoot limit');
 yline(1.05, '--', 'Subsequent Overshoot');
+hold off;
 
 grid on;
 legend('Ziegler Nichols', 'SO Rule', 'NO Rule')

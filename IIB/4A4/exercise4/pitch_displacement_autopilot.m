@@ -71,6 +71,8 @@ Td = 0.5;
 integrator_derivative = (1 + 1/(Ti*s) + Td * s)
 Gid = He * integrator_derivative * elev_pitch_tf;
 
+compute_margins(Gid)
+
 figure;
 rlocus(Gid);
 sgrid([0.4, 0], [100, 1]);
@@ -105,6 +107,7 @@ Tc = 1;
 lead_compensator = (Tc*s + 1) / (alpha * Tc * s + 1);
 k = 0.7;
 GIC = lead_compensator * He * integrator * elev_pitch_tf;
+compute_margins(GIC)
 figure;
 rlocus(GIC);
 sgrid([0.4, 0], [100, 1]);
@@ -131,3 +134,15 @@ hold off;
 print('exercise4\figures\pitch_autopilot_compensated_step', '-dpng', '-r600');
 
 
+
+
+function [GM, PM, Wcg, Wcp] = compute_margins(G)
+
+    [GM, PM, Wcg, Wcp] = margin(G);
+    
+    disp(['Gain Margin (GM): ', num2str(GM), ' dB']);
+    disp(['Phase Margin (PM): ', num2str(PM), ' degrees']);
+    disp(['Gain Crossover Frequency (Wcg): ', num2str(Wcg), ' rad/s']);
+    disp(['Phase Crossover Frequency (Wcp): ', num2str(Wcp), ' rad/s']);
+    
+end
