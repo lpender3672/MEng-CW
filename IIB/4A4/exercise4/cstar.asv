@@ -14,7 +14,7 @@ den = tf(1, [1 1.6366 3.4115 0.07937 0.05112]);
 tau_e = 0.1;
 He = 1 / (tau_e * s + 1);
 
-G = He * den * (rep_elev_norm_num + s*(12.4 + 1.65 * s) * rep_evel_pitch_num);
+G = He * den * (rep_elev_norm_num + s*(12.4 + 1.65 * s) * rep_evel_pitch_num * pi/180);
 
 
 %w = makeweight(10, 0.1, 0.9);
@@ -37,12 +37,14 @@ ylim([-0.2, 0.2])
 print('exercise4\figures\cstar_base_rlocus_zoomed', '-dpng', '-r600');
 
 %% DERIVATIVE RLOCUS
-Td = 0.15;
+Td = 0.1;
 derivative = (1 + Td * s);
 Ti = 10;
 integrator = (1 + 1/(Ti*s));
+
 figure;
-rlocus(integrator*G);
+rlocus(derivative*G);
+sgrid([0.4, 0.05, 0], [100, 100, 1]);
 xlim([-3, 3])
 
 %{
@@ -59,9 +61,8 @@ xlim([-3, 3])
 figure;
 hold on;
 
-for k = [ 0.2 ]
-    CL = feedback(k * G, 1);
-    
+for k = [ 23 ]
+    CL = feedback(k * derivative G, 1);
     
     step(CL, 10);
     

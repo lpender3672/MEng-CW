@@ -71,22 +71,25 @@ Td = 0.5;
 integrator_derivative = (1 + 1/(Ti*s) + Td * s)
 Gid = He * integrator_derivative * elev_pitch_tf;
 
-compute_margins(Gid)
-
 figure;
 rlocus(Gid);
 sgrid([0.4, 0], [100, 1]);
 grid on;
 hold on;
-xlim([-1, 0.2])
-ylim([-5, 5])
 r = rlocus(Gid, k);
 h = plot(real(r), imag(r), 'v', 'MarkerSize', 5);
 legend(h, ['k = ' num2str(k)])
 hold off;
+xlim([-5, 1])
+ylim([-15, 15])
 print('exercise4\figures\pitch_autopilot_locus_TiTd', '-dpng', '-r600');
+xlim([-0.3, 0.1])
+ylim([-0.6, 0.6])
+print('exercise4\figures\pitch_autopilot_locus_TiTd_zoomed', '-dpng', '-r600');
 
 CL = feedback(k * Gid, 1);
+compute_margins(k * Gid)
+
 
 figure;
 hold on;
@@ -107,7 +110,6 @@ Tc = 1;
 lead_compensator = (Tc*s + 1) / (alpha * Tc * s + 1);
 k = 0.7;
 GIC = lead_compensator * He * integrator * elev_pitch_tf;
-compute_margins(GIC)
 figure;
 rlocus(GIC);
 sgrid([0.4, 0], [100, 1]);
@@ -122,6 +124,7 @@ hold off;
 print('exercise4\figures\pitch_autopilot_locus_compensated', '-dpng', '-r600');
 
 CLc = feedback(k * GIC, 1);
+compute_margins(k * GIC)
 
 figure;
 hold on;
@@ -132,7 +135,6 @@ ylim([0, 1.2])
 grid on;
 hold off;
 print('exercise4\figures\pitch_autopilot_compensated_step', '-dpng', '-r600');
-
 
 
 
