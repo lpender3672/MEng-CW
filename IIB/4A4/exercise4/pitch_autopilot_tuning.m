@@ -43,6 +43,7 @@ step(feedback(K*G, 1))
 kc = 0.2 * k_lim;
 Ti = 0.5 * T_lim;
 Td = 0.33 * T_lim;
+fprintf('%f %f %f', kc, Ti, Td);
 K = kc * (1 + 1 / (Ti * s) + Td * s);
 step(feedback(K*G, 1))
 

@@ -114,6 +114,14 @@ Period of phugoid oscillation $T = \frac{\sqrt{2} \pi U}{g}$
 
 Static stability of phugoid and SPO requires pitching moment $(m)$ coefficient due to heave $(w)$ to be negative $(m_w < 0)$.
 
+\subsection{Modal Analysis}
+
+Regions of interest were chosen with little control input to get the unforced response and small deviations
+from equilibrium to stay within linear theory. The rate of change of angles were favoured over the angles
+themselves because they are directly measured from rate gyros rather than reconstructed from Kalman
+filters. In many cases the derivatives also had higher amplitudes and so gave less absolute uncertainty in
+measurements \ref{tab:oscillatory_modes}
+
 
 \subsection{Dynamic Stability}
 
@@ -126,8 +134,6 @@ However, in practice a significant range of the spectrum data was discarded due 
 Emphasis was placed on fitting the numerator of the transfer function close to natural frequencies which happen to be small \ref{tab:oscillatory_modes}.
 
 \section{Results}
-
-\subsection{Modal Analysis}
 
 
 \begin{table}[H]
@@ -263,7 +269,7 @@ Which can be rearranged to give an lower bound on $k$ as $k > 24.36$.
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.8\textwidth]{figures/pitch_autopilot_locus_bad.png}
+    \includegraphics[width=0.6\textwidth]{figures/pitch_autopilot_locus_bad.png}
     \caption{Root locus of elevator servo and fitted pitch displacement transfer function.}
     \label{fig:fitted_pitchrate_rlocus}
 \end{figure}
@@ -278,7 +284,7 @@ This will add a pole at $s=0$ and a zero at $s=-1/T_i$ to the root locus.
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.8\textwidth]{figures/pitch_autopilot_locus_intbad.png}
+    \includegraphics[width=0.6\textwidth]{figures/pitch_autopilot_locus_intbad.png}
     \caption{Root locus of elevator servo and fitted pitch displacement transfer function with added integrator time constant $T_i = 10$.}
     \label{fig:fitted_pitchrate_rlocus_int}
 \end{figure}
@@ -293,7 +299,7 @@ It was then decided to use the representative transfer function for the elevator
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.8\textwidth]{figures/pitch_autopilot_locus_Ti.png}
+    \includegraphics[width=0.6\textwidth]{figures/pitch_autopilot_locus_Ti.png}
     \caption{Root locus of elevator servo and representative pitch transfer function \cite{rep} with added integrator time constant $T_i = 10$.}
     \label{fig:representative_pitchrate_rlocus_int}
 \end{figure}
@@ -304,7 +310,7 @@ The SPO poles can be seen to only have a narrow window of gain values $k < 0.12$
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.8\textwidth]{figures/pitch_autopilot_uncompensated_step.png}
+    \includegraphics[width=0.6\textwidth]{figures/pitch_autopilot_uncompensated_step.png}
     \caption{Step response of PI controlled pitch displacement with $k=0.11$ and $T_i = 10$.}
     \label{fig:pitch_autopilot_uncompensated_step}
 \end{figure}
@@ -336,10 +342,20 @@ For the most simple controller, a derivative term was added to the controller bl
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.8\textwidth]{figures/pitch_autopilot_compensated_step.png}
+    \includegraphics[width=0.6\textwidth]{figures/pitch_autopilot_compensated_step.png}
     \caption{Step response of PID controller with $k=0.70$, $T_i = 10$ and $T_d = 0.5$.}
     \label{fig:pitch_autopilot_compensated_step}
 \end{figure}
+
+Figure \ref{fig:pitch_autopilot_compensated_step} shows the step response of the PID controlled pitch displacement with $k=0.70$, $T_i = 10$ and $T_d = 0.5$.
+Again it can be seen for small gains, increasing gain increases SPO damping, until a point where it decreases and then rapidly decreases before they become unstable.
+At the same time increasing the gain from small values increases the phugoid damping ratio.
+A tradeoff is found at the maximum damping ratio of the SPO mode which is the dominant mode in the initial transience of the step response.
+The damping ratio of the phugoid mode is still very high here at 0.83 and all the other requirements are satisfied.
+If lower frequency disturbances, perhaps in the form of gusts, are expected, then a higher gain may be more suitable to increase the phugoid damping ratio,
+at the cost of performance at higher frequency disturbances close to the SPO mode.
+
+\subsubsection{Autotuning of Pitch Displacement}
 
 The most simple form of controller identified to meet the requirements was a PID controller, for which
 there exists many rule based autotuning methods \cite{autotune}.
@@ -347,19 +363,25 @@ Three methods were peformed and their step responses can be seen in figure \ref{
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.8\textwidth]{figures/pitch_autopilot_autotuning_comparison.png}
-    \caption{Step response of PID controlled pitch displacement with autotuned parameters.}
+    \includegraphics[width=0.6\textwidth]{figures/pitch_autopilot_autotuning_comparison.png}
+    \caption{Step response of PID controlled pitch displacement with autotuned parameters. NO - No overshoot, SO - Some overshoot.}
     \label{fig:pitch_autopilot_autotune_step}
 \end{figure}
 
+With little information about the system, only the frequency and gain value at which the SPO pole becomes unstable, the autotuning methods were able to find functional controllers.
+The performance does not meet the requirements for overshoot or in the Ziegler Nichols case the damping requirements.
+The some overshoot suprisingly had less overshoot than the no overshoot method, although this was due to a different mode, the phugoid, being dominant in the response.
+This is inherently due to the methods being more applicable to lower order systems.
+However, given the simplicity of the rule based methods, they could provide an initial guess for the controller parameters to be numerically optimised.
+Such optimisation would require a cost function to be defined which could be an integrated absolute error or a weighted sum of the overshoot and settling time properties \ref{fig:matlab_step_chics}.
 % TODO: explain differences between the three methods
 % None of which met the overshoot requirement explain why.
 
-\subsubsection{Roll displacement autopilot}
+\subsection{Roll displacement autopilot}
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.8\textwidth]{figures/roll_autopilot_locus_uncompensated.png}
+    \includegraphics[width=0.6\textwidth]{figures/roll_autopilot_locus_uncompensated.png}
     \caption{Root locus of aileron servo and fitted roll displacement transfer function}
     \label{fig:roll_autopilot_uncompensated_locus}
 \end{figure}
@@ -373,7 +395,7 @@ Interestingly the spiral and roll subsidence poles merge and become a complex co
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.8\textwidth]{figures/roll_autopilot_step_uncompensated.png}
+    \includegraphics[width=0.6\textwidth]{figures/roll_autopilot_step_uncompensated.png}
     \caption{}
     \label{fig:roll_autopilot_step_uncompensated}
 \end{figure}
@@ -382,9 +404,15 @@ Figure \ref{fig:roll_autopilot_step_uncompensated} shows the closed loop step re
 The requirement for the subsequent oscillations to be $5 \%$ of the steady state is more strict than the oscillatory mode damping ratio requirement $\zeta_{RS}<0.8$.
 The gain nearest to this damping limit is $k=1.24$ but the value of $k=0.75$ was found to satisfy the requirement whilst still having a fast response.
 The spiral and roll subsidence poles are non-oscillatory for this value but satisfy the relevent requirements \ref{req:RS}.
+At smaller gain values the dutch roll damping and roll subsidence time constant decreases which is not desirable.
+
+While this controller meets the criteria, an additional complexity in the form of a derivative term would significantly improve the performance.
+The lack of damping of the dutch roll mode causes overshoot which would be reduced or eliminated with a derivative term if such behaviour was desired.
+
+\subsubsection{Manual Tuning of Roll autopilpot}
 
 
-\subsubsection{Augmented C* control system}
+\subsection{Augmented C* control system}
 
 In a manoeuvre, the pilot aims to achieve a constant pitch rate which is equivilent to a constant normal acceleration.
 The $C^*$ quantity is defined as
@@ -392,9 +420,9 @@ The $C^*$ quantity is defined as
     C^* = n_{zp} + 12.4q
 \end{equation}
 Where $n_{zp}$ is the normal acceleration of the pilot $n_{zp} = n_z + 1.65 \dot{q}$ with 1.65 representing the distance from the normal-acceleration measurement location to the pilot.
+The units need to be massaged out of the full expression for C* which shows that a factor of $\frac{\pi}{180}$ is required to convert the angular transfer function back to degrees for consistency with the other transfer functions.
 
 % block diagram
-
 \begin{figure}[H]
     \begin{center}
         \begin{tikzpicture}[auto, node distance=2cm,>=latex']
@@ -402,7 +430,7 @@ Where $n_{zp}$ is the normal acceleration of the pilot $n_{zp} = n_z + 1.65 \dot
             \node [sum, right of=input, xshift=0.5cm] (sum1) {$\Sigma$};
             \node [block, right of=sum1] (controller) {$k$};
             \node [block, right of=controller] (actuator) {$\frac{1}{0.1s+1}$};
-            \node [block, above of=actuator] (transfer) {\small $s(12.4 + 1.65s)$};
+            \node [block, above of=actuator] (transfer) { $\scriptscriptstyle \frac{\pi}{180} s(12.4 + s(1.65/g))$};
             \node [block, right of=actuator] (plant) {$\frac{n_z}{\delta_E}$};
             \node [block, above of=plant, xshift=0.5cm] (plant2) {$\frac{\theta}{\delta_E}$};
             \node [sum, right of=plant, xshift=1cm] (sum2) {$\Sigma$};
@@ -445,20 +473,26 @@ Figure \ref{fig:cstar_base_rlocus} shows the root locus of the $C^*$ control sys
 The addition of normal and pitch transfer functions with the same denominator caused a small numerical error in the denominator coefficients
 which meant the same denominator could not be factored out.
 This had the effect of adding additional poles and zeros very close to eachother such that their ratio was close to 1.
-The order of operation to avoid this was to sum the numerators before dividing by the denominator.
+This can be seen in figure \ref{fig:matlab_numerical_errors}.
+A different order of operation that avoided this was to sum the numerators before dividing by the denominator.
+The requirements for the damping ratio for the chosen value of $k$ can be seen to be below the lines for the phugoid and SPO modes.
 
 \begin{center}
      ( \texttt{rep\_elev\_norm\_num} $ + s(12.4 + 1.65s) \times $  \texttt{rep\_elev\_pitch\_num}) / \texttt{denominator};
 \end{center}
 
-A gain of k=0.2 was found to fit the provided $C^*$ envelope, without any stability augmentation systems.
-
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.8\textwidth]{figures/cstar_envelope_step.png}
+    \includegraphics[width=0.6\textwidth]{figures/cstar_envelope_step.png}
     \caption{Step response of $C^*$ control system with simple proportional controller.}
     \label{fig:cstar_base_step}
 \end{figure}
+
+Figure \ref{fig:cstar_base_step} shows the step normalised response of the $C^*$ control system with a simple proportional controller.
+A range of gains $4 > k > 50$ were found to fit the provided $C^*$ envelope, without any stability augmentation systems.
+The value of gain $k=20$ was chosen as the peak was found to closely align with the envelope, providing the pilot with the best inertial feedback for comfort.
+The additional distance from the envelope boundary also gives the control system robustness to uncertainty in the model and pilot experience.
+A gain of $k=6$ corresponds to the neck of the balloon shaped locus where the damping of SPO was highest, this was not chosen however due to the slow response time of the system for this value.
 
 \section{Improvements}
 
@@ -474,16 +508,16 @@ A gain of k=0.2 was found to fit the provided $C^*$ envelope, without any stabil
 
 \section{Appendix}
 
-\begin{figure}
+\begin{figure}[H]
     \centering
-    \includegraphics[width=0.8\textwidth]{figures/numerical_errors.png}
+    \includegraphics[width=0.6\textwidth]{figures/numerical_errors.png}
     \caption{Numerical errors from adding separate denominators}
     \label{fig:matlab_numerical_errors}
 \end{figure}
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.8\textwidth]{figures/step-characteristics.png}
+    \includegraphics[width=0.6\textwidth]{figures/step-characteristics.png}
     \caption{Definition of step response characteristics \cite{matlab}.}
     \label{fig:matlab_step_chics}
 \end{figure}
