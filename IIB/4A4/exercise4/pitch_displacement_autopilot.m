@@ -123,17 +123,25 @@ legend(h, ['k = ' num2str(k)])
 hold off;
 print('exercise4\figures\pitch_autopilot_locus_compensated', '-dpng', '-r600');
 
-CLc = feedback(k * GIC, 1);
+
 compute_margins(k * GIC)
 
+legend_labels = {};
 figure;
 hold on;
-step(CLc);
+
+for k = [0.3, 0.7, 1.4]
+    step(feedback(k*GIC, 1), 100);
+
+    legend_labels{end + 1} = ['k = ', num2str(k)];
+end
+
 yline(1.1, '--', 'Overshoot limit');
 yline(1.05, '--', 'Subsequent Overshoot');
 ylim([0, 1.2])
 grid on;
 hold off;
+legend(legend_labels, 'Location','best')
 print('exercise4\figures\pitch_autopilot_compensated_step', '-dpng', '-r600');
 
 

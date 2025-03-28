@@ -14,7 +14,7 @@ den = tf(1, [1 1.6366 3.4115 0.07937 0.05112]);
 tau_e = 0.1;
 He = 1 / (tau_e * s + 1);
 
-G = He * den * (rep_elev_norm_num + s*(12.4 + 1.65 * s) * rep_evel_pitch_num);
+G = He * den * (rep_elev_norm_num + pi/180 * s*(12.4 + (1.65/9.81) * s) * rep_evel_pitch_num);
 
 
 %w = makeweight(10, 0.1, 0.9);
@@ -29,54 +29,48 @@ G = He * den * (rep_elev_norm_num + s*(12.4 + 1.65 * s) * rep_evel_pitch_num);
 %Gsubs = feedback(0.8 * G, 1);
 figure;
 rlocus(G);
+hold on;
+k = 20;
+r = rlocus(G, k);
+h = plot(real(r), imag(r), 'v', 'MarkerSize', 5);
+legend(h, ['k = ' num2str(k)])
+hold off;
 sgrid([0.4, 0.05, 0], [100, 100, 1]);
-xlim([-3, 3])
+xlim([-60, 10])
+ylim([-25,25])
 print('exercise4\figures\cstar_base_rlocus', '-dpng', '-r600');
 xlim([-0.06, 0.04])
 ylim([-0.2, 0.2])
 print('exercise4\figures\cstar_base_rlocus_zoomed', '-dpng', '-r600');
 
-%% DERIVATIVE RLOCUS
-Td = 0.15;
-derivative = (1 + Td * s);
-Ti = 10;
-integrator = (1 + 1/(Ti*s));
-figure;
-rlocus(integrator*G);
-xlim([-3, 3])
-
-%{
-
-%% PID RLOCUS
-
-Ti = 100;
-integrator_derivative = (1 + 1/(Ti*s) + Td * s);
-figure;
-rlocus(integrator_derivative*G);
-xlim([-3, 3])
-%}
 
 figure;
+[cst,cslo,csup] = csenv(1.03);
+xenv = [cst, flip(cst)];
+yenv = [cslo, flip(csup)];
+plot(xenv, yenv, 'g');
+
+legend_labels = {'Envelope Bound'};
+
 hold on;
 
-for k = [ 0.2 ]
+for k = [ 4, 6, 20, 50]
     CL = feedback(k * G, 1);
-    
-    
-    step(CL, 10);
-    
-end
-[Y,T] = step(CL, 10);
-[~, tis3] = min((T-3).^2);
 
-[cst,cslo,csup] = csenv(1.03*Y(tis3));
-plot(cst, cslo, 'g');
-plot(cst, csup, 'r');
+    [Y,T] = step(CL, 10);
+    [~, tis3] = min((T-3).^2);
     
+    plot(T, Y/Y(tis3))
+
+    legend_labels{end + 1} = ['k = ', num2str(k)];
+end
+
 xlim([0,3])
 hold off; grid on;
 
-legend('Closed loop C^* Response', 'Lower Envelope Bound', 'Upper Envelope Bound')
+legend(legend_labels, 'Location', 'best');
+xlabel('Time (s)')
+ylabel('Normalised C* (-)')
 
 print('exercise4\figures\cstar_envelope_step', '-dpng', '-r600');
 
