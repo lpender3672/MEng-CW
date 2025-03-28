@@ -124,6 +124,39 @@ The manoeuvre stiffness
 \end{equation}
 The manoeuvre stiffness describes the static stability of the SPO alone and determines the sensitivity of the short term aircraft response to control motions \cite{handout}.
 
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}{0.45\textwidth}
+        \centering
+        \includegraphics[width=0.99\textwidth]{../exercise1/Longitudinal_Static_Stability_2.png}
+        \caption{Stick fixed}
+    \end{subfigure}
+    \begin{subfigure}{0.45\textwidth}
+        \centering
+        \includegraphics[width=0.99\textwidth]{../exercise1/Longitudinal_Static_Stability_4.png}
+        \caption{Stick free}
+    \end{subfigure}
+    \caption{Longitudinal static stability of the SAAB 340B aircraft.}
+    \label{fig:longitudinal_static_stability}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}{0.45\textwidth}
+        \centering
+        \includegraphics[width=0.99\textwidth]{../exercise1/Manoeuvre_Stability_2.png}
+        \caption{Stick fixed}
+    \end{subfigure}
+    \begin{subfigure}{0.45\textwidth}
+        \centering
+        \includegraphics[width=0.99\textwidth]{../exercise1/Manoeuvre_Stability_4.png}
+        \caption{Stick free}
+    \end{subfigure}
+    \caption{Manouevre stability of the SAAB 340B aircraft.}
+    \label{fig:Manouevre_stability}
+\end{figure}
+
+Help \dots \dots \dots
 
 \subsection{Modal Analysis}
 
@@ -402,6 +435,30 @@ Such optimisation would require a cost function to be defined which could be an 
 \subsection{Roll displacement autopilot}
 
 \begin{figure}[H]
+    \begin{center}
+        \begin{tikzpicture}[auto, node distance=2cm,>=latex']
+            \node [input, name=input] {};
+            \node [sum, right of=input, xshift=0.5cm] (sum) {$\Sigma$};
+            \node [block, right of=sum] (controller) {$k$};
+            \node [block, right of=controller] (actuator) {$\frac{1}{0.05s + 1}$};
+            \node [block, right of=actuator] (plant) {$\frac{\phi}{\delta_A}$};
+            \node [output, right of=plant] (output) {};
+            \node [block, below of=controller, yshift=1cm] (feedback) {$-1$};
+            
+            \draw [draw,->] (input) -- node {$r_\phi(s)$} (sum);
+            \draw [->] (sum) -- node {} (controller);
+            \draw [->] (controller) -- node {} (actuator);
+            \draw [->] (actuator) -- node {$\delta_A$} (plant);
+            \draw [->] (plant) -- node [name=y] {$\phi(s)$}(output);
+            \draw [-] (y) |- node [above,pos=0.79] {} (feedback);
+            \draw [->] (feedback) -| node {} (sum);
+        \end{tikzpicture}
+    \end{center}
+    \caption{Simple Proportional Controller with Feedback Loop}
+    \label{fig:roll_autopilot_diagram}
+\end{figure}
+
+\begin{figure}[H]
     \centering
     \includegraphics[width=0.6\textwidth]{figures/roll_autopilot_locus_uncompensated.png}
     \caption{Root locus of aileron servo and fitted roll displacement transfer function}
@@ -514,6 +571,37 @@ The value of gain $k=20$ was chosen as the peak was found to closely align with 
 The additional distance from the envelope boundary also gives the control system robustness to uncertainty in the model and pilot experience.
 A gain of $k=6$ corresponds to the neck of the balloon shaped locus where the damping of SPO was highest, this was not chosen however due to the slow response time of the system for this value.
 
+\subsection{Yaw Damper}
+
+For pilot controlled flight, the dutch roll damping requirement of 0.4 is not satisfied by the open loop aircraft dynamics.
+This can be seen in figure \ref{fig:yaw_damper_rlocus} where the poles are initially above the damping criteria line.
+Therefore its required to design a closed loop controller to damp the dutch roll mode.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{figures/yaw_damper_rlocus.png}
+    \caption{Root locus of yaw damper with proportional controller.}
+    \label{fig:yaw_damper_rlocus}
+\end{figure}
+
+Figure \ref{fig:yaw_damper_rlocus} shows the damping of the dutch roll reaching a maximum at a gain of about $k=1.75$.
+The region $ 0.882 < k < 4.76$ was found to satisfy the dutch roll damping criteria.
+Upon increasing the gain the time constant of the unstable spiral pole moves further right, decreasing the time constant and worsening the spiral mode.
+The oscillatory roll subsidence mode stays within the damping criteria for all gain values, reducing slightly on increasing gain.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{figures/yaw_damper_impulse.png}
+    \caption{Impulse response of yaw damper with proportional controller.}
+    \label{fig:yaw_damper_impulse}
+\end{figure}
+
+The impulse response in this case could represent a sudden disturbance such as a gust.
+The different spiral mode time constants for different gain values can be seen above in figure \ref{fig:yaw_damper_impulse}.
+As expected the increased gain deviates further in the same time.
+From the impulse responses, a tradeoff can be seen between settling time and initial peak amplitude.
+A gain value of $1.66$ was selected, close to the point of maximum damping but with larger spiral mode time constant, to have both a fast settling time and low initial peak amplitude.
+
 \section{Improvements}
 
 \begin{itemize}
@@ -561,6 +649,10 @@ Finally, improvements to the analysis were suggested to better capture the dynam
     S. Place, A. Cooke
     \emph{Flight Experimental Methods: Course Handbook}
     Cranfield University,
+
+    \bibitem{notes}
+    4A4: Aircraft Stability and Control Lecture Notes
+    University of Cambridge
 
     \bibitem{rep}
     University of Cambridge
