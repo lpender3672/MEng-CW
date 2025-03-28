@@ -85,7 +85,7 @@
 
 Ensuring stability and control over aircraft in flight is crucial for both safety and performance.
 Static stability is the aircraft's tendency to return to its equilibrium state after a disturbance, while dynamic stability refers to the aircraft's response over time to such disturbances.
-Modern aircraft require active control systems to meet performance and saftey criteria \dots
+Modern aircraft require active control systems to meet strict performance and safety criteria.
 
 \subsection{Objectives}
 
@@ -116,13 +116,12 @@ Period of phugoid oscillation $T = \frac{\sqrt{2} \pi U}{g}$
 
 Static stability of phugoid and SPO requires pitching moment $(m)$ coefficient due to heave $(w)$ to be negative $(m_w < 0)$.
 \begin{equation}
-    m_w = -\frac{x_n}{c}\frac{dC_L}{d\alpha} < 0
+    \frac{\partial C_m}{\partial \alpha} = -\frac{x_n}{c}\frac{dC_L}{d\alpha} < 0
 \end{equation}
-The manoeuvre stiffness
-\begin{equation}
-    -m_w = \frac{m_q z_w}{\mu_1} = \frac{x_n}{c}\frac{dC_L}{d\alpha} 
-\end{equation}
-The manoeuvre stiffness describes the static stability of the SPO alone and determines the sensitivity of the short term aircraft response to control motions \cite{handout}.
+
+This is to provide a restoring moment to the aircraft when disturbed from equilibrium.
+The neutral point is defined as the center of gravity (CG) at which the restoring moment is lost and so a CG aft of the neutral point won't be statically stable.
+The stick-fixed and stick-free neutral points are not the same, because the elevator is free to move and provides less of a restorative moment when free to move.
 
 \begin{figure}[H]
     \centering
@@ -140,6 +139,22 @@ The manoeuvre stiffness describes the static stability of the SPO alone and dete
     \label{fig:longitudinal_static_stability}
 \end{figure}
 
+Figure \ref{fig:longitudinal_static_stability} shows stick fixed and free longitudinal static stability of the SAAB 340B aircraft.
+The two test flights with different CG positions are shown with error bars on the gradients representing the respective restorative moments.
+The error bars are calculated from deviations in the respective gradients for stick fixed and free cases over a range of angles of attack.
+Both plots show restorative moments and from linearised theory the neutral points are found.
+The tested CGs are further aft from the stick free neutral point than the stick fixed neutral point.
+This is not the expected behaviour discussed previously.
+However, given that they are within 10\% and the high uncertainty in the calculated gradients then this is likely attributed to the high uncertainty.
+
+
+The manoeuvre stiffness is 
+\begin{equation}
+    -m_w = \frac{m_q z_w}{\mu_1} = \frac{x_n}{c}\frac{dC_L}{d\alpha} 
+\end{equation}
+The manoeuvre stiffness describes the static stability of the SPO alone and determines the sensitivity of the short term aircraft response to control motions \cite{notes}.
+The manoeuvre point is then defined as the CG at which the manoeuvre stiffness is zero and is therefore similarly related to the stiffness of the stick free SPO.
+
 \begin{figure}[H]
     \centering
     \begin{subfigure}{0.45\textwidth}
@@ -152,11 +167,13 @@ The manoeuvre stiffness describes the static stability of the SPO alone and dete
         \includegraphics[width=0.99\textwidth]{../exercise1/Manoeuvre_Stability_4.png}
         \caption{Stick free}
     \end{subfigure}
-    \caption{Manouevre stability of the SAAB 340B aircraft.}
-    \label{fig:Manouevre_stability}
+    \caption{Manoeuvre stability of the SAAB 340B aircraft.}
+    \label{fig:Manoeuvre_stability}
 \end{figure}
 
-Help \dots \dots \dots
+The stick fixed and free manoeuvre points appear very close but the uncertainty in gradients calculated is also larger so its difficult to compare magnitudes.
+It would be expected that the stick fixed manoeuvre point would be further aft than the stick free manoeuvre point.
+Without additional quantities such as $dC_L/d\alpha$, the manoeuvre stiffness cannot be compared to SPO mode parameters.
 
 \subsection{Modal Analysis}
 
@@ -182,10 +199,6 @@ However, in practice a significant range of the spectrum data was discarded due 
 Emphasis was placed on fitting the numerator of the transfer function close to natural frequencies which happen to be small \ref{tab:oscillatory_modes}.
 
 \section{Results}
-
-\subsection{Static Stability}
-
-
 
 
 \subsection{Denominator Coefficients}
@@ -223,7 +236,6 @@ The denominator coefficients were obtained from reconstructing poles from the pr
 For oscillatory modes, the poles were reconstructed using the formula $s = -\zeta\omega_n \pm j\omega_n\sqrt{1-\zeta^2}$.
 For non-oscillatory modes the time constants were found to be significantly different to given representative mode parameters \cite{rep} and so the latter was used.
 Its also worth noting that the spiral mode is unstable and so the pole was placed in the right half plane $s = 1/42.6$.
-
 
 \subsection{Transfer Functions}
 \subsubsection{Fitted functions}
@@ -320,7 +332,7 @@ For $G(s)$ as the fitted transfer function of elevator to pitch angle, and $H(s)
 \begin{equation}
     e_{ss} = \frac{0.07895}{0.07895 + 0.126421 k} < 0.025
 \end{equation}
-Which can be rearranged to give an lower bound on $k$ as $k > 24.36$.
+Which can be rearranged to give a lower bound on $k$ as $k > 24.36$.
 
 \begin{figure}[H]
     \centering
@@ -425,7 +437,7 @@ Three methods were peformed and their step responses can be seen in figure \ref{
 
 With little information about the system, only the frequency and gain value at which the SPO pole becomes unstable, the autotuning methods were able to find functional controllers.
 The performance does not meet the requirements for overshoot or in the Ziegler Nichols case the damping requirements.
-The some overshoot suprisingly had less overshoot than the no overshoot method, although this was due to a different mode, the phugoid, being dominant in the response.
+The some overshoot surprisingly had less overshoot than the no overshoot method, although this was due to a different mode, the phugoid, being dominant in the response.
 This is inherently due to the methods being more applicable to lower order systems.
 However, given the simplicity of the rule based methods, they could provide an initial guess for the controller parameters to be numerically optimised.
 Such optimisation would require a cost function to be defined which could be an integrated absolute error or a weighted sum of the overshoot and settling time properties \ref{fig:matlab_step_chics}.
@@ -482,7 +494,7 @@ Interestingly the spiral and roll subsidence poles merge and become a complex co
 Figure \ref{fig:roll_autopilot_step_uncompensated} shows the closed loop step responses for the gain values shown in figure \ref{fig:roll_autopilot_uncompensated_locus}.
 The requirement for the subsequent oscillations to be $5 \%$ of the steady state is more strict than the oscillatory mode damping ratio requirement $\zeta_{RS}<0.8$.
 The gain nearest to this damping limit is $k=1.24$ but the value of $k=0.75$ was found to satisfy the requirement whilst still having a fast response.
-The spiral and roll subsidence poles are non-oscillatory for this value but satisfy the relevent requirements \ref{req:RS}.
+The spiral and roll subsidence poles are non-oscillatory for this value but satisfy the relevant requirements \ref{req:RS}.
 At smaller gain values the dutch roll damping and roll subsidence time constant decreases which is not desirable.
 
 While this controller meets the criteria, an additional complexity in the form of a derivative term would significantly improve the performance.
@@ -491,7 +503,7 @@ The lack of damping of the dutch roll mode causes overshoot which would be reduc
 
 \subsection{Augmented C* control system}
 
-In a manoeuvre, the pilot aims to achieve a constant pitch rate which is equivilent to a constant normal acceleration.
+In a manoeuvre, the pilot aims to achieve a constant pitch rate which is equivalent to a constant normal acceleration.
 The $C^*$ quantity is defined as
 \begin{equation}
     C^* = n_{zp} + 12.4q
@@ -616,13 +628,12 @@ A gain value of $1.66$ was selected, close to the point of maximum damping but w
 
 The importance of static aircraft stability and active flight control systems is discussed.
 Static stability characteristics of the SAAB 340B were determined from experimental flight data.
-Manouevre points of \dots
-Modal analysis and transfer function fitting on frequency domain data was peformed to reconstruct the aircraft dynamics.
+Modal analysis and transfer function fitting on frequency domain data was performed to reconstruct the aircraft dynamics.
 Discrepancies between the fitted and representative transfer functions were attributed to uncertainty in mode parameters and presence of noise in frequency domain data.
 Robustness and performance requirements were defined for autopilot and augmented C* control systems.
 The pitch displacement autopilot was found to require both integral and derivative terms to meet the requirements.
 A tradeoff between the phugoid damping and SPO transience in the step response was identified and recommendations were made for the choice of gain value.
-A proportional controller was found to meet requirements for the roll displacement autopilot, although its mentioned that a derivative term would improve performance.
+A proportional controller was found to meet requirements for the roll displacement autopilot, although it's mentioned that a derivative term would improve performance.
 The $C^*$ transfer function is derived and was found to meet requirements also with a simple proportional controller.
 Finally, improvements to the analysis were suggested to better capture the dynamics of the aircraft and improve the robustness of the control system design.
 
