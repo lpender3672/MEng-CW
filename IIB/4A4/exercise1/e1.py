@@ -257,7 +257,7 @@ def plot_Manoeuvre_Stability(ares, bres, aload, bload, afuel, bfuel):
 
     # calc x at y = 0
     x0 = cgA - Aymean * (cgB - cgA) / (Bymean - Aymean)
-    x0lab = '$x_{NP}/c = '+ f'{x0:.3f}' +'$'
+    x0lab = '$x_{MP}/c = '+ f'{x0:.3f}' +'$'
     ax.vlines(x0, y.max(), y.min(), label= x0lab, linestyle='-', color='r')
 
     ax.set_xlabel(r'$x_{cg}/c$ [-]')
@@ -304,7 +304,7 @@ def plot_Manoeuvre_Stability(ares, bres, aload, bload, afuel, bfuel):
 
     # calc x at y = 0
     x0 = cgA - Aymean * (cgB - cgA) / (Bymean - Aymean)
-    x0lab = '$x_{NP}/c = '+ f'{x0:.3f}' +'$'
+    x0lab = '$x_{MP}/c = '+ f'{x0:.3f}' +'$'
     ax.vlines(x0, y.max(), y.min(), label= x0lab, linestyle='-', color='r')
 
     ax.set_xlabel(r'$x_{cg}/c$ [-]')
@@ -416,6 +416,7 @@ def main():
         A_Longitudinal_Static_Stability_fuel, 
         B_Longitudinal_Static_Stability_fuel
         )
+    """
 
     plot_Manoeuvre_Stability(
         A_Longitudinal_Manoeuvre_Stability_df, 
@@ -423,14 +424,15 @@ def main():
         loadA, loadB, 
         A_Longitudinal_Manoeuvre_Stability_fuel, 
         B_Longitudinal_Manoeuvre_Stability_fuel
-        )"
+        )
+    
     """
-
     plot_Lat_Directional_Static_Stability_SHSS(
         A_Lat_Directional_Static_Stability_SHSS_df, 
         B_Lat_Directional_Static_Stability_SHSS_df, 
         loadA, loadB
         )
+    """
 
 
     plt.show()

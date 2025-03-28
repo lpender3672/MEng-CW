@@ -130,8 +130,8 @@ legend_labels = {};
 figure;
 hold on;
 
-for k = [0.7]
-    step(feedback(k*GIC, 1));
+for k = [0.3, 0.7, 1.4]
+    step(feedback(k*GIC, 1), 100);
 
     legend_labels{end + 1} = ['k = ', num2str(k)];
 end

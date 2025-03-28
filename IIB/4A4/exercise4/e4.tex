@@ -83,7 +83,9 @@
 
 \section{Introduction}
 
-
+Ensuring stability and control over aircraft in flight is crucial for both safety and performance.
+Static stability is the aircraft's tendency to return to its equilibrium state after a disturbance, while dynamic stability refers to the aircraft's response over time to such disturbances.
+Modern aircraft require active control systems to meet performance and saftey criteria \dots
 
 \subsection{Objectives}
 
@@ -125,6 +127,10 @@ measurements \ref{tab:oscillatory_modes}
 
 \subsection{Dynamic Stability}
 
+The aircraft dynamics are assumed to be linear and time-invariant within the range of small perturbations the equilibrium trim point.
+This allows the use of linear models for modal analysis, transfer function estimation, and control system design.
+Nonlinear effects such as large angle dynamics, actuator saturation, or aerodynamic hysteresis are not considered in the following analysis.
+Lateral and longitudinal dynamics are decoupled, and further within these the control inputs are assumed to be decoupled to only affect a single axis of motion.
 
 To obtain the transfer function a frequency response analysis was performed on the collected data.
 This required applying a Hanning window to the finite data set to reduce spectral leakage of the following discrete Fourier transform.
@@ -136,6 +142,7 @@ Emphasis was placed on fitting the numerator of the transfer function close to n
 \section{Results}
 
 \subsection{Static Stability}
+
 
 
 
@@ -170,7 +177,7 @@ Emphasis was placed on fitting the numerator of the transfer function close to n
     \label{tab:non_oscillatory_modes}
   \end{table}
 
-The denominator cofficients were obtained from reconstructing poles from the previous modal analysis results \ref{tab:non_oscillatory_modes} \ref{tab:oscillatory_modes}.
+The denominator coefficients were obtained from reconstructing poles from the previous modal analysis results \ref{tab:non_oscillatory_modes} \ref{tab:oscillatory_modes}.
 For oscillatory modes, the poles were reconstructed using the formula $s = -\zeta\omega_n \pm j\omega_n\sqrt{1-\zeta^2}$.
 For non-oscillatory modes the time constants were found to be significantly different to given representative mode parameters \cite{rep} and so the latter was used.
 Its also worth noting that the spiral mode is unstable and so the pole was placed in the right half plane $s = 1/42.6$.
@@ -297,7 +304,7 @@ This will add a pole at $s=0$ and a zero at $s=-1/T_i$ to the root locus.
 
 Figure \ref{fig:fitted_pitchrate_rlocus_int} shows the fitted elevator to pitch angle root locus with an integrator time constant $T_i = 10$.
 As expected there is a zero at $s=-0.1$ and a pole at $s=0$.
-However the existance of the zero in the RHP and the new integrator pole at 0, right of the phugoid poles, causes the region on the real axis between the zero and pole to be on the root locus.
+However the existence of the zero in the RHP and the new integrator pole at 0, right of the phugoid poles, causes the region on the real axis between the zero and pole to be on the root locus.
 This causes the closed loop to be unstable for all gain values.
 
 Comparison to representative transfer functions \cite{rep} shows the final term on the numerator of my fitted transfer function to have the opposite sign.
@@ -415,8 +422,6 @@ At smaller gain values the dutch roll damping and roll subsidence time constant 
 While this controller meets the criteria, an additional complexity in the form of a derivative term would significantly improve the performance.
 The lack of damping of the dutch roll mode causes overshoot which would be reduced or eliminated with a derivative term if such behaviour was desired.
 
-\subsubsection{Manual Tuning of Roll autopilpot}
-
 
 \subsection{Augmented C* control system}
 
@@ -504,6 +509,7 @@ A gain of $k=6$ corresponds to the neck of the balloon shaped locus where the da
 
 \begin{itemize}
     \item Representation of multiple input multiple output systems for coupled dynamics would allow for more accurate control system design at the loss of simple root locus analysis. LQR or H-infinity control could be used.
+    \item Optimisation of controller parameters could be performed using a cost function based on the step response characteristics.
     \item Cross power spectral density analysis (Welch's method) would be significantly more robust to noise than the current method.
     This would allow for more accurate numerators to be fit to experimental data.
 \end{itemize}
@@ -511,6 +517,17 @@ A gain of $k=6$ corresponds to the neck of the balloon shaped locus where the da
 
 \section{Conclusion}
 
+The importance of static aircraft stability and active flight control systems is discussed.
+Static stability characteristics of the SAAB 340B were determined from experimental flight data.
+Manouevre points of \dots
+Modal analysis and transfer function fitting on frequency domain data was peformed to reconstruct the aircraft dynamics.
+Discrepancies between the fitted and representative transfer functions were attributed to uncertainty in mode parameters and presence of noise in frequency domain data.
+Robustness and performance requirements were defined for autopilot and augmented C* control systems.
+The pitch displacement autopilot was found to require both integral and derivative terms to meet the requirements.
+A tradeoff between the phugoid damping and SPO transience in the step response was identified and recommendations were made for the choice of gain value.
+A proportional controller was found to meet requirements for the roll displacement autopilot, although its mentioned that a derivative term would improve performance.
+The $C^*$ transfer function is derived and was found to meet requirements also with a simple proportional controller.
+Finally, improvements to the analysis were suggested to better capture the dynamics of the aircraft and improve the robustness of the control system design.
 
 
 \section{Appendix}
