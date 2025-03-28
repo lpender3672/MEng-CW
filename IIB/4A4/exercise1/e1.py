@@ -320,17 +320,22 @@ def plot_Lat_Directional_Static_Stability_SHSS(ares, bres, aload, bload):
     print(bres.to_latex(float_format="%.3f"))
 
     fig, ax = plt.subplots()
-    a_roll = ares['Roll angle deg'].to_numpy()
-    b_roll = bres['Roll angle deg'].to_numpy()
-    a_sideslip = ares['Sideslip deg'].to_numpy()
-    b_sideslip = bres['Sideslip deg'].to_numpy()
+    a_roll = ares['Roll angle deg'].to_numpy().astype(float)
+    b_roll = bres['Roll angle deg'].to_numpy().astype(float)
+    a_sideslip = ares['Sideslip deg'].to_numpy().astype(float)
+    b_sideslip = bres['Sideslip deg'].to_numpy().astype(float)
 
     # roll vs sideslip
     asrt = np.argsort(a_sideslip)
     bsrt = np.argsort(b_sideslip)
 
-    ax.plot(a_sideslip[asrt], a_roll[asrt], "o-", label='A')
-    ax.plot(b_sideslip[bsrt], b_roll[bsrt], "o-", label='B')
+    ax.plot(a_sideslip[asrt], a_roll[asrt], "o", label='Group A Standard')
+    ax.plot(b_sideslip[bsrt], b_roll[bsrt], "o", label='Group B Flaps $20^\circ$ and Landing Gear Down')
+
+    corrective_fit1 = np.polyfit(a_sideslip[asrt], a_roll[asrt], 1)
+    corrective_fit2 = np.polyfit(b_sideslip[bsrt], b_roll[bsrt], 1)
+    ax.plot(a_sideslip[asrt], np.polyval(corrective_fit1, a_sideslip[asrt]), 'r--', label='Group A fit')
+    ax.plot(b_sideslip[bsrt], np.polyval(corrective_fit2, b_sideslip[bsrt]), 'g--', label='Group B fit')
 
     ax.set_xlabel(r'Sideslip angle $\beta$ [$^\circ$]')
     ax.set_ylabel(r'Angle of bank $\phi$ [$^\circ$]')
@@ -342,14 +347,19 @@ def plot_Lat_Directional_Static_Stability_SHSS(ares, bres, aload, bload):
 
     # plot rudder and aerilon angle against sideslip
     fig, ax = plt.subplots()
-    a_aileron = ares['Aileron deg'].to_numpy()
-    b_aileron = bres['Aileron deg'].to_numpy()
+    a_aileron = ares['Aileron deg'].to_numpy().astype(float)
+    b_aileron = bres['Aileron deg'].to_numpy().astype(float)
 
-    a_rudder = ares['Rudder deg'].to_numpy()
-    b_rudder = bres['Rudder deg'].to_numpy()
+    a_rudder = ares['Rudder deg'].to_numpy().astype(float)
+    b_rudder = bres['Rudder deg'].to_numpy().astype(float)
 
-    ax.plot(a_sideslip[asrt], a_aileron[asrt], "o-", label='A')
-    ax.plot(b_sideslip[bsrt], b_aileron[bsrt], "o-", label='B')
+    ax.plot(a_sideslip[asrt], a_aileron[asrt], "o", label='Group A Standard')
+    ax.plot(b_sideslip[bsrt], b_aileron[bsrt], "o", label='Group B Flaps $20^\circ$ and Landing Gear Down')
+
+    corrective_fit3 = np.polyfit(a_sideslip[asrt], a_aileron[asrt], 1)
+    corrective_fit4 = np.polyfit(b_sideslip[bsrt], b_aileron[bsrt], 1)
+    ax.plot(a_sideslip[asrt], np.polyval(corrective_fit3, a_sideslip[asrt]), 'r--', label='Group A fit')
+    ax.plot(b_sideslip[bsrt], np.polyval(corrective_fit4, b_sideslip[bsrt]), 'g--', label='Group B fit')
 
     ax.set_xlabel(r' Sideslip angle $\beta$ [$^\circ$]')
     ax.set_ylabel(r' Aileron deflection $\delta_{ail}$ [$^\circ$]')
@@ -361,9 +371,14 @@ def plot_Lat_Directional_Static_Stability_SHSS(ares, bres, aload, bload):
     fig.savefig(wdir / 'Lat_Directional_Static_Stability_SHSS_2.png', dpi=300)
 
     fig, ax = plt.subplots()
-    ax.plot(a_sideslip[asrt], a_rudder[asrt], "o-", label='A')
-    ax.plot(b_sideslip[bsrt], b_rudder[bsrt], "o-", label='B')
+    ax.plot(a_sideslip[asrt], a_rudder[asrt], "o", label='Group A Standard')
+    ax.plot(b_sideslip[bsrt], b_rudder[bsrt], "o", label='Group B Flaps $20^\circ$ and Landing Gear Down')
 
+    corrective_fit5 = np.polyfit(a_sideslip[asrt], a_rudder[asrt], 1)
+    corrective_fit6 = np.polyfit(b_sideslip[bsrt], b_rudder[bsrt], 1)
+    ax.plot(a_sideslip[asrt], np.polyval(corrective_fit5, a_sideslip[asrt]), 'r--', label='Group A fit')
+    ax.plot(b_sideslip[bsrt], np.polyval(corrective_fit6, b_sideslip[bsrt]), 'g--', label='Group B fit')
+    
     ax.set_xlabel(r' Sideslip angle $\beta$ [$^\circ$]')
     ax.set_ylabel(r' Rudder deflection $\delta_{rud}$ [$^\circ$]')
 
@@ -393,6 +408,7 @@ def main():
     B_Lat_Directional_Static_Stability_SHSS_df = measurement_df.iloc[30:37, 8:12]
     B_Lat_Directional_Static_Stability_SHSS_df.columns = ['Aileron deg', 'Roll angle deg', 'Sideslip deg', 'Rudder deg']
 
+    """
     plot_Longitudinal_Static_Stability(
         A_Longitudinal_Static_Stability_df, 
         B_Longitudinal_Static_Stability_df, 
@@ -407,7 +423,8 @@ def main():
         loadA, loadB, 
         A_Longitudinal_Manoeuvre_Stability_fuel, 
         B_Longitudinal_Manoeuvre_Stability_fuel
-        )
+        )"
+    """
 
     plot_Lat_Directional_Static_Stability_SHSS(
         A_Lat_Directional_Static_Stability_SHSS_df, 

@@ -135,37 +135,40 @@ Emphasis was placed on fitting the numerator of the transfer function close to n
 
 \section{Results}
 
+\subsection{Static Stability}
 
-\begin{table}[H]
-  \centering
-  \begin{tabular}{lcc}
-      \toprule
-      Name & Damping factor & Natural frequency (rad/s) \\
-      \midrule
-      Phugoid & 0.06 & 0.126 \\
-      Dutch Roll & 0.12 & 1.52 \\
-      SPO & 0.429 & 2.23 \\
-      \bottomrule
-  \end{tabular}
-  \caption{Oscillatory Modes}
-    \label{tab:oscillatory_modes}
-\end{table}
 
-\begin{table}[H]
-  \centering
-  \begin{tabular}{lc}
-      \toprule
-      Name & Time constant (s) \\
-      \midrule
-      Spiral & 42.6* \\
-      Roll Subsidence & 0.2495* \\
-      \bottomrule
-  \end{tabular}
-  \caption{Non-Oscillatory Modes. *Representative mode parameters were used \cite{rep}.}
-  \label{tab:non_oscillatory_modes}
-\end{table}
 
 \subsection{Denominator Coefficients}
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{lcc}
+        \toprule
+        Name & Damping factor & Natural frequency (rad/s) \\
+        \midrule
+        Phugoid & 0.06 & 0.126 \\
+        Dutch Roll & 0.12 & 1.52 \\
+        SPO & 0.429 & 2.23 \\
+        \bottomrule
+    \end{tabular}
+    \caption{Oscillatory Modes}
+      \label{tab:oscillatory_modes}
+  \end{table}
+  
+  \begin{table}[H]
+    \centering
+    \begin{tabular}{lc}
+        \toprule
+        Name & Time constant (s) \\
+        \midrule
+        Spiral & 42.6* \\
+        Roll Subsidence & 0.2495* \\
+        \bottomrule
+    \end{tabular}
+    \caption{Non-Oscillatory Modes. *Representative mode parameters were used \cite{rep}.}
+    \label{tab:non_oscillatory_modes}
+  \end{table}
 
 The denominator cofficients were obtained from reconstructing poles from the previous modal analysis results \ref{tab:non_oscillatory_modes} \ref{tab:oscillatory_modes}.
 For oscillatory modes, the poles were reconstructed using the formula $s = -\zeta\omega_n \pm j\omega_n\sqrt{1-\zeta^2}$.
@@ -173,32 +176,35 @@ For non-oscillatory modes the time constants were found to be significantly diff
 Its also worth noting that the spiral mode is unstable and so the pole was placed in the right half plane $s = 1/42.6$.
 
 
-\subsection{Transfer function fits}
-
+\subsection{Transfer Functions}
+\subsubsection{Fitted functions}
 \begin{equation}
     \frac{\theta}{\delta_E} =
     \frac{-2.50716\,s^2-4.4486\,s+0.126421}{s^4+1.92846\,s^3+5.01771\,s^2+0.105566\,s+0.0789498}
     \label{eq:pitch_elev}
 \end{equation}
-
 \begin{equation}
     \frac{n_z}{\delta_E} =
     -\frac{0.0211993\,s^4+0.0430083\,s^3+0.556474\,s^2+0.0532744\,s}{s^4+1.92846\,s^3+5.01771\,s^2+0.105566\,s+0.0789498}
     \label{eq:naccel_elev}
 \end{equation}
-
 \begin{equation}
     \frac{r}{\delta_R} =
     -\frac{1.58358\,s^3+5.6549\,s^2+2.58149\,s-0.436239}{s^4+4.34934\,s^3+3.66988\,s^2+9.17156\,s-0.217374}
     \label{eq:yaw_rud}
 \end{equation}
-
 \begin{equation}
     \frac{\phi}{\delta_A} =
     -\frac{4.65389\,s^2+2.82347\,s^1+11.0881}{s^4+4.34934\,s^3+3.66988\,s^2+9.17156\,s-0.217374}
     \label{eq:roll_ail}
 \end{equation}
-
+\subsubsection{Representative functions used for longitudinal}
+\begin{equation}
+    \frac{\theta}{\delta_E} = \frac{-2.637s^2 - 2.475s - 0.0607}{s^4 + 1.6366s^3 + 3.4115s^2 + 0.07937s + 0.05112}
+\end{equation}
+\begin{equation}
+    \frac{-0.0139s^4 - 0.0693s^3 - 0.4071s^2 - 0.0242s}{s^4 + 1.6366s^3 + 3.4115s^2 + 0.07937s + 0.05112}
+\end{equation}
 
 \section{Control system design}
 
@@ -504,6 +510,7 @@ A gain of $k=6$ corresponds to the neck of the balloon shaped locus where the da
 
 
 \section{Conclusion}
+
 
 
 \section{Appendix}
