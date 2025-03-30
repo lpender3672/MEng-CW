@@ -20,8 +20,6 @@ for y0 = -1:1:1
         plot(z(:,1), z(:,2))
     end
 end
-[t, z] = ode45(@(t,z) dynamics(t, z, w1), [0 10], [1e-9; 1e-9]);
-plot(z(:,1), z(:,2))
 hold off
 
 xlabel('y'), ylabel('z_1')
@@ -50,8 +48,8 @@ for y0 = -1:1:1
         plot(z(:,1), z(:,2))
     end
 end
-[t, z] = ode45(@(t,z) dynamics(t, z, w1), [0 10], [1e-9; 1e-9]);
-plot(z(:,1), z(:,2))
+[t, z] = ode45(@(t,z) dynamics(t, z, w1), [0 10], [y0; z10]);
+    plot(z(:,1), z(:,2))
 
 hold off
 

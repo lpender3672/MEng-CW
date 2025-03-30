@@ -2,14 +2,13 @@
 
 function [t, y_out] = simulate_nonlinear_harmonic(w1, w2, w3, mag, freq, phase)
     
-    tspan = [0 10];
+    tspan = [0 50];
     x0 = [0; 0; 0];
 
     [t, x] = ode45(@(t,x) q1ode(t, x, w1, w2, w3, mag, freq, phase), tspan, x0);
     
     y_out = x(:,3);
     
-    figure;
     plot(t, y_out);
     xlabel('Time (s)');
     ylabel('y(t)');

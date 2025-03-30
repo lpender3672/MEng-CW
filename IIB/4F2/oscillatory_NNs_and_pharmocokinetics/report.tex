@@ -140,7 +140,7 @@ This allows us to define a complex hull which contains $\partial f(x)$:
 
 This allows us to define two linear matrix inequalities (LMIs) to guarantee differential gain. 
 
-\textit{p}-gain $\gamma$ \textbf{from} $w$ \textbf{to} $y$ with rate $\lambda \geq 0$: find $Y = Y^T$ with inertia $p$, $Z$, and $\varepsilon > 0$,
+\textit{p}-gain $\gamma$ from $w$ to $y$ with rate $\lambda \geq 0$: find $Y = Y^T$ with inertia $p$, $Z$, and $\varepsilon > 0$,
 
 \begin{equation}
     \left[
@@ -161,22 +161,30 @@ This allows us to define two linear matrix inequalities (LMIs) to guarantee diff
     \right] \leq 0
 \end{equation}
 
-Where the weights $W = ZY^{-1}$.
-
+Where the weights are calculated by $W = ZY^{-1}$.
+For a $\lambda = 0.1$ the LMI is solved using CVX and the weights are calculated as $W =$ \texttt{[2.8670   42.2303  -48.7531]}.
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.5\textwidth]{figures/11_harmonic_reference.png}
+    \includegraphics[width=0.6\textwidth]{figures/11_step_reference.png}
     \caption{Response of system to unit step reference signals}
     \label{fig:11_step}
 \end{figure}
 
+Figure \ref{fig:11_step} shows the step response of the closed loop system with the weights calculated above.
+It's observed to be stable with a delayed response and reaches a final value of ~$0.26$ from the unit input.
+The slow response is likely due to the smaller value of the slow network $z_1$ compared to the faster $w_2$.
+
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.5\textwidth]{figures/11_harmonic_reference.png}
+    \includegraphics[width=0.6\textwidth]{figures/11_harmonic_reference.png}
     \caption{Harmonic reference signal and systems response}
     \label{fig:11_harmonic}
 \end{figure}
+
+The response in figure \ref{fig:11_harmonic} is for a unit sinusoidal reference signal with frequencies $0.5$ Hz and $1$ Hz.
+Some phase lag is observed but is relatively small. The sinusoidal shape is not preserved which is expected from the nonlinearity of the system feedback.
+The lower frequency seems to be warped more than the higher frequency, which is again likely due to the high weighting of the fast first order network $z_2$ compared to the slow $z_1$.
 
 The dissipativity LMI in matrix form is given by
 \begin{equation}    
@@ -197,46 +205,162 @@ use of phase portrait on the reduced system to understand the variation with $w_
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.5\textwidth]{figures/equilibria_bifurcation.png}
+    \includegraphics[width=0.6\textwidth]{figures/equilibria_bifurcation.png}
     \caption{Bifurcation of equilibria with varying $w_1$}
     \label{fig:equilibria}
 \end{figure}
 
+Figure \ref{fig:equilibria} shows the bifurcation of equilibria with varying $w_1$.
+This occurs at a value of $w_1 = -24$ where the unstable equilibrium at $(0,0)$ becomes a saddle point (stability in one direction and instability in the other).
+The direction of this can be seen by the phase portrait below in figure \ref{fig:phase_portrait_w100}.
+Two stable equilibria form at $y = z_1 = \pm 1$ above this bound for $w_1$.
+
+
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.5\textwidth]{figures/oscillator_phase_portrait.png}
-    \caption{Phase portrait of the autonomous nonlinear oscillator for $w_1 = 100$}
-    \label{fig:phase_portrait_w100}
+    \begin{subfigure}[b]{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/oscillator_phase_portrait_w100.png}
+        \caption{$w_1 = 100$}
+        \label{fig:phase_portrait_w100}
+    \end{subfigure}=
+    \begin{subfigure}[b]{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/oscillator_phase_portrait_w-25.png}
+        \caption{$w_1 = -25$}
+        \label{fig:phase_portrait_w25}
+    \end{subfigure}
+    \caption{Phase portrait of the autonomous nonlinear oscillator for varying $w_1$ to show the different equilibria}
 \end{figure}
+
+Figure \ref{fig:phase_portrait_w100} shows the phase portrait of the system with $w = [100, 0, 25]$.
+The trajectories can be seen to converge towards the two stable equilibria which is expected from the bifurcation diagram \ref{fig:equilibria}.
+For the system with $w = [-25, 0, 25]$ in figure \ref{fig:phase_portrait_w25} the system is seen to converge towards the unstable equilibrium at $(0,0)$.
+However, for $w = [-25, 0, 25]$ the system is seen to be 2 dominant and oscillate around the unstable equilibrium.
+State space trajectories also plotted, show initial conditions both inside and outside the oscillator path converge to the same cycle.
+
 
 \subsection{Enforced 2-dominance and instability of 0 equilibrium}
 
+Previously 2 dominance was observed from fixing $w_2 = 0$, $w_3 = 25$ and varying $w_1$.
+This can be done more generally though the use of the LMI condition for 2-dominance.
+
+\begin{align}
+    \partial f Y + Y \partial f^T + 2\lambda Y + Z^T B_u^T + B_u Z + \varepsilon I &\leq 0 \\
+    \partial f Y + Y \partial f^T + 2\lambda Y + \varepsilon I &\leq 0
+\end{align}
+
+This condition is required for oscillations however is not sufficient.
+The last condition is instability of the 0 equilibrium which can be enforced by the LMI condition:
+
 \begin{equation}
-    Y > 0, \quad
-    \left[
-    \begin{array}{ccc}
-    Y \partial f(x)^T + \partial f(x) Y + 2\lambda Y + Z^T B_u^T + B_u Z & B_w & Y \partial \varphi(x)^T + Z^T D_u \\
-    B_w^T & -\gamma I & D_w^T \\
-    \partial \varphi(x) Y + D_u Z & D_w & -\gamma I
-    \end{array}
-    \right] < 0.
+    Y \partial f(x)^T + \partial f(x) Y + Z^T B_u^T + B_u Z + \varepsilon I \leq 0
 \end{equation}
+
+To help the computation the $\varepsilon \geq 0$ is minimised.
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.5\textwidth]{figures/13_oscillator_responses.png}
+    \includegraphics[width=0.6\textwidth]{figures/13_oscillator_responses.png}
     \caption{Responses of the oscillator to different constant reference inputs}
     \label{fig:13_responses}
 \end{figure}
 
-The region $R_\text{2dom}$ and subset $R_\text{inst}$ are shown
+Figure \ref{fig:13_responses} shows the response of the system to different constant reference inputs.
+It can be seen that a reference input of $r = 0$ produces no oscillation for the network started from rest, however a tiny reference input of $r=1e-9$ will cause the system to oscillate.
+This is due to the unstable equilibrium at 0.
+However its possible if a reference signal of above 1 is used the system will stop oscillating and converge to an equilibria point.
+This is the transition from 2-dominance to 1-dominance.
+
+The open loop LTI system, G, can be used alongside the bounded non-linearity in the differential circle criterion for $p$-dominance.
+$p$-dominance is satisfied if the Nyquist locus of $G(s-\lambda)$ does not intersect the disc with diameter $[-1/\alpha, -1/\beta]$ from the bounded non-linearity $\alpha \leq \partial tanh(x) < \beta$.
+The sector condition of $\alpha=0$ and $\beta=1$ means the Nyquist locus of $G(s-\lambda)$ must not have a real part less than $-1$.
+The value of $\lambda$ can be used to select the desired $p$ dominance, which a value of 20 is known to provide.
+The region $\mathcal{R}_\text{2dom}$ is then defined as the set of paramters to satisfy this 2-dominance circle criterion condition.
+The classic Nyquist criterion is also used to determine the subset of the system parameters, $\mathcal{R}_\text{inst}$, which are unstable, allowing oscillations to occur.
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.5\textwidth]{figures/R2dom.png}
-    \caption{Region $R_\text{2dom}$}
+    \includegraphics[width=0.6\textwidth]{figures/R2dom.png}
+    \caption{Region $\mathcal{R}_\text{2dom}$ is shaded cyan and the subset $\mathcal{R}_\text{inst}$ is shaded yellow.}
     \label{fig:R2dom}
 \end{figure}
+
+$\mathcal{R}_\text{2dom}$ and subset $\mathcal{R}_\text{inst}$ are shown above in figure \ref{fig:R2dom}.
+This is largely encompassed by $w_2 < 0$, however as before when $w_2 = 0$ 
+
+
+\subsection{Application of oscillator to small robotic insect}
+
+The oscillator is used to drive a 
+\begin{equation}
+    m\ddot{x} + c_v \dot{x} + c_p x = u_m \quad \text{and} \quad y_m = 30x + \dot{x}
+\end{equation}
+Where $m = 0.001$, $c_v = 0.1$, $c_p = 2 \pm 0.1$.
+
+\subsubsection{Excess passivity of insect wing model}
+
+The linear matrix inequality for p-passivity with excess/shortage $(\alpha, \beta)$ and rate $\lambda \geq0$ is given by
+\begin{equation}
+    \left[
+    \begin{array}{cc}
+    \partial f(x)^T P + P \partial f(x) + 2 \lambda P - \alpha \partial \varphi(x)^T \partial \varphi(x) + \varepsilon I & P B - \partial \varphi(x)^T \\
+    B^T P - \partial \varphi(x) & -\beta I
+    \end{array}
+    \right] \leq 0. \quad \text{with} \quad \varepsilon > 0
+\end{equation}
+The input passivity, $\beta$, is set to 0, and the output passivity $\alpha$ as a CVX variable to be solved for with the constraint that its in excess $\alpha > 0$.
+This gives the solution for $\alpha = 62.61$ showing that the system has excess output passivity.
+
+\subsubsection{Designing w for equivalent input passivity shortage}
+
+\begin{equation}
+\left[
+\begin{array}{ccc}
+Y \partial f(x)^T + \partial f(x) Y + 2\lambda Y + Z^T \partial \varphi^T + \partial \varphi Z + \varepsilon I & B_w - Y C^T & Y C^T \\
+B_w^T - C Y & -(D_w + D_w^T) - \beta I & D_w^T \\
+C Y & D_w & \frac{1}{\alpha} I
+\end{array}
+\right] < 0 \label{eq:mega_lmi}
+\end{equation}
+
+The oscillator is designed to match its shortage in input passivity, $\beta_o$, to the wing models excess output passivity, $\alpha_w$.
+The output passivity of the oscillator, $\alpha_o$ is set to 0 which means that the 3rd row and column of \ref{eq:mega_lmi} can be removed.
+As before, the convex hull of two LMI's from the bounded nonlinearity are used.
+Again the instability of the 0 equilibrium is also enforced to guarantee oscillations.
+
+\subsubsection{Excess and shortage of passivity in the closed loop }
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.2\textwidth]{figures/excess_shortage.jpg}
+    \caption{Feedback interconnection of the insect wing model and oscillator}  
+    \label{fig:excess_shortage}
+\end{figure}
+
+The passivity theorem with excess/shortage of passivity states that for the systems $G$ and $\rho H$ in figure \ref{fig:excess_shortage} with feedback interconnections:
+\begin{equation}
+    r = \rho y_m = H u_m \quad \text{and} \quad u_m = y + q
+\end{equation}
+Then the closed loop is $(p_G + p_{\rho H})$-dominant with common rate $\lambda$ if $\alpha_G + \beta_{\rho H} \leq 0$ and $\alpha_{\rho H} + \beta_G \leq 0$.
+Where $G$ is $p_G$-passive with shortage/excess $(\alpha_G, \beta_G)$ and $\rho H$ is $p_{\rho H}$-passive with shortage/excess $(\alpha_{\rho H}, \beta_{\rho H})$.
+
+\subsection{Periodic input driven contractive network}
+
+The input signal $r$ of the network designed in i) was designed such that the output resembled the oscillator network in iii).
+The matched harmonic input had amplitude 3, frequency of 0.6440 rad/s and phase of 0.5 rad and phase difference of $\pi/4$.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.2\textwidth]{figures/15_matched.png}
+    \caption{Matched harmonic input to the oscillator network}  
+    \label{fig:matched_harmonic_input}
+\end{figure}
+
+Figure \ref{fig:matched_harmonic_input} shows the matched harmonic input to the oscillator network.
+It can be seen that half the cycle matches quite closely but the oscillator has an offset from 0 which is not replicated in the output from harmonic input.
+% pros and cons
+
 
 \section{Pharmacokinetics and drug dosage}
 
@@ -292,7 +416,12 @@ When inverted the resultant SRG is a larger circle between 0 and $1/(\lambda_1 +
     \centering
     \includegraphics[width=0.4\textwidth]{figures/compartmentSRG.jpg}
     \caption{Scaled Relative Graph of component 1}
+    \label{fig:compartment_srg}
 \end{figure}
+
+% Comment on the passivity and gain properties of this operator.
+The SRG for one compartment, seen in figure \ref{fig:compartment_srg}, exists entirely in the right half plane and so is passive.
+The gain properties are \dots
 
 \subsubsection{Positive feedback interconnection}
 
@@ -331,14 +460,14 @@ The closed loop then consists of a cascade of the controller and plant.
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.5\textwidth]{figures/closed_loop.jpg}
+    \includegraphics[width=0.6\textwidth]{figures/closed_loop.jpg}
     \caption{Closed loop block diagram}
 \end{figure}
 The SRG of the combined controller and plant forms a cardioid shape seen below.
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.5\textwidth]{figures/closed_loop_return_ratio.png}
+    \includegraphics[width=0.6\textwidth]{figures/closed_loop_return_ratio.png}
     \caption{Scaled Relative Graph of closed loop return ratio}
     \label{fig:return_ratio_srg}
 \end{figure}
@@ -364,7 +493,7 @@ This can be represented as an additional first order lag in the $H_2$ feedback i
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.5\textwidth]{figures/sensor_dynamics.jpg}
+    \includegraphics[width=0.6\textwidth]{figures/sensor_dynamics.jpg}
     \caption{Block diagram of system with sensor dynamics}
     \label{fig:sensor_dynamic_block}
 \end{figure}
@@ -372,6 +501,14 @@ This can be represented as an additional first order lag in the $H_2$ feedback i
 Both SRGs can be plot and the minimum distance $r_\text{min}$ between $H_1$ and $-\tau H_2 $ for $\tau \in [0,1]$ can be calculated.
 % TODO: find the right answer for this
 % somethings gone wrong earlier because for all tau>0 the SRGs overlap
+
+\subsection{Advanced sensor delay and describing function method}
+
+A more accurate model of the sensor dynamics is given by the following differential equation:
+\begin{align}
+    10\dot{x} &= -x + c_1 \\
+    y(t) &= x(t-0.1)
+\end{align}
 
 \section{Appendix}
 
