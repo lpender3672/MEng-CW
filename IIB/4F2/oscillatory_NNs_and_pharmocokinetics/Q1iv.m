@@ -23,7 +23,7 @@ cvx_begin sdp
     LMI1 = [A1'*P + P*A1 + 2*lamda*P, P*B-C';
             B'*P-C, 0] <= 0;
     
-    LMI1 = [A2'*P + P*A2 + 2*lamda*P, P*B-C';
+    LMI2 = [A2'*P + P*A2 + 2*lamda*P, P*B-C';
             B'*P-C, 0] <= 0;
 cvx_end
 
@@ -71,7 +71,6 @@ cvx_begin sdp
     variable Y(n,n) symmetric
     variable Z(1,n)
     variable epsilon
-    %variable betaa2
 
     minimize(epsilon)
 
@@ -84,8 +83,6 @@ cvx_begin sdp
                (Bw' - C*Y),                                (-(Dw + Dw') - betaa2*eye(1))] <= 0;
      
     LMI4 = Y*df' + df*Y + Z'*Bu'+Bu*Z + epsilon*eye(3) <= 0;
-
-    %LMI5 = betaa2 >= alph;
 
 cvx_end
 

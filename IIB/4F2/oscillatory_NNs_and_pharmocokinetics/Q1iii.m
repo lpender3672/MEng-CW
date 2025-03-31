@@ -27,9 +27,7 @@ cvx_begin sdp
         LMI2 = df*Y + Y*df' + 2*lamda*Y + Z'*Bu' + Bu*Z + eps*eye(n) <= 0;
         LMI3 = df*Y + Y*df' + 2*lamda*Y + eps*eye(n) <= 0;
         
-        LMI4 = [Y*df' + df*Y + Z'*Bu'+Bu*Z+eps*eye(3)] <= 0;
-        
-        %LMI4 = trace(Y) <= 0;
+        LMI4 = Y*df' + df*Y + Z'*Bu'+Bu*Z+eps*eye(3) <= 0;
         
 cvx_end
 
