@@ -50,18 +50,83 @@ w1 = K(1);
 w2 = K(2);
 w3 = K(3);
 
-simulate_nonlinear_step(w1, w2, w3);
+figure;
+hold on;
+simulate_nonlinear_step(w1, w2, w3, -1);
+simulate_nonlinear_step(w1, w2, w3, 0);
+simulate_nonlinear_step(w1, w2, w3, 1);
+hold off;
+legend('r=-1', 'r=0', 'r=1', 'Location', 'best')
 
 print(gcf, 'figures/11_step_reference.png', '-dpng', '-r600');
 
-simulate_nonlinear_harmonic(w1, w2, w3, 1, pi, 0);
+figure;
 hold on;
-t = linspace(0, 10, 100);
-plot(t, sin(pi * t))
+simulate_nonlinear_harmonic(w1, w2, w3, 1, pi, 0);
+simulate_nonlinear_harmonic(w1, w2, w3, 1, pi/2, 0);
+%t = linspace(0, 10, 100);
+%plot(t, sin(pi * t))
 hold off;
 ylabel('Signal Amplitude')
-legend("y", "r")
+legend('r=sin(\pi t)', 'r=sin(\pi/2 t)')
 print(gcf, 'figures/11_harmonic_reference.png', '-dpng', '-r600');
+
+
+%% now for differential
+
+% constnt
+
+dxes = linspace(-5, 5, 100);
+c_gammas = zeros(size(dxes));
+
+for i = 1:size(dxes, 2) 
+    x1 = 1.0;
+    x2 = dxes(i) * x1;
+    
+    [t, y1, y2] = simulate_nonlinear_dstep(w1, w2, w3, x1, x2);
+    
+    edx = trapz(t, abs(x1-x2).^2 * ones(size(t)));
+    edy = trapz(t, abs(y1-y2).^2);
+
+    c_gammas(i) = edy / edx;
+
+end
+
+figure;
+plot(dxes, c_gammas)
+ylabel('E(y_1 - y_2)/E(r_1 - r_2)')
+xlabel('r_2 / r_1')
+grid on;
+print(gcf, 'figures/11_step_incremental_gain.png', '-dpng', '-r600');
+
+% harmonic
+
+damps = linspace(-5, 5, 100);
+h_gammas = zeros(size(damps));
+
+for i = 1:size(damps, 2) 
+    A1 = 1.0;
+    A2 = damps(i) * A1;
+    
+    [t, y1, y2] = simulate_nonlinear_dharmonic(w1, w2, w3, A1, A2);
+
+    r1 = A1 * sin(pi * t );
+    r2 = A2 * sin(pi * t );
+    
+    edx = trapz(t, abs(r1-r2).^2);
+    edy = trapz(t, abs(y1-y2).^2);
+
+    h_gammas(i) = edy / edx;
+
+end
+
+figure;
+plot(damps, h_gammas)
+ylabel('E(y_1 - y_2)/E(r_1 - r_2)')
+xlabel('r_2 / r_1')
+grid on;
+print(gcf, 'figures/11_harmonic_incremental_gain.png', '-dpng', '-r600');
+
 
 %{
 

@@ -1,0 +1,16 @@
+
+
+
+w1 = 2.8670   
+w2 = 42.2303 
+w3 = -48.7531
+
+o1 = -404.3271
+o2 = 76.9646
+o3 = 243.3162
+
+figure;
+hold on; 
+simulate_nonlinear_harmonic(w1, w2, w3, 1, pi/2, 0)
+
+simulate_nonlinear_step(o1, o2, o3, )

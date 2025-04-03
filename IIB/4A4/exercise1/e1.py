@@ -250,7 +250,7 @@ def plot_Manoeuvre_Stability(ares, bres, aload, bload, afuel, bfuel):
     ax.errorbar(cgA, Aymean, yerr=np.std(A_dnu_dn), fmt='o', label='A')
     ax.errorbar(cgB, Bymean, yerr=np.std(B_dnu_dn), fmt='o', label='B')
 
-    x = np.linspace(20, 100, 200)
+    x = np.linspace(20, 60, 200)
     y = Aymean + (x - cgA) * (Bymean - Aymean) / (cgB - cgA)
 
     ax.plot(x, y, label='Extrapolated', linestyle='--')
@@ -297,7 +297,7 @@ def plot_Manoeuvre_Stability(ares, bres, aload, bload, afuel, bfuel):
     ax.errorbar(cgA, Aymean, yerr=np.std(A_df_dn), fmt='o', label='A')
     ax.errorbar(cgB, Bymean, yerr=np.std(B_df_dn), fmt='o', label='B')
 
-    x = np.linspace(20, 260, 200)
+    x = np.linspace(20, 50, 200)
     y = Aymean + (x - cgA) * (Bymean - Aymean) / (cgB - cgA)
 
     ax.plot(x, y, label='Extrapolated', linestyle='--')
@@ -408,7 +408,6 @@ def main():
     B_Lat_Directional_Static_Stability_SHSS_df = measurement_df.iloc[30:37, 8:12]
     B_Lat_Directional_Static_Stability_SHSS_df.columns = ['Aileron deg', 'Roll angle deg', 'Sideslip deg', 'Rudder deg']
 
-    """
     plot_Longitudinal_Static_Stability(
         A_Longitudinal_Static_Stability_df, 
         B_Longitudinal_Static_Stability_df, 
@@ -416,7 +415,6 @@ def main():
         A_Longitudinal_Static_Stability_fuel, 
         B_Longitudinal_Static_Stability_fuel
         )
-    """
 
     plot_Manoeuvre_Stability(
         A_Longitudinal_Manoeuvre_Stability_df, 

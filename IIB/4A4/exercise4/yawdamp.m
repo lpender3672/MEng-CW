@@ -11,11 +11,28 @@ G = Hr * rudder_yaw_tf;
 
 figure;
 rlocus(G);
-sgrid([0.8, 0.4], []);
+sgrid([0.4, 0], [100, 0.4]);
+grid on;
+hold on;
+k=1.66;
+r = rlocus(G, k);
+h = plot(real(r), imag(r), 'v', 'MarkerSize', 5);
+legend(h, ['k = ' num2str(k)])
+hold off;
+print('exercise4\figures\yaw_damper_rlocus', '-dpng', '-r600');
 
-k = 1.66;
-CL = feedback(k*G, 1);
 
+legend_labels = {};
 figure;
-impulse(CL, 20)
+hold on;
+
+for k = [0.882, 1.66, 4.76]
+    impulse(feedback(k*G, 1), 20);
+    legend_labels{end + 1} = ['k = ', num2str(k)];
+end
+
+legend(legend_labels, 'Location', 'southeast')
+hold off;
+grid on;
+print('exercise4\figures\yaw_damper_impulse', '-dpng', '-r600');
 
