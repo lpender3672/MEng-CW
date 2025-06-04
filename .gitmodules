@@ -16,3 +16,6 @@
 [submodule "IIB/4A2-CFD"]
 	path = IIB/4A2-CFD
 	url = https://github.com/lpender3672/4A2-CFD.git
+[submodule "propeller-acoustics"]
+	path = propeller-acoustics
+	url = https://github.com/lpender3672/propeller-acoustics
